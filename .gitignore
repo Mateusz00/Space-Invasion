@@ -1,6 +1,13 @@
 # Prerequisites
 *.d
 
+# Code Blocks
+*.cbp
+*.depend
+*.layout
+/obj
+/bin
+
 # Compiled Object files
 *.slo
 *.lo
