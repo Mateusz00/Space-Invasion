@@ -1,0 +1,24 @@
+#ifndef APPLICATION_HPP
+#define APPLICATION_HPP
+
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/System/Time.hpp>
+#include <SFML/Graphics.h
+
+class Application
+{
+    public:
+        Application();
+        void run();
+
+    private:
+        void draw();
+        void update(sf::Time dt);
+        void handleEvents();
+        void updateFPSCounter();
+
+        const sf::Time       TIME_PER_FRAME;
+        sf::RenderWindow     mWindow;
+};
+
+#endif // APPLICATION_HPP

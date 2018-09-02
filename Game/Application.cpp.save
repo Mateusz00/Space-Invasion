@@ -1,0 +1,73 @@
+#include "Application.hpp"
+#include <SFML/System/Clock.hpp>
+#include <SFML/Window/Event.hpp>
+
+Application::Application()
+    : TIME_PER_FRAME(sf::seconds(1.f / 60.f)),
+      mWindow(sf::VideoMode(1024, 768), "2D Fighter Jet Game", sf::Style::Close)
+{
+    mWindow.setKeyRepeatEnabled(false);
+    mFont.loadFromFile("Resources/Sansation.ttf");
+    mFPSCounter.setFont(mFont);
+    mFPSCounter.setCharacterSize(12u);
+    mFPSCounter.setPosition(2.f, 2.f);
+}
+
+void Application::run()
+{
+    sf::Clock clock;
+    sf::Time  timeSinceUpdate;
+    while(mWindow.isOpen())
+    {
+        sf::Time deltaTime = clock.restart();
+        timeSinceUpdate += deltaTime;
+
+        while(timeSinceUpdate >= TIME_PER_FRAME)
+        {
+            timeSinceUpdate -= TIME_PER_FRAME;
+            handleEvents();
+            update(TIME_PER_FRAME);
+        }
+
+        updateFPSCounter(deltaTime);
+        draw();
+    }
+}
+
+void Application::draw()
+{
+    mWindow.clear();
+    // Active states will be drawn here
+    mWindow.setView(mWindow.getDefaultView());
+    mWindow.draw(mFPSCounter);
+    mWindow.display();
+}
+
+void Application::update(sf::Time dt)
+{
+    // Active states will be updated here
+}
+
+void Application::handleEvents()
+{
+    sf::Event event;
+    while(mWindow.pollEvent(event))
+    {
+        if(event.type == sf::Event::Closed)
+            mWindow.close();
+    }
+}
+
+void Application::updateFPSCounter(sf::Time dt)
+{
+    static std::size_t  numberOfFrames = 0;
+    static sf::Time     elapsedTime = sf::Time::Zero;
+
+    ++numberOfFrames;
+    elapsedTime += dt;
+    if(elapsedTime >= sf::seconds(1.f))
+    {
+        mFPSCounter.setString(toString(numberOfFrames /= elapsedTime.asSeconds()));
+        
+    }
+}
