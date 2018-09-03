@@ -1,15 +1,16 @@
 #include "Application.hpp"
-#include "Utility/Utility.hpp"
+#include "Utility/toString.hpp"
 #include <SFML/System/Clock.hpp>
 #include <SFML/Window/Event.hpp>
 
 Application::Application()
     : TIME_PER_FRAME(sf::seconds(1.f / 60.f)),
-      mWindow(sf::VideoMode(1024, 768), "2D Fighter Jet Game", sf::Style::Close)
+      mWindow(sf::VideoMode(1024, 768), "2D Fighter Jet Game", sf::Style::Close),
+      mStateStack(StateStack::Context(&mWindow, &mTextures, &mFonts))
 {
     mWindow.setKeyRepeatEnabled(false);
-    mFont.loadFromFile("Resources/Sansation.ttf");
-    mFPSCounter.setFont(mFont);
+    mFonts.loadFromFile(Fonts::Sansation, "Resources/Sansation.ttf");
+    mFPSCounter.setFont(mFonts.get(Fonts::Sansation));
     mFPSCounter.setCharacterSize(12u);
     mFPSCounter.setPosition(2.f, 2.f);
 }

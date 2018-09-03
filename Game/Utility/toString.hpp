@@ -7,5 +7,5 @@
 template <typename T>
 std::string toString(const T& value);
 
-#include "Utility.inl"
+#include "toString.inl"
 #endif // UTILITY_HPP
