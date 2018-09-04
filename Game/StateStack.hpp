@@ -1,25 +1,43 @@
 #ifndef STATESTACK_HPP
 #define STATESTACK_HPP
 
-#include "ResourcesID.hpp"
-#include <SFML/Graphics/RenderWindow.hpp>
+#include "States/StatesID.hpp"
+#include "States/State.hpp"
 #include <SFML/System/NonCopyable.hpp>
-class State;
+#include <SFML/System/Time.hpp>
+#include <SFML/Window/Event.hpp>
+#include <vector>
+#include <memory>
 
 class StateStack : private sf::NonCopyable
 {
     public:
-        struct Context
-        {
-            Context(sf::RenderWindow*, TextureHolder*, FontHolder*);
-            sf::RenderWindow*   window;
-            TextureHolder*      textures;
-            FontHolder*         fonts;
-        };
-        explicit StateStack(Context);
+        explicit StateStack(State::Context);
+        void update(sf::Time);
+        void draw();
+        void handleEvent(const sf::Event&);
+        void pushState(States::ID);
+        void popState();
+        void clearStates();
+        void applyPendingChanges();
 
     private:
-        Context mContext;
+        enum Action
+        {
+            Push,
+            Pop,
+            Clear
+        };
+        struct PendingChange // We need to perform update on current states first, then we can delete/add them to stack
+        {
+            explicit    PendingChange(Action, States::ID id = States::None);
+            Action      action;
+            States::ID  id;
+        };
+
+        std::vector<std::unique_ptr<State>> mStack;
+        std::vector<PendingChange> mPendingChanges;
+        State::Context mContext;
 };
 
 #endif // STATESTACK_HPP

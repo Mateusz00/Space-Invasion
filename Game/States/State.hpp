@@ -1,16 +1,29 @@
 #ifndef STATE_HPP
 #define STATE_HPP
 
-#include "../StateStack.hpp"
+#include "../ResourcesID.hpp"
+#include <SFML/Graphics/RenderWindow.hpp>
+class StateStack;
 
 class State
 {
     public:
-        State(StateStack::Context, StateStack*);
+        struct Context
+        {
+            Context(sf::RenderWindow*, TextureHolder*, FontHolder*);
+            sf::RenderWindow*   window;
+            TextureHolder*      textures;
+            FontHolder*         fonts;
+        };
+
+        State(Context, StateStack*);
+        virtual bool draw() = 0;
+        virtual bool update(sf::Time) = 0;
+        virtual bool handleEvent(const sf::Event&) = 0;
 
     private:
-        StateStack::Context     mContext;
-        StateStack*             mStateStack;
+        Context         mContext;
+        StateStack*     mStateStack;
 };
 
 #endif // STATE_HPP

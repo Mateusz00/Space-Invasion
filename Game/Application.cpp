@@ -6,7 +6,7 @@
 Application::Application()
     : TIME_PER_FRAME(sf::seconds(1.f / 60.f)),
       mWindow(sf::VideoMode(1024, 768), "2D Fighter Jet Game", sf::Style::Close),
-      mStateStack(StateStack::Context(&mWindow, &mTextures, &mFonts))
+      mStateStack(State::Context(&mWindow, &mTextures, &mFonts))
 {
     mWindow.setKeyRepeatEnabled(false);
     mFonts.loadFromFile(Fonts::Sansation, "Resources/Sansation.ttf");
@@ -39,7 +39,7 @@ void Application::run()
 void Application::draw()
 {
     mWindow.clear();
-    // Active states will be drawn here
+    mStateStack.draw();
     mWindow.setView(mWindow.getDefaultView());
     mWindow.draw(mFPSCounter);
     mWindow.display();
@@ -47,7 +47,7 @@ void Application::draw()
 
 void Application::update(sf::Time dt)
 {
-    // Active states will be updated here
+    mStateStack.update(dt);
 }
 
 void Application::handleEvents()
@@ -57,6 +57,8 @@ void Application::handleEvents()
     {
         if(event.type == sf::Event::Closed)
             mWindow.close();
+        else
+            mStateStack.handleEvent(event);
     }
 }
 
