@@ -1,4 +1,6 @@
 #include "StateStack.hpp"
+#include <exception>
+
 StateStack::PendingChange::PendingChange(Action action, States::ID id)
     : action(action),
       id(id)
@@ -61,10 +63,19 @@ void StateStack::applyPendingChanges()
         switch(change.action) // TODO: Add template function that creates state corresponding to stateID and finish this function
         {
             case Action::Push:
+            {
+                auto foundFactory = mFactory.find(change.id);
+                if(foundFactory == mFactory.end())
+                    throw std::logic_error("There is no state with id: " + toString(static_cast<int>(change.id)));
+                mStack.push_back((foundFactory->second)());
                 break;
+            }
             case Action::Pop:
+                mStack.pop_back();
                 break;
+
             case Action::Clear:
+                mStack.clear();
                 break;
         }
     }

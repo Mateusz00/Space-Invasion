@@ -7,7 +7,9 @@
 #include <SFML/System/Time.hpp>
 #include <SFML/Window/Event.hpp>
 #include <vector>
+#include <map>
 #include <memory>
+#include <functional>
 
 class StateStack : private sf::NonCopyable
 {
@@ -35,9 +37,22 @@ class StateStack : private sf::NonCopyable
             States::ID  id;
         };
 
-        std::vector<std::unique_ptr<State>> mStack;
+        template <typename T>
+        void createStateFactory(States::ID);
+
+        std::vector<State::Ptr> mStack;
         std::vector<PendingChange> mPendingChanges;
         State::Context mContext;
+        std::map<States::ID, std::function<State::Ptr()>> mFactory;
 };
+
+template <typename T>
+void StateStack::createStateFactory(States::ID id)
+{
+    mFactory[id] = [this]() // Lambda that creates state
+    {
+        return State::Ptr(new T(mContext, this));
+    };
+}
 
 #endif // STATESTACK_HPP

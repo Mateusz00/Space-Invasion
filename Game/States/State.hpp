@@ -8,6 +8,7 @@ class StateStack;
 class State
 {
     public:
+        using Ptr = std::unique_ptr<State>;
         struct Context
         {
             Context(sf::RenderWindow*, TextureHolder*, FontHolder*);
