@@ -1,7 +1,8 @@
 #include "GameState.hpp"
 
-GameState::GameState(Context context, StateStack* stackPtr)
-    : State(context, stackPtr)
+GameState::GameState(Context context, StateStack& stateStack)
+    : State(context, stateStack),
+      mWorld(context.window, context.textures, context.fonts)
 {
 }
 

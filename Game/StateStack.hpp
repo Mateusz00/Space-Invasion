@@ -51,7 +51,7 @@ void StateStack::createStateFactory(States::ID id)
 {
     mFactory[id] = [this]() // Lambda that creates state
     {
-        return State::Ptr(new T(mContext, this));
+        return State::Ptr(new T(mContext, *this));
     };
 }
 

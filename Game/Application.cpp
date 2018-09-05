@@ -1,4 +1,5 @@
 #include "Application.hpp"
+#include "States/StatesID.hpp"
 #include "Utility/toString.hpp"
 #include <SFML/System/Clock.hpp>
 #include <SFML/Window/Event.hpp>
@@ -6,13 +7,15 @@
 Application::Application()
     : TIME_PER_FRAME(sf::seconds(1.f / 60.f)),
       mWindow(sf::VideoMode(1024, 768), "2D Fighter Jet Game", sf::Style::Close),
-      mStateStack(State::Context(&mWindow, &mTextures, &mFonts))
+      mStateStack(State::Context(mWindow, mTextures, mFonts))
 {
     mWindow.setKeyRepeatEnabled(false);
     mFonts.loadFromFile(Fonts::Sansation, "Resources/Sansation.ttf");
+    mTextures.loadFromFile(Textures::Background, "Resources/Background.png");
     mFPSCounter.setFont(mFonts.get(Fonts::Sansation));
     mFPSCounter.setCharacterSize(12u);
     mFPSCounter.setPosition(2.f, 2.f);
+    mStateStack.pushState(States::GameState);
 }
 
 void Application::run()
@@ -64,8 +67,8 @@ void Application::handleEvents()
 
 void Application::updateFPSCounter(sf::Time dt)
 {
-    static std::size_t  numberOfFrames = 0;
-    static sf::Time     elapsedTime = sf::Time::Zero;
+    static std::size_t numberOfFrames = 0;
+    static sf::Time elapsedTime = sf::Time::Zero;
 
     numberOfFrames++;
     elapsedTime += dt;

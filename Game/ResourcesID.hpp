@@ -13,6 +13,7 @@ namespace Textures
 {
     enum ID
     {
+        Background,
         PlayerAircraft,
         EnemyAircraft,
         Bullet,
