@@ -5,6 +5,7 @@ World::World(sf::RenderTarget& target, TextureHolder& textures, FontHolder& font
       mTextures(textures),
       mFonts(fonts)
 {
+    mTextures.loadFromFile(Textures::Background, "Resources/Background.png");
     sf::Texture& background = mTextures.get(Textures::Background);
     background.setRepeated(true);
     mBackground.setTexture(background);

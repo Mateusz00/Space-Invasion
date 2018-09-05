@@ -11,7 +11,7 @@ Application::Application()
 {
     mWindow.setKeyRepeatEnabled(false);
     mFonts.loadFromFile(Fonts::Sansation, "Resources/Sansation.ttf");
-    mTextures.loadFromFile(Textures::Background, "Resources/Background.png");
+   // mTextures.loadFromFile(Textures::Background, "Resources/Background.png");
     mFPSCounter.setFont(mFonts.get(Fonts::Sansation));
     mFPSCounter.setCharacterSize(12u);
     mFPSCounter.setPosition(2.f, 2.f);
