@@ -1,14 +1,17 @@
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
 
+#include "KeyBinding.hpp"
+#include <SFML/System/NonCopyable.hpp>
 #include <SFML/Window/Event.hpp>
+#include <map>
 
-class Player
+class Player : public sf::NonCopyable
 {
     public:
         Player();
-        void handleEvent(const sf::Event& event);
         void handleRealTimeInput();
+        void handleEvent(const sf::Event&);
 
     private:
 };

@@ -4,12 +4,12 @@ Player::Player()
 {
 }
 
-void Player::handleEvent(const sf::Event& event)
+void Player::handleRealTimeInput()
 {
 
 }
 
-void Player::handleRealTimeInput()
+void Player::handleEvent(const sf::Event&)
 {
 
 }
