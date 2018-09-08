@@ -18,6 +18,7 @@ class Player : public sf::NonCopyable
 
     private:
         std::array<Command, Action::Count> mActionBinding;
+        int mIdentifier;
 };
 
 #endif // PLAYER_HPP
