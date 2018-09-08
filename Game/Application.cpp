@@ -7,7 +7,7 @@
 Application::Application()
     : TIME_PER_FRAME(sf::seconds(1.f / 60.f)),
       mWindow(sf::VideoMode(1024, 768), "2D Fighter Jet Game", sf::Style::Close),
-      mStateStack(State::Context(mWindow, mTextures, mFonts))
+      mStateStack(State::Context(mWindow, mTextures, mFonts, &mKeyBinding1))
 {
     mWindow.setKeyRepeatEnabled(false);
     mFonts.loadFromFile(Fonts::Sansation, "Resources/Sansation.ttf");

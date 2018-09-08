@@ -2,6 +2,7 @@
 #define STATE_HPP
 
 #include "../ResourcesID.hpp"
+#include "../KeyBinding.hpp"
 #include <SFML/Graphics/RenderWindow.hpp>
 class StateStack;
 
@@ -11,10 +12,11 @@ class State
         using Ptr = std::unique_ptr<State>;
         struct Context
         {
-            Context(sf::RenderWindow&, TextureHolder&, FontHolder&);
+            Context(sf::RenderWindow&, TextureHolder&, FontHolder&, KeyBinding*);
             sf::RenderWindow&   window;
             TextureHolder&      textures;
             FontHolder&         fonts;
+            KeyBinding*         keys1;
         };
 
         State(Context, StateStack&);

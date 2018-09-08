@@ -23,6 +23,7 @@ class Application
         sf::RenderWindow     mWindow;
         FontHolder           mFonts;
         TextureHolder        mTextures;
+        KeyBinding           mKeyBinding1;
         sf::Text             mFPSCounter;
         StateStack           mStateStack;
 };
