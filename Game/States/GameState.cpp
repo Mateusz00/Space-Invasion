@@ -2,7 +2,8 @@
 
 GameState::GameState(Context context, StateStack& stateStack)
     : State(context, stateStack),
-      mWorld(context.window, context.textures, context.fonts)
+      mWorld(context.window, context.textures, context.fonts),
+      mPlayer(context.keys1, 1)
 {
 }
 
@@ -14,7 +15,7 @@ bool GameState::draw()
 
 bool GameState::update(sf::Time dt)
 {
-    mPlayer.handleRealTimeInput();
+    mPlayer.handleRealTimeInput(mWorld.getCommandQueue());
     mWorld.update();
     return false;
 }
@@ -22,7 +23,7 @@ bool GameState::update(sf::Time dt)
 bool GameState::handleEvent(const sf::Event& event)
 {
     // Add commands system
-    mPlayer.handleEvent(event);
+    mPlayer.handleEvent(event, mWorld.getCommandQueue());
     // Add PauseState push event
     return false;
 }

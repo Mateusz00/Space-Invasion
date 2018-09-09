@@ -21,3 +21,8 @@ void World::draw()
 {
     mTarget.draw(mBackground);
 }
+
+CommandQueue& World::getCommandQueue()
+{
+    return mCommandQueue;
+}
