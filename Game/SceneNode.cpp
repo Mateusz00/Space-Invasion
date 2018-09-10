@@ -66,3 +66,8 @@ void SceneNode::updateChildren(sf::Time dt)
     for(auto& child : mChildren)
         child->update(dt);
 }
+
+Category::Type SceneNode::getCategory() const
+{
+    return Category::None;
+}

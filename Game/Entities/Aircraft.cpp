@@ -58,3 +58,8 @@ void Aircraft::setIdentifier(int id)
 {
     mIdentifier = id;
 }
+
+float Aircraft::getMaxSpeed() const
+{
+    //
+}

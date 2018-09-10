@@ -14,7 +14,7 @@ class Aircraft : public Entity
         Aircraft(Type, const TextureHolder&, const FontHolder&);
         virtual void updateCurrent(sf::Time) override;
         virtual void drawCurrent(sf::RenderTarget&, sf::RenderStates) const override;
-        Category::Type getCategory();
+        Category::Type getCategory() const override;
         void increaseFireRate();
         void increaseSpread();
         int  getMissileAmmo();
@@ -23,6 +23,7 @@ class Aircraft : public Entity
         void setIdentifier(int);
         void fire();
         void launchMissile();
+        float getMaxSpeed() const;
 
     private:
         Type mType;

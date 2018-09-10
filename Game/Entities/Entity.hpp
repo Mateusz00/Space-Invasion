@@ -14,6 +14,8 @@ class Entity : public SceneNode
         sf::Vector2f getVelocity() const;
         void setVelocity(sf::Vector2f);
         void setVelocity(float x, float y);
+        void accelerate(sf::Vector2f);
+        void accelerate(float x, float y);
 
     protected:
         virtual void updateCurrent(sf::Time dt) override;

@@ -21,6 +21,7 @@ class SceneNode : public sf::Drawable, public sf::Transformable
         void            attachChild(Ptr child);
         void            eraseChild(Ptr child);
         void            update(sf::Time);
+        virtual Category::Type getCategory() const;
 
     private:
         virtual void    draw(sf::RenderTarget&, sf::RenderStates) const override final;

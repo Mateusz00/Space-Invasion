@@ -7,7 +7,8 @@ namespace Category
     {
         PlayerAircraft,
         EnemyAircraft,
-        Pickup
+        Pickup,
+        None
     };
 }
 
