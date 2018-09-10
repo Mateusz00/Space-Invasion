@@ -1,6 +1,7 @@
 #ifndef SCENENODE_HPP
 #define SCENENODE_HPP
 
+#include "Category.hpp"
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/Transformable.hpp>
 #include <SFML/Graphics/RenderStates.hpp>

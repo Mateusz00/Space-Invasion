@@ -18,6 +18,8 @@ class Player : public sf::NonCopyable
         void handleEvent(const sf::Event&, CommandQueue&);
 
     private:
+        void initializeActions();
+
         std::array<Command, Action::Count> mActionBinding;
         KeyBinding* mKeyBinding;
         int mIdentifier;
