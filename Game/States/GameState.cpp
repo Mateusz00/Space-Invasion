@@ -16,7 +16,7 @@ bool GameState::draw()
 bool GameState::update(sf::Time dt)
 {
     mPlayer.handleRealTimeInput(mWorld.getCommandQueue());
-    mWorld.update();
+    mWorld.update(dt);
     return false;
 }
 

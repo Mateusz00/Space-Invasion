@@ -3,6 +3,7 @@
 
 #include "ResourcesID.hpp"
 #include <SFML/System/Time.hpp>
+#include <SFML/Graphics/Rect.hpp>
 #include <vector>
 
 struct AircraftData
@@ -10,6 +11,7 @@ struct AircraftData
     int hitpoints;
     float speed;
     Textures::ID texture;
+    sf::IntRect textureRect;
     sf::Time fireInterval;
 };
 

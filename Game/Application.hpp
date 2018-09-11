@@ -18,6 +18,7 @@ class Application
         void update(sf::Time dt);
         void handleEvents();
         void updateFPSCounter(sf::Time dt);
+        void loadResources();
 
         const sf::Time       TIME_PER_FRAME;
         sf::RenderWindow     mWindow;

@@ -1,8 +1,9 @@
 #include "SceneNode.hpp"
 #include <functional>
 
-SceneNode::SceneNode()
-    : mParent(nullptr)
+SceneNode::SceneNode(Category::Type category)
+    : mCategory(category),
+      mParent(nullptr)
 {
 }
 
@@ -40,6 +41,21 @@ void SceneNode::update(sf::Time dt)
     updateChildren(dt);
 }
 
+void SceneNode::executeCommand(const Command& command, sf::Time dt)
+{
+    for(const auto& category : command.mCategories)
+    {
+        if(mCategory == category)
+        {
+            command.mAction(*this, dt);
+            break;
+        }
+    }
+
+    for(auto& child : mChildren)
+        child->executeCommand(command, dt);
+}
+
 void SceneNode::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     states.transform *= getTransform();
@@ -69,5 +85,5 @@ void SceneNode::updateChildren(sf::Time dt)
 
 Category::Type SceneNode::getCategory() const
 {
-    return Category::None;
+    return mCategory;
 }

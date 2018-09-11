@@ -9,9 +9,8 @@ Application::Application()
       mWindow(sf::VideoMode(1024, 768), "2D Fighter Jet Game", sf::Style::Close),
       mStateStack(State::Context(mWindow, mTextures, mFonts, &mKeyBinding1))
 {
+    loadResources();
     mWindow.setKeyRepeatEnabled(false);
-    mFonts.loadFromFile(Fonts::Sansation, "Resources/Sansation.ttf");
-   // mTextures.loadFromFile(Textures::Background, "Resources/Background.png");
     mFPSCounter.setFont(mFonts.get(Fonts::Sansation));
     mFPSCounter.setCharacterSize(12u);
     mFPSCounter.setPosition(2.f, 2.f);
@@ -78,4 +77,11 @@ void Application::updateFPSCounter(sf::Time dt)
         elapsedTime = sf::Time::Zero;
         numberOfFrames = 0;
     }
+}
+
+void Application::loadResources()
+{
+    mFonts.loadFromFile(Fonts::Sansation, "Resources/Sansation.ttf");
+    mTextures.loadFromFile(Textures::Background, "Resources/Background.png");
+    mTextures.loadFromFile(Textures::PlayerAircraft, "Resources/Airplane1.png");
 }

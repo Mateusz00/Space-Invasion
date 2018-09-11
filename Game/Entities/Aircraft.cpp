@@ -9,8 +9,9 @@ namespace
 
 
 Aircraft::Aircraft(Type type, const TextureHolder& textures, const FontHolder& fonts)
-    : Entity(100), //Change this later
+    : Entity(table[type].hitpoints),
       mType(type),
+      mSprite(textures.get(table[type].texture), table[type].textureRect),
       mFireRateLevel(1),
       mSpreadLevel(1),
       mMissileAmmo(2),

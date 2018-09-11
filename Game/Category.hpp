@@ -6,6 +6,7 @@ namespace Category
     enum Type
     {
         PlayerAircraft,
+        AirLayer,
         EnemyAircraft,
         Pickup,
         None

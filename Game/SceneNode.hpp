@@ -2,6 +2,7 @@
 #define SCENENODE_HPP
 
 #include "Category.hpp"
+#include "Command.hpp"
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/Transformable.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
@@ -16,12 +17,13 @@ class SceneNode : public sf::Drawable, public sf::Transformable
     public:
         using Ptr = std::unique_ptr<SceneNode>;
 
-                        SceneNode();
+        explicit        SceneNode(Category::Type = Category::None);
         sf::Vector2f    getWorldPosition() const;
         sf::Transform   getWorldTransform() const;
         void            attachChild(Ptr child);
         void            eraseChild(Ptr child);
         void            update(sf::Time);
+        void            executeCommand(const Command&, sf::Time);
         virtual Category::Type getCategory() const;
 
     private:
@@ -31,6 +33,7 @@ class SceneNode : public sf::Drawable, public sf::Transformable
         virtual void    updateCurrent(sf::Time);
         void            updateChildren(sf::Time);
 
+        Category::Type mCategory;
         SceneNode* mParent;
         std::vector<Ptr> mChildren;
 };
