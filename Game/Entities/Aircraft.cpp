@@ -1,4 +1,5 @@
 #include "Aircraft.hpp"
+#include "../Utility.hpp"
 #include "../DataTable.hpp"
 #include <vector>
 
@@ -17,6 +18,7 @@ Aircraft::Aircraft(Type type, const TextureHolder& textures, const FontHolder& f
       mMissileAmmo(2),
       mIdentifier(0)
 {
+    centerOrigin(mSprite);
 }
 
 void Aircraft::updateCurrent(sf::Time dt, CommandQueue& commands)

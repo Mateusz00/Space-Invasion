@@ -2,7 +2,6 @@
 #include "SpriteNode.hpp"
 #include <memory>
 #include <cmath>
-#include <iostream>
 
 World::World(sf::RenderTarget& target, TextureHolder& textures, FontHolder& fonts)
     : mTarget(target),
@@ -22,7 +21,6 @@ void World::update(sf::Time dt)
         mSceneGraph.executeCommand(mCommandQueue.pop(), dt);
 
     adaptPlayersVelocity();
-    std::cout << "x: " << mPlayerAircraft->getVelocity().x << "y: " << mPlayerAircraft->getVelocity().y << std::endl;
 
     mSceneGraph.update(dt, mCommandQueue);
 }
@@ -69,5 +67,5 @@ void World::adaptPlayersVelocity()
     if(velocity.x != 0.f && velocity.y != 0.f)
         mPlayerAircraft->setVelocity(velocity / std::sqrt(2.f));
 
-    // Add here crolling speed to playersAircraft
+    // Add here scrolling speed to playersAircraft
 }

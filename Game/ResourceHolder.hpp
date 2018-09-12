@@ -5,7 +5,7 @@
 #include <memory>
 #include <string>
 #include <exception>
-#include "Utility/toString.hpp"
+#include "Utility.hpp"
 
 template <typename Resource, typename EnumID>
 class ResourceHolder

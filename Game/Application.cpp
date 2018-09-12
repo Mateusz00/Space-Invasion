@@ -1,6 +1,6 @@
 #include "Application.hpp"
 #include "States/StatesID.hpp"
-#include "Utility/toString.hpp"
+#include "Utility.hpp"
 #include <SFML/System/Clock.hpp>
 #include <SFML/Window/Event.hpp>
 
