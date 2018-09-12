@@ -12,7 +12,7 @@ class Aircraft : public Entity
         enum Type{Ally, Enemy, TypeCount};
 
         Aircraft(Type, const TextureHolder&, const FontHolder&);
-        virtual void updateCurrent(sf::Time) override;
+        virtual void updateCurrent(sf::Time,CommandQueue&) override;
         virtual void drawCurrent(sf::RenderTarget&, sf::RenderStates) const override;
         Category::Type getCategory() const override;
         void increaseFireRate();

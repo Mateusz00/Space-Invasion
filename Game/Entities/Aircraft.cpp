@@ -19,10 +19,10 @@ Aircraft::Aircraft(Type type, const TextureHolder& textures, const FontHolder& f
 {
 }
 
-void Aircraft::updateCurrent(sf::Time dt)
+void Aircraft::updateCurrent(sf::Time dt, CommandQueue& commands)
 {
     // Add more
-    Entity::updateCurrent(dt);
+    Entity::updateCurrent(dt, commands);
 }
 
 void Aircraft::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const

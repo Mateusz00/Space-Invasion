@@ -11,6 +11,8 @@
 #include <SFML/System/Time.hpp>
 #include <memory>
 #include <vector>
+class CommandQueue;
+
 
 class SceneNode : public sf::Drawable, public sf::Transformable
 {
@@ -22,7 +24,7 @@ class SceneNode : public sf::Drawable, public sf::Transformable
         sf::Transform   getWorldTransform() const;
         void            attachChild(Ptr child);
         void            eraseChild(Ptr child);
-        void            update(sf::Time);
+        void            update(sf::Time, CommandQueue&);
         void            executeCommand(const Command&, sf::Time);
         virtual Category::Type getCategory() const;
 
@@ -30,8 +32,8 @@ class SceneNode : public sf::Drawable, public sf::Transformable
         virtual void    draw(sf::RenderTarget&, sf::RenderStates) const override final;
         virtual void    drawCurrent(sf::RenderTarget&, sf::RenderStates) const;
         void            drawChildren(sf::RenderTarget&, sf::RenderStates) const;
-        virtual void    updateCurrent(sf::Time);
-        void            updateChildren(sf::Time);
+        virtual void    updateCurrent(sf::Time, CommandQueue&);
+        void            updateChildren(sf::Time, CommandQueue&);
 
         Category::Type mCategory;
         SceneNode* mParent;

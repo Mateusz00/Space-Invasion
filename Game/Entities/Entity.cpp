@@ -42,7 +42,7 @@ void Entity::accelerate(float x, float y)
     mVelocity.y += y;
 }
 
-void Entity::updateCurrent(sf::Time dt)
+void Entity::updateCurrent(sf::Time dt, CommandQueue& commands)
 {
     move(mVelocity * dt.asSeconds());
 }

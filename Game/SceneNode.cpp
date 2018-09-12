@@ -35,17 +35,17 @@ void SceneNode::eraseChild(Ptr child)
     mChildren.erase(foundChild);
 }
 
-void SceneNode::update(sf::Time dt)
+void SceneNode::update(sf::Time dt, CommandQueue& commands)
 {
-    updateCurrent(dt);
-    updateChildren(dt);
+    updateCurrent(dt, commands);
+    updateChildren(dt, commands);
 }
 
 void SceneNode::executeCommand(const Command& command, sf::Time dt)
 {
     for(const auto& category : command.mCategories)
     {
-        if(mCategory == category)
+        if(getCategory() == category)
         {
             command.mAction(*this, dt);
             break;
@@ -73,14 +73,14 @@ void SceneNode::drawChildren(sf::RenderTarget& target, sf::RenderStates states) 
         child->draw(target, states);
 }
 
-void SceneNode::updateCurrent(sf::Time dt)
+void SceneNode::updateCurrent(sf::Time dt, CommandQueue& commands)
 {
 }
 
-void SceneNode::updateChildren(sf::Time dt)
+void SceneNode::updateChildren(sf::Time dt, CommandQueue& commands)
 {
     for(auto& child : mChildren)
-        child->update(dt);
+        child->update(dt, commands);
 }
 
 Category::Type SceneNode::getCategory() const

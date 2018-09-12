@@ -3,7 +3,7 @@
 GameState::GameState(Context context, StateStack& stateStack)
     : State(context, stateStack),
       mWorld(context.window, context.textures, context.fonts),
-      mPlayer(context.keys1, 1)
+      mPlayer(context.keys1, 0)
 {
 }
 

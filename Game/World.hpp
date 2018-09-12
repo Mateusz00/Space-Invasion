@@ -27,6 +27,7 @@ class World
         };
 
         void buildWorld();
+        void adaptPlayersVelocity();
 
         sf::RenderTarget&   mTarget;
         TextureHolder&      mTextures;

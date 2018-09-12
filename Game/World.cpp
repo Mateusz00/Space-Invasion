@@ -1,19 +1,30 @@
 #include "World.hpp"
 #include "SpriteNode.hpp"
 #include <memory>
+#include <cmath>
+#include <iostream>
 
 World::World(sf::RenderTarget& target, TextureHolder& textures, FontHolder& fonts)
     : mTarget(target),
       mTextures(textures),
-      mFonts(fonts)
+      mFonts(fonts),
+      mPlayerAircraft(nullptr)
 {
     buildWorld();
 }
 
 void World::update(sf::Time dt)
 {
+    if(mPlayerAircraft)
+        mPlayerAircraft->setVelocity(0.f, 0.f);
+
     while(!mCommandQueue.isEmpty())
         mSceneGraph.executeCommand(mCommandQueue.pop(), dt);
+
+    adaptPlayersVelocity();
+    std::cout << "x: " << mPlayerAircraft->getVelocity().x << "y: " << mPlayerAircraft->getVelocity().y << std::endl;
+
+    mSceneGraph.update(dt, mCommandQueue);
 }
 
 void World::draw()
@@ -47,5 +58,16 @@ void World::buildWorld()
     std::unique_ptr<Aircraft> playerAircraft(new Aircraft(Aircraft::Ally, mTextures, mFonts));
     playerAircraft->setPosition(512.f, 600.f); // Change to viewCenter
     playerAircraft->setIdentifier(0);
+    mPlayerAircraft = playerAircraft.get();
     mSceneLayers[UpperAir]->attachChild(std::move(playerAircraft));
+}
+
+void World::adaptPlayersVelocity()
+{
+    sf::Vector2f velocity = mPlayerAircraft->getVelocity();
+
+    if(velocity.x != 0.f && velocity.y != 0.f)
+        mPlayerAircraft->setVelocity(velocity / std::sqrt(2.f));
+
+    // Add here crolling speed to playersAircraft
 }

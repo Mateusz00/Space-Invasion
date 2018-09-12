@@ -18,7 +18,7 @@ class Entity : public SceneNode
         void accelerate(float x, float y);
 
     protected:
-        virtual void updateCurrent(sf::Time dt) override;
+        virtual void updateCurrent(sf::Time dt, CommandQueue&) override;
 
     private:
         sf::Vector2f mVelocity;

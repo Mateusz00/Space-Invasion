@@ -50,6 +50,10 @@ Player::Player(KeyBinding* keys, int id)
     : mKeyBinding(keys),
       mIdentifier(id)
 {
+    initializeActions();
+
+    for(auto& actionBind : mActionBinding)
+		actionBind.mCategories.push_back(Category::PlayerAircraft);
 }
 
 void Player::handleRealTimeInput(CommandQueue& commands)
@@ -73,10 +77,10 @@ void Player::handleEvent(const sf::Event& event, CommandQueue& commands)
 
 void Player::initializeActions()
 {
-	mActionBinding[Action::MoveUp].mAction        = castFunctor<Aircraft>(AircraftMover(-1,  0, mIdentifier));
-	mActionBinding[Action::MoveDown].mAction      = castFunctor<Aircraft>(AircraftMover(+1,  0, mIdentifier));
-	mActionBinding[Action::MoveLeft].mAction      = castFunctor<Aircraft>(AircraftMover( 0, -1, mIdentifier));
-	mActionBinding[Action::MoveRight].mAction     = castFunctor<Aircraft>(AircraftMover( 0, +1, mIdentifier));
+	mActionBinding[Action::MoveUp].mAction        = castFunctor<Aircraft>(AircraftMover(0, -1, mIdentifier));
+	mActionBinding[Action::MoveDown].mAction      = castFunctor<Aircraft>(AircraftMover(0,  1, mIdentifier));
+	mActionBinding[Action::MoveLeft].mAction      = castFunctor<Aircraft>(AircraftMover(-1, 0, mIdentifier));
+	mActionBinding[Action::MoveRight].mAction     = castFunctor<Aircraft>(AircraftMover(1,  0, mIdentifier));
 	mActionBinding[Action::Fire].mAction          = castFunctor<Aircraft>(AircraftFireTrigger(mIdentifier));
 	mActionBinding[Action::LaunchMissile].mAction = castFunctor<Aircraft>(AircraftMissileTrigger(mIdentifier));
 }
