@@ -1,8 +1,8 @@
 #include "Aircraft.hpp"
+#include "HealthBar.hpp"
 #include "../Utility.hpp"
 #include "../DataTable.hpp"
 #include <vector>
-
 namespace
 {
     const std::vector<AircraftData> table = initializeAircraftData();
@@ -19,6 +19,13 @@ Aircraft::Aircraft(Type type, const TextureHolder& textures, const FontHolder& f
       mIdentifier(0)
 {
     centerOrigin(mSprite);
+
+    // Create HealthBar for aircraft
+    sf::FloatRect spriteDimensions = mSprite.getLocalBounds();
+    sf::Vector2f healthBarDimensions(spriteDimensions.width*0.7f, 4.f);
+    std::unique_ptr<HealthBar> healthBar(new HealthBar(*this, healthBarDimensions, table[mType].hitpoints));
+    healthBar->setPosition(0.f, spriteDimensions.height*0.7f);
+    attachChild(std::move(healthBar));
 }
 
 void Aircraft::updateCurrent(sf::Time dt, CommandQueue& commands)

@@ -46,3 +46,13 @@ void Entity::updateCurrent(sf::Time dt, CommandQueue& commands)
 {
     move(mVelocity * dt.asSeconds());
 }
+
+void Entity::damage(int hitpoints)
+{
+    mHitpoints -= hitpoints;
+}
+
+void Entity::repair(int hitpoints)
+{
+    mHitpoints += hitpoints;
+}

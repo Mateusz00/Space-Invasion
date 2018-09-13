@@ -1,4 +1,5 @@
 #include "World.hpp"
+#include "Utility.hpp"
 #include "SpriteNode.hpp"
 #include <memory>
 #include <cmath>
