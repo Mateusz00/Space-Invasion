@@ -13,16 +13,16 @@ class Player : public sf::NonCopyable
     public:
         using Action = KeyBinding::Action;
 
-        Player(KeyBinding*, int id);
+             Player(KeyBinding*, int id);
         void handleRealTimeInput(CommandQueue&);
         void handleEvent(const sf::Event&, CommandQueue&);
 
     private:
         void initializeActions();
 
-        std::array<Command, Action::Count> mActionBinding;
+        int         mIdentifier;
         KeyBinding* mKeyBinding;
-        int mIdentifier;
+        std::array<Command, Action::Count> mActionBinding;
 };
 
 #endif // PLAYER_HPP

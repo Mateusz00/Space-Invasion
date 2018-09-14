@@ -29,7 +29,6 @@ void HealthBar::updateCurrent(sf::Time dt, CommandQueue& commands)
         mHealthBar.setFillColor(sf::Color(255*(1-hitpointsPercent), 255*hitpointsPercent, 0, 255));
         mHealthBar.setSize(sf::Vector2f(mMaxSize.x * hitpointsPercent, mMaxSize.y));
         centerOrigin(mHealthBar);
-        mHealthBar.setPosition(mObject.getOrigin().x, mHealthBar.getPosition().y);
     }
 }
 

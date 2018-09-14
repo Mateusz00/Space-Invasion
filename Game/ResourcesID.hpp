@@ -25,7 +25,8 @@ namespace Fonts
 {
     enum ID
     {
-        Sansation
+        Sansation,
+        BPmonoItalics
     };
 }
 

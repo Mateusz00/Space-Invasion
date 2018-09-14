@@ -6,7 +6,7 @@
 
 Application::Application()
     : TIME_PER_FRAME(sf::seconds(1.f / 60.f)),
-      mWindow(sf::VideoMode(1024, 768), "2D Fighter Jet Game", sf::Style::Close),
+      mWindow(sf::VideoMode(1024, 700), "2D Fighter Jet Game", sf::Style::Close),
       mStateStack(State::Context(mWindow, mTextures, mFonts, &mKeyBinding1))
 {
     loadResources();
@@ -81,7 +81,9 @@ void Application::updateFPSCounter(sf::Time dt)
 
 void Application::loadResources()
 {
-    mFonts.loadFromFile(Fonts::Sansation, "Resources/Sansation.ttf");
-    mTextures.loadFromFile(Textures::Background, "Resources/Background.png");
+    mFonts.loadFromFile   (Fonts::Sansation,         "Resources/Sansation.ttf");
+    mFonts.loadFromFile   (Fonts::BPmonoItalics,     "Resources/BPmonoItalics.ttf");
+    mTextures.loadFromFile(Textures::Background,     "Resources/Background.png");
     mTextures.loadFromFile(Textures::PlayerAircraft, "Resources/Airplane1.png");
+    mTextures.loadFromFile(Textures::Missile,        "Resources/Missile.png");
 }

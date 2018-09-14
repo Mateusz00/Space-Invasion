@@ -63,7 +63,7 @@ void StateStack::applyPendingChanges()
 {
     for(auto& change : mPendingChanges)
     {
-        switch(change.action) // TODO: Add template function that creates state corresponding to stateID and finish this function
+        switch(change.action)
         {
             case Action::Push:
             {

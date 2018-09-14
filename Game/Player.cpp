@@ -47,8 +47,8 @@ struct AircraftMissileTrigger // Command
 
 
 Player::Player(KeyBinding* keys, int id)
-    : mKeyBinding(keys),
-      mIdentifier(id)
+    : mIdentifier(id),
+      mKeyBinding(keys)
 {
     initializeActions();
 

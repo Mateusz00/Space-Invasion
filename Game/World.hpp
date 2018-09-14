@@ -12,12 +12,15 @@
 class World
 {
     public:
-        World(sf::RenderTarget&, TextureHolder&, FontHolder&);
-        CommandQueue& getCommandQueue();
-        void update(sf::Time);
-        void draw();
+                        World(sf::RenderTarget&, TextureHolder&, FontHolder&);
+        CommandQueue&   getCommandQueue();
+        void            update(sf::Time);
+        void            draw();
 
     private:
+        void buildWorld();
+        void adaptPlayersVelocity();
+
         enum Layer
         {
             Background,
@@ -26,15 +29,13 @@ class World
             LayerCount
         };
 
-        void buildWorld();
-        void adaptPlayersVelocity();
-
         sf::RenderTarget&   mTarget;
         TextureHolder&      mTextures;
         FontHolder&         mFonts;
         SceneNode           mSceneGraph;
         CommandQueue        mCommandQueue;
         Aircraft*           mPlayerAircraft;
+        sf::View            mView;
         std::array<SceneNode*, LayerCount> mSceneLayers;
 };
 

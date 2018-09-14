@@ -8,11 +8,11 @@
 
 struct AircraftData
 {
-    int hitpoints;
-    float speed;
-    Textures::ID texture;
-    sf::IntRect textureRect;
-    sf::Time fireInterval;
+    int             hitpoints;
+    float           speed;
+    Textures::ID    texture;
+    sf::IntRect     textureRect;
+    sf::Time        fireInterval;
 };
 
 std::vector<AircraftData> initializeAircraftData();

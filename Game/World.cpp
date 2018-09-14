@@ -1,6 +1,7 @@
 #include "World.hpp"
 #include "Utility.hpp"
 #include "SpriteNode.hpp"
+#include "Entities/AmmoNode.hpp"
 #include <memory>
 #include <cmath>
 
@@ -8,7 +9,8 @@ World::World(sf::RenderTarget& target, TextureHolder& textures, FontHolder& font
     : mTarget(target),
       mTextures(textures),
       mFonts(fonts),
-      mPlayerAircraft(nullptr)
+      mPlayerAircraft(nullptr),
+      mView(target.getDefaultView())
 {
     buildWorld();
 }
@@ -59,6 +61,9 @@ void World::buildWorld()
     playerAircraft->setIdentifier(0);
     mPlayerAircraft = playerAircraft.get();
     mSceneLayers[UpperAir]->attachChild(std::move(playerAircraft));
+
+    std::unique_ptr<AmmoNode> ammoNode(new AmmoNode(*mPlayerAircraft, mTextures, mFonts, mView));
+    mSceneGraph.attachChild(std::move(ammoNode));
 }
 
 void World::adaptPlayersVelocity()

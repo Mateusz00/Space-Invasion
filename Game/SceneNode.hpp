@@ -19,14 +19,14 @@ class SceneNode : public sf::Drawable, public sf::Transformable
     public:
         using Ptr = std::unique_ptr<SceneNode>;
 
-        explicit        SceneNode(Category::Type = Category::None);
-        sf::Vector2f    getWorldPosition() const;
-        sf::Transform   getWorldTransform() const;
-        void            attachChild(Ptr child);
-        void            eraseChild(Ptr child);
-        void            update(sf::Time, CommandQueue&);
-        void            executeCommand(const Command&, sf::Time);
-        virtual Category::Type getCategory() const;
+        explicit                SceneNode(Category::Type = Category::None);
+        sf::Vector2f            getWorldPosition() const;
+        sf::Transform           getWorldTransform() const;
+        void                    attachChild(Ptr child);
+        void                    eraseChild(Ptr child);
+        void                    update(sf::Time, CommandQueue&);
+        void                    executeCommand(const Command&, sf::Time);
+        virtual Category::Type  getCategory() const;
 
     private:
         virtual void    draw(sf::RenderTarget&, sf::RenderStates) const override final;
@@ -35,9 +35,9 @@ class SceneNode : public sf::Drawable, public sf::Transformable
         virtual void    updateCurrent(sf::Time, CommandQueue&);
         void            updateChildren(sf::Time, CommandQueue&);
 
-        Category::Type mCategory;
-        SceneNode* mParent;
-        std::vector<Ptr> mChildren;
+        Category::Type      mCategory;
+        SceneNode*          mParent;
+        std::vector<Ptr>    mChildren;
 };
 
 #endif // SCENENODE_HPP

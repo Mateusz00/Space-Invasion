@@ -57,7 +57,7 @@ void Aircraft::increaseSpread()
     mSpreadLevel += 1;
 }
 
-int Aircraft::getMissileAmmo()
+int Aircraft::getMissileAmmo() const
 {
     return mMissileAmmo;
 }
@@ -67,7 +67,7 @@ void Aircraft::setMissileAmmo(int missiles)
     mMissileAmmo = missiles;
 }
 
-int  Aircraft::getIdentifier()
+int  Aircraft::getIdentifier() const
 {
     return mIdentifier;
 }

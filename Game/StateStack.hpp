@@ -24,6 +24,9 @@ class StateStack : private sf::NonCopyable
         void applyPendingChanges();
 
     private:
+        template <typename T>
+        void createStateFactory(States::ID);
+
         enum Action
         {
             Push,
@@ -37,12 +40,9 @@ class StateStack : private sf::NonCopyable
             States::ID  id;
         };
 
-        template <typename T>
-        void createStateFactory(States::ID);
-
-        std::vector<State::Ptr> mStack;
-        std::vector<PendingChange> mPendingChanges;
-        State::Context mContext;
+        std::vector<State::Ptr>     mStack;
+        std::vector<PendingChange>  mPendingChanges;
+        State::Context              mContext;
         std::map<States::ID, std::function<State::Ptr()>> mFactory;
 };
 
