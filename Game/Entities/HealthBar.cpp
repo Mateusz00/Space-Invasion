@@ -3,8 +3,8 @@
 #include <SFML/Graphics/Color.hpp>
 #include <exception>
 
-HealthBar::HealthBar(Entity& object, sf::Vector2f dimensions, int maxHitpoints)
-    : mHealthBar(dimensions),
+HealthBar::HealthBar(Entity& object, int maxHitpoints)
+    : mHealthBar(sf::Vector2f(object.getLocalBounds().width * 0.7f, 4.f)),
       mMaxValue(maxHitpoints),
       mMaxSize(mHealthBar.getSize()),
       mObject(object)

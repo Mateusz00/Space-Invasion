@@ -9,7 +9,7 @@
 class HealthBar : public SceneNode
 {
     public:
-                        HealthBar(Entity&, sf::Vector2f dimensions, int maxHitpoints);
+                        HealthBar(Entity&, int maxHitpoints);
         virtual void    drawCurrent(sf::RenderTarget&, sf::RenderStates) const override;
         virtual void    updateCurrent(sf::Time, CommandQueue&) override;
         void            setPosition(sf::Vector2f position);

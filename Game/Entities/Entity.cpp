@@ -56,3 +56,8 @@ void Entity::repair(int hitpoints)
 {
     mHitpoints += hitpoints;
 }
+
+sf::FloatRect Entity::getLocalBounds() const
+{
+    return sf::FloatRect();
+}

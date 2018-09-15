@@ -22,8 +22,7 @@ Aircraft::Aircraft(Type type, const TextureHolder& textures, const FontHolder& f
 
     // Create HealthBar for aircraft
     sf::FloatRect spriteDimensions = mSprite.getLocalBounds();
-    sf::Vector2f healthBarDimensions(spriteDimensions.width*0.7f, 4.f);
-    std::unique_ptr<HealthBar> healthBar(new HealthBar(*this, healthBarDimensions, table[mType].hitpoints));
+    std::unique_ptr<HealthBar> healthBar(new HealthBar(*this, table[mType].hitpoints));
     healthBar->setPosition(0.f, spriteDimensions.height*0.7f);
     attachChild(std::move(healthBar));
 }
@@ -80,4 +79,9 @@ void Aircraft::setIdentifier(int id)
 float Aircraft::getMaxSpeed() const
 {
     return table[mType].speed;
+}
+
+sf::FloatRect Aircraft::getLocalBounds() const
+{
+    return mSprite.getLocalBounds();
 }

@@ -8,16 +8,17 @@
 class Entity : public SceneNode
 {
     public:
-        explicit        Entity(int hitpoints);
-        int             getHitpoints() const;
-        void            setHitpoints(int hitpoints);
-        sf::Vector2f    getVelocity() const;
-        void            setVelocity(sf::Vector2f);
-        void            setVelocity(float x, float y);
-        void            accelerate(sf::Vector2f);
-        void            accelerate(float x, float y);
-        void            damage(int hitpoints);
-        void            repair(int hitpoints);
+        explicit                Entity(int hitpoints);
+        int                     getHitpoints() const;
+        void                    setHitpoints(int hitpoints);
+        sf::Vector2f            getVelocity() const;
+        void                    setVelocity(sf::Vector2f);
+        void                    setVelocity(float x, float y);
+        void                    accelerate(sf::Vector2f);
+        void                    accelerate(float x, float y);
+        void                    damage(int hitpoints);
+        void                    repair(int hitpoints);
+        virtual sf::FloatRect   getLocalBounds() const;
 
     protected:
         virtual void    updateCurrent(sf::Time dt, CommandQueue&) override;
