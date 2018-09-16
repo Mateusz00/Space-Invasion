@@ -30,6 +30,7 @@ Aircraft::Aircraft(Type type, const TextureHolder& textures, const FontHolder& f
 void Aircraft::updateCurrent(sf::Time dt, CommandQueue& commands)
 {
     // Add more
+    updateRollAnimation(dt);
     Entity::updateCurrent(dt, commands);
 }
 
@@ -84,4 +85,35 @@ float Aircraft::getMaxSpeed() const
 sf::FloatRect Aircraft::getLocalBounds() const
 {
     return mSprite.getLocalBounds();
+}
+
+void Aircraft::updateRollAnimation(sf::Time dt)
+{
+    static sf::Time lastRoll;
+    lastRoll += dt;
+
+    if(table[mType].hasRollAnimation && lastRoll.asSeconds() > 0.07f)
+    {
+        sf::IntRect currentRect = mSprite.getTextureRect();
+        sf::IntRect deafultRect = table[mType].textureRect;
+
+        if(getVelocity().x > 0.f && currentRect.left < currentRect.width * (table[mType].spriteNumber-1))
+        {
+            currentRect.left += currentRect.width;
+            lastRoll = sf::Time::Zero;
+        }
+        else if(getVelocity().x < 0.f && currentRect.left > 0.f)
+        {
+            currentRect.left -= currentRect.width;
+            lastRoll = sf::Time::Zero;
+        }
+        else if(getVelocity().x == 0.f && currentRect != deafultRect)
+        {
+            (currentRect.left > deafultRect.left) ? currentRect.left -= currentRect.width
+                                                       : currentRect.left += currentRect.width;
+            lastRoll = sf::Time::Zero;
+        }
+
+        mSprite.setTextureRect(currentRect);
+    }
 }

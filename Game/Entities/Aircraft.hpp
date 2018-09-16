@@ -5,6 +5,7 @@
 #include "../Category.hpp"
 #include "../ResourcesID.hpp"
 #include <SFML/Graphics/Sprite.hpp>
+#include <SFML/System/Time.hpp>
 
 class Aircraft : public Entity
 {
@@ -27,6 +28,8 @@ class Aircraft : public Entity
         virtual sf::FloatRect   getLocalBounds() const override;
 
     private:
+        void                    updateRollAnimation(sf::Time);
+
         Type        mType;
         sf::Sprite  mSprite;
         int	        mFireRateLevel;

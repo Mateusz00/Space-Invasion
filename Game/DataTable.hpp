@@ -13,6 +13,8 @@ struct AircraftData
     Textures::ID    texture;
     sf::IntRect     textureRect;
     sf::Time        fireInterval;
+    bool            hasRollAnimation;
+    int             spriteNumber;
 };
 
 std::vector<AircraftData> initializeAircraftData();
