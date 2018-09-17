@@ -1,6 +1,7 @@
 #ifndef RESOURCES_ID_HPP
 #define RESOURCES_ID_HPP
 
+#include <SFML/Graphics/Rect.hpp>
 #include "ResourceHolder.hpp"
 namespace sf
 {
@@ -11,13 +12,14 @@ namespace sf
 
 namespace Textures
 {
+    static const sf::IntRect MissileRect = sf::IntRect(0, 0, 13, 30);
+
     enum ID
     {
         Background,
         PlayerAircraft,
         EnemyAircraft,
-        Bullet,
-        Missile,
+        Projectiles,
     };
 }
 

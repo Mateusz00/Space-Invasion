@@ -8,6 +8,8 @@ namespace Category
         PlayerAircraft,
         AirLayer,
         EnemyAircraft,
+        EnemyProjectile,
+        AlliedProjectile,
         Pickup,
         None
     };

@@ -18,6 +18,7 @@ class Entity : public SceneNode
         void                    accelerate(float x, float y);
         void                    damage(int hitpoints);
         void                    repair(int hitpoints);
+        void                    destroy();
         virtual sf::FloatRect   getLocalBounds() const;
 
     protected:

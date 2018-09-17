@@ -1,5 +1,6 @@
 #include "DataTable.hpp"
 #include "Entities/Aircraft.hpp"
+#include "Entities/Projectile.hpp"
 
 std::vector<AircraftData> initializeAircraftData()
 {
@@ -20,6 +21,28 @@ std::vector<AircraftData> initializeAircraftData()
     data[Aircraft::Enemy].fireInterval = sf::seconds(1.f);
     data[Aircraft::Enemy].hasRollAnimation = false;
     data[Aircraft::Enemy].spriteNumber = 0;
+
+    return data;
+}
+
+std::vector<ProjectileData> initializeProjectileData()
+{
+    std::vector<ProjectileData> data(Projectile::TypeCount);
+
+    data[Projectile::AlliedBullet].speed = 250.f;
+    data[Projectile::AlliedBullet].damage = 20.f;
+    data[Projectile::AlliedBullet].texture = Textures::Projectiles;
+    data[Projectile::AlliedBullet].textureRect = sf::IntRect(13, 0, 4, 15);
+
+    data[Projectile::EnemyBullet].speed = 250.f;
+    data[Projectile::EnemyBullet].damage = 20.f;
+    data[Projectile::EnemyBullet].texture = Textures::Projectiles;
+    data[Projectile::EnemyBullet].textureRect = sf::IntRect(13, 15, 4, 15);
+
+    data[Projectile::Missile].speed = 120.f;
+    data[Projectile::Missile].damage = 100.f;
+    data[Projectile::Missile].texture = Textures::Projectiles;
+    data[Projectile::Missile].textureRect = Textures::MissileRect;
 
     return data;
 }

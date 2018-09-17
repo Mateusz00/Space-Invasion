@@ -85,5 +85,5 @@ void Application::loadResources()
     mFonts.loadFromFile   (Fonts::BPmonoItalics,     "Resources/BPmonoItalics.ttf");
     mTextures.loadFromFile(Textures::Background,     "Resources/Background.png");
     mTextures.loadFromFile(Textures::PlayerAircraft, "Resources/Airplane1.png");
-    mTextures.loadFromFile(Textures::Missile,        "Resources/Missile.png");
+    mTextures.loadFromFile(Textures::Projectiles,        "Resources/Projectiles.png");
 }

@@ -4,7 +4,7 @@
 AmmoNode::AmmoNode(const Aircraft& object, const TextureHolder& textures, const FontHolder& fonts, const sf::View& view)
     : mObject(object),
       mView(view),
-      mSprite(textures.get(Textures::Missile))
+      mSprite(textures.get(Textures::Projectiles), Textures::MissileRect)
 {
     mAmount.setFont(fonts.get(Fonts::BPmonoItalics));
     mAmount.setCharacterSize(31u);

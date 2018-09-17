@@ -17,6 +17,15 @@ struct AircraftData
     int             spriteNumber;
 };
 
-std::vector<AircraftData> initializeAircraftData();
+struct ProjectileData
+{
+    float           speed;
+    int             damage;
+    Textures::ID    texture;
+    sf::IntRect     textureRect;
+};
+
+std::vector<AircraftData>       initializeAircraftData();
+std::vector<ProjectileData>     initializeProjectileData();
 
 #endif // DATATABLE_HPP
