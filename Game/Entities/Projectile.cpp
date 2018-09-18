@@ -12,6 +12,11 @@ Projectile::Projectile(Type type, const TextureHolder& textures)
       mType(type),
       mSprite(textures.get(table[type].texture), table[type].textureRect)
 {
+    centerOrigin(mSprite);
+
+    float direction = (type == AlliedBullet) -1.f : 1.f;
+    sf::Vector2f velocity(0.f, getMaxSpeed() * direction);
+    setVelocity(velocity);
 }
 
 float Projectile::getMaxSpeed() const

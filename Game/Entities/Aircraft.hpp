@@ -3,6 +3,7 @@
 
 #include "Entity.hpp"
 #include "../Category.hpp"
+#include "../Command.hpp"
 #include "../ResourcesID.hpp"
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/System/Time.hpp>
@@ -28,14 +29,18 @@ class Aircraft : public Entity
         virtual sf::FloatRect   getLocalBounds() const override;
 
     private:
-        void                    updateRollAnimation(sf::Time);
+        void    updateRollAnimation(sf::Time);
+        void    shootBullets(SceneNode&, const TextureHolder&) const;
+        void    createProjectile(SceneNode&, Projectile::Type, float xOffset, float yOffset, const TextureHolder&) const;
 
-        Type        mType;
-        sf::Sprite  mSprite;
-        int	        mFireRateLevel;
-        int	        mSpreadLevel;
-        int	        mMissileAmmo;
-        int         mIdentifier;
+        Type            mType;
+        sf::Sprite      mSprite;
+        int	            mFireRateLevel;
+        int	            mSpreadLevel;
+        int	            mMissileAmmo;
+        int             mIdentifier;
+        bool            mIsFiring;
+        Command         mFireCommand;
 };
 
 #endif // AIRCRAFT_HPP

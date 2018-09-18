@@ -3,6 +3,7 @@
 #include "../Utility.hpp"
 #include "../DataTable.hpp"
 #include <vector>
+#include <memory>
 namespace
 {
     const std::vector<AircraftData> table = initializeAircraftData();
@@ -16,7 +17,8 @@ Aircraft::Aircraft(Type type, const TextureHolder& textures, const FontHolder& f
       mFireRateLevel(1),
       mSpreadLevel(1),
       mMissileAmmo(2),
-      mIdentifier(0)
+      mIdentifier(0),
+      mIsFiring(false)
 {
     centerOrigin(mSprite);
 
@@ -25,6 +27,12 @@ Aircraft::Aircraft(Type type, const TextureHolder& textures, const FontHolder& f
     std::unique_ptr<HealthBar> healthBar(new HealthBar(*this, table[mType].hitpoints));
     healthBar->setPosition(0.f, spriteDimensions.height*0.7f);
     attachChild(std::move(healthBar));
+
+    mFireCommand.mCategories.push_back(Category::AirLayer);
+    mFireCommand.mAction = [this, &textures](SceneNode& node, sf::Time dt)
+    {
+        shootBullets(node, textures);
+    };
 }
 
 void Aircraft::updateCurrent(sf::Time dt, CommandQueue& commands)
@@ -54,7 +62,8 @@ void Aircraft::increaseFireRate()
 
 void Aircraft::increaseSpread()
 {
-    mSpreadLevel += 1;
+    if(mSpreadLevel < 5)
+        mSpreadLevel += 1;
 }
 
 int Aircraft::getMissileAmmo() const
@@ -92,7 +101,7 @@ void Aircraft::updateRollAnimation(sf::Time dt)
     static sf::Time lastRoll;
     lastRoll += dt;
 
-    if(table[mType].hasRollAnimation && lastRoll.asSeconds() > 0.07f)
+    if(table[mType].hasRollAnimation && lastRoll.asSeconds() > 0.09f)
     {
         sf::IntRect currentRect = mSprite.getTextureRect();
         sf::IntRect deafultRect = table[mType].textureRect;
@@ -116,4 +125,55 @@ void Aircraft::updateRollAnimation(sf::Time dt)
 
         mSprite.setTextureRect(currentRect);
     }
+}
+
+void Aircraft::shootBullets(SceneNode& layer, const TextureHolder& textures) const // TODO: Modify values
+{
+    Projectile::Type projectileType = (mType == Ally) Projectile::AlliedBullet : Projectile::EnemyBullet;
+
+	switch(mSpreadLevel)
+	{
+		case 1:
+			createProjectile(layer, projectileType,  0.0f, 0.5f,   textures);
+			break;
+
+		case 2:
+			createProjectile(layer, projectileType, -0.25f, 0.5f,  textures);
+			createProjectile(layer, projectileType,  0.25f, 0.5f,  textures);
+			break;
+
+		case 3:
+			createProjectile(layer, projectileType, -0.4f, 0.25f,  textures);
+			createProjectile(layer, projectileType,  0.0f, 0.5f,   textures);
+			createProjectile(layer, projectileType,  0.4f, 0.25f,  textures);
+			break;
+
+		case 4:
+			createProjectile(layer, projectileType, -0.5f,  0.25f, textures);
+			createProjectile(layer, projectileType,  0.25f, 0.5f,  textures);
+			createProjectile(layer, projectileType,  0.25f, 0.5f,  textures);
+			createProjectile(layer, projectileType,  0.5f,  0.25f, textures);
+			break;
+
+		case 5:
+			createProjectile(layer, projectileType, -0.65f, 0.25f, textures);
+			createProjectile(layer, projectileType,  0.4f,  0.5f,  textures);
+			createProjectile(layer, projectileType,  0.0f,  0.75f, textures);
+			createProjectile(layer, projectileType,  0.4f,  0.5f,  textures);
+			createProjectile(layer, projectileType,  0.65f, 0.25f, textures);
+			break;
+	}
+}
+
+void Aircraft::createProjectile(SceneNode& layer, Projectile::Type type, float xOffset,
+                                 float yOffset, const TextureHolder& textures) const
+{
+    std::unique_ptr<Projectile> projectile(new Projectile(type, textures));
+
+    float direction = (type == AlliedBullet) -1.f : 1.f; // Decides if offsets will make projectile closer to top of window or closer to bottom
+    sf::Vector2f offset(mSprite.getLocalBounds().width * xOffset,
+                         mSprite.getLocalBounds().height * yOffset * direction);
+
+    projectile->setPosition(getWorldPosition() + offset);
+    layer.attachChild(std::move(projectile));
 }
