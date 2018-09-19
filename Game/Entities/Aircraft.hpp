@@ -2,8 +2,10 @@
 #define AIRCRAFT_HPP
 
 #include "Entity.hpp"
+#include "Projectile.hpp"
 #include "../Category.hpp"
 #include "../Command.hpp"
+#include "../CommandQueue.hpp"
 #include "../ResourcesID.hpp"
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/System/Time.hpp>
@@ -32,6 +34,7 @@ class Aircraft : public Entity
         void    updateRollAnimation(sf::Time);
         void    shootBullets(SceneNode&, const TextureHolder&) const;
         void    createProjectile(SceneNode&, Projectile::Type, float xOffset, float yOffset, const TextureHolder&) const;
+        void    launchProjectiles(sf::Time, CommandQueue&);
 
         Type            mType;
         sf::Sprite      mSprite;
@@ -40,7 +43,10 @@ class Aircraft : public Entity
         int	            mMissileAmmo;
         int             mIdentifier;
         bool            mIsFiring;
+        bool            mIsLaunchingMissile;
+        sf::Time        mFireCooldown;
         Command         mFireCommand;
+        Command         mLaunchMissileCommand;
 };
 
 #endif // AIRCRAFT_HPP

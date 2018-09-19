@@ -25,8 +25,8 @@ struct AircraftFireTrigger // Command
 
     void operator() (Aircraft& aircraft, sf::Time dt) const
     {
-        //if(aircraft.getIdentifier() == identifier)
-            // TODO: Fire function
+        if(aircraft.getIdentifier() == identifier)
+            aircraft.fire();
     }
     int identifier;
 };
@@ -40,7 +40,7 @@ struct AircraftMissileTrigger // Command
     void operator() (Aircraft& aircraft, sf::Time dt) const
     {
         //if(aircraft.getIdentifier() == identifier)
-            // TODO: LaunchMissile function
+            // aircraft.launchMissile();
     }
     int identifier;
 };
