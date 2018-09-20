@@ -12,14 +12,19 @@
 class World
 {
     public:
-                        World(sf::RenderTarget&, TextureHolder&, FontHolder&);
-        CommandQueue&   getCommandQueue();
-        void            update(sf::Time);
-        void            draw();
+                            World(sf::RenderTarget&, TextureHolder&, FontHolder&);
+        CommandQueue&       getCommandQueue();
+        void                update(sf::Time);
+        void                draw();
+        sf::FloatRect	    getViewBounds() const;
+        sf::FloatRect       getBattlefieldBounds() const;
 
     private:
         void buildWorld();
         void adaptPlayersVelocity();
+        void initializeSpawnPoints();
+        void addSpawnPoint(float x, float y, Aircraft::Type);
+        void sortSpawnPoints();
 
         enum Layer
         {
@@ -27,6 +32,12 @@ class World
             LowerAir,
             UpperAir,
             LayerCount
+        };
+        struct SpawnPoint
+        {
+            float x;
+            float y;
+            Aircraft::Type type;
         };
 
         sf::RenderTarget&   mTarget;
@@ -36,7 +47,11 @@ class World
         CommandQueue        mCommandQueue;
         Aircraft*           mPlayerAircraft;
         sf::View            mView;
-        std::array<SceneNode*, LayerCount> mSceneLayers;
+        sf::FloatRect       mWorldBounds;
+        sf::Vector2f        mPlayerSpawnPosition;
+        float               mScrollingSpeed;
+        std::vector<SpawnPoint>             mSpawnPoints;
+        std::array<SceneNode*, LayerCount>  mSceneLayers;
 };
 
 #endif // WORLD_HPP
