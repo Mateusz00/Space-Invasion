@@ -16,6 +16,7 @@ World::World(sf::RenderTarget& target, TextureHolder& textures, FontHolder& font
       mScrollingSpeed(-40.f)
 {
     buildWorld();
+    initializeSpawnPoints();
     mView.setCenter(mPlayerSpawnPosition);
 }
 
@@ -30,8 +31,9 @@ void World::update(sf::Time dt)
         mSceneGraph.executeCommand(mCommandQueue.pop(), dt);
 
     adaptPlayersVelocity();
-
+    spawnEnemies();
     mSceneGraph.update(dt, mCommandQueue);
+
 }
 
 void World::draw()
@@ -49,7 +51,7 @@ void World::buildWorld()
 {
     for(int i=0; i < LayerCount; ++i)
     {
-        Category::Type category = (i == LowerAir) ? Category::AirLayer : Category::None; // LowerAir for particles, UpperAir for collideables
+        Category::Type category = (i == LowerAir) ? Category::AirLayer : Category::None; // LowerAir for particles, UpperAir for collidables
         SceneNode::Ptr layer(new SceneNode(category));
         mSceneLayers[i] = layer.get();
         mSceneGraph.attachChild(std::move(layer));
@@ -85,7 +87,10 @@ void World::adaptPlayersVelocity()
 
 void World::initializeSpawnPoints()
 {
-	addSpawnPoint(300.f, 1000.f, Aircraft::Enemy);
+	addSpawnPoint(300.f, 5800.f, Aircraft::Enemy);
+	addSpawnPoint(300.f, 5700.f, Aircraft::Enemy);
+
+	sortSpawnPoints();
 	// TODO: Add more later
 }
 
@@ -115,4 +120,19 @@ sf::FloatRect World::getViewBounds() const
 {
     sf::FloatRect bounds(mView.getCenter() - mView.getSize() / 2.f, mView.getSize());
     return bounds;
+}
+
+void World::spawnEnemies()
+{
+	while(!mSpawnPoints.empty() && mSpawnPoints.back().y > getBattlefieldBounds().top)
+	{
+		SpawnPoint spawn = mSpawnPoints.back();
+
+		std::unique_ptr<Aircraft> enemyAircraft(new Aircraft(spawn.type, mTextures, mFonts));
+		enemyAircraft->setPosition(spawn.x, spawn.y);
+		enemyAircraft->setRotation(180.f);
+		mSceneLayers[UpperAir]->attachChild(std::move(enemyAircraft));
+
+		mSpawnPoints.pop_back();
+	}
 }

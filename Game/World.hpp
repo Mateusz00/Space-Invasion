@@ -25,6 +25,7 @@ class World
         void initializeSpawnPoints();
         void addSpawnPoint(float x, float y, Aircraft::Type);
         void sortSpawnPoints();
+        void spawnEnemies();
 
         enum Layer
         {
