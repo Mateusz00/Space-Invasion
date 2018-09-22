@@ -84,6 +84,6 @@ void Application::loadResources()
     mFonts.loadFromFile   (Fonts::Sansation,         "Resources/Sansation.ttf");
     mFonts.loadFromFile   (Fonts::BPmonoItalics,     "Resources/BPmonoItalics.ttf");
     mTextures.loadFromFile(Textures::Background,     "Resources/Background.png");
-    mTextures.loadFromFile(Textures::PlayerAircraft, "Resources/Airplane1.png");
-    mTextures.loadFromFile(Textures::Projectiles,        "Resources/Projectiles.png");
+    mTextures.loadFromFile(Textures::Aircrafts,      "Resources/Airplane1.png");
+    mTextures.loadFromFile(Textures::Projectiles,    "Resources/Projectiles.png");
 }

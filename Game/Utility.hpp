@@ -15,7 +15,9 @@ template <typename T>
 std::string toString(const T& value);
 
 float           vectorLength(sf::Vector2f position);
-sf::Vector2f    oneUnitVector(sf::Vector2f distance);
+sf::Vector2f    unitVector(sf::Vector2f distance);
+float           toRadian(float degree);
+float           toDegree(float rad);
 
 
 #include "Utility.inl"

@@ -12,13 +12,12 @@ namespace sf
 
 namespace Textures
 {
-    static const sf::IntRect MissileRect = sf::IntRect(0, 0, 13, 30);
+    const sf::IntRect MissileRect = sf::IntRect(0, 0, 13, 30);
 
     enum ID
     {
         Background,
-        PlayerAircraft,
-        EnemyAircraft,
+        Aircrafts,
         Projectiles,
     };
 }

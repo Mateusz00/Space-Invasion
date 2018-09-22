@@ -36,7 +36,7 @@ bool Projectile::isGuided() const
 
 void Projectile::guideTowards(sf::Vector2f position)
 {
-    mTargetDirection = oneUnitVector(position - getWorldPosition());
+    mTargetDirection = unitVector(position - getWorldPosition());
 }
 
 Category::Type Projectile::getCategory() const

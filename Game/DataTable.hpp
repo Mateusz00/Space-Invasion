@@ -8,13 +8,20 @@
 
 struct AircraftData
 {
-    int             hitpoints;
-    float           speed;
-    Textures::ID    texture;
-    sf::IntRect     textureRect;
-    sf::Time        fireInterval;
-    bool            hasRollAnimation;
-    int             spriteNumber;
+    struct Direction
+    {
+        float angle;
+        float distance;
+    };
+
+    int                     hitpoints;
+    float                   speed;
+    Textures::ID            texture;
+    sf::IntRect             textureRect;
+    sf::Time                fireInterval;
+    bool                    hasRollAnimation;
+    int                     spriteNumber;
+    std::vector<Direction>  directions;
 };
 
 struct ProjectileData

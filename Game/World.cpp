@@ -88,7 +88,7 @@ void World::adaptPlayersVelocity()
 void World::initializeSpawnPoints()
 {
 	addSpawnPoint(300.f, 5800.f, Aircraft::Enemy);
-	addSpawnPoint(300.f, 5700.f, Aircraft::Enemy);
+	addSpawnPoint(500.f, 5700.f, Aircraft::Enemy);
 
 	sortSpawnPoints();
 	// TODO: Add more later
@@ -130,7 +130,6 @@ void World::spawnEnemies()
 
 		std::unique_ptr<Aircraft> enemyAircraft(new Aircraft(spawn.type, mTextures, mFonts));
 		enemyAircraft->setPosition(spawn.x, spawn.y);
-		enemyAircraft->setRotation(180.f);
 		mSceneLayers[UpperAir]->attachChild(std::move(enemyAircraft));
 
 		mSpawnPoints.pop_back();

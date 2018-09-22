@@ -8,19 +8,23 @@ std::vector<AircraftData> initializeAircraftData()
 
     data[Aircraft::Ally].hitpoints = 100;
     data[Aircraft::Ally].speed = 150.f;
-    data[Aircraft::Ally].texture = Textures::PlayerAircraft;
+    data[Aircraft::Ally].texture = Textures::Aircrafts;
     data[Aircraft::Ally].textureRect = sf::IntRect(150, 0, 75, 42);
     data[Aircraft::Ally].fireInterval = sf::seconds(1.2f);
     data[Aircraft::Ally].hasRollAnimation = true;
     data[Aircraft::Ally].spriteNumber = 5;
 
-    data[Aircraft::Enemy].hitpoints = 80;
-    data[Aircraft::Enemy].speed = 70.f;
-    data[Aircraft::Enemy].texture = Textures::EnemyAircraft;
-    //data[Aircraft::Enemy].textureRect = ; <- Add enemy sprites
-    data[Aircraft::Enemy].fireInterval = sf::seconds(1.f);
+    data[Aircraft::Enemy].hitpoints = 50;
+    data[Aircraft::Enemy].speed = 130.f;
+    data[Aircraft::Enemy].texture = Textures::Aircrafts;
+    data[Aircraft::Enemy].textureRect = sf::IntRect(0, 43, 60, 42);
+    data[Aircraft::Enemy].fireInterval = sf::seconds(2.f);
     data[Aircraft::Enemy].hasRollAnimation = false;
     data[Aircraft::Enemy].spriteNumber = 0;
+    data[Aircraft::Enemy].directions.push_back(AircraftData::Direction{ 75.f, 100.f});
+    data[Aircraft::Enemy].directions.push_back(AircraftData::Direction{ 20.f, 20.f});
+    data[Aircraft::Enemy].directions.push_back(AircraftData::Direction{-65.f, 100.f});
+    data[Aircraft::Enemy].directions.push_back(AircraftData::Direction{ 10.f, 20.f});
 
     return data;
 }

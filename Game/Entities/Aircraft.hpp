@@ -35,6 +35,7 @@ class Aircraft : public Entity
         void    shootBullets(SceneNode&, const TextureHolder&) const;
         void    createProjectile(SceneNode&, Projectile::Type, float xOffset, float yOffset, const TextureHolder&) const;
         void    launchProjectiles(sf::Time, CommandQueue&);
+        void    updateMovementPatterns(sf::Time);
 
         Type            mType;
         sf::Sprite      mSprite;
@@ -44,6 +45,9 @@ class Aircraft : public Entity
         int             mIdentifier;
         bool            mIsFiring;
         bool            mIsLaunchingMissile;
+        bool            mIsEnemy;
+        float           mTravelledDistance;
+        int             mDirectionIndex;
         sf::Time        mFireCooldown;
         Command         mFireCommand;
         Command         mLaunchMissileCommand;
