@@ -15,15 +15,17 @@ std::vector<AircraftData> initializeAircraftData()
     data[Aircraft::Ally].spriteNumber = 5;
 
     data[Aircraft::Enemy].hitpoints = 50;
-    data[Aircraft::Enemy].speed = 130.f;
+    data[Aircraft::Enemy].speed = 140.f;
     data[Aircraft::Enemy].texture = Textures::Aircrafts;
     data[Aircraft::Enemy].textureRect = sf::IntRect(0, 43, 60, 42);
     data[Aircraft::Enemy].fireInterval = sf::seconds(2.f);
     data[Aircraft::Enemy].hasRollAnimation = false;
     data[Aircraft::Enemy].spriteNumber = 0;
-    data[Aircraft::Enemy].directions.push_back(AircraftData::Direction{ 75.f, 100.f});
+    data[Aircraft::Enemy].directions.push_back(AircraftData::Direction{ 85.f, 80.f});
+    data[Aircraft::Enemy].directions.push_back(AircraftData::Direction{-85.f, 80.f});
+    data[Aircraft::Enemy].directions.push_back(AircraftData::Direction{ 85.f, 150.f});
     data[Aircraft::Enemy].directions.push_back(AircraftData::Direction{ 20.f, 20.f});
-    data[Aircraft::Enemy].directions.push_back(AircraftData::Direction{-65.f, 100.f});
+    data[Aircraft::Enemy].directions.push_back(AircraftData::Direction{-70.f, 150.f});
     data[Aircraft::Enemy].directions.push_back(AircraftData::Direction{ 10.f, 20.f});
 
     return data;

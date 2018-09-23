@@ -4,6 +4,7 @@
 #include "Entities/AmmoNode.hpp"
 #include <memory>
 #include <cmath>
+#include <limits>
 
 World::World(sf::RenderTarget& target, TextureHolder& textures, FontHolder& fonts)
     : mTarget(target),
@@ -27,13 +28,15 @@ void World::update(sf::Time dt)
     if(mPlayerAircraft)
         mPlayerAircraft->setVelocity(0.f, 0.f);
 
+    guideHomingMissiles();
+
     while(!mCommandQueue.isEmpty())
         mSceneGraph.executeCommand(mCommandQueue.pop(), dt);
 
     adaptPlayersVelocity();
     spawnEnemies();
     mSceneGraph.update(dt, mCommandQueue);
-
+    adaptPlayersPosition();
 }
 
 void World::draw()
@@ -130,8 +133,57 @@ void World::spawnEnemies()
 
 		std::unique_ptr<Aircraft> enemyAircraft(new Aircraft(spawn.type, mTextures, mFonts));
 		enemyAircraft->setPosition(spawn.x, spawn.y);
+		mActiveEnemies.push_back(enemyAircraft.get());
 		mSceneLayers[UpperAir]->attachChild(std::move(enemyAircraft));
 
 		mSpawnPoints.pop_back();
 	}
+}
+
+void World::guideHomingMissiles()
+{
+    Command homingCommand;
+	homingCommand.mCategories.push_back(Category::AlliedProjectile);
+	homingCommand.mAction = castFunctor<Projectile>([this](Projectile& missile, sf::Time dt)
+	{
+		if(!missile.isGuided())
+			return;
+
+		float smallestDistance = std::numeric_limits<float>::max();
+		Aircraft* closestEnemy = nullptr;
+
+		for(const auto& enemy : mActiveEnemies)
+        {
+            float enemyDistance = vectorLength(missile.getWorldPosition() - enemy->getWorldPosition());
+            if(enemyDistance < smallestDistance)
+            {
+                closestEnemy = enemy;
+                smallestDistance = enemyDistance;
+            }
+        }
+
+        if(closestEnemy)
+            missile.guideTowards(closestEnemy->getWorldPosition());
+	});
+
+	mCommandQueue.push(homingCommand);
+}
+
+void World::adaptPlayersPosition()
+{
+    sf::FloatRect viewBounds = getViewBounds();
+	const sf::Vector2f distanceFromBorder(37.5f, 26.f);
+    sf::Vector2f playerPosition = mPlayerAircraft->getPosition();
+
+    if(playerPosition.x < viewBounds.left + distanceFromBorder.x)
+        playerPosition.x = viewBounds.left + distanceFromBorder.x;
+    else if(playerPosition.x > viewBounds.left + viewBounds.width - distanceFromBorder.x)
+        playerPosition.x = viewBounds.left + viewBounds.width - distanceFromBorder.x;
+
+    if(playerPosition.y < viewBounds.top + distanceFromBorder.y)
+        playerPosition.y = viewBounds.top + distanceFromBorder.y;
+    else if(playerPosition.y > viewBounds.top + viewBounds.height - distanceFromBorder.y)
+        playerPosition.y = viewBounds.top + viewBounds.height - distanceFromBorder.y;
+
+    mPlayerAircraft->setPosition(playerPosition);
 }

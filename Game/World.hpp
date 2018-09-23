@@ -26,6 +26,8 @@ class World
         void addSpawnPoint(float x, float y, Aircraft::Type);
         void sortSpawnPoints();
         void spawnEnemies();
+        void guideHomingMissiles();
+        void adaptPlayersPosition();
 
         enum Layer
         {
@@ -51,6 +53,8 @@ class World
         sf::FloatRect       mWorldBounds;
         sf::Vector2f        mPlayerSpawnPosition;
         float               mScrollingSpeed;
+
+        std::vector<Aircraft*>              mActiveEnemies;
         std::vector<SpawnPoint>             mSpawnPoints;
         std::array<SceneNode*, LayerCount>  mSceneLayers;
 };
