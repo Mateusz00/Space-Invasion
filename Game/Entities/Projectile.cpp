@@ -13,10 +13,6 @@ Projectile::Projectile(Type type, const TextureHolder& textures)
       mSprite(textures.get(table[type].texture), table[type].textureRect)
 {
     centerOrigin(mSprite);
-
-    float direction = (type == AlliedBullet) ? -1.f : 1.f;
-    sf::Vector2f velocity(0.f, getMaxSpeed() * direction);
-    setVelocity(velocity);
 }
 
 float Projectile::getMaxSpeed() const
@@ -51,7 +47,12 @@ void Projectile::updateCurrent(sf::Time dt, CommandQueue& commands)
 {
     if(isGuided())
     {
-        // Add homing missile function
+        sf::Vector2f newVelocity = unitVector(dt.asSeconds() * mTargetDirection * 170.f + getVelocity()); // getVelocity makes movement more parabolic
+        newVelocity *= getMaxSpeed();
+        setVelocity(newVelocity);
+
+        float angle = std::atan2(newVelocity.y, newVelocity.x);
+        setRotation(toDegree(angle) + 90.f);
     }
     Entity::updateCurrent(dt, commands);
 }

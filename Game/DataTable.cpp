@@ -48,7 +48,7 @@ std::vector<ProjectileData> initializeProjectileData()
     data[Projectile::Missile].speed = 120.f;
     data[Projectile::Missile].damage = 100.f;
     data[Projectile::Missile].texture = Textures::Projectiles;
-    data[Projectile::Missile].textureRect = Textures::MissileRect;
+    data[Projectile::Missile].textureRect = sf::IntRect(0, 0, 13, 30);
 
     return data;
 }

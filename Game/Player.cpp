@@ -39,8 +39,8 @@ struct AircraftMissileTrigger // Command
 
     void operator() (Aircraft& aircraft, sf::Time dt) const
     {
-        //if(aircraft.getIdentifier() == identifier)
-            // aircraft.launchMissile();
+        if(aircraft.getIdentifier() == identifier)
+             aircraft.launchMissile();
     }
     int identifier;
 };

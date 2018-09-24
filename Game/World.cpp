@@ -43,6 +43,8 @@ void World::draw()
 {
     mTarget.setView(mView);
     mTarget.draw(mSceneGraph);
+    mTarget.setView(mTarget.getDefaultView());
+    mTarget.draw(mUIGraph);
 }
 
 CommandQueue& World::getCommandQueue()
@@ -75,7 +77,7 @@ void World::buildWorld()
     mSceneLayers[UpperAir]->attachChild(std::move(playerAircraft));
 
     std::unique_ptr<AmmoNode> ammoNode(new AmmoNode(*mPlayerAircraft, mTextures, mFonts, mView));
-    mSceneGraph.attachChild(std::move(ammoNode));
+    mUIGraph.attachChild(std::move(ammoNode));
 }
 
 void World::adaptPlayersVelocity()

@@ -201,8 +201,10 @@ void Aircraft::createProjectile(SceneNode& layer, Projectile::Type type, float x
     float direction = (!mIsEnemy) ? -1.f : 1.f; // Decides if offsets will make projectile closer to top of window or closer to bottom
     sf::Vector2f offset(mSprite.getLocalBounds().width * xOffset,
                          mSprite.getLocalBounds().height * yOffset * direction);
+	sf::Vector2f velocity(0, projectile->getMaxSpeed());
 
     projectile->setPosition(getWorldPosition() + offset);
+    projectile->setVelocity(velocity * direction);
     layer.attachChild(std::move(projectile));
 }
 

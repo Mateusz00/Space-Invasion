@@ -47,6 +47,7 @@ class World
         TextureHolder&      mTextures;
         FontHolder&         mFonts;
         SceneNode           mSceneGraph;
+        SceneNode           mUIGraph;
         CommandQueue        mCommandQueue;
         Aircraft*           mPlayerAircraft;
         sf::View            mView;
