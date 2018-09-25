@@ -27,6 +27,7 @@ class SceneNode : public sf::Drawable, public sf::Transformable
         void                    update(sf::Time, CommandQueue&);
         void                    executeCommand(const Command&, sf::Time);
         virtual Category::Type  getCategory() const;
+        virtual sf::FloatRect   getBoundingRect() const;
 
     private:
         virtual void    draw(sf::RenderTarget&, sf::RenderStates) const override final;
@@ -39,5 +40,7 @@ class SceneNode : public sf::Drawable, public sf::Transformable
         SceneNode*          mParent;
         std::vector<Ptr>    mChildren;
 };
+
+bool collision(const SceneNode& lhs, const SceneNode& rhs);
 
 #endif // SCENENODE_HPP

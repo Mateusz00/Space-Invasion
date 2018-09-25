@@ -37,6 +37,7 @@ void World::update(sf::Time dt)
     spawnEnemies();
     mSceneGraph.update(dt, mCommandQueue);
     adaptPlayersPosition();
+    mUIGraph.update(dt, mCommandQueue);
 }
 
 void World::draw()

@@ -22,6 +22,7 @@ class Projectile : public Entity
         bool					isGuided() const;
         void	                guideTowards(sf::Vector2f);
         virtual Category::Type  getCategory() const override;
+        virtual sf::FloatRect   getBoundingRect() const override;
 
     private:
         virtual void updateCurrent(sf::Time, CommandQueue&) override;

@@ -124,6 +124,11 @@ sf::FloatRect Aircraft::getLocalBounds() const
     return mSprite.getLocalBounds();
 }
 
+sf::FloatRect Aircraft::getBoundingRect() const
+{
+    return getWorldTransform().transformRect(mSprite.getGlobalBounds());
+}
+
 void Aircraft::updateRollAnimation(sf::Time dt)
 {
     static sf::Time lastRoll;

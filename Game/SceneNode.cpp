@@ -56,6 +56,11 @@ void SceneNode::executeCommand(const Command& command, sf::Time dt)
         child->executeCommand(command, dt);
 }
 
+sf::FloatRect SceneNode::getBoundingRect() const
+{
+	return sf::FloatRect();
+}
+
 void SceneNode::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     states.transform *= getTransform();
@@ -86,4 +91,9 @@ void SceneNode::updateChildren(sf::Time dt, CommandQueue& commands)
 Category::Type SceneNode::getCategory() const
 {
     return mCategory;
+}
+
+bool collision(const SceneNode& lhs, const SceneNode& rhs)
+{
+	return lhs.getBoundingRect().intersects(rhs.getBoundingRect());
 }

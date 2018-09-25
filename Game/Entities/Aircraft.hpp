@@ -29,6 +29,7 @@ class Aircraft : public Entity
         void                    launchMissile();
         float                   getMaxSpeed() const;
         virtual sf::FloatRect   getLocalBounds() const override;
+        virtual sf::FloatRect   getBoundingRect() const override;
 
     private:
         void    updateRollAnimation(sf::Time);

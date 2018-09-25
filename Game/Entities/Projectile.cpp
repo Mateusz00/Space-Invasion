@@ -43,6 +43,11 @@ Category::Type Projectile::getCategory() const
 		return Category::AlliedProjectile;
 }
 
+sf::FloatRect Projectile::getBoundingRect() const
+{
+    return getWorldTransform().transformRect(mSprite.getGlobalBounds());
+}
+
 void Projectile::updateCurrent(sf::Time dt, CommandQueue& commands)
 {
     if(isGuided())
