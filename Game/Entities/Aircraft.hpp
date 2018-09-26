@@ -23,6 +23,7 @@ class Aircraft : public Entity
         void                    increaseSpread();
         int                     getMissileAmmo() const;
         void                    setMissileAmmo(int);
+        void                    changeMissileAmmo(int);
         int                     getIdentifier() const;
         void                    setIdentifier(int);
         void                    fire();

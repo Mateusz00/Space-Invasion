@@ -89,6 +89,11 @@ void Aircraft::setMissileAmmo(int missiles)
     mMissileAmmo = missiles;
 }
 
+void Aircraft::changeMissileAmmo(int amount)
+{
+    mMissileAmmo += amount;
+}
+
 int  Aircraft::getIdentifier() const
 {
     return mIdentifier;

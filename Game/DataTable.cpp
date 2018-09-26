@@ -1,6 +1,7 @@
 #include "DataTable.hpp"
 #include "Entities/Aircraft.hpp"
 #include "Entities/Projectile.hpp"
+#include "Entities/Pickup.hpp"
 
 std::vector<AircraftData> initializeAircraftData()
 {
@@ -51,4 +52,29 @@ std::vector<ProjectileData> initializeProjectileData()
     data[Projectile::Missile].textureRect = sf::IntRect(0, 0, 13, 30);
 
     return data;
+}
+
+std::vector<PickupData> initializePickupData()
+{
+    using namespace std::placeholders;
+
+	std::vector<PickupData> data(Pickup::TypeCount);
+
+	data[Pickup::FireSpread].action = std::bind(&Aircraft::increaseSpread, _1);
+	data[Pickup::FireSpread].texture = Textures::Pickups;
+	data[Pickup::FireSpread].textureRect = sf::IntRect();// TODO: Add spritesheet
+
+	data[Pickup::FireRate].action = std::bind(&Aircraft::increaseFireRate, _1);
+	data[Pickup::FireRate].texture = Textures::Pickups;
+	data[Pickup::FireRate].textureRect = sf::IntRect();// TODO: Add spritesheet
+
+	data[Pickup::HealthRefill].action = std::bind(&Aircraft::repair, _1, 30);
+    data[Pickup::HealthRefill].texture = Textures::Pickups;
+	data[Pickup::HealthRefill].textureRect = sf::IntRect();// TODO: Add spritesheet
+
+	data[Pickup::MissileRefill].action = std::bind(&Aircraft::changeMissileAmmo, _1, 1);
+	data[Pickup::MissileRefill].texture = Textures::Pickups;
+	data[Pickup::MissileRefill].textureRect = sf::IntRect();// TODO: Add spritesheet
+
+	return data;
 }

@@ -5,6 +5,7 @@
 #include <SFML/System/Time.hpp>
 #include <SFML/Graphics/Rect.hpp>
 #include <vector>
+class Aircraft;
 
 struct AircraftData
 {
@@ -32,7 +33,15 @@ struct ProjectileData
     sf::IntRect     textureRect;
 };
 
+struct PickupData
+{
+	std::function<void(Aircraft&)>	action;
+	Textures::ID					texture;
+    sf::IntRect						textureRect;
+};
+
 std::vector<AircraftData>       initializeAircraftData();
 std::vector<ProjectileData>     initializeProjectileData();
+std::vector<PickupData>		    initializePickupData();
 
 #endif // DATATABLE_HPP
