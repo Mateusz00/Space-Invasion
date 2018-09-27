@@ -20,7 +20,7 @@ class Pickup : public Entity
             TypeCount
         };
 
-                                Pickup(Type, const TextureHolder&);
+                                Pickup(Type, const TextureHolder&, World&);
         virtual Category::Type	getCategory() const override;
         virtual sf::FloatRect	getBoundingRect() const override;
         void 					apply(Aircraft&) const;

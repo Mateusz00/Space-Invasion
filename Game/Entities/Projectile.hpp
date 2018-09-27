@@ -16,7 +16,7 @@ class Projectile : public Entity
             TypeCount
         };
 
-                                Projectile(Type, const TextureHolder&);
+                                Projectile(Type, const TextureHolder&, World& world);
         float					getMaxSpeed() const;
         int						getDamage() const;
         bool					isGuided() const;

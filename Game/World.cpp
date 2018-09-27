@@ -5,6 +5,7 @@
 #include <memory>
 #include <cmath>
 #include <limits>
+#include <iostream>
 
 World::World(sf::RenderTarget& target, TextureHolder& textures, FontHolder& fonts)
     : mTarget(target),
@@ -53,6 +54,18 @@ CommandQueue& World::getCommandQueue()
     return mCommandQueue;
 }
 
+void World::addCollidable(Entity* entity)
+{
+    mCollidablesList.emplace_back(entity);
+    entity->getPositionOnList() = --mCollidablesList.end();
+    std::cout << "Added Collidable" << std::endl;
+}
+
+void World::removeCollidable(Entity* entity)
+{
+    mCollidablesList.erase(entity->getPositionOnList());
+}
+
 void World::buildWorld()
 {
     for(int i=0; i < LayerCount; ++i)
@@ -71,7 +84,7 @@ void World::buildWorld()
     galaxyBackground->setPosition(0.f, 0.f);
     mSceneLayers[Background]->attachChild(std::move(galaxyBackground));
 
-    std::unique_ptr<Aircraft> playerAircraft(new Aircraft(Aircraft::Ally, mTextures, mFonts));
+    std::unique_ptr<Aircraft> playerAircraft(new Aircraft(Aircraft::Ally, mTextures, mFonts, *this));
     playerAircraft->setPosition(mPlayerSpawnPosition); // Change to viewCenter
     playerAircraft->setIdentifier(0);
     mPlayerAircraft = playerAircraft.get();
@@ -134,7 +147,7 @@ void World::spawnEnemies()
 	{
 		SpawnPoint spawn = mSpawnPoints.back();
 
-		std::unique_ptr<Aircraft> enemyAircraft(new Aircraft(spawn.type, mTextures, mFonts));
+		std::unique_ptr<Aircraft> enemyAircraft(new Aircraft(spawn.type, mTextures, mFonts, *this));
 		enemyAircraft->setPosition(spawn.x, spawn.y);
 		mActiveEnemies.push_back(enemyAircraft.get());
 		mSceneLayers[UpperAir]->attachChild(std::move(enemyAircraft));

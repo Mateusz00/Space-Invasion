@@ -10,8 +10,8 @@ namespace
 }
 
 
-Aircraft::Aircraft(Type type, const TextureHolder& textures, const FontHolder& fonts)
-    : Entity(table[type].hitpoints),
+Aircraft::Aircraft(Type type, const TextureHolder& textures, const FontHolder& fonts, World& world)
+    : Entity(table[type].hitpoints, true, world),
       mType(type),
       mSprite(textures.get(table[type].texture), table[type].textureRect),
       mFireRateLevel(2),
@@ -22,7 +22,8 @@ Aircraft::Aircraft(Type type, const TextureHolder& textures, const FontHolder& f
       mIsLaunchingMissile(false),
       mIsEnemy(mType != Ally),
       mTravelledDistance(0.f),
-      mDirectionIndex(0)
+      mDirectionIndex(0),
+      mWorld(world)
 {
     centerOrigin(mSprite);
 
@@ -206,7 +207,7 @@ void Aircraft::shootBullets(SceneNode& layer, const TextureHolder& textures) con
 void Aircraft::createProjectile(SceneNode& layer, Projectile::Type type, float xOffset,
                                  float yOffset, const TextureHolder& textures) const
 {
-    std::unique_ptr<Projectile> projectile(new Projectile(type, textures));
+    std::unique_ptr<Projectile> projectile(new Projectile(type, textures, mWorld));
 
     float direction = (!mIsEnemy) ? -1.f : 1.f; // Decides if offsets will make projectile closer to top of window or closer to bottom
     sf::Vector2f offset(mSprite.getLocalBounds().width * xOffset,
@@ -249,7 +250,7 @@ void Aircraft::updateMovementPatterns(sf::Time dt)
         if(mTravelledDistance > directions[mDirectionIndex].distance)
         {
             mTravelledDistance = 0.f;
-            mDirectionIndex = ++mDirectionIndex % directions.size();
+            mDirectionIndex = (mDirectionIndex+1) % directions.size();
         }
 
         float radians = toRadian(directions[mDirectionIndex].angle);

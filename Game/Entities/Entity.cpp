@@ -1,8 +1,22 @@
 #include "Entity.hpp"
+#include "../World.hpp"
+#include <iostream>
+using ListIterator = std::list<Entity*>::iterator;
 
-Entity::Entity(int hitpoints)
-    : mHitpoints(hitpoints)
+
+Entity::Entity(int hitpoints, bool isCollidable, World& world)
+    : mHitpoints(hitpoints),
+      mIsCollidable(isCollidable),
+      mWorld(world)
 {
+    if(isCollidable)
+        mWorld.addCollidable(this);
+}
+
+Entity::~Entity()
+{
+    std::cout << "Deleting Collidable!" << std::endl;
+    mWorld.removeCollidable(this);
 }
 
 int Entity::getHitpoints() const
@@ -62,7 +76,17 @@ void Entity::destroy()
     mHitpoints = 0;
 }
 
+ListIterator& Entity::getPositionOnList()
+{
+    return mPosition;
+}
+
 sf::FloatRect Entity::getLocalBounds() const
 {
     return sf::FloatRect();
+}
+
+bool collision(const Entity& lhs, const Entity& rhs)
+{
+	return lhs.getBoundingRect().intersects(rhs.getBoundingRect());
 }

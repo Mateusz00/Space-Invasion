@@ -8,6 +8,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System/Time.hpp>
 #include <array>
+#include <list>
 
 class World
 {
@@ -18,6 +19,8 @@ class World
         void                draw();
         sf::FloatRect	    getViewBounds() const;
         sf::FloatRect       getBattlefieldBounds() const;
+        void                addCollidable(Entity*);
+        void                removeCollidable(Entity*);
 
     private:
         void buildWorld();
@@ -58,6 +61,7 @@ class World
         std::vector<Aircraft*>              mActiveEnemies;
         std::vector<SpawnPoint>             mSpawnPoints;
         std::array<SceneNode*, LayerCount>  mSceneLayers;
+        std::list<Entity*>                  mCollidablesList;
 };
 
 #endif // WORLD_HPP

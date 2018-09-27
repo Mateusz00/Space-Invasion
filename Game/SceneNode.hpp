@@ -41,6 +41,4 @@ class SceneNode : public sf::Drawable, public sf::Transformable
         std::vector<Ptr>    mChildren;
 };
 
-bool collision(const SceneNode& lhs, const SceneNode& rhs);
-
 #endif // SCENENODE_HPP
