@@ -23,6 +23,7 @@ class Projectile : public Entity
         void	                guideTowards(sf::Vector2f);
         virtual Category::Type  getCategory() const override;
         virtual sf::FloatRect   getBoundingRect() const override;
+        virtual void            onCollision(Entity&) override;
 
     private:
         virtual void updateCurrent(sf::Time, CommandQueue&) override;

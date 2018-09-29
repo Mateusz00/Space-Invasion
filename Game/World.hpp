@@ -31,6 +31,7 @@ class World
         void spawnEnemies();
         void guideHomingMissiles();
         void adaptPlayersPosition();
+        void checkCollisions();
 
         enum Layer
         {

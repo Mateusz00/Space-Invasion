@@ -261,3 +261,16 @@ void Aircraft::updateMovementPatterns(sf::Time dt)
         mTravelledDistance += getMaxSpeed() * dt.asSeconds();
     }
 }
+
+void Aircraft::onCollision(Entity& entity)
+{
+    switch(entity.getCategory()) // Deal damage to most entities except to AlliedProjectile
+    {
+        case Category::AlliedProjectile:
+            break;
+
+        default:
+            entity.damage(getHitpoints());
+            break;
+    }
+}

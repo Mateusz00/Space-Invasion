@@ -13,7 +13,7 @@ class Entity : public SceneNode
         using ListIterator = std::list<Entity*>::iterator;
 
         explicit                Entity(int hitpoints, bool isCollidable, World&);
-                                ~Entity();
+        virtual                 ~Entity();
         int                     getHitpoints() const;
         void                    setHitpoints(int hitpoints);
         sf::Vector2f            getVelocity() const;
@@ -26,6 +26,7 @@ class Entity : public SceneNode
         void                    destroy();
         ListIterator&           getPositionOnList();
         virtual sf::FloatRect   getLocalBounds() const;
+        virtual void            onCollision(Entity&);
 
     protected:
         virtual void            updateCurrent(sf::Time dt, CommandQueue&) override;

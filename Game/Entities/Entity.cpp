@@ -86,6 +86,10 @@ sf::FloatRect Entity::getLocalBounds() const
     return sf::FloatRect();
 }
 
+void Entity::onCollision(Entity& entity)
+{
+}
+
 bool collision(const Entity& lhs, const Entity& rhs)
 {
 	return lhs.getBoundingRect().intersects(rhs.getBoundingRect());

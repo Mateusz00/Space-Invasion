@@ -34,3 +34,16 @@ void Pickup::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) cons
 {
 	target.draw(mSprite, states);
 }
+
+void Pickup::onCollision(Entity& entity)
+{
+    switch(entity.getCategory())
+    {
+        case Category::PlayerAircraft:
+            //apply(reinterpret_cast<Aircraft&>(entity));
+            break;
+
+        default:
+            break;
+    }
+}

@@ -66,3 +66,33 @@ void Projectile::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) 
 {
     target.draw(mSprite, states);
 }
+
+void Projectile::onCollision(Entity& entity)
+{
+    if(getCategory() == Category::EnemyProjectile)
+    {
+        switch(entity.getCategory())
+        {
+            case Category::EnemyAircraft:
+            case Category::Pickup:
+                break;
+
+            default:
+                entity.damage(table[mType].damage);
+                break;
+        }
+    }
+    else // Player's projectile
+    {
+        switch(entity.getCategory())
+        {
+            case Category::PlayerAircraft:
+            case Category::Pickup:
+                break;
+
+            default:
+                entity.damage(table[mType].damage);
+                break;
+        }
+    }
+}

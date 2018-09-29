@@ -29,6 +29,7 @@ class Aircraft : public Entity
         float                   getMaxSpeed() const;
         virtual sf::FloatRect   getLocalBounds() const override;
         virtual sf::FloatRect   getBoundingRect() const override;
+        virtual void            onCollision(Entity&) override;
 
     protected:
         virtual void            updateCurrent(sf::Time, CommandQueue&) override;

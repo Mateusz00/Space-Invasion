@@ -24,6 +24,7 @@ class Pickup : public Entity
         virtual Category::Type	getCategory() const override;
         virtual sf::FloatRect	getBoundingRect() const override;
         void 					apply(Aircraft&) const;
+        virtual void            onCollision(Entity&) override;
 
     private:
         virtual void	        drawCurrent(sf::RenderTarget&, sf::RenderStates) const override;

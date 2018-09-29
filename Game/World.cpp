@@ -5,7 +5,6 @@
 #include <memory>
 #include <cmath>
 #include <limits>
-#include <iostream>
 
 World::World(sf::RenderTarget& target, TextureHolder& textures, FontHolder& fonts)
     : mTarget(target),
@@ -35,6 +34,8 @@ void World::update(sf::Time dt)
         mSceneGraph.executeCommand(mCommandQueue.pop(), dt);
 
     adaptPlayersVelocity();
+    checkCollisions();
+
     spawnEnemies();
     mSceneGraph.update(dt, mCommandQueue);
     adaptPlayersPosition();
@@ -58,7 +59,6 @@ void World::addCollidable(Entity* entity)
 {
     mCollidablesList.emplace_back(entity);
     entity->getPositionOnList() = --mCollidablesList.end();
-    std::cout << "Added Collidable" << std::endl;
 }
 
 void World::removeCollidable(Entity* entity)
@@ -202,4 +202,22 @@ void World::adaptPlayersPosition()
         playerPosition.y = viewBounds.top + viewBounds.height - distanceFromBorder.y;
 
     mPlayerAircraft->setPosition(playerPosition);
+}
+
+void World::checkCollisions()
+{
+    for(auto nodeA = mCollidablesList.begin(); nodeA != (--mCollidablesList.end()); ++nodeA) // Don't check last node
+    {
+        auto nodePastA = nodeA;
+        ++nodePastA; // Don't check two same nodes
+
+        for(; nodePastA != mCollidablesList.end(); ++nodePastA)
+        {
+            if(collision(**nodeA, **nodePastA))
+            {
+                (**nodeA).onCollision(**nodePastA);
+                (**nodePastA).onCollision(**nodeA);
+            }
+        }
+    }
 }
