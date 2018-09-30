@@ -73,12 +73,11 @@ void Projectile::onCollision(Entity& entity)
     {
         switch(entity.getCategory())
         {
-            case Category::EnemyAircraft:
-            case Category::Pickup:
+            case Category::PlayerAircraft:
+                entity.damage(table[mType].damage);
                 break;
 
             default:
-                entity.damage(table[mType].damage);
                 break;
         }
     }
@@ -86,12 +85,11 @@ void Projectile::onCollision(Entity& entity)
     {
         switch(entity.getCategory())
         {
-            case Category::PlayerAircraft:
-            case Category::Pickup:
+            case Category::EnemyAircraft:
+                entity.damage(table[mType].damage);
                 break;
 
             default:
-                entity.damage(table[mType].damage);
                 break;
         }
     }

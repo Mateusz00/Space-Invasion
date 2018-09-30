@@ -81,6 +81,11 @@ ListIterator& Entity::getPositionOnList()
     return mPosition;
 }
 
+World& Entity::getWorld() const
+{
+    return mWorld;
+}
+
 sf::FloatRect Entity::getLocalBounds() const
 {
     return sf::FloatRect();
@@ -88,6 +93,19 @@ sf::FloatRect Entity::getLocalBounds() const
 
 void Entity::onCollision(Entity& entity)
 {
+}
+
+void Entity::removeEntity()
+{
+    destroy();
+}
+
+bool Entity::isMarkedForRemoval()
+{
+    if(mHitpoints <= 0)
+        return true;
+
+    return false;
 }
 
 bool collision(const Entity& lhs, const Entity& rhs)

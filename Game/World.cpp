@@ -5,6 +5,7 @@
 #include <memory>
 #include <cmath>
 #include <limits>
+#include <iostream>
 
 World::World(sf::RenderTarget& target, TextureHolder& textures, FontHolder& fonts)
     : mTarget(target),
@@ -28,6 +29,7 @@ void World::update(sf::Time dt)
     if(mPlayerAircraft)
         mPlayerAircraft->setVelocity(0.f, 0.f);
 
+    destroyEntitiesOutsideView();
     guideHomingMissiles();
 
     while(!mCommandQueue.isEmpty())
@@ -37,6 +39,7 @@ void World::update(sf::Time dt)
     checkCollisions();
 
     spawnEnemies();
+    mSceneGraph.removeWrecks();
     mSceneGraph.update(dt, mCommandQueue);
     adaptPlayersPosition();
     mUIGraph.update(dt, mCommandQueue);
@@ -64,6 +67,7 @@ void World::addCollidable(Entity* entity)
 void World::removeCollidable(Entity* entity)
 {
     mCollidablesList.erase(entity->getPositionOnList());
+    std::cout << "REMOVAL" << std::endl;
 }
 
 void World::buildWorld()
@@ -121,9 +125,9 @@ void World::addSpawnPoint(float x, float y, Aircraft::Type type)
 
 void World::sortSpawnPoints()
 {
-    std::sort(mSpawnPoints.begin(), mSpawnPoints.end(), [](SpawnPoint first, SpawnPoint second)
+    std::sort(mSpawnPoints.begin(), mSpawnPoints.end(), [](SpawnPoint lhs, SpawnPoint rhs)
 	{
-		return first.y < second.y;
+		return lhs.y < rhs.y;
 	});
 }
 
@@ -149,7 +153,6 @@ void World::spawnEnemies()
 
 		std::unique_ptr<Aircraft> enemyAircraft(new Aircraft(spawn.type, mTextures, mFonts, *this));
 		enemyAircraft->setPosition(spawn.x, spawn.y);
-		mActiveEnemies.push_back(enemyAircraft.get());
 		mSceneLayers[UpperAir]->attachChild(std::move(enemyAircraft));
 
 		mSpawnPoints.pop_back();
@@ -158,6 +161,14 @@ void World::spawnEnemies()
 
 void World::guideHomingMissiles()
 {
+    Command enemyCollector;
+    enemyCollector.mCategories.push_back(Category::EnemyAircraft);
+    enemyCollector.mAction = castFunctor<Aircraft>([this](Aircraft& enemy, sf::Time dt)
+    {
+        if(!enemy.isMarkedForRemoval())
+            mActiveEnemies.push_back(&enemy);
+    });
+
     Command homingCommand;
 	homingCommand.mCategories.push_back(Category::AlliedProjectile);
 	homingCommand.mAction = castFunctor<Projectile>([this](Projectile& missile, sf::Time dt)
@@ -182,7 +193,9 @@ void World::guideHomingMissiles()
             missile.guideTowards(closestEnemy->getWorldPosition());
 	});
 
+    mCommandQueue.push(enemyCollector);
 	mCommandQueue.push(homingCommand);
+	mActiveEnemies.clear();
 }
 
 void World::adaptPlayersPosition()
@@ -220,4 +233,18 @@ void World::checkCollisions()
             }
         }
     }
+}
+
+void World::destroyEntitiesOutsideView()
+{
+    Command command;
+    command.mCategories.push_back(Category::EnemyProjectile);
+    command.mCategories.push_back(Category::AlliedProjectile);
+    command.mCategories.push_back(Category::EnemyAircraft);
+    command.mAction = castFunctor<Entity>([this](Entity& object, sf::Time dt)
+    {
+        if(!getBattlefieldBounds().intersects(object.getBoundingRect()))
+            object.removeEntity();
+    });
+    mCommandQueue.push(command);
 }

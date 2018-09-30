@@ -28,6 +28,7 @@ class SceneNode : public sf::Drawable, public sf::Transformable
         void                    executeCommand(const Command&, sf::Time);
         virtual Category::Type  getCategory() const;
         virtual sf::FloatRect   getBoundingRect() const;
+        void                    removeWrecks();
 
     private:
         virtual void    draw(sf::RenderTarget&, sf::RenderStates) const override final;
@@ -35,6 +36,8 @@ class SceneNode : public sf::Drawable, public sf::Transformable
         void            drawChildren(sf::RenderTarget&, sf::RenderStates) const;
         virtual void    updateCurrent(sf::Time, CommandQueue&);
         void            updateChildren(sf::Time, CommandQueue&);
+        virtual bool    isMarkedForRemoval();
+        virtual void    onRemoval();
 
         Category::Type      mCategory;
         SceneNode*          mParent;

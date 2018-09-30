@@ -1,5 +1,6 @@
 #include "SceneNode.hpp"
 #include <functional>
+#include <algorithm>
 
 SceneNode::SceneNode(Category::Type category)
     : mCategory(category),
@@ -91,4 +92,23 @@ void SceneNode::updateChildren(sf::Time dt, CommandQueue& commands)
 Category::Type SceneNode::getCategory() const
 {
     return mCategory;
+}
+
+bool SceneNode::isMarkedForRemoval()
+{
+    return false;
+}
+
+void SceneNode::onRemoval()
+{
+}
+
+void SceneNode::removeWrecks()
+{
+    auto wrecksEnd = std::partition(mChildren.begin(), mChildren.end(), std::mem_fn(&SceneNode::isMarkedForRemoval));
+    std::for_each(mChildren.begin(), wrecksEnd, std::mem_fn(&SceneNode::onRemoval));
+    mChildren.erase(mChildren.begin(), wrecksEnd);
+
+    for(auto& child : mChildren)
+        child->removeWrecks();
 }

@@ -30,17 +30,19 @@ class Aircraft : public Entity
         virtual sf::FloatRect   getLocalBounds() const override;
         virtual sf::FloatRect   getBoundingRect() const override;
         virtual void            onCollision(Entity&) override;
+        virtual void            removeEntity() override;
 
     protected:
         virtual void            updateCurrent(sf::Time, CommandQueue&) override;
         virtual void            drawCurrent(sf::RenderTarget&, sf::RenderStates) const override;
 
     private:
-        void    updateRollAnimation(sf::Time);
-        void    shootBullets(SceneNode&, const TextureHolder&) const;
-        void    createProjectile(SceneNode&, Projectile::Type, float xOffset, float yOffset, const TextureHolder&) const;
-        void    launchProjectiles(sf::Time, CommandQueue&);
-        void    updateMovementPatterns(sf::Time);
+        void            updateRollAnimation(sf::Time);
+        void            shootBullets(SceneNode&, const TextureHolder&) const;
+        void            createProjectile(SceneNode&, Projectile::Type, float xOffset, float yOffset, const TextureHolder&) const;
+        void            launchProjectiles(sf::Time, CommandQueue&);
+        void            updateMovementPatterns(sf::Time);
+        virtual void    onRemoval() override;
 
         Type            mType;
         sf::Sprite      mSprite;
@@ -51,12 +53,12 @@ class Aircraft : public Entity
         bool            mIsFiring;
         bool            mIsLaunchingMissile;
         bool            mIsEnemy;
+        bool            mShowExplosion;
         float           mTravelledDistance;
         int             mDirectionIndex;
         sf::Time        mFireCooldown;
         Command         mFireCommand;
         Command         mLaunchMissileCommand;
-        World&          mWorld;
 };
 
 #endif // AIRCRAFT_HPP

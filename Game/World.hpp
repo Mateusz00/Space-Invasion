@@ -32,6 +32,7 @@ class World
         void guideHomingMissiles();
         void adaptPlayersPosition();
         void checkCollisions();
+        void destroyEntitiesOutsideView();
 
         enum Layer
         {

@@ -21,9 +21,9 @@ Aircraft::Aircraft(Type type, const TextureHolder& textures, const FontHolder& f
       mIsFiring(false),
       mIsLaunchingMissile(false),
       mIsEnemy(mType != Ally),
+      mShowExplosion(true),
       mTravelledDistance(0.f),
-      mDirectionIndex(0),
-      mWorld(world)
+      mDirectionIndex(0)
 {
     centerOrigin(mSprite);
 
@@ -207,7 +207,7 @@ void Aircraft::shootBullets(SceneNode& layer, const TextureHolder& textures) con
 void Aircraft::createProjectile(SceneNode& layer, Projectile::Type type, float xOffset,
                                  float yOffset, const TextureHolder& textures) const
 {
-    std::unique_ptr<Projectile> projectile(new Projectile(type, textures, mWorld));
+    std::unique_ptr<Projectile> projectile(new Projectile(type, textures, getWorld()));
 
     float direction = (!mIsEnemy) ? -1.f : 1.f; // Decides if offsets will make projectile closer to top of window or closer to bottom
     sf::Vector2f offset(mSprite.getLocalBounds().width * xOffset,
@@ -264,13 +264,42 @@ void Aircraft::updateMovementPatterns(sf::Time dt)
 
 void Aircraft::onCollision(Entity& entity)
 {
-    switch(entity.getCategory()) // Deal damage to most entities except to AlliedProjectile
+    if(mIsEnemy)
     {
-        case Category::AlliedProjectile:
-            break;
+        switch(entity.getCategory())
+        {
+            case Category::AlliedProjectile:
+            case Category::PlayerAircraft:
+                entity.damage(getHitpoints());
+                break;
 
-        default:
-            entity.damage(getHitpoints());
-            break;
+            default:
+                break;
+        }
     }
+    else
+    {
+        switch(entity.getCategory())
+        {
+            case Category::EnemyAircraft:
+            case Category::EnemyProjectile:
+                entity.damage(getHitpoints());
+                break;
+
+            default:
+                break;
+        }
+    }
+}
+
+void Aircraft::removeEntity()
+{
+    Entity::removeEntity();
+    mShowExplosion = false; //
+}
+
+void Aircraft::onRemoval()
+{
+    mShowExplosion = true;
+    // TODO: Add AnimationNode to world
 }
