@@ -75,9 +75,7 @@ void Projectile::onCollision(Entity& entity)
         {
             case Category::PlayerAircraft:
                 entity.damage(table[mType].damage);
-                break;
-
-            default:
+                destroy();
                 break;
         }
     }
@@ -87,9 +85,7 @@ void Projectile::onCollision(Entity& entity)
         {
             case Category::EnemyAircraft:
                 entity.damage(table[mType].damage);
-                break;
-
-            default:
+                destroy();
                 break;
         }
     }

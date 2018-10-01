@@ -1,4 +1,5 @@
 #include "Pickup.hpp"
+#include "Aircraft.hpp"
 #include "../Utility.hpp"
 #include "../DataTable.hpp"
 
@@ -40,10 +41,8 @@ void Pickup::onCollision(Entity& entity)
     switch(entity.getCategory())
     {
         case Category::PlayerAircraft:
-            //apply(reinterpret_cast<Aircraft&>(entity));
-            break;
-
-        default:
+            apply(static_cast<Aircraft&>(entity));
+            destroy();
             break;
     }
 }

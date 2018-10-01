@@ -268,25 +268,9 @@ void Aircraft::onCollision(Entity& entity)
     {
         switch(entity.getCategory())
         {
-            case Category::AlliedProjectile:
             case Category::PlayerAircraft:
                 entity.damage(getHitpoints());
-                break;
-
-            default:
-                break;
-        }
-    }
-    else
-    {
-        switch(entity.getCategory())
-        {
-            case Category::EnemyAircraft:
-            case Category::EnemyProjectile:
-                entity.damage(getHitpoints());
-                break;
-
-            default:
+                destroy();
                 break;
         }
     }
