@@ -1,5 +1,19 @@
 #include "Utility.hpp"
 #include <cmath>
+#include <ctime>
+#include <random>
+
+namespace
+{
+    auto seed = static_cast<unsigned int>(std::time(nullptr));
+	auto RandomEngine = std::default_random_engine(seed);
+}
+
+int randomInt(int minNumber, int maxNumberIncluded)
+{
+	std::uniform_int_distribution<int> distribution(minNumber, maxNumberIncluded);
+	return distribution(RandomEngine);
+}
 
 float vectorLength(sf::Vector2f dist)
 {

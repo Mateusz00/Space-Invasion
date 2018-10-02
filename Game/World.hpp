@@ -23,16 +23,16 @@ class World
         void                removeCollidable(Entity*);
 
     private:
-        void buildWorld();
-        void adaptPlayersVelocity();
-        void initializeSpawnPoints();
-        void addSpawnPoint(float x, float y, Aircraft::Type);
-        void sortSpawnPoints();
-        void spawnEnemies();
-        void guideHomingMissiles();
-        void adaptPlayersPosition();
-        void checkCollisions();
-        void destroyEntitiesOutsideView();
+        void    buildWorld();
+        void    adaptPlayersVelocity();
+        void    initializeSpawnPoints();
+        void    addSpawnPoint(float x, float y, Aircraft::Type);
+        void    sortSpawnPoints();
+        void    spawnEnemies();
+        void    guideHomingMissiles();
+        void    adaptPlayersPosition();
+        void    checkCollisions();
+        void    destroyEntitiesOutsideView();
 
         enum Layer
         {

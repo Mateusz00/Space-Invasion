@@ -14,6 +14,7 @@ void centerOrigin(T&);
 template <typename T>
 std::string toString(const T& value);
 
+int             randomInt(int minNumber, int maxNumberIncluded);
 float           vectorLength(sf::Vector2f position);
 sf::Vector2f    unitVector(sf::Vector2f distance);
 float           toRadian(float degree);

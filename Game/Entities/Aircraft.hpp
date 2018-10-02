@@ -42,6 +42,8 @@ class Aircraft : public Entity
         void            createProjectile(SceneNode&, Projectile::Type, float xOffset, float yOffset, const TextureHolder&) const;
         void            launchProjectiles(sf::Time, CommandQueue&);
         void            updateMovementPatterns(sf::Time);
+        void            checkPickupSpawn() const;
+        void            createPickup(SceneNode&, const TextureHolder&) const;
         virtual void    onRemoval() override;
 
         Type            mType;
@@ -59,6 +61,7 @@ class Aircraft : public Entity
         sf::Time        mFireCooldown;
         Command         mFireCommand;
         Command         mLaunchMissileCommand;
+        Command         mSpawnPickupCommand;
 };
 
 #endif // AIRCRAFT_HPP

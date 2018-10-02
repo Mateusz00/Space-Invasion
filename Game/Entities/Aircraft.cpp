@@ -1,6 +1,8 @@
 #include "Aircraft.hpp"
+#include "Pickup.hpp"
 #include "HealthBar.hpp"
 #include "../Utility.hpp"
+#include "../World.hpp"
 #include "../DataTable.hpp"
 #include <vector>
 #include <memory>
@@ -34,15 +36,21 @@ Aircraft::Aircraft(Type type, const TextureHolder& textures, const FontHolder& f
     attachChild(std::move(healthBar));
 
     mFireCommand.mCategories.push_back(Category::AirLayer);
-    mFireCommand.mAction = [this, &textures](SceneNode& node, sf::Time dt)
+    mFireCommand.mAction = [this, &textures](SceneNode& node, sf::Time)
     {
         shootBullets(node, textures);
     };
 
     mLaunchMissileCommand.mCategories.push_back(Category::AirLayer);
-    mLaunchMissileCommand.mAction = [this, &textures](SceneNode& node, sf::Time dt)
+    mLaunchMissileCommand.mAction = [this, &textures](SceneNode& node, sf::Time)
     {
         createProjectile(node, Projectile::Missile, 0.f, 0.5f, textures);
+    };
+
+    mSpawnPickupCommand.mCategories.push_back(Category::AirLayer);
+    mSpawnPickupCommand.mAction = [this, &textures](SceneNode& node, sf::Time)
+    {
+        createPickup(node, textures);
     };
 }
 
@@ -282,8 +290,23 @@ void Aircraft::removeEntity()
     mShowExplosion = false; //
 }
 
+void Aircraft::checkPickupSpawn() const
+{
+    if(mIsEnemy && (randomInt(1, 4) == 2)) // 25% chance for spawning pickup for enemies
+        getWorld().getCommandQueue().push(mSpawnPickupCommand);
+}
+
+void Aircraft::createPickup(SceneNode& node, const TextureHolder& textures) const
+{
+    auto type = static_cast<Pickup::Type>(randomInt(0, Pickup::TypeCount-1));
+    std::unique_ptr<Pickup> pickup (new Pickup(type, textures, getWorld()));
+    pickup->setPosition(getWorldPosition());
+    node.attachChild(std::move(pickup));
+}
+
 void Aircraft::onRemoval()
 {
+    checkPickupSpawn();
     mShowExplosion = true;
     // TODO: Add AnimationNode to world
 }
