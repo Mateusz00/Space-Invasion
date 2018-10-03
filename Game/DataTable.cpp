@@ -62,19 +62,19 @@ std::vector<PickupData> initializePickupData()
 
 	data[Pickup::FireSpread].action = std::bind(&Aircraft::increaseSpread, _1);
 	data[Pickup::FireSpread].texture = Textures::Pickups;
-	data[Pickup::FireSpread].textureRect = sf::IntRect();// TODO: Add spritesheet
+	data[Pickup::FireSpread].textureRect = sf::IntRect(80, 0, 40, 40);
 
 	data[Pickup::FireRate].action = std::bind(&Aircraft::increaseFireRate, _1);
 	data[Pickup::FireRate].texture = Textures::Pickups;
-	data[Pickup::FireRate].textureRect = sf::IntRect();// TODO: Add spritesheet
+	data[Pickup::FireRate].textureRect = sf::IntRect(120, 0, 40, 40);
 
 	data[Pickup::HealthRefill].action = std::bind(&Aircraft::repair, _1, 30);
     data[Pickup::HealthRefill].texture = Textures::Pickups;
-	data[Pickup::HealthRefill].textureRect = sf::IntRect();// TODO: Add spritesheet
+	data[Pickup::HealthRefill].textureRect = sf::IntRect(0, 0, 40, 40);
 
 	data[Pickup::MissileRefill].action = std::bind(&Aircraft::changeMissileAmmo, _1, 1);
 	data[Pickup::MissileRefill].texture = Textures::Pickups;
-	data[Pickup::MissileRefill].textureRect = sf::IntRect();// TODO: Add spritesheet
+	data[Pickup::MissileRefill].textureRect = sf::IntRect(40, 0, 40, 40);
 
 	return data;
 }

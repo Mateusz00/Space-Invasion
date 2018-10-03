@@ -23,7 +23,7 @@ void HealthBar::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) c
 void HealthBar::updateCurrent(sf::Time dt, CommandQueue& commands)
 {
     float hitpointsPercent = mObject.getHitpoints() / mMaxValue;
-    (hitpointsPercent > 1.f) ? 1.f : hitpointsPercent; // Stops healthbar from enlarging more than it's initial size
+    hitpointsPercent = (hitpointsPercent > 1.f) ? 1.f : hitpointsPercent; // Stops healthbar from enlarging more than it's initial size
 
     if(hitpointsPercent > 0) // Shrink and change color depending on hitpointsPercent
     {

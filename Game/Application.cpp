@@ -86,5 +86,5 @@ void Application::loadResources()
     mTextures.loadFromFile(Textures::Background,     "Resources/Background.png");
     mTextures.loadFromFile(Textures::Aircrafts,      "Resources/Airplane1.png");
     mTextures.loadFromFile(Textures::Projectiles,    "Resources/Projectiles.png");
-    //mTextures.loadFromFile(Textures::Pickups,        "Resources/Pickups.png"); TODO: Add spritesheet
+    mTextures.loadFromFile(Textures::Pickups,        "Resources/Pickups.png");
 }
