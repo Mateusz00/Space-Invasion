@@ -14,14 +14,14 @@
 class StateStack : private sf::NonCopyable
 {
     public:
-        explicit StateStack(State::Context);
-        void update(sf::Time);
-        void draw();
-        void handleEvent(const sf::Event&);
-        void pushState(States::ID);
-        void popState();
-        void clearStates();
-        void applyPendingChanges();
+        explicit    StateStack(State::Context);
+        void        update(sf::Time);
+        void        draw();
+        void        handleEvent(const sf::Event&);
+        void        pushState(States::ID);
+        void        popState();
+        void        clearStates();
+        void        applyPendingChanges();
 
     private:
         template <typename T>
@@ -40,10 +40,10 @@ class StateStack : private sf::NonCopyable
             States::ID  id;
         };
 
-        std::vector<State::Ptr>     mStack;
-        std::vector<PendingChange>  mPendingChanges;
-        State::Context              mContext;
-        std::map<States::ID, std::function<State::Ptr()>> mFactory;
+        std::vector<State::Ptr>                             mStack;
+        std::vector<PendingChange>                          mPendingChanges;
+        State::Context                                      mContext;
+        std::map<States::ID, std::function<State::Ptr()>>   mFactory;
 };
 
 template <typename T>

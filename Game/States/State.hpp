@@ -19,10 +19,10 @@ class State
             KeyBinding*         keys1;
         };
 
-        State(Context, StateStack&);
-        virtual bool draw() = 0;
-        virtual bool update(sf::Time) = 0;
-        virtual bool handleEvent(const sf::Event&) = 0;
+                        State(Context, StateStack&);
+        virtual bool    draw() = 0;
+        virtual bool    update(sf::Time) = 0;
+        virtual bool    handleEvent(const sf::Event&) = 0;
 
     private:
         Context         mContext;

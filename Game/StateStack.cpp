@@ -12,7 +12,6 @@ StateStack::StateStack(State::Context context)
     : mContext(context)
 {
     createStateFactory<GameState>(States::GameState);
-    //context.textures.loadFromFile(Textures::Background, "Resources/Background.png");
 }
 
 void StateStack::update(sf::Time dt)
