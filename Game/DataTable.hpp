@@ -4,6 +4,7 @@
 #include "ResourcesID.hpp"
 #include <SFML/System/Time.hpp>
 #include <SFML/Graphics/Rect.hpp>
+#include <SFML/Graphics/Color.hpp>
 #include <vector>
 class Aircraft;
 
@@ -40,8 +41,15 @@ struct PickupData
     sf::IntRect						textureRect;
 };
 
+struct ParticleData
+{
+    sf::Time lifespan;
+    sf::Color color;
+};
+
 std::vector<AircraftData>       initializeAircraftData();
 std::vector<ProjectileData>     initializeProjectileData();
 std::vector<PickupData>		    initializePickupData();
+std::vector<ParticleData>	    initializeParticleData();
 
 #endif // DATATABLE_HPP

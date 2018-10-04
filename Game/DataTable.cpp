@@ -2,6 +2,7 @@
 #include "Entities/Aircraft.hpp"
 #include "Entities/Projectile.hpp"
 #include "Entities/Pickup.hpp"
+#include "ParticleSystem/Particle.hpp"
 
 std::vector<AircraftData> initializeAircraftData()
 {
@@ -75,6 +76,19 @@ std::vector<PickupData> initializePickupData()
 	data[Pickup::MissileRefill].action = std::bind(&Aircraft::changeMissileAmmo, _1, 1);
 	data[Pickup::MissileRefill].texture = Textures::Pickups;
 	data[Pickup::MissileRefill].textureRect = sf::IntRect(40, 0, 40, 40);
+
+	return data;
+}
+
+std::vector<ParticleData> initializeParticleData()
+{
+	std::vector<ParticleData> data(Particle::ParticleCount);
+
+    data[Particle::Propellant].lifespan = sf::seconds(0.5f);
+	data[Particle::Propellant].color = sf::Color(247, 204, 12);
+
+    data[Particle::Smoke].lifespan = sf::seconds(3.f);
+	data[Particle::Smoke].color = sf::Color(48, 48, 48);
 
 	return data;
 }
