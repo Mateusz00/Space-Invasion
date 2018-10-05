@@ -19,7 +19,8 @@ namespace Textures
         Background,
         Aircrafts,
         Projectiles,
-        Pickups
+        Pickups,
+        Particle
     };
 }
 
