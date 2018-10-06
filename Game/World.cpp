@@ -70,6 +70,11 @@ void World::removeCollidable(Entity* entity)
     std::cout << "REMOVAL" << std::endl;
 }
 
+ParticleNode& World::getParticleNode() const
+{
+    return *mParticleNode;
+}
+
 void World::buildWorld()
 {
     for(int i=0; i < LayerCount; ++i)
@@ -96,6 +101,10 @@ void World::buildWorld()
 
     std::unique_ptr<AmmoNode> ammoNode(new AmmoNode(*mPlayerAircraft, mTextures, mFonts, mView));
     mUIGraph.attachChild(std::move(ammoNode));
+
+    std::unique_ptr<ParticleNode> particleNode(new ParticleNode);
+    mParticleNode = particleNode.get();
+    mSceneLayers[LowerAir]->attachChild(std::move(particleNode));
 }
 
 void World::adaptPlayersVelocity()

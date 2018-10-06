@@ -5,6 +5,7 @@
 #include "Entities/Aircraft.hpp"
 #include "ResourcesID.hpp"
 #include "SceneNode.hpp"
+#include "ParticleSystem/ParticleNode.hpp"
 #include <SFML/Graphics.hpp>
 #include <SFML/System/Time.hpp>
 #include <array>
@@ -21,6 +22,7 @@ class World
         sf::FloatRect       getBattlefieldBounds() const;
         void                addCollidable(Entity*);
         void                removeCollidable(Entity*);
+        ParticleNode&       getParticleNode() const;
 
     private:
         void    buildWorld();
@@ -59,6 +61,7 @@ class World
         sf::FloatRect       mWorldBounds;
         sf::Vector2f        mPlayerSpawnPosition;
         float               mScrollingSpeed;
+        ParticleNode*       mParticleNode;
 
         std::vector<Aircraft*>              mActiveEnemies;
         std::vector<SpawnPoint>             mSpawnPoints;

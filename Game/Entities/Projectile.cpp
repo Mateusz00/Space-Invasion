@@ -1,7 +1,10 @@
 #include "Projectile.hpp"
 #include "../DataTable.hpp"
 #include "../Utility.hpp"
+#include "../World.hpp"
+#include "../ParticleSystem/EmitterNode.hpp"
 #include <vector>
+#include <memory>
 namespace
 {
     const std::vector<ProjectileData> table = initializeProjectileData();
@@ -13,6 +16,17 @@ Projectile::Projectile(Type type, const TextureHolder& textures, World& world)
       mSprite(textures.get(table[type].texture), table[type].textureRect)
 {
     centerOrigin(mSprite);
+
+    if(isGuided()) // Adds emitters for missiles
+	{
+		std::unique_ptr<EmitterNode> smoke(new EmitterNode(Particle::Smoke, getWorld().getParticleNode(), 20.f));
+		smoke->setPosition(0.f, getLocalBounds().height / 2.f);
+		attachChild(std::move(smoke));
+
+		std::unique_ptr<EmitterNode> propellant(new EmitterNode(Particle::Propellant, getWorld().getParticleNode(), 20.f));
+		propellant->setPosition(0.f, getLocalBounds().height / 2.f);
+		attachChild(std::move(propellant));
+	}
 }
 
 float Projectile::getMaxSpeed() const
