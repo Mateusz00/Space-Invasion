@@ -20,13 +20,14 @@ class Particle
 		void            changeVelocity(sf::Vector2f);
 		sf::Color       getColor() const;
 		sf::Vector2f    getPosition() const;
+		sf::Time        getLifespan() const;
 
 	private:
-		sf::Time 		mLifeSpan;
+	    Type			mType;
+		sf::Time 		mLifespan;
 		sf::Vector2f 	mPosition;
 		sf::Vector2f 	mVelocity;
 		sf::Color 	    mColor;
-		Type			mType;
 };
 
 #endif // PARTICLE_HPP

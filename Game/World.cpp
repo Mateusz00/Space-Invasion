@@ -102,7 +102,7 @@ void World::buildWorld()
     std::unique_ptr<AmmoNode> ammoNode(new AmmoNode(*mPlayerAircraft, mTextures, mFonts, mView));
     mUIGraph.attachChild(std::move(ammoNode));
 
-    std::unique_ptr<ParticleNode> particleNode(new ParticleNode);
+    std::unique_ptr<ParticleNode> particleNode(new ParticleNode(mTextures));
     mParticleNode = particleNode.get();
     mSceneLayers[LowerAir]->attachChild(std::move(particleNode));
 }

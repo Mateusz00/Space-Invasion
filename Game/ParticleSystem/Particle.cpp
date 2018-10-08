@@ -8,18 +8,19 @@ namespace
 }
 
 Particle::Particle(sf::Vector2f pos, Type type)
-	: mLifeSpan(table[mType].lifespan),
+	: mType(type),
+	  mLifespan(table[mType].lifespan),
 	  mPosition(pos),
-	  mColor(table[mType].color),
-	  mType(type)
+	  mColor(table[mType].color)
 {
 }
 
 void Particle::update(sf::Time dt)
 {
-    mLifeSpan -= dt;
-    float timeRatio = mLifeSpan.asSeconds() / table[mType].lifespan.asSeconds();
+    mLifespan -= dt;
+    float timeRatio = mLifespan.asSeconds() / table[mType].lifespan.asSeconds();
     mColor.a = static_cast<sf::Uint8>(255 * std::max(timeRatio, 0.f)); // std::max to ensure positive result
+    mPosition += mVelocity * dt.asSeconds();
 }
 
 void Particle::changeVelocity(sf::Vector2f vel)
@@ -35,4 +36,9 @@ sf::Color Particle::getColor() const
 sf::Vector2f Particle::getPosition() const
 {
     return mPosition;
+}
+
+sf::Time Particle::getLifespan() const
+{
+    return mLifespan;
 }
