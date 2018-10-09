@@ -5,6 +5,7 @@
 #include "ParticleNode.hpp"
 #include "Particle.hpp"
 #include <SFML/System/Time.hpp>
+#include <SFML/Graphics.hpp>
 
 class EmitterNode : public SceneNode
 {
