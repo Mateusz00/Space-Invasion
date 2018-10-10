@@ -84,10 +84,10 @@ std::vector<ParticleData> initializeParticleData()
 {
 	std::vector<ParticleData> data(Particle::ParticleCount);
 
-    data[Particle::Propellant].lifespan = sf::seconds(0.5f);
+    data[Particle::Propellant].lifespan = sf::seconds(0.3sf);
 	data[Particle::Propellant].color = sf::Color(247, 204, 12);
 
-    data[Particle::Smoke].lifespan = sf::seconds(3.f);
+    data[Particle::Smoke].lifespan = sf::seconds(2.6f);
 	data[Particle::Smoke].color = sf::Color(48, 48, 48);
 
 	return data;
