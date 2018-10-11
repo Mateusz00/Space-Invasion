@@ -18,7 +18,7 @@ sf::Transform SceneNode::getWorldTransform() const
     sf::Transform currentTransform;
     for(const SceneNode* node = this; node != nullptr; node = node->mParent)
     {
-        currentTransform = node->getTransform() * currentTransform;
+        currentTransform = node->getTransform() * currentTransform; // We want to apply parent's transform first
     }
     return currentTransform;
 }
