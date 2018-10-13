@@ -1,8 +1,10 @@
 #include "DataTable.hpp"
+#include "AnimationNode.hpp"
 #include "Entities/Aircraft.hpp"
 #include "Entities/Projectile.hpp"
 #include "Entities/Pickup.hpp"
 #include "ParticleSystem/Particle.hpp"
+#include <SFML/System/Vector2.hpp>
 
 std::vector<AircraftData> initializeAircraftData()
 {
@@ -84,11 +86,24 @@ std::vector<ParticleData> initializeParticleData()
 {
 	std::vector<ParticleData> data(Particle::ParticleCount);
 
-    data[Particle::Propellant].lifespan = sf::seconds(0.3sf);
+    data[Particle::Propellant].lifespan = sf::seconds(0.3f);
 	data[Particle::Propellant].color = sf::Color(247, 204, 12);
 
     data[Particle::Smoke].lifespan = sf::seconds(2.6f);
 	data[Particle::Smoke].color = sf::Color(48, 48, 48);
+
+	return data;
+}
+
+std::vector<AnimationData> initializeAnimationData()
+{
+	std::vector<AnimationData> data(AnimationNode::Count);
+
+	data[AnimationNode::Explosion].rows = 4;
+	data[AnimationNode::Explosion].framesPerRow = 6;
+	data[AnimationNode::Explosion].frames = 24;
+	data[AnimationNode::Explosion].frameSize = sf::Vector2i(100, 100);
+	data[AnimationNode::Explosion].spriteSheet = Textures::Explosion;
 
 	return data;
 }

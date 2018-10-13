@@ -20,7 +20,8 @@ namespace Textures
         Aircrafts,
         Projectiles,
         Pickups,
-        Particle
+        Particle,
+        Explosion
     };
 }
 
