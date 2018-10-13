@@ -4,6 +4,7 @@
 #include "../Utility.hpp"
 #include "../World.hpp"
 #include "../DataTable.hpp"
+#include "../AnimationNode.hpp"
 #include <vector>
 #include <memory>
 namespace
@@ -51,6 +52,12 @@ Aircraft::Aircraft(Type type, const TextureHolder& textures, const FontHolder& f
     mSpawnPickupCommand.mAction = [this, &textures](SceneNode& node, sf::Time)
     {
         createPickup(node, textures);
+    };
+
+    mCreateExplosionCommand.mCategories.push_back(Category::AirLayer);
+    mCreateExplosionCommand.mAction = [this, &textures](SceneNode& node, sf::Time)
+    {
+        createExplosion(node, textures);
     };
 }
 
@@ -296,6 +303,12 @@ void Aircraft::checkPickupSpawn() const
         getWorld().getCommandQueue().push(mSpawnPickupCommand);
 }
 
+void Aircraft::checkIfExploded() const
+{
+    if(mShowExplosion)
+        getWorld().getCommandQueue().push(mCreateExplosionCommand);
+}
+
 void Aircraft::createPickup(SceneNode& node, const TextureHolder& textures) const
 {
     auto type = static_cast<Pickup::Type>(randomInt(0, Pickup::TypeCount-1));
@@ -304,9 +317,15 @@ void Aircraft::createPickup(SceneNode& node, const TextureHolder& textures) cons
     node.attachChild(std::move(pickup));
 }
 
+void Aircraft::createExplosion(SceneNode& node, const TextureHolder& textures) const
+{
+    std::unique_ptr<AnimationNode> explosion(new AnimationNode(AnimationNode::Explosion, sf::seconds(0.03f), textures));
+    explosion->setPosition(getWorldPosition());
+    node.attachChild(std::move(explosion));
+}
+
 void Aircraft::onRemoval()
 {
     checkPickupSpawn();
-    mShowExplosion = true;
-    // TODO: Add AnimationNode to world
+    checkIfExploded();
 }

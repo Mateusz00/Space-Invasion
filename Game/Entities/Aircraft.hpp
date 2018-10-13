@@ -43,7 +43,9 @@ class Aircraft : public Entity
         void            launchProjectiles(sf::Time, CommandQueue&);
         void            updateMovementPatterns(sf::Time);
         void            checkPickupSpawn() const;
+        void            checkIfExploded() const;
         void            createPickup(SceneNode&, const TextureHolder&) const;
+        void            createExplosion(SceneNode&, const TextureHolder&) const;
         virtual void    onRemoval() override;
 
         Type            mType;
@@ -62,6 +64,7 @@ class Aircraft : public Entity
         Command         mFireCommand;
         Command         mLaunchMissileCommand;
         Command         mSpawnPickupCommand;
+        Command         mCreateExplosionCommand;
 };
 
 #endif // AIRCRAFT_HPP

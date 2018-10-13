@@ -39,8 +39,8 @@ void World::update(sf::Time dt)
     checkCollisions();
 
     spawnEnemies();
-    mSceneGraph.removeWrecks();
     mSceneGraph.update(dt, mCommandQueue);
+    mSceneGraph.removeWrecks();
     adaptPlayersPosition();
     mUIGraph.update(dt, mCommandQueue);
 }

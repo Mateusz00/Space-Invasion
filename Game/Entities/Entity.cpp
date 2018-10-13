@@ -100,7 +100,7 @@ void Entity::removeEntity()
     destroy();
 }
 
-bool Entity::isMarkedForRemoval()
+bool Entity::isMarkedForRemoval() const
 {
     if(mHitpoints <= 0)
         return true;

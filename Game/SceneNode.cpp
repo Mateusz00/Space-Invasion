@@ -94,7 +94,7 @@ Category::Type SceneNode::getCategory() const
     return mCategory;
 }
 
-bool SceneNode::isMarkedForRemoval()
+bool SceneNode::isMarkedForRemoval() const
 {
     return false;
 }

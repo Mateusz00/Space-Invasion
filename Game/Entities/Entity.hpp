@@ -29,7 +29,7 @@ class Entity : public SceneNode
         virtual sf::FloatRect   getLocalBounds() const;
         virtual void            onCollision(Entity&);
         virtual void            removeEntity();
-        virtual bool            isMarkedForRemoval() override;
+        virtual bool            isMarkedForRemoval() const override;
 
     protected:
         virtual void            updateCurrent(sf::Time dt, CommandQueue&) override;
