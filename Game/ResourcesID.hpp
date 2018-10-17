@@ -7,8 +7,8 @@ namespace sf
 {
 	class Texture;
 	class Font;
+	class SoundBuffer;
 }
-
 
 namespace Textures
 {
@@ -34,7 +34,21 @@ namespace Fonts
     };
 }
 
-using TextureHolder = ResourceHolder<sf::Texture, Textures::ID>;
-using FontHolder    = ResourceHolder<sf::Font, Fonts::ID>;
+namespace Sound
+{
+	enum ID
+	{
+		Explosion,
+		GameOver,
+		EnemyGun,
+		AllyGun,
+		Missile,
+		PickUp
+	};
+}
+
+using TextureHolder     = ResourceHolder<sf::Texture, Textures::ID>;
+using FontHolder        = ResourceHolder<sf::Font, Fonts::ID>;
+using SoundBufferHolder = ResourceHolder<sf::SoundBuffer, Sound::ID>;
 
 #endif // RESOURCES_ID_HPP

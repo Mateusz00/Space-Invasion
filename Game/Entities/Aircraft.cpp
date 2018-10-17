@@ -152,10 +152,9 @@ sf::FloatRect Aircraft::getBoundingRect() const
 
 void Aircraft::updateRollAnimation(sf::Time dt)
 {
-    static sf::Time lastRoll;
-    lastRoll += dt;
+    mLastRoll += dt;
 
-    if(table[mType].hasRollAnimation && lastRoll.asSeconds() > 0.1f)
+    if(table[mType].hasRollAnimation && mLastRoll.asSeconds() > 0.1f)
     {
         sf::IntRect currentRect = mSprite.getTextureRect();
         sf::IntRect defaultRect = table[mType].textureRect;
@@ -163,18 +162,18 @@ void Aircraft::updateRollAnimation(sf::Time dt)
         if(getVelocity().x > 0.f && currentRect.left < defaultRect.width * (table[mType].spriteNumber-1))
         {
             currentRect.left += currentRect.width;
-            lastRoll = sf::Time::Zero;
+            mLastRoll = sf::Time::Zero;
         }
         else if(getVelocity().x < 0.f && currentRect.left > 0.f)
         {
             currentRect.left -= currentRect.width;
-            lastRoll = sf::Time::Zero;
+            mLastRoll = sf::Time::Zero;
         }
         else if(getVelocity().x == 0.f && currentRect != defaultRect)
         {
             (currentRect.left > defaultRect.left) ? currentRect.left -= currentRect.width
                                                        : currentRect.left += currentRect.width;
-            lastRoll = sf::Time::Zero;
+            mLastRoll = sf::Time::Zero;
         }
 
         mSprite.setTextureRect(currentRect);

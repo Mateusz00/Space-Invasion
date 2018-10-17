@@ -61,6 +61,7 @@ class Aircraft : public Entity
         float           mTravelledDistance;
         int             mDirectionIndex;
         sf::Time        mFireCooldown;
+        sf::Time        mLastRoll;
         Command         mFireCommand;
         Command         mLaunchMissileCommand;
         Command         mSpawnPickupCommand;
