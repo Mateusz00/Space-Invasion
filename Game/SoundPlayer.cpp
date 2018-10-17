@@ -4,15 +4,20 @@
 #include <SFML/Audio/Listener.hpp>
 namespace
 {
-	const float ATTENUATION = 10.f;
-	const float LISTENER_Z = 100.f;
-	const float MIN_DISTANCE_2D = 200.f;
+	const float ATTENUATION = 8.f;
+	const float LISTENER_Z = 500.f;
+	const float MIN_DISTANCE_2D = 120.f;
 	const float MIN_DISTANCE_3D = std::sqrt(MIN_DISTANCE_2D * MIN_DISTANCE_2D + LISTENER_Z * LISTENER_Z);
 }
 
 SoundPlayer::SoundPlayer()
 {
-	// Load sounds to mSounds
+	mSounds.loadFromFile(Sound::AllyGun,    "Resources/GunShot2.ogg");
+	mSounds.loadFromFile(Sound::EnemyGun,   "Resources/GunShot.ogg");
+	mSounds.loadFromFile(Sound::Explosion,  "Resources/Explosion.ogg");
+	mSounds.loadFromFile(Sound::GameOver,   "Resources/GameOver.ogg");
+	mSounds.loadFromFile(Sound::Missile,    "Resources/MissileLaunch.ogg");
+	mSounds.loadFromFile(Sound::PickUp,     "Resources/PickUp.ogg");
 }
 
 void SoundPlayer::play(Sound::ID id)

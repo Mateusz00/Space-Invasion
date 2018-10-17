@@ -1,9 +1,10 @@
 #include "State.hpp"
 
-State::Context::Context(sf::RenderWindow& window, TextureHolder& textures, FontHolder& fonts, KeyBinding* binds)
+State::Context::Context(sf::RenderWindow& window, TextureHolder& textures, FontHolder& fonts, SoundPlayer& sounds, KeyBinding* binds)
     : window(window),
       textures(textures),
       fonts(fonts),
+      sounds(sounds),
       keys1(binds)
 {
 }

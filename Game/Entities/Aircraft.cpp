@@ -241,6 +241,7 @@ void Aircraft::launchProjectiles(sf::Time dt, CommandQueue& commands)
     if(mIsFiring && mFireCooldown <= sf::Time::Zero)
     {
         commands.push(mFireCommand);
+        getWorld().getSoundPlayer().play((mIsEnemy ? Sound::EnemyGun : Sound::AllyGun), getWorldPosition());
         mFireCooldown += table[mType].fireInterval / static_cast<float>(mFireRateLevel);
     }
     else if(mFireCooldown > sf::Time::Zero)
@@ -252,6 +253,7 @@ void Aircraft::launchProjectiles(sf::Time dt, CommandQueue& commands)
     if(mIsLaunchingMissile)
 	{
 		commands.push(mLaunchMissileCommand);
+		getWorld().getSoundPlayer().play(Sound::Missile, getWorldPosition());
 		mIsLaunchingMissile = false;
 	}
 }
@@ -305,7 +307,10 @@ void Aircraft::checkPickupSpawn() const
 void Aircraft::checkIfExploded() const
 {
     if(mShowExplosion)
+    {
         getWorld().getCommandQueue().push(mCreateExplosionCommand);
+        getWorld().getSoundPlayer().play(Sound::Explosion, getWorldPosition());
+    }
 }
 
 void Aircraft::createPickup(SceneNode& node, const TextureHolder& textures) const

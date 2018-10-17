@@ -2,7 +2,7 @@
 
 GameState::GameState(Context context, StateStack& stateStack)
     : State(context, stateStack),
-      mWorld(context.window, context.textures, context.fonts),
+      mWorld(context.window, context.textures, context.fonts, context.sounds),
       mPlayer(context.keys1, 0)
 {
 }

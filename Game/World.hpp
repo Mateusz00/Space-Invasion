@@ -2,6 +2,7 @@
 #define WORLD_HPP
 
 #include "CommandQueue.hpp"
+#include "SoundPlayer.hpp"
 #include "Entities/Aircraft.hpp"
 #include "ResourcesID.hpp"
 #include "SceneNode.hpp"
@@ -14,7 +15,7 @@
 class World
 {
     public:
-                            World(sf::RenderTarget&, TextureHolder&, FontHolder&);
+                            World(sf::RenderTarget&, TextureHolder&, FontHolder&, SoundPlayer&);
         CommandQueue&       getCommandQueue();
         void                update(sf::Time);
         void                draw();
@@ -23,6 +24,7 @@ class World
         void                addCollidable(Entity*);
         void                removeCollidable(Entity*);
         ParticleNode&       getParticleNode() const;
+        SoundPlayer&        getSoundPlayer() const;
 
     private:
         void    buildWorld();
@@ -35,6 +37,7 @@ class World
         void    adaptPlayersPosition();
         void    checkCollisions();
         void    destroyEntitiesOutsideView();
+        void    updateSounds();
 
         enum Layer
         {
@@ -53,6 +56,7 @@ class World
         sf::RenderTarget&   mTarget;
         TextureHolder&      mTextures;
         FontHolder&         mFonts;
+        SoundPlayer&        mSoundPlayer;
         SceneNode           mSceneGraph;
         SceneNode           mUIGraph;
         CommandQueue        mCommandQueue;

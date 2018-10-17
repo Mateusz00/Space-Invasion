@@ -5,6 +5,7 @@
 #include "../KeyBinding.hpp"
 #include <SFML/Graphics/RenderWindow.hpp>
 class StateStack;
+class SoundPlayer;
 
 class State
 {
@@ -12,10 +13,11 @@ class State
         using Ptr = std::unique_ptr<State>;
         struct Context
         {
-            Context(sf::RenderWindow&, TextureHolder&, FontHolder&, KeyBinding*);
+            Context(sf::RenderWindow&, TextureHolder&, FontHolder&, SoundPlayer&, KeyBinding*);
             sf::RenderWindow&   window;
             TextureHolder&      textures;
             FontHolder&         fonts;
+            SoundPlayer&        sounds;
             KeyBinding*         keys1;
         };
 

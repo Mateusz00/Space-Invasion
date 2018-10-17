@@ -7,10 +7,11 @@
 #include <limits>
 #include <iostream>
 
-World::World(sf::RenderTarget& target, TextureHolder& textures, FontHolder& fonts)
+World::World(sf::RenderTarget& target, TextureHolder& textures, FontHolder& fonts, SoundPlayer& sounds)
     : mTarget(target),
       mTextures(textures),
       mFonts(fonts),
+      mSoundPlayer(sounds),
       mPlayerAircraft(nullptr),
       mView(target.getDefaultView()),
       mWorldBounds(0.f, 0.f, mView.getSize().x, 7000.f),
@@ -43,6 +44,7 @@ void World::update(sf::Time dt)
     mSceneGraph.removeWrecks();
     adaptPlayersPosition();
     mUIGraph.update(dt, mCommandQueue);
+    updateSounds();
 }
 
 void World::draw()
@@ -61,7 +63,7 @@ CommandQueue& World::getCommandQueue()
 void World::addCollidable(Entity* entity)
 {
     mCollidablesList.emplace_back(entity);
-    entity->getPositionOnList() = --mCollidablesList.end();
+    entity->getPositionOnList() = --(mCollidablesList.end());
 }
 
 void World::removeCollidable(Entity* entity)
@@ -73,6 +75,11 @@ void World::removeCollidable(Entity* entity)
 ParticleNode& World::getParticleNode() const
 {
     return *mParticleNode;
+}
+
+SoundPlayer& World::getSoundPlayer() const
+{
+    return mSoundPlayer;
 }
 
 void World::buildWorld()
@@ -256,4 +263,10 @@ void World::destroyEntitiesOutsideView()
             object.removeEntity();
     });
     mCommandQueue.push(command);
+}
+
+void World::updateSounds()
+{
+    mSoundPlayer.removeStoppedSounds();
+    mSoundPlayer.setListener(mPlayerAircraft->getWorldPosition());
 }

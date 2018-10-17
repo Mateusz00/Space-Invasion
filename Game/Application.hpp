@@ -3,6 +3,7 @@
 
 #include "StateStack.hpp"
 #include "ResourcesID.hpp"
+#include "SoundPlayer.hpp"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/Time.hpp>
 #include <SFML/Graphics/Text.hpp>
@@ -24,6 +25,7 @@ class Application
         sf::RenderWindow     mWindow;
         FontHolder           mFonts;
         TextureHolder        mTextures;
+        SoundPlayer			 mSounds;
         KeyBinding           mKeyBinding1;
         sf::Text             mFPSCounter;
         StateStack           mStateStack;
