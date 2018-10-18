@@ -47,6 +47,14 @@ namespace Sound
 	};
 }
 
+namespace Music
+{
+    enum ID
+    {
+
+    };
+}
+
 using TextureHolder     = ResourceHolder<sf::Texture, Textures::ID>;
 using FontHolder        = ResourceHolder<sf::Font, Fonts::ID>;
 using SoundBufferHolder = ResourceHolder<sf::SoundBuffer, Sound::ID>;
