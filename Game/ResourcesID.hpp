@@ -51,7 +51,8 @@ namespace Music
 {
     enum ID
     {
-
+		MenuTheme,
+		BattleTheme
     };
 }
 
