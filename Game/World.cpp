@@ -7,13 +7,14 @@
 #include <limits>
 #include <iostream>
 
-World::World(sf::RenderTarget& target, TextureHolder& textures, FontHolder& fonts, SoundPlayer& sounds)
-    : mTarget(target),
-      mTextures(textures),
-      mFonts(fonts),
-      mSoundPlayer(sounds),
+World::World(State::Context context)
+    : mTarget(context.window),
+      mTextures(context.textures),
+      mFonts(context.fonts),
+      mSoundPlayer(context.sounds),
+      mMusicPlayer(context.music),
       mPlayerAircraft(nullptr),
-      mView(target.getDefaultView()),
+      mView(mTarget.getDefaultView()),
       mWorldBounds(0.f, 0.f, mView.getSize().x, 7000.f),
       mPlayerSpawnPosition(mView.getSize().x / 2, mWorldBounds.height - mView.getSize().y / 2.f),
       mScrollingSpeed(-40.f)

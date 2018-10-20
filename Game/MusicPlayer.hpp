@@ -12,9 +12,9 @@
 class MusicPlayer
 {
 	public:
-				MusicPlayer(float);
-		void 	playNow(Music::ID); // Stops music and adds new to front of music playlist
-		void 	addToQueue(Music::ID, bool addToEnd);
+				MusicPlayer(float volume = 80.f);
+		void 	playNow(Music::ID, bool); // Stops music and adds new to front of music playlist
+		void 	addToQueue(Music::ID, bool addToEnd = true);
 		void 	update(); // Changes stopped music for a new one from front of the playlist and makes it looped depending on the flag
 		void 	setVolume(float);
 		void 	setLoop(bool);

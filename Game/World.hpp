@@ -2,6 +2,7 @@
 #define WORLD_HPP
 
 #include "CommandQueue.hpp"
+#include "State.hpp"
 #include "SoundPlayer.hpp"
 #include "Entities/Aircraft.hpp"
 #include "ResourcesID.hpp"
@@ -15,7 +16,7 @@
 class World
 {
     public:
-                            World(sf::RenderTarget&, TextureHolder&, FontHolder&, SoundPlayer&);
+        explicit            World(State::Context context);
         CommandQueue&       getCommandQueue();
         void                update(sf::Time);
         void                draw();
@@ -57,6 +58,7 @@ class World
         TextureHolder&      mTextures;
         FontHolder&         mFonts;
         SoundPlayer&        mSoundPlayer;
+        MusicPlayer&        mMusicPlayer;
         SceneNode           mSceneGraph;
         SceneNode           mUIGraph;
         CommandQueue        mCommandQueue;

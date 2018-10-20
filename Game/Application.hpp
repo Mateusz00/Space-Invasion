@@ -4,6 +4,7 @@
 #include "StateStack.hpp"
 #include "ResourcesID.hpp"
 #include "SoundPlayer.hpp"
+#include "MusicPlayer.hpp"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/Time.hpp>
 #include <SFML/Graphics/Text.hpp>
@@ -26,6 +27,7 @@ class Application
         FontHolder           mFonts;
         TextureHolder        mTextures;
         SoundPlayer			 mSounds;
+        MusicPlayer			 mMusicPlayer;
         KeyBinding           mKeyBinding1;
         sf::Text             mFPSCounter;
         StateStack           mStateStack;

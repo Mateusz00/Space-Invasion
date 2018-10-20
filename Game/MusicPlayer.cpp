@@ -1,7 +1,7 @@
 #include "MusicPlayer.hpp"
 #include <SFML/Audio/Sound.hpp>
 
-MusicPlayer::MusicPlayer(float volume = 80.f)
+MusicPlayer::MusicPlayer(float volume)
 	: mDefaultVolume(volume),
 	  mIsLooped(false)
 {
@@ -9,14 +9,14 @@ MusicPlayer::MusicPlayer(float volume = 80.f)
 	mMusicToFilePath[Music::BattleTheme] = std::string("Resources/BattleTheme.ogg");
 }
 
-void MusicPlayer::playNow(Music::ID id)
+void MusicPlayer::playNow(Music::ID id, bool isLooped)
 {
-    // Stopped music is deleted from music playlist and music that's first on the list is played instead
 	mCurrentMusic.stop();
-	addToQueue(id, false);
+	addToQueue(id, false); // Place it at the beginning of the queue
+	setLoop(isLooped);
 }
 
-void MusicPlayer::addToQueue(Music::ID id, bool addToEnd = true)
+void MusicPlayer::addToQueue(Music::ID id, bool addToEnd)
 {
 	if(addToEnd)
 		mMusicPlaylist.emplace_back(id);
@@ -26,9 +26,6 @@ void MusicPlayer::addToQueue(Music::ID id, bool addToEnd = true)
 
 void MusicPlayer::update()
 {
-	if(mCurrentMusic.getStatus() == sf::Sound::Stopped)
-		mMusicPlaylist.pop_front();
-
 	if(!mMusicPlaylist.empty() && mCurrentMusic.getStatus() == sf::Sound::Stopped)
 	{
 	    auto id = mMusicPlaylist.front();
@@ -48,6 +45,7 @@ void MusicPlayer::update()
         mCurrentMusic.setLoop(mIsLooped);
         mCurrentMusic.play();
         mIsLooped = false; // Loop only one sound
+        mMusicPlaylist.pop_front(); // Delete from queue as it's already playing
 	}
 }
 

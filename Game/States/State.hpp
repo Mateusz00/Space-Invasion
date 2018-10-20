@@ -6,6 +6,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 class StateStack;
 class SoundPlayer;
+class MusicPlayer;
 
 class State
 {
@@ -13,11 +14,12 @@ class State
         using Ptr = std::unique_ptr<State>;
         struct Context
         {
-            Context(sf::RenderWindow&, TextureHolder&, FontHolder&, SoundPlayer&, KeyBinding*);
+            Context(sf::RenderWindow&, TextureHolder&, FontHolder&, SoundPlayer&, MusicPlayer&, KeyBinding*);
             sf::RenderWindow&   window;
             TextureHolder&      textures;
             FontHolder&         fonts;
             SoundPlayer&        sounds;
+            MusicPlayer&        music;
             KeyBinding*         keys1;
         };
 

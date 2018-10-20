@@ -1,10 +1,12 @@
 #include "GameState.hpp"
+#include "../MusicPlayer.hpp"
 
 GameState::GameState(Context context, StateStack& stateStack)
     : State(context, stateStack),
-      mWorld(context.window, context.textures, context.fonts, context.sounds),
+      mWorld(context),
       mPlayer(context.keys1, 0)
 {
+    context.music.playNow(Music::BattleTheme, true);
 }
 
 bool GameState::draw()

@@ -7,7 +7,7 @@
 Application::Application()
     : TIME_PER_FRAME(sf::seconds(1.f / 60.f)),
       mWindow(sf::VideoMode(1024, 700), "2D Fighter Jet Game", sf::Style::Close),
-      mStateStack(State::Context(mWindow, mTextures, mFonts, mSounds, &mKeyBinding1))
+      mStateStack(State::Context(mWindow, mTextures, mFonts, mSounds, mMusicPlayer, &mKeyBinding1))
 {
     loadResources();
     mWindow.setKeyRepeatEnabled(false);
@@ -50,6 +50,7 @@ void Application::draw()
 void Application::update(sf::Time dt)
 {
     mStateStack.update(dt);
+    mMusicPlayer.update();
 }
 
 void Application::handleEvents()
