@@ -6,10 +6,10 @@
 
 MenuState::MenuState(Context context, StateStack& stateStack)
     : State(context, stateStack),
-      mWindow(context.window)
+      mWindow(context.window),
+      mBackgroundSprite(context.textures.get(Textures::TitleScreen))
 {
     context.music.playNow(Music::MenuTheme, true);
-
     //Add buttons here
 
     mGUIContainer.setPosition(200.f, 200.f);

@@ -21,7 +21,8 @@ namespace Textures
         Projectiles,
         Pickups,
         Particle,
-        Explosion
+        Explosion,
+        TitleScreen
     };
 }
 

@@ -90,4 +90,5 @@ void Application::loadResources()
     mTextures.loadFromFile(Textures::Pickups,        "Resources/Pickups.png");
     mTextures.loadFromFile(Textures::Particle,       "Resources/Particle.png");
     mTextures.loadFromFile(Textures::Explosion,      "Resources/Explosion.png");
+    mTextures.loadFromFile(Textures::TitleScreen,    "Resources/TitleScreen.png");
 }
