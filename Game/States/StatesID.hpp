@@ -6,6 +6,7 @@ namespace States
     enum ID
     {
         GameState,
+        MenuState,
         None
     };
 }

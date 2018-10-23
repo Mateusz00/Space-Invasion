@@ -1,5 +1,6 @@
 #include "StateStack.hpp"
 #include "States/GameState.hpp"
+#include "States/MenuState.hpp"
 #include <exception>
 
 StateStack::PendingChange::PendingChange(Action action, States::ID id)
@@ -12,6 +13,7 @@ StateStack::StateStack(State::Context context)
     : mContext(context)
 {
     createStateFactory<GameState>(States::GameState);
+    createStateFactory<MenuState>(States::MenuState);
 }
 
 void StateStack::update(sf::Time dt)

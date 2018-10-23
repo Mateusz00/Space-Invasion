@@ -14,7 +14,7 @@ Application::Application()
     mFPSCounter.setFont(mFonts.get(Fonts::Sansation));
     mFPSCounter.setCharacterSize(12u);
     mFPSCounter.setPosition(2.f, 2.f);
-    mStateStack.pushState(States::GameState);
+    mStateStack.pushState(States::MenuState);
 }
 
 void Application::run()
