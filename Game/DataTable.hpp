@@ -2,6 +2,7 @@
 #define DATATABLE_HPP
 
 #include "ResourcesID.hpp"
+#include "GUI/GUIButton.hpp"
 #include <SFML/System/Time.hpp>
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/Color.hpp>
@@ -56,10 +57,17 @@ struct AnimationData
 	Textures::ID    spriteSheet;
 };
 
+struct ButtonData
+{
+	Textures::ID textureId;
+	sf::IntRect  rect;
+};
+
 std::vector<AircraftData>       initializeAircraftData();
 std::vector<ProjectileData>     initializeProjectileData();
 std::vector<PickupData>		    initializePickupData();
 std::vector<ParticleData>	    initializeParticleData();
 std::vector<AnimationData>      initializeAnimationData();
+std::vector<ButtonData>         initializeButtonData();
 
 #endif // DATATABLE_HPP

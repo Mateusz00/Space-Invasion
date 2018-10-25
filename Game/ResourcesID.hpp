@@ -22,7 +22,8 @@ namespace Textures
         Pickups,
         Particle,
         Explosion,
-        TitleScreen
+        TitleScreen,
+        MenuButtons
     };
 }
 
@@ -44,7 +45,8 @@ namespace Sound
 		EnemyGun,
 		AllyGun,
 		Missile,
-		PickUp
+		PickUp,
+		ButtonClick
 	};
 }
 

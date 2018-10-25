@@ -107,3 +107,13 @@ std::vector<AnimationData> initializeAnimationData()
 
 	return data;
 }
+
+std::vector<ButtonData> initializeButtonData()
+{
+	std::vector<ButtonData> data(GUIButton::Count);
+
+	data[GUIButton::Menu].textureId = Textures::MenuButtons;
+	//data[GUIButton::Menu].rect = //Add later
+
+	return data;
+}
