@@ -23,7 +23,9 @@ namespace Textures
         Particle,
         Explosion,
         TitleScreen,
-        MenuButtons
+        MenuButtons,
+        Speaker,
+        MutedSpeaker
     };
 }
 

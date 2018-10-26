@@ -7,6 +7,7 @@ namespace States
     {
         GameState,
         MenuState,
+        SettingsState,
         None
     };
 }

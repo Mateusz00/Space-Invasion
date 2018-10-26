@@ -3,6 +3,7 @@
 
 #include "../ResourcesID.hpp"
 #include "../KeyBinding.hpp"
+#include "StatesID.hpp"
 #include <SFML/Graphics/RenderWindow.hpp>
 class StateStack;
 class SoundPlayer;
@@ -24,9 +25,13 @@ class State
         };
 
                         State(Context, StateStack&);
+        virtual         ~State();
         virtual bool    draw() = 0;
         virtual bool    update(sf::Time) = 0;
         virtual bool    handleEvent(const sf::Event&) = 0;
+        void            requestStackPush(States::ID);
+        void            requestStackPop();
+        void            requestStateClear();
 
     private:
         Context         mContext;

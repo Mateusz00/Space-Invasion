@@ -68,7 +68,7 @@ void GUIContainer::update(sf::Window& window)
         sf::Vector2f mousePosition = static_cast<sf::Vector2f>(sf::Mouse::getPosition(window));
         for(int i = 0; i < mComponents.size(); ++i)
         {
-            if(getComponentRect(i).contains(mousePosition))
+            if(getComponentRect(i).contains(mousePosition) && mComponents[i]->isSelectable())
             {
                 mComponents[mSelected]->deselect();
                 mComponents[i]->select();

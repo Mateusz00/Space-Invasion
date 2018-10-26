@@ -59,8 +59,8 @@ struct AnimationData
 
 struct ButtonData
 {
-	Textures::ID textureId;
-	sf::IntRect  rect;
+	Textures::ID    textureId;
+	sf::Vector2i    buttonSize;
 };
 
 std::vector<AircraftData>       initializeAircraftData();

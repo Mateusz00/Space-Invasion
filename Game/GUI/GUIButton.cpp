@@ -1,4 +1,3 @@
-
 #include "GUIButton.hpp"
 #include "../SoundPlayer.hpp"
 #include "../ResourcesID.hpp"
@@ -13,13 +12,13 @@ namespace
 
 GUIButton::GUIButton(State::Context context, ButtonType type, const std::string& text)
 	: mType(type),
-	  mText(text, context.fonts.get(Fonts::Sansation), 16u),
+	  mText(text, context.fonts.get(Fonts::Sansation), 28u),
 	  mSounds(context.sounds)
 {
 	if(mType != ButtonType::Text)
 	{
 		mSprite.setTexture(context.textures.get(table[mType].textureId));
-		changeTexture(ButtonState::Normal);
+		changeAppearance(ButtonState::Normal);
 	}
 
 	centerOrigin(mText);
@@ -30,19 +29,19 @@ GUIButton::GUIButton(State::Context context, ButtonType type, const std::string&
 void GUIButton::select()
 {
 	GUIObject::select();
-	changeTexture(ButtonState::Selected);
+	changeAppearance(ButtonState::Selected);
 }
 
 void GUIButton::deselect()
 {
 	GUIObject::deselect();
-	changeTexture(ButtonState::Normal);
+	changeAppearance(ButtonState::Normal);
 }
 
 void GUIButton::activate()
 {
     GUIObject::activate();
-	changeTexture(ButtonState::Pressed);
+	changeAppearance(ButtonState::Pressed);
 	mSounds.play(Sound::ButtonClick);
 
 	if(mCallback)
@@ -55,7 +54,7 @@ void GUIButton::activate()
 void GUIButton::deactivate()
 {
     GUIObject::deactivate();
-	changeTexture(ButtonState::Selected);
+	changeAppearance(ButtonState::Selected);
 }
 
 bool GUIButton::isSelectable() const
@@ -69,7 +68,10 @@ void GUIButton::handleEvent(const sf::Event& event)
 
 sf::FloatRect GUIButton::getBoundingRect() const
 {
-    return getTransform().transformRect(mSprite.getGlobalBounds());
+    if(mSprite.getTexture())
+        return getTransform().transformRect(mSprite.getGlobalBounds());
+
+    return getTransform().transformRect(mText.getGlobalBounds());
 }
 
 void GUIButton::setCallback(Callback callback)
@@ -81,13 +83,21 @@ void GUIButton::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     states.transform *= getTransform();
     target.draw(mSprite, states);
+    target.draw(mText, states);
 }
 
-void GUIButton::changeTexture(ButtonState state)
+void GUIButton::changeAppearance(ButtonState state)
 {
 	if(mSprite.getTexture())
 	{
-		sf::IntRect newRect(0, table[mType].rect.top * state, table[mType].rect.width, table[mType].rect.height);
+		sf::IntRect newRect(0, table[mType].buttonSize.x * state, table[mType].buttonSize.x, table[mType].buttonSize.y);
 		mSprite.setTextureRect(newRect);
 	}
+	else
+    {
+        if(state == ButtonState::Normal)
+            mText.setFillColor(sf::Color::White);
+        else
+            mText.setFillColor(sf::Color::Red);
+    }
 }

@@ -31,6 +31,9 @@ void Application::run()
             timeSinceUpdate -= TIME_PER_FRAME;
             handleEvents();
             update(TIME_PER_FRAME);
+
+                if(mStateStack.isEmpty())
+            mWindow.close();
         }
 
         updateFPSCounter(deltaTime);
@@ -91,4 +94,5 @@ void Application::loadResources()
     mTextures.loadFromFile(Textures::Particle,       "Resources/Particle.png");
     mTextures.loadFromFile(Textures::Explosion,      "Resources/Explosion.png");
     mTextures.loadFromFile(Textures::TitleScreen,    "Resources/TitleScreen.png");
+    mTextures.loadFromFile(Textures::Speaker,        "Resources/Speaker.png");
 }

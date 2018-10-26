@@ -38,7 +38,7 @@ class GUIButton : public GUIObject
 
 	private:
 	    virtual void	        draw(sf::RenderTarget&, sf::RenderStates) const override;
-		void 					changeTexture(ButtonState);
+		void 					changeAppearance(ButtonState);
 
 		ButtonType				mType;
 	    sf::Sprite      		mSprite;

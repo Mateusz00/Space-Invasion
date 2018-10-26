@@ -12,12 +12,13 @@ namespace
 
 SoundPlayer::SoundPlayer()
 {
-	mSounds.loadFromFile(Sound::AllyGun,    "Resources/GunShot2.ogg");
-	mSounds.loadFromFile(Sound::EnemyGun,   "Resources/GunShot.ogg");
-	mSounds.loadFromFile(Sound::Explosion,  "Resources/Explosion.ogg");
-	mSounds.loadFromFile(Sound::GameOver,   "Resources/GameOver.ogg");
-	mSounds.loadFromFile(Sound::Missile,    "Resources/MissileLaunch.ogg");
-	mSounds.loadFromFile(Sound::PickUp,     "Resources/PickUp.ogg");
+	mSounds.loadFromFile(Sound::AllyGun,        "Resources/GunShot2.ogg");
+	mSounds.loadFromFile(Sound::EnemyGun,       "Resources/GunShot.ogg");
+	mSounds.loadFromFile(Sound::Explosion,      "Resources/Explosion.ogg");
+	mSounds.loadFromFile(Sound::GameOver,       "Resources/GameOver.ogg");
+	mSounds.loadFromFile(Sound::Missile,        "Resources/MissileLaunch.ogg");
+	mSounds.loadFromFile(Sound::PickUp,         "Resources/PickUp.ogg");
+	mSounds.loadFromFile(Sound::ButtonClick,    "Resources/ButtonClick.ogg");
 }
 
 void SoundPlayer::play(Sound::ID id)

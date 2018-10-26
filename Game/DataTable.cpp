@@ -113,7 +113,7 @@ std::vector<ButtonData> initializeButtonData()
 	std::vector<ButtonData> data(GUIButton::Count);
 
 	data[GUIButton::Menu].textureId = Textures::MenuButtons;
-	//data[GUIButton::Menu].rect = //Add later
+	//data[GUIButton::Menu].buttonSize = //Add later
 
 	return data;
 }

@@ -22,6 +22,7 @@ class StateStack : private sf::NonCopyable
         void        popState();
         void        clearStates();
         void        applyPendingChanges();
+        bool        isEmpty() const;
 
     private:
         template <typename T>
