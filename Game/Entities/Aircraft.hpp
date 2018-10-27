@@ -44,28 +44,27 @@ class Aircraft : public Entity
         void            updateMovementPatterns(sf::Time);
         void            checkPickupSpawn() const;
         void            checkIfExploded() const;
-        void            createPickup(SceneNode&, const TextureHolder&) const;
-        void            createExplosion(SceneNode&, const TextureHolder&) const;
+        void            createPickup() const;
+        void            createExplosion() const;
         virtual void    onRemoval() override;
 
-        Type            mType;
-        sf::Sprite      mSprite;
-        int	            mFireRateLevel;
-        int	            mSpreadLevel;
-        int	            mMissileAmmo;
-        int             mIdentifier;
-        bool            mIsFiring;
-        bool            mIsLaunchingMissile;
-        bool            mIsEnemy;
-        bool            mShowExplosion;
-        float           mTravelledDistance;
-        int             mDirectionIndex;
-        sf::Time        mFireCooldown;
-        sf::Time        mLastRoll;
-        Command         mFireCommand;
-        Command         mLaunchMissileCommand;
-        Command         mSpawnPickupCommand;
-        Command         mCreateExplosionCommand;
+        Type                    mType;
+        sf::Sprite              mSprite;
+        int	                    mFireRateLevel;
+        int	                    mSpreadLevel;
+        int	                    mMissileAmmo;
+        int                     mIdentifier;
+        bool                    mIsFiring;
+        bool                    mIsLaunchingMissile;
+        bool                    mIsEnemy;
+        bool                    mShowExplosion;
+        float                   mTravelledDistance;
+        int                     mDirectionIndex;
+        sf::Time                mFireCooldown;
+        sf::Time                mLastRoll;
+        Command                 mFireCommand;
+        Command                 mLaunchMissileCommand;
+        const TextureHolder&    mTextures;
 };
 
 #endif // AIRCRAFT_HPP

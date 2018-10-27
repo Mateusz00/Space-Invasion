@@ -26,7 +26,8 @@ Aircraft::Aircraft(Type type, const TextureHolder& textures, const FontHolder& f
       mIsEnemy(mType != Ally),
       mShowExplosion(true),
       mTravelledDistance(0.f),
-      mDirectionIndex(0)
+      mDirectionIndex(0),
+      mTextures(textures)
 {
     centerOrigin(mSprite);
 
@@ -46,18 +47,6 @@ Aircraft::Aircraft(Type type, const TextureHolder& textures, const FontHolder& f
     mLaunchMissileCommand.mAction = [this, &textures](SceneNode& node, sf::Time)
     {
         createProjectile(node, Projectile::Missile, 0.f, 0.5f, textures);
-    };
-
-    mSpawnPickupCommand.mCategories.push_back(Category::AirLayer);
-    mSpawnPickupCommand.mAction = [this, &textures](SceneNode& node, sf::Time)
-    {
-        createPickup(node, textures);
-    };
-
-    mCreateExplosionCommand.mCategories.push_back(Category::AirLayer);
-    mCreateExplosionCommand.mAction = [this, &textures](SceneNode& node, sf::Time)
-    {
-        createExplosion(node, textures);
     };
 }
 
@@ -301,31 +290,31 @@ void Aircraft::removeEntity()
 void Aircraft::checkPickupSpawn() const
 {
     if(mIsEnemy && (randomInt(1, 4) == 2)) // 25% chance for spawning pickup for enemies
-        getWorld().getCommandQueue().push(mSpawnPickupCommand);
+        createPickup();
 }
 
 void Aircraft::checkIfExploded() const
 {
     if(mShowExplosion)
     {
-        getWorld().getCommandQueue().push(mCreateExplosionCommand);
+        createExplosion();
         getWorld().getSoundPlayer().play(Sound::Explosion, getWorldPosition());
     }
 }
 
-void Aircraft::createPickup(SceneNode& node, const TextureHolder& textures) const
+void Aircraft::createPickup() const
 {
     auto type = static_cast<Pickup::Type>(randomInt(0, Pickup::TypeCount-1));
-    std::unique_ptr<Pickup> pickup (new Pickup(type, textures, getWorld()));
+    std::unique_ptr<Pickup> pickup (new Pickup(type, mTextures, getWorld()));
     pickup->setPosition(getWorldPosition());
-    node.attachChild(std::move(pickup));
+    getWorld().placeOnLayer(std::move(pickup), Category::AirLayer);
 }
 
-void Aircraft::createExplosion(SceneNode& node, const TextureHolder& textures) const
+void Aircraft::createExplosion() const
 {
-    std::unique_ptr<AnimationNode> explosion(new AnimationNode(AnimationNode::Explosion, sf::seconds(0.03f), textures));
+    std::unique_ptr<AnimationNode> explosion(new AnimationNode(AnimationNode::Explosion, sf::seconds(0.03f), mTextures));
     explosion->setPosition(getWorldPosition());
-    node.attachChild(std::move(explosion));
+    getWorld().placeOnLayer(std::move(explosion), Category::AirLayer);
 }
 
 void Aircraft::onRemoval()

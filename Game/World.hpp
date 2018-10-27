@@ -26,6 +26,7 @@ class World
         void                removeCollidable(Entity*);
         ParticleNode&       getParticleNode() const;
         SoundPlayer&        getSoundPlayer() const;
+        void                placeOnLayer(SceneNode::Ptr, Category::Type layer);
 
     private:
         void    buildWorld();
