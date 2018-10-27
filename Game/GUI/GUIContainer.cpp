@@ -51,8 +51,12 @@ void GUIContainer::handleEvent(const sf::Event& event)
     }
     else if(event.type == sf::Event::MouseButtonPressed)
     {
-        if(hasSelection())
-            mComponents[mSelected]->activate();
+        sf::Vector2i tempPos(event.mouseButton.x, event.mouseButton.y);
+        sf::Vector2f mousePosition = static_cast<sf::Vector2f>(tempPos);
+        int index;
+
+        if(checkMouseCollision(mousePosition, index))
+            mComponents[index]->activate();
     }
 }
 
@@ -63,18 +67,14 @@ sf::FloatRect GUIContainer::getBoundingRect() const
 
 void GUIContainer::update(sf::Window& window)
 {
-    if(!mComponents.empty())
+    sf::Vector2f mousePosition = static_cast<sf::Vector2f>(sf::Mouse::getPosition(window));
+    int index;
+
+    if(checkMouseCollision(mousePosition, index))
     {
-        sf::Vector2f mousePosition = static_cast<sf::Vector2f>(sf::Mouse::getPosition(window));
-        for(int i = 0; i < mComponents.size(); ++i)
-        {
-            if(getComponentRect(i).contains(mousePosition) && mComponents[i]->isSelectable())
-            {
-                mComponents[mSelected]->deselect();
-                mComponents[i]->select();
-                mSelected = i;
-            }
-        }
+        mComponents[mSelected]->deselect();
+        mComponents[index]->select();
+        mSelected = index;
     }
 }
 
@@ -129,4 +129,21 @@ sf::FloatRect GUIContainer::getComponentRect(int componentNumber) const
     rect = getTransform().transformRect(rect);
 
     return rect;
+}
+
+bool GUIContainer::checkMouseCollision(sf::Vector2f mousePosition, int& index) const
+{
+    if(!mComponents.empty())
+    {
+        for(int i = 0; i < mComponents.size(); ++i)
+        {
+            if(getComponentRect(i).contains(mousePosition) && mComponents[i]->isSelectable())
+            {
+                index = i;
+                return true;
+            }
+        }
+    }
+
+    return false;
 }

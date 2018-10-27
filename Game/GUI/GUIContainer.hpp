@@ -24,6 +24,7 @@ class GUIContainer : public GUIObject
         bool                    hasSelection() const;
 		GUIObject*				checkForToggledButtons() const;
 		sf::FloatRect           getComponentRect(int componentNumber) const;
+		bool                    checkMouseCollision(sf::Vector2f, int& index) const;
 
 		std::vector<ComponentPtr>	mComponents;
 		int                         mSelected;
