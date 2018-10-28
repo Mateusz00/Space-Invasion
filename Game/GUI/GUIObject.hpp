@@ -20,7 +20,7 @@ class GUIObject : public sf::Drawable, public sf::Transformable
         virtual void	        activate();
         virtual void	        deactivate();
         virtual void	        handleEvent(const sf::Event&) = 0;
-        virtual sf::FloatRect   getBoundingRect() const = 0;
+        virtual sf::FloatRect   getBoundingRect() const;
 
     private:
         bool mIsSelected;

@@ -19,11 +19,12 @@ GUIButton::GUIButton(State::Context context, ButtonType type, const std::string&
 	{
 		mSprite.setTexture(context.textures.get(table[mType].textureId));
 		changeAppearance(ButtonState::Normal);
+		mText.setCharacterSize(18u);
+        auto bounds = mSprite.getGlobalBounds();
+        mText.setPosition(sf::Vector2f(bounds.width  * 0.5f, bounds.height * 0.4f));
 	}
 
 	centerOrigin(mText);
-	auto bounds = mSprite.getGlobalBounds();
-	mText.setPosition(sf::Vector2f(bounds.width / 2.f, bounds.height / 2.f));
 }
 
 void GUIButton::select()
@@ -79,6 +80,11 @@ void GUIButton::setCallback(Callback callback)
 	mCallback = callback;
 }
 
+void GUIButton::toggle(bool isToggled)
+{
+    mIsToggled = isToggled;
+}
+
 void GUIButton::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     states.transform *= getTransform();
@@ -90,7 +96,7 @@ void GUIButton::changeAppearance(ButtonState state)
 {
 	if(mSprite.getTexture())
 	{
-		sf::IntRect newRect(0, table[mType].buttonSize.x * state, table[mType].buttonSize.x, table[mType].buttonSize.y);
+		sf::IntRect newRect(0, table[mType].buttonSize.y * state, table[mType].buttonSize.x, table[mType].buttonSize.y);
 		mSprite.setTextureRect(newRect);
 	}
 	else

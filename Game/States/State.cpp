@@ -12,7 +12,7 @@ State::Context::Context(sf::RenderWindow& window, TextureHolder& textures, FontH
 {
 }
 
-State::State(State::Context context, StateStack& stateStack)
+State::State(Context context, StateStack& stateStack)
     : mContext(context),
       mStateStack(stateStack)
 {

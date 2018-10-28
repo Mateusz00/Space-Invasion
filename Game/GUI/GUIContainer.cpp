@@ -24,11 +24,7 @@ bool GUIContainer::isSelectable() const
 
 void GUIContainer::handleEvent(const sf::Event& event)
 {
-    GUIObject* activeButton = checkForToggledButtons();
-
-    if(activeButton != nullptr) // If button is toggled then let him handle events
-        activeButton->handleEvent(event);
-    else if(event.type == sf::Event::KeyReleased)
+    if(event.type == sf::Event::KeyReleased)
     {
         switch(event.key.code)
         {
@@ -115,17 +111,6 @@ void GUIContainer::selectPrevious()
 bool GUIContainer::hasSelection() const
 {
     return mSelected >= 0;
-}
-
-GUIObject* GUIContainer::checkForToggledButtons() const
-{
-	for(const auto& component : mComponents)
-	{
-		if(component->isActive()) // Buttons keep being active if toggle flag is set true
-            return component.get();
-	}
-
-	return nullptr;
 }
 
 sf::FloatRect GUIContainer::getComponentRect(int componentNumber) const

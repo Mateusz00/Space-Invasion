@@ -35,6 +35,7 @@ class GUIButton : public GUIObject
 		virtual void			handleEvent(const sf::Event&) override;
 		virtual sf::FloatRect 	getBoundingRect() const override;
 		void					setCallback(Callback);
+		void                    toggle(bool);
 
 	private:
 	    virtual void	        draw(sf::RenderTarget&, sf::RenderStates) const override;

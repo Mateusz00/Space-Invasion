@@ -60,12 +60,12 @@ bool PauseState::draw()
 
 bool PauseState::update(sf::Time dt)
 {
-    mGUIContainer.update(mWindow);
     return mIsNetworked;
 }
 
 bool PauseState::handleEvent(const sf::Event& event)
 {
+    mGUIContainer.update(mWindow);
     mGUIContainer.handleEvent(event);
     return false;
 }

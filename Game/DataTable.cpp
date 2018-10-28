@@ -112,8 +112,8 @@ std::vector<ButtonData> initializeButtonData()
 {
 	std::vector<ButtonData> data(GUIButton::Count);
 
-	data[GUIButton::Menu].textureId = Textures::MenuButtons;
-	//data[GUIButton::Menu].buttonSize = //Add later
+	data[GUIButton::Settings].textureId = Textures::SettingsButtons;
+	data[GUIButton::Settings].buttonSize = sf::Vector2i(203, 50);
 
 	return data;
 }

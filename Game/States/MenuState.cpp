@@ -56,12 +56,12 @@ bool MenuState::draw()
 
 bool MenuState::update(sf::Time dt)
 {
-    mGUIContainer.update(mWindow);
     return false;
 }
 
 bool MenuState::handleEvent(const sf::Event& event)
 {
+    mGUIContainer.update(mWindow);
     mGUIContainer.handleEvent(event);
     mSpeaker.handleEvent(event);
     return false;

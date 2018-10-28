@@ -2,6 +2,7 @@
 #include "States/GameState.hpp"
 #include "States/MenuState.hpp"
 #include "States/PauseState.hpp"
+#include "States/SettingsState.hpp"
 #include <exception>
 
 StateStack::PendingChange::PendingChange(Action action, States::ID id)
@@ -17,6 +18,7 @@ StateStack::StateStack(State::Context context)
     createStateFactory<MenuState>(States::MenuState);
     createStateFactory<PauseState>(States::PauseState, false);
     createStateFactory<PauseState>(States::NetworkPause, true);
+    createStateFactory<SettingsState>(States::SettingsState);
 }
 
 void StateStack::update(sf::Time dt)

@@ -39,3 +39,7 @@ void GUIObject::deactivate()
 {
     mIsActive = false;
 }
+
+sf::FloatRect GUIObject::getBoundingRect() const
+{
+}

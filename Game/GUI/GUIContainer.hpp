@@ -23,7 +23,6 @@ class GUIContainer : public GUIObject
         void		            selectNext();
         void			        selectPrevious();
         bool                    hasSelection() const;
-		GUIObject*				checkForToggledButtons() const;
 		sf::FloatRect           getComponentRect(int componentNumber) const;
 		bool                    checkMouseCollision(sf::Vector2f, int& index) const;
 
