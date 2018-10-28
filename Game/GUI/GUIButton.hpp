@@ -16,7 +16,7 @@ class GUIButton : public GUIObject
 		enum ButtonType
 		{
 			Text,
-			Menu,
+			Settings,
 			Count
 		};
 		enum ButtonState

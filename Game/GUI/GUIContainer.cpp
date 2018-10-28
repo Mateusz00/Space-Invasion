@@ -78,6 +78,11 @@ void GUIContainer::update(sf::Window& window)
     }
 }
 
+sf::Vector2f GUIContainer::getPosition() const
+{
+    return getPosition();
+}
+
 void GUIContainer::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     states.transform *= getTransform(); // relative to container

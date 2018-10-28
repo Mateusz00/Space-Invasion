@@ -32,7 +32,12 @@ void State::requestStackPop()
 	mStateStack.popState();
 }
 
-void State::requestStateClear()
+void State::requestStackClear()
 {
 	mStateStack.clearStates();
+}
+
+State::Context State::getContext() const
+{
+	return mContext;
 }

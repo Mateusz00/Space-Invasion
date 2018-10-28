@@ -28,6 +28,9 @@ class StateStack : private sf::NonCopyable
         template <typename T>
         void createStateFactory(States::ID);
 
+        template <typename T, typename CtorParam1>
+        void createStateFactory(States::ID, CtorParam1);
+
         enum Action
         {
             Push,
@@ -53,6 +56,15 @@ void StateStack::createStateFactory(States::ID id)
     mFactory[id] = [this]() // Lambda that creates state
     {
         return State::Ptr(new T(mContext, *this));
+    };
+}
+
+template <typename T, typename CtorParam1>
+void StateStack::createStateFactory(States::ID id, CtorParam1 arg1)
+{
+    mFactory[id] = [this, arg1]() // Lambda that creates state
+    {
+        return State::Ptr(new T(mContext, *this, arg1));
     };
 }
 

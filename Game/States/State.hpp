@@ -31,7 +31,8 @@ class State
         virtual bool    handleEvent(const sf::Event&) = 0;
         void            requestStackPush(States::ID);
         void            requestStackPop();
-        void            requestStateClear();
+        void            requestStackClear();
+        State::Context  getContext() const;
 
     private:
         Context         mContext;

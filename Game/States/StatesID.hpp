@@ -8,6 +8,8 @@ namespace States
         GameState,
         MenuState,
         SettingsState,
+        PauseState,
+        NetworkPause,
         None
     };
 }

@@ -24,8 +24,10 @@ bool GameState::update(sf::Time dt)
 
 bool GameState::handleEvent(const sf::Event& event)
 {
-    // Add commands system
-    mPlayer.handleEvent(event, mWorld.getCommandQueue());
-    // Add PauseState push event
+    if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
+		requestStackPush(States::PauseState);
+    else
+        mPlayer.handleEvent(event, mWorld.getCommandQueue());
+
     return false;
 }

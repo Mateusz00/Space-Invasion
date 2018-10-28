@@ -12,10 +12,12 @@ MenuState::MenuState(Context context, StateStack& stateStack)
       mBackgroundSprite(context.textures.get(Textures::TitleScreen))
 {
     context.music.playNow(Music::MenuTheme, true);
-    mGUIContainer.setPosition(static_cast<sf::Vector2f>((mWindow.getSize() / 2u)));
+
+    sf::Vector2f windowSize(static_cast<sf::Vector2f>(mWindow.getSize()));
+    mGUIContainer.setPosition(windowSize * 0.5f);
 
     std::unique_ptr<GUIButton> play(new GUIButton(context, GUIButton::Text, "Play"));
-    play->setPosition(0.f, -100.f);
+    play->setPosition(0.f, windowSize.y * -0.15f);
     play->setCallback([this]()
     {
         requestStackPop();
@@ -32,10 +34,10 @@ MenuState::MenuState(Context context, StateStack& stateStack)
     mGUIContainer.push(std::move(settings));
 
     std::unique_ptr<GUIButton> exit(new GUIButton(context, GUIButton::Text, "Exit"));
-    exit->setPosition(0.f, 100.f);
+    exit->setPosition(0.f, windowSize.y * 0.15f);
     exit->setCallback([this]()
     {
-        requestStateClear();
+        requestStackClear();
     });
     mGUIContainer.push(std::move(exit));
 
