@@ -312,7 +312,7 @@ void Aircraft::createPickup() const
 
 void Aircraft::createExplosion() const
 {
-    std::unique_ptr<AnimationNode> explosion(new AnimationNode(AnimationNode::Explosion, sf::seconds(0.03f), mTextures));
+    std::unique_ptr<AnimationNode> explosion(new AnimationNode(AnimationNode::Explosion, sf::seconds(0.06f), mTextures));
     explosion->setPosition(getWorldPosition());
     getWorld().placeOnLayer(std::move(explosion), Category::AirLayer);
 }
