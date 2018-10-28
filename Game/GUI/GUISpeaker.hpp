@@ -5,29 +5,31 @@
 #include "../States/State.hpp"
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Rect.hpp>
-/*data[GUIButton::Speaker].textureId = Textures::Speaker;
-	data[GUIButton::Speaker].buttonSize = sf::Vector2i(150, 150);*/
 class SoundPlayer;
 class MusicPlayer;
 
 class GUISpeaker : public GUIObject
 {
     public:
-                                GUISpeaker(State::Context, SoundPlayer&, MusicPlayer&);
-        virtual void	        activate() override;
-        virtual void	        deactivate() override;
-        virtual void	        handleEvent(const sf::Event&) override;
-        virtual sf::FloatRect   getBoundingRect() const override;
+                        GUISpeaker(State::Context);
+        virtual void    handleEvent(const sf::Event&) override;
+        virtual void    draw(sf::RenderTarget&, sf::RenderStates) const override;
+        virtual bool    isSelectable() const override;
+        sf::Vector2u    getSize() const;
 
     private:
-        void    changeTexture();
-        void    mute();
-        void    unmute();
+        virtual void            activate() override;
+        virtual sf::FloatRect   getBoundingRect() const override;
+        void                    changeTexture();
+        void                    mute();
+        void                    unmute();
 
         sf::Sprite      mSprite;
         SoundPlayer&    mSounds;
         MusicPlayer&    mMusic;
         bool            mIsToggled;
+        float           mSoundLastVolume;
+        float           mMusicLastVolume;
 };
 
 #endif // GUISPEAKER_HPP

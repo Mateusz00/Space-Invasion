@@ -7,6 +7,7 @@
 
 MenuState::MenuState(Context context, StateStack& stateStack)
     : State(context, stateStack),
+      mSpeaker(context),
       mWindow(context.window),
       mBackgroundSprite(context.textures.get(Textures::TitleScreen))
 {
@@ -37,6 +38,9 @@ MenuState::MenuState(Context context, StateStack& stateStack)
         requestStateClear();
     });
     mGUIContainer.push(std::move(exit));
+
+    sf::Vector2f mSpeakerPosition(static_cast<float>(mWindow.getSize().x) - mSpeaker.getSize().x, 0.f); // Left-top corner of window
+    mSpeaker.setPosition(mSpeakerPosition - sf::Vector2f(8.f, -8.f));
 }
 
 bool MenuState::draw()
@@ -44,6 +48,7 @@ bool MenuState::draw()
 	mWindow.setView(mWindow.getDefaultView());
 	mWindow.draw(mBackgroundSprite);
     mWindow.draw(mGUIContainer);
+    mWindow.draw(mSpeaker);
     return false;
 }
 
@@ -56,5 +61,6 @@ bool MenuState::update(sf::Time dt)
 bool MenuState::handleEvent(const sf::Event& event)
 {
     mGUIContainer.handleEvent(event);
+    mSpeaker.handleEvent(event);
     return false;
 }

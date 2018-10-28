@@ -10,15 +10,18 @@
 class SoundPlayer
 {
 	public:
-			 SoundPlayer();
-		void play(Sound::ID);
-		void play(Sound::ID, sf::Vector2f);
-		void removeStoppedSounds();
-		void setListener(sf::Vector2f);
+                SoundPlayer();
+		void    play(Sound::ID);
+		void    play(Sound::ID, sf::Vector2f);
+		void    removeStoppedSounds();
+		void    setListener(sf::Vector2f);
+		void    setVolume(float);
+		float   getVolume() const;
 
 	private:
 		SoundBufferHolder				mSounds;
 		std::forward_list<sf::Sound>	mActiveSounds;
+		float 							mDefaultVolume;
 };
 
 #endif // SOUNDPLAYER_HPP

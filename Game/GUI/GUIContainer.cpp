@@ -49,7 +49,7 @@ void GUIContainer::handleEvent(const sf::Event& event)
                 break;
         }
     }
-    else if(event.type == sf::Event::MouseButtonPressed)
+    else if(event.type == sf::Event::MouseButtonReleased)
     {
         sf::Vector2i tempPos(event.mouseButton.x, event.mouseButton.y);
         sf::Vector2f mousePosition = static_cast<sf::Vector2f>(tempPos);
