@@ -17,7 +17,7 @@ World::World(State::Context context)
       mView(mTarget.getDefaultView()),
       mWorldBounds(0.f, 0.f, mView.getSize().x, 7000.f),
       mPlayerSpawnPosition(mView.getSize().x / 2, mWorldBounds.height - mView.getSize().y / 2.f),
-      mScrollingSpeed(0.f)
+      mScrollingSpeed(-40.f)
 {
     buildWorld();
     initializeSpawnPoints();
@@ -132,9 +132,10 @@ void World::adaptPlayersVelocity()
 
 void World::initializeSpawnPoints()
 {
-	addSpawnPoint(300.f, 5800.f, Aircraft::Enemy);
+	addSpawnPoint(300.f, 5900.f, Aircraft::Enemy);
 	addSpawnPoint(500.f, 5700.f, Aircraft::Enemy);
-	addSpawnPoint(500.f, 6400.f, Aircraft::Enemy);
+    addSpawnPoint(300.f, 5150.f, Aircraft::Enemy);
+	addSpawnPoint(500.f, 5250.f, Aircraft::Enemy);
 
 	sortSpawnPoints();
 	// TODO: Add more later

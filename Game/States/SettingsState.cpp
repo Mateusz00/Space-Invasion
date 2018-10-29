@@ -70,7 +70,7 @@ void SettingsState::addButton(int index, int y, const std::string& text, Context
 {
     std::unique_ptr<GUIButton> newButton(new GUIButton(context, GUIButton::Settings, text));
     mBindingButtons[index] = newButton.get();
-	newButton->setPosition(80.f, 100.f * y + 50.f);
+	newButton->setPosition(80.f, 80.f * y + 50.f);
 	newButton->setCallback([index, this]()
     {
         mBindingButtons[index]->toggle(true);
@@ -80,6 +80,6 @@ void SettingsState::addButton(int index, int y, const std::string& text, Context
 
 	std::unique_ptr<GUILabel> newLabel(new GUILabel(text, context.fonts));
 	mBindingLabels[index] = newLabel.get();
-	newLabel->setPosition(350.f, 100.f * y + 60.f);
+	newLabel->setPosition(350.f, 80.f * y + 60.f);
 	mGUIContainer.push(std::move(newLabel));
 }
