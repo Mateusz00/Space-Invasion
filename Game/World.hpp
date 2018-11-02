@@ -27,6 +27,8 @@ class World
         ParticleNode&       getParticleNode() const;
         SoundPlayer&        getSoundPlayer() const;
         void                placeOnLayer(SceneNode::Ptr, Category::Type layer);
+        bool                hasPlayerReachedEnd() const;
+        bool                hasAlivePlayer() const;
 
     private:
         void    buildWorld();

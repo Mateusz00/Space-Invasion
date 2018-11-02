@@ -42,10 +42,14 @@ void World::update(sf::Time dt)
 
     spawnEnemies();
     mSceneGraph.update(dt, mCommandQueue);
-    mSceneGraph.removeWrecks();
     adaptPlayersPosition();
-    mUIGraph.update(dt, mCommandQueue);
+
+    if(mPlayerAircraft->isMarkedForRemoval()) // Assign nullptr as remove wrecks removes only entities
+        mPlayerAircraft = nullptr;
+
     updateSounds();
+    mSceneGraph.removeWrecks();
+    mUIGraph.update(dt, mCommandQueue);
 }
 
 void World::draw()
@@ -88,6 +92,16 @@ void World::placeOnLayer(SceneNode::Ptr node, Category::Type layer)
     mSceneLayers[layer]->attachChild(std::move(node));
 }
 
+bool World::hasPlayerReachedEnd() const
+{
+    return !mWorldBounds.contains(mPlayerAircraft->getPosition());
+}
+
+bool World::hasAlivePlayer() const
+{
+    return mPlayerAircraft != nullptr;
+}
+
 void World::buildWorld()
 {
     for(int i=0; i < LayerCount; ++i)
@@ -100,11 +114,17 @@ void World::buildWorld()
 
     sf::Texture& background = mTextures.get(Textures::Background);
     background.setRepeated(true);
-    sf::IntRect backgroundRect(0, 0, 1024, 7000);
+    sf::IntRect backgroundRect(mWorldBounds);
+    backgroundRect.height += static_cast<int>(mView.getSize().y);
 
     std::unique_ptr<SpriteNode> galaxyBackground(new SpriteNode(background, backgroundRect));
-    galaxyBackground->setPosition(0.f, 0.f);
+    galaxyBackground->setPosition(mWorldBounds.left, mWorldBounds.top - mView.getSize().y);
     mSceneLayers[Background]->attachChild(std::move(galaxyBackground));
+
+	auto finishTexture = mTextures.get(Textures::FinishLine);
+	std::unique_ptr<SpriteNode> finishLine(new SpriteNode(finishTexture));
+	finishLine->setPosition(0.f, -50.f);
+	mSceneLayers[Background]->attachChild(std::move(finishLine));
 
     std::unique_ptr<Aircraft> playerAircraft(new Aircraft(Aircraft::Ally, mTextures, mFonts, *this));
     playerAircraft->setPosition(mPlayerSpawnPosition); // Change to viewCenter

@@ -4,6 +4,7 @@
 #include "State.hpp"
 #include "../World.hpp"
 #include "../Player.hpp"
+#include "../SoundPlayer.hpp"
 
 class GameState : public State
 {
@@ -14,8 +15,9 @@ class GameState : public State
         virtual bool    handleEvent(const sf::Event&) override;
 
     private:
-        World   mWorld;
-        Player  mPlayer;
+        World           mWorld;
+        Player          mPlayer;
+        SoundPlayer&    mSounds;
 };
 
 #endif // GAMESTATE_HPP

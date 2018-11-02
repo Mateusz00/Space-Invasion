@@ -10,6 +10,8 @@ namespace States
         SettingsState,
         PauseState,
         NetworkPause,
+        MissionFailed,
+        MissionSuccess,
         None
     };
 }

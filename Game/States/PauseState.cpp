@@ -55,7 +55,7 @@ bool PauseState::draw()
 	mWindow.draw(mText);
 	mWindow.draw(mGUIContainer);
 
-    return true;
+    return mIsNetworked;
 }
 
 bool PauseState::update(sf::Time dt)

@@ -4,7 +4,8 @@
 GameState::GameState(Context context, StateStack& stateStack)
     : State(context, stateStack),
       mWorld(context),
-      mPlayer(context.keys1, 0)
+      mPlayer(context.keys1, 0),
+      mSounds(context.sounds)
 {
     context.music.playNow(Music::BattleTheme, true);
 }
@@ -17,8 +18,19 @@ bool GameState::draw()
 
 bool GameState::update(sf::Time dt)
 {
-    mPlayer.handleRealTimeInput(mWorld.getCommandQueue());
     mWorld.update(dt);
+
+    if(!mWorld.hasAlivePlayer())
+    {
+        requestStackPush(States::MissionFailed);
+        mSounds.play(Sound::GameOver);
+    }
+	else if(mWorld.hasPlayerReachedEnd())
+    {
+        requestStackPush(States::MissionSuccess);
+    }
+
+    mPlayer.handleRealTimeInput(mWorld.getCommandQueue());
     return false;
 }
 
