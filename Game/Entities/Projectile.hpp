@@ -16,7 +16,7 @@ class Projectile : public Entity
             TypeCount
         };
 
-                                Projectile(Type, const TextureHolder&, World& world);
+                                Projectile(Type, const TextureHolder&, World&, int shooterID);
         float					getMaxSpeed() const;
         int						getDamage() const;
         bool					isGuided() const;
@@ -24,14 +24,16 @@ class Projectile : public Entity
         virtual Category::Type  getCategory() const override;
         virtual sf::FloatRect   getBoundingRect() const override;
         virtual void            onCollision(Entity&) override;
+        int                     getShootersID() const;
 
     private:
-        virtual void updateCurrent(sf::Time, CommandQueue&) override;
-        virtual void drawCurrent(sf::RenderTarget&, sf::RenderStates) const override;
+        virtual void            updateCurrent(sf::Time, CommandQueue&) override;
+        virtual void            drawCurrent(sf::RenderTarget&, sf::RenderStates) const override;
 
         Type            mType;
         sf::Sprite      mSprite;
         sf::Vector2f    mTargetDirection;
+        int             mShooterID;
 };
 
 #endif // PROJECTILE_HPP

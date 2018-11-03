@@ -132,12 +132,14 @@ void World::buildWorld()
     mPlayerAircraft = playerAircraft.get();
     mSceneLayers[UpperAir]->attachChild(std::move(playerAircraft));
 
-    std::unique_ptr<AmmoNode> ammoNode(new AmmoNode(*mPlayerAircraft, mTextures, mFonts, mView));
-    mUIGraph.attachChild(std::move(ammoNode));
-
     std::unique_ptr<ParticleNode> particleNode(new ParticleNode(mTextures));
     mParticleNode = particleNode.get();
     mSceneLayers[LowerAir]->attachChild(std::move(particleNode));
+
+    std::unique_ptr<AmmoNode> ammoNode(new AmmoNode(*mPlayerAircraft, mTextures, mFonts, mView));
+    mUIGraph.attachChild(std::move(ammoNode));
+
+
 }
 
 void World::adaptPlayersVelocity()

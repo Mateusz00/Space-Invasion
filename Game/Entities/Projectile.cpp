@@ -10,10 +10,11 @@ namespace
     const std::vector<ProjectileData> table = initializeProjectileData();
 }
 
-Projectile::Projectile(Type type, const TextureHolder& textures, World& world)
+Projectile::Projectile(Type type, const TextureHolder& textures, World& world, int shooterID)
     : Entity(1, true, world),
       mType(type),
-      mSprite(textures.get(table[type].texture), table[type].textureRect)
+      mSprite(textures.get(table[type].texture), table[type].textureRect),
+      mShooterID(shooterID)
 {
     centerOrigin(mSprite);
 
@@ -62,6 +63,11 @@ sf::FloatRect Projectile::getBoundingRect() const
     return getWorldTransform().transformRect(mSprite.getGlobalBounds());
 }
 
+int Projectile::getShootersID() const
+{
+    return mShooterID;
+}
+
 void Projectile::updateCurrent(sf::Time dt, CommandQueue& commands)
 {
     if(isGuided())
@@ -100,6 +106,7 @@ void Projectile::onCollision(Entity& entity)
             case Category::EnemyAircraft:
                 entity.damage(table[mType].damage);
                 destroy();
+                static_cast<Aircraft&>(entity).setAttackerID(mShooterID); // Sets id of aircraft that will have score increased if enemy dies
                 break;
         }
     }

@@ -13,21 +13,23 @@ namespace
 }
 
 
-Aircraft::Aircraft(Type type, const TextureHolder& textures, const FontHolder& fonts, World& world)
+Aircraft::Aircraft(Type type, const TextureHolder& textures, const FontHolder& fonts, World& world, int id)
     : Entity(table[type].hitpoints, true, world),
       mType(type),
       mSprite(textures.get(table[type].texture), table[type].textureRect),
       mFireRateLevel(2),
       mSpreadLevel(1),
       mMissileAmmo(2),
-      mIdentifier(0),
+      mIdentifier(id),
       mIsFiring(false),
       mIsLaunchingMissile(false),
       mIsEnemy(mType != Ally),
       mShowExplosion(true),
       mTravelledDistance(0.f),
       mDirectionIndex(0),
-      mTextures(textures)
+      mTextures(textures),
+      mAttackerID(0),
+      mScore(0)
 {
     centerOrigin(mSprite);
 
@@ -210,7 +212,7 @@ void Aircraft::shootBullets(SceneNode& layer, const TextureHolder& textures) con
 void Aircraft::createProjectile(SceneNode& layer, Projectile::Type type, float xOffset,
                                  float yOffset, const TextureHolder& textures) const
 {
-    std::unique_ptr<Projectile> projectile(new Projectile(type, textures, getWorld()));
+    std::unique_ptr<Projectile> projectile(new Projectile(type, textures, getWorld(), mIdentifier));
 
     float direction = (!mIsEnemy) ? -1.f : 1.f; // Decides if offsets will make projectile closer to top of window or closer to bottom
     sf::Vector2f offset(mSprite.getLocalBounds().width * xOffset,
@@ -276,6 +278,7 @@ void Aircraft::onCollision(Entity& entity)
             case Category::PlayerAircraft:
                 entity.damage(getHitpoints());
                 destroy();
+                mAttackerID = static_cast<Aircraft&>(entity).getIdentifier(); // Sets id of aircraft that will have score increased
                 break;
         }
     }
@@ -287,38 +290,59 @@ void Aircraft::removeEntity()
     mShowExplosion = false; //
 }
 
-void Aircraft::checkPickupSpawn() const
+void Aircraft::increaseScoreRequest(int value) const
 {
-    if(mIsEnemy && (randomInt(1, 4) == 2)) // 25% chance for spawning pickup for enemies
-        createPickup();
+    Command ScoreIncreaseCommand;
+	ScoreIncreaseCommand.mCategories.push_back(Category::PlayerAircraft);
+	ScoreIncreaseCommand.mAction = castFunctor<Aircraft>([this, value](Aircraft& aircraft, sf::Time dt)
+	{
+	    if(aircraft.getIdentifier() == mAttackerID)
+            aircraft.increaseScore(value);
+	});
+
+	getWorld().getCommandQueue().push(ScoreIncreaseCommand);
 }
 
-void Aircraft::checkIfExploded() const
+void Aircraft::increaseScore(int value)
 {
-    if(mShowExplosion)
-    {
-        createExplosion();
-        getWorld().getSoundPlayer().play(Sound::Explosion, getWorldPosition());
-    }
+    mScore += value;
+}
+
+int Aircraft::getScore() const
+{
+    return mScore;
+}
+
+void Aircraft::setAttackerID(int id) const
+{
+    mAttackerID = id;
 }
 
 void Aircraft::createPickup() const
 {
-    auto type = static_cast<Pickup::Type>(randomInt(0, Pickup::TypeCount-1));
-    std::unique_ptr<Pickup> pickup (new Pickup(type, mTextures, getWorld()));
-    pickup->setPosition(getWorldPosition());
-    getWorld().placeOnLayer(std::move(pickup), Category::AirLayer);
+    if(mIsEnemy && (randomInt(1, 4) == 2)) // 25% chance for spawning pickup for enemies
+    {
+        auto type = static_cast<Pickup::Type>(randomInt(0, Pickup::TypeCount-1));
+        std::unique_ptr<Pickup> pickup (new Pickup(type, mTextures, getWorld()));
+        pickup->setPosition(getWorldPosition());
+        getWorld().placeOnLayer(std::move(pickup), Category::AirLayer);
+    }
 }
 
 void Aircraft::createExplosion() const
 {
-    std::unique_ptr<AnimationNode> explosion(new AnimationNode(AnimationNode::Explosion, sf::seconds(0.06f), mTextures));
-    explosion->setPosition(getWorldPosition());
-    getWorld().placeOnLayer(std::move(explosion), Category::AirLayer);
+    if(mShowExplosion)
+    {
+        std::unique_ptr<AnimationNode> explosion(new AnimationNode(AnimationNode::Explosion, sf::seconds(0.06f), mTextures));
+        explosion->setPosition(getWorldPosition());
+        getWorld().placeOnLayer(std::move(explosion), Category::AirLayer);
+        getWorld().getSoundPlayer().play(Sound::Explosion, getWorldPosition());
+        increaseScoreRequest(100);
+    }
 }
 
 void Aircraft::onRemoval()
 {
-    checkPickupSpawn();
-    checkIfExploded();
+    createPickup();
+    createExplosion();
 }

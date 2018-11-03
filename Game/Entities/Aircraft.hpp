@@ -15,7 +15,7 @@ class Aircraft : public Entity
     public:
         enum Type{Ally, Enemy, TypeCount};
 
-                                Aircraft(Type, const TextureHolder&, const FontHolder&, World&);
+                                Aircraft(Type, const TextureHolder&, const FontHolder&, World&, int id = 600);
         Category::Type          getCategory() const override;
         void                    increaseFireRate();
         void                    increaseSpread();
@@ -31,6 +31,10 @@ class Aircraft : public Entity
         virtual sf::FloatRect   getBoundingRect() const override;
         virtual void            onCollision(Entity&) override;
         virtual void            removeEntity() override;
+        void                    increaseScore(int);
+        int                     getScore() const;
+        void                    increaseScoreRequest(int) const;
+        void                    setAttackerID(int) const;
 
     protected:
         virtual void            updateCurrent(sf::Time, CommandQueue&) override;
@@ -42,8 +46,6 @@ class Aircraft : public Entity
         void            createProjectile(SceneNode&, Projectile::Type, float xOffset, float yOffset, const TextureHolder&) const;
         void            launchProjectiles(sf::Time, CommandQueue&);
         void            updateMovementPatterns(sf::Time);
-        void            checkPickupSpawn() const;
-        void            checkIfExploded() const;
         void            createPickup() const;
         void            createExplosion() const;
         virtual void    onRemoval() override;
@@ -65,6 +67,8 @@ class Aircraft : public Entity
         Command                 mFireCommand;
         Command                 mLaunchMissileCommand;
         const TextureHolder&    mTextures;
+        int                     mAttackerID;
+        int                     mScore;
 };
 
 #endif // AIRCRAFT_HPP
