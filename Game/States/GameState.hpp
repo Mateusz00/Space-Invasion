@@ -15,9 +15,11 @@ class GameState : public State
         virtual bool    handleEvent(const sf::Event&) override;
 
     private:
-        World           mWorld;
-        Player          mPlayer;
-        SoundPlayer&    mSounds;
+        void            savePlayersScore() const;
+        void            updatePlayersScore();
+
+        World                   mWorld;
+        std::vector<Player>     mPlayers;
 };
 
 #endif // GAMESTATE_HPP

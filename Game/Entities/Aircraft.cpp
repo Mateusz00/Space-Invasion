@@ -290,19 +290,6 @@ void Aircraft::removeEntity()
     mShowExplosion = false; //
 }
 
-void Aircraft::increaseScoreRequest(int value) const
-{
-    Command ScoreIncreaseCommand;
-	ScoreIncreaseCommand.mCategories.push_back(Category::PlayerAircraft);
-	ScoreIncreaseCommand.mAction = castFunctor<Aircraft>([this, value](Aircraft& aircraft, sf::Time dt)
-	{
-	    if(aircraft.getIdentifier() == mAttackerID)
-            aircraft.increaseScore(value);
-	});
-
-	getWorld().getCommandQueue().push(ScoreIncreaseCommand);
-}
-
 void Aircraft::increaseScore(int value)
 {
     mScore += value;
@@ -313,7 +300,7 @@ int Aircraft::getScore() const
     return mScore;
 }
 
-void Aircraft::setAttackerID(int id) const
+void Aircraft::setAttackerID(int id)
 {
     mAttackerID = id;
 }
@@ -337,12 +324,45 @@ void Aircraft::createExplosion() const
         explosion->setPosition(getWorldPosition());
         getWorld().placeOnLayer(std::move(explosion), Category::AirLayer);
         getWorld().getSoundPlayer().play(Sound::Explosion, getWorldPosition());
-        increaseScoreRequest(100);
     }
+}
+
+void Aircraft::changeScore()
+{
+    if(mShowExplosion)
+        increaseScoreRequest(100);
+    else
+        decreaseScoreRequest(50);
+}
+
+void Aircraft::increaseScoreRequest(int value) const
+{
+    Command ScoreIncreaseCommand;
+	ScoreIncreaseCommand.mCategories.push_back(Category::PlayerAircraft);
+	ScoreIncreaseCommand.mAction = castFunctor<Aircraft>([this, value](Aircraft& aircraft, sf::Time dt)
+	{
+	    if(aircraft.getIdentifier() == mAttackerID)
+            aircraft.increaseScore(value);
+	});
+
+	getWorld().getCommandQueue().push(ScoreIncreaseCommand);
+}
+
+void Aircraft::decreaseScoreRequest(int value) const
+{
+    Command decreaseIncreaseCommand;
+	decreaseIncreaseCommand.mCategories.push_back(Category::PlayerAircraft);
+	decreaseIncreaseCommand.mAction = castFunctor<Aircraft>([this, value](Aircraft& aircraft, sf::Time dt)
+	{
+        aircraft.increaseScore(-value);
+	});
+
+	getWorld().getCommandQueue().push(decreaseIncreaseCommand);
 }
 
 void Aircraft::onRemoval()
 {
     createPickup();
     createExplosion();
+    changeScore();
 }

@@ -11,24 +11,26 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System/Time.hpp>
 #include <array>
+#include <unordered_map>
 #include <list>
 
 class World
 {
     public:
-        explicit            World(State::Context context);
-        CommandQueue&       getCommandQueue();
-        void                update(sf::Time);
-        void                draw();
-        sf::FloatRect	    getViewBounds() const;
-        sf::FloatRect       getBattlefieldBounds() const;
-        void                addCollidable(Entity*);
-        void                removeCollidable(Entity*);
-        ParticleNode&       getParticleNode() const;
-        SoundPlayer&        getSoundPlayer() const;
-        void                placeOnLayer(SceneNode::Ptr, Category::Type layer);
-        bool                hasPlayerReachedEnd() const;
-        bool                hasAlivePlayer() const;
+        explicit                        World(State::Context context);
+        CommandQueue&                   getCommandQueue();
+        void                            update(sf::Time);
+        void                            draw();
+        sf::FloatRect	                getViewBounds() const;
+        sf::FloatRect                   getBattlefieldBounds() const;
+        void                            addCollidable(Entity*);
+        void                            removeCollidable(Entity*);
+        ParticleNode&                   getParticleNode() const;
+        SoundPlayer&                    getSoundPlayer() const;
+        void                            placeOnLayer(SceneNode::Ptr, Category::Type layer);
+        bool                            hasPlayerReachedEnd() const;
+        bool                            hasAlivePlayer() const;
+        std::unordered_map<int, int>&   getPlayersScoresMap();
 
     private:
         void    buildWorld();
@@ -42,6 +44,7 @@ class World
         void    checkCollisions();
         void    destroyEntitiesOutsideView();
         void    updateSounds();
+        void    updateScore();
 
         enum Layer
         {
@@ -71,11 +74,13 @@ class World
         sf::Vector2f        mPlayerSpawnPosition;
         float               mScrollingSpeed;
         ParticleNode*       mParticleNode;
+        sf::Text            mScore;
 
         std::vector<Aircraft*>              mActiveEnemies;
         std::vector<SpawnPoint>             mSpawnPoints;
         std::array<SceneNode*, LayerCount>  mSceneLayers;
         std::list<Entity*>                  mCollidablesList;
+        std::unordered_map<int, int>        mPlayersScores;
 };
 
 #endif // WORLD_HPP

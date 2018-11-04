@@ -17,10 +17,12 @@ World::World(State::Context context)
       mView(mTarget.getDefaultView()),
       mWorldBounds(0.f, 0.f, mView.getSize().x, 7000.f),
       mPlayerSpawnPosition(mView.getSize().x / 2, mWorldBounds.height - mView.getSize().y / 2.f),
-      mScrollingSpeed(-40.f)
+      mScrollingSpeed(-40.f),
+      mScore("0", context.fonts.get(Fonts::BPmonoItalics), 32u)
 {
     buildWorld();
     initializeSpawnPoints();
+    mScore.setPosition(mTarget.getSize().x * 0.5f, 18.f);
     mView.setCenter(mPlayerSpawnPosition);
 }
 
@@ -39,6 +41,7 @@ void World::update(sf::Time dt)
 
     adaptPlayersVelocity();
     checkCollisions();
+    updateScore();
 
     spawnEnemies();
     mSceneGraph.update(dt, mCommandQueue);
@@ -56,7 +59,9 @@ void World::draw()
 {
     mTarget.setView(mView);
     mTarget.draw(mSceneGraph);
+
     mTarget.setView(mTarget.getDefaultView());
+    mTarget.draw(mScore);
     mTarget.draw(mUIGraph);
 }
 
@@ -102,6 +107,11 @@ bool World::hasAlivePlayer() const
     return mPlayerAircraft != nullptr;
 }
 
+std::unordered_map<int, int>& World::getPlayersScoresMap()
+{
+    return mPlayersScores;
+}
+
 void World::buildWorld()
 {
     for(int i=0; i < LayerCount; ++i)
@@ -121,8 +131,11 @@ void World::buildWorld()
     galaxyBackground->setPosition(mWorldBounds.left, mWorldBounds.top - mView.getSize().y);
     mSceneLayers[Background]->attachChild(std::move(galaxyBackground));
 
-	auto finishTexture = mTextures.get(Textures::FinishLine);
-	std::unique_ptr<SpriteNode> finishLine(new SpriteNode(finishTexture));
+	sf::Texture& finishTexture = mTextures.get(Textures::FinishLine);
+	finishTexture.setRepeated(true);
+	sf::IntRect finishLineRect(0, 0, mTarget.getSize().x, 100);
+
+	std::unique_ptr<SpriteNode> finishLine(new SpriteNode(finishTexture, finishLineRect));
 	finishLine->setPosition(0.f, -50.f);
 	mSceneLayers[Background]->attachChild(std::move(finishLine));
 
@@ -299,4 +312,12 @@ void World::updateSounds()
 {
     mSoundPlayer.removeStoppedSounds();
     mSoundPlayer.setListener(mPlayerAircraft->getWorldPosition());
+}
+
+void World::updateScore()
+{
+    mScore.setString(toString(mPlayerAircraft->getScore()));
+    centerOrigin(mScore);
+
+    mPlayersScores[mPlayerAircraft->getIdentifier()] = mPlayerAircraft->getScore();
 }

@@ -33,8 +33,7 @@ class Aircraft : public Entity
         virtual void            removeEntity() override;
         void                    increaseScore(int);
         int                     getScore() const;
-        void                    increaseScoreRequest(int) const;
-        void                    setAttackerID(int) const;
+        void                    setAttackerID(int);
 
     protected:
         virtual void            updateCurrent(sf::Time, CommandQueue&) override;
@@ -48,6 +47,9 @@ class Aircraft : public Entity
         void            updateMovementPatterns(sf::Time);
         void            createPickup() const;
         void            createExplosion() const;
+        void            changeScore();
+        void            increaseScoreRequest(int) const;
+        void            decreaseScoreRequest(int) const;
         virtual void    onRemoval() override;
 
         Type                    mType;

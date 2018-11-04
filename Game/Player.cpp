@@ -48,6 +48,7 @@ struct AircraftMissileTrigger // Command
 
 Player::Player(KeyBinding* keys, int id)
     : mIdentifier(id),
+      mScore(0),
       mKeyBinding(keys)
 {
     initializeActions();
@@ -73,6 +74,21 @@ void Player::handleEvent(const sf::Event& event, CommandQueue& commands)
             commands.push(mActionBinding[action]);
         }
     }
+}
+
+void Player::setScore(int value)
+{
+    mScore = value;
+}
+
+int Player::getScore() const
+{
+    return mScore;
+}
+
+int Player::getID() const
+{
+    return mIdentifier;
 }
 
 void Player::initializeActions()

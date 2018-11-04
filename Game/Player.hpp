@@ -4,11 +4,10 @@
 #include "KeyBinding.hpp"
 #include "Command.hpp"
 #include "CommandQueue.hpp"
-#include <SFML/System/NonCopyable.hpp>
 #include <SFML/Window/Event.hpp>
 #include <array>
 
-class Player : public sf::NonCopyable
+class Player
 {
     public:
         using Action = KeyBinding::Action;
@@ -16,11 +15,15 @@ class Player : public sf::NonCopyable
              Player(KeyBinding*, int id);
         void handleRealTimeInput(CommandQueue&);
         void handleEvent(const sf::Event&, CommandQueue&);
+        void setScore(int);
+        int  getScore() const;
+        int  getID() const;
 
     private:
         void initializeActions();
 
         int         mIdentifier;
+        int         mScore;
         KeyBinding* mKeyBinding;
         std::array<Command, Action::Count> mActionBinding;
 };
