@@ -1,6 +1,9 @@
 #include "GameState.hpp"
 #include "../MusicPlayer.hpp"
 #include <fstream>
+#include <iostream>
+#include <sstream>
+#include <string>
 #include <unordered_map>
 
 GameState::GameState(Context context, StateStack& stateStack)
@@ -27,12 +30,12 @@ bool GameState::update(sf::Time dt)
         requestStackPush(States::MissionFailed);
         getContext().sounds.play(Sound::GameOver);
         getContext().music.pause();
-        savePlayersScore();
+        updateScoresFile();
     }
 	else if(mWorld.hasPlayerReachedEnd())
     {
         requestStackPush(States::MissionSuccess);
-        savePlayersScore();
+        updateScoresFile();
     }
 
     for(Player& player : mPlayers)
@@ -54,14 +57,32 @@ bool GameState::handleEvent(const sf::Event& event)
     return false;
 }
 
-void GameState::savePlayersScore() const
+void GameState::updateScoresFile() const
 {
-    std::ofstream scoreStream("scores.txt", std::ofstream::app);
+    std::vector<int> scores(10);
 
-    for(const Player& player : mPlayers)
+    // Read top 10 scores from file
+    std::ifstream inputScores("Scores.txt");
+    if(inputScores.good())
     {
-        scoreStream << player.getScore() << "#";
+        std::string text;
+        std::getline(inputScores, text);
+        std::istringstream stream(text);
+
+        for(int i=0; stream.peek() != EOF; ++i)
+            stream >> scores[i];
     }
+    inputScores.close();
+
+    // Add players scores to array of previous scores and sort them in descending order
+    for(const Player& player : mPlayers)
+        scores.push_back(player.getScore());
+    std::sort(scores.begin(), scores.end(), [](const int& lhs, const int& rhs){return lhs > rhs;});
+
+    // Output new top 10 scores to file
+    std::ofstream outputScores("Scores.txt", std::ios::out | std::ios::trunc);
+    for(int i = 0; i < 10; ++i)
+        outputScores << scores[i] << " ";
 }
 
 void GameState::updatePlayersScore()

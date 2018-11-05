@@ -15,7 +15,7 @@ class GameState : public State
         virtual bool    handleEvent(const sf::Event&) override;
 
     private:
-        void            savePlayersScore() const;
+        void            updateScoresFile() const;
         void            updatePlayersScore();
 
         World                   mWorld;
