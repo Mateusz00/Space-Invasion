@@ -41,7 +41,7 @@ bool SettingsState::handleEvent(const sf::Event& event)
         int index = mToggledButton.second;
         if(event.type == sf::Event::KeyReleased)
         {
-            getContext().keys1->assignKey(static_cast<KeyBinding::Action>(index), event.key.code);
+            getContext().keys[0]->assignKey(static_cast<KeyBinding::Action>(index), event.key.code);
             mBindingButtons[index]->deactivate();
             updateLabels();
             mToggledButton.first = false;
@@ -61,7 +61,7 @@ void SettingsState::updateLabels()
     for(int i = 0; i < KeyBinding::Count; ++i)
 	{
 		auto action = static_cast<Player::Action>(i);
-		sf::Keyboard::Key key1 = getContext().keys1->getAssignedKey(action);
+		sf::Keyboard::Key key1 = getContext().keys[0]->getAssignedKey(action);
 		mBindingLabels[i]->setText(toString(key1));
 	}
 }

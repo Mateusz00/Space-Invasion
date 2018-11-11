@@ -7,14 +7,22 @@
 Application::Application()
     : TIME_PER_FRAME(sf::seconds(1.f / 60.f)),
       mWindow(sf::VideoMode(1024, 700), "2D Fighter Jet Game", sf::Style::Close),
-      mStateStack(State::Context(mWindow, mTextures, mFonts, mSounds, mMusicPlayer, &mKeyBinding1))
+      mStateStack(State::Context(mWindow, mTextures, mFonts, mSounds, mMusicPlayer, mKeyBindings, mPlayers))
 {
+    mKeyBindings.push_back(new KeyBinding());
+    mKeyBindings.push_back(new KeyBinding());
     loadResources();
     mWindow.setKeyRepeatEnabled(false);
     mFPSCounter.setFont(mFonts.get(Fonts::Sansation));
     mFPSCounter.setCharacterSize(12u);
     mFPSCounter.setPosition(2.f, 2.f);
     mStateStack.pushState(States::MenuState);
+}
+
+Application::~Application()
+{
+    for(auto& keyBind : mKeyBindings)
+        delete keyBind;
 }
 
 void Application::run()

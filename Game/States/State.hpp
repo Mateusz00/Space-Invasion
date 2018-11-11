@@ -8,6 +8,7 @@
 class StateStack;
 class SoundPlayer;
 class MusicPlayer;
+class Player;
 
 class State
 {
@@ -15,13 +16,16 @@ class State
         using Ptr = std::unique_ptr<State>;
         struct Context
         {
-            Context(sf::RenderWindow&, TextureHolder&, FontHolder&, SoundPlayer&, MusicPlayer&, KeyBinding*);
-            sf::RenderWindow&   window;
-            TextureHolder&      textures;
-            FontHolder&         fonts;
-            SoundPlayer&        sounds;
-            MusicPlayer&        music;
-            KeyBinding*         keys1;
+            Context(sf::RenderWindow&, TextureHolder&, FontHolder&, SoundPlayer&, MusicPlayer&,
+                    std::vector<KeyBinding*>&, std::vector<Player>&);
+
+            sf::RenderWindow&           window;
+            TextureHolder&              textures;
+            FontHolder&                 fonts;
+            SoundPlayer&                sounds;
+            MusicPlayer&                music;
+            std::vector<KeyBinding*>&    keys;
+            std::vector<Player>&        players;
         };
 
                         State(Context, StateStack&);

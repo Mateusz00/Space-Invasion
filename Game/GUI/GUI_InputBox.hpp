@@ -22,10 +22,9 @@ class GUI_InputBox : public GUIObject
         virtual void	        handleEvent(const sf::Event&) override;
         virtual sf::FloatRect   getBoundingRect() const override;
         virtual void	        draw(sf::RenderTarget&, sf::RenderStates) const override;
-
-    private:
         void	                update(sf::Time);
 
+    private:
         std::string&            mOutput;
         sf::RectangleShape      mBox;
         sf::RectangleShape      mInputCursor;

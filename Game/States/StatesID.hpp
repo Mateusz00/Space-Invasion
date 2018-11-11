@@ -5,13 +5,15 @@ namespace States
 {
     enum ID
     {
-        GameState,
+        GameState1P,
+        GameState2P,
         MenuState,
         SettingsState,
         PauseState,
         NetworkPause,
         MissionFailed,
         MissionSuccess,
+        PlayerInfoState,
         None
     };
 }

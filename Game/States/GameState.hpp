@@ -9,7 +9,7 @@
 class GameState : public State
 {
     public:
-                        GameState(Context, StateStack&);
+                        GameState(Context, StateStack&, int playerNumber);
         virtual bool    draw() override;
         virtual bool    update(sf::Time) override;
         virtual bool    handleEvent(const sf::Event&) override;
@@ -19,7 +19,8 @@ class GameState : public State
         void            updatePlayersScore();
 
         World                   mWorld;
-        std::vector<Player>     mPlayers;
+        std::vector<Player>&    mPlayers;
+        sf::RenderWindow&       mWindow;
 };
 
 #endif // GAMESTATE_HPP

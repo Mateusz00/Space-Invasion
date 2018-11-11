@@ -1,16 +1,19 @@
 #include "GameState.hpp"
+#include "../Utility.hpp"
 #include "../MusicPlayer.hpp"
+#include <SFML/Graphics/Text.hpp>
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <string>
 #include <unordered_map>
 
-GameState::GameState(Context context, StateStack& stateStack)
+GameState::GameState(Context context, StateStack& stateStack, int playerNumber)
     : State(context, stateStack),
-      mWorld(context)
+      mWorld(context),
+      mPlayers(context.players),
+      mWindow(context.window)
 {
-    mPlayers.emplace_back(context.keys1, 0);
     context.music.playNow(Music::BattleTheme, true);
 }
 

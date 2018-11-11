@@ -4,6 +4,7 @@
 #include "States/PauseState.hpp"
 #include "States/SettingsState.hpp"
 #include "States/GameOverState.hpp"
+#include "States/PlayerInfoState.hpp"
 #include <exception>
 
 StateStack::PendingChange::PendingChange(Action action, States::ID id)
@@ -15,13 +16,15 @@ StateStack::PendingChange::PendingChange(Action action, States::ID id)
 StateStack::StateStack(State::Context context)
     : mContext(context)
 {
-    createStateFactory<GameState>(States::GameState);
+    createStateFactory<GameState>(States::GameState1P, 1);
+    createStateFactory<GameState>(States::GameState2P, 2);
     createStateFactory<MenuState>(States::MenuState);
     createStateFactory<PauseState>(States::PauseState, false);
     createStateFactory<PauseState>(States::NetworkPause, true);
     createStateFactory<SettingsState>(States::SettingsState);
     createStateFactory<GameOverState>(States::MissionFailed, "Mission Failed");
     createStateFactory<GameOverState>(States::MissionSuccess, "Mission Success");
+    createStateFactory<PlayerInfoState>(States::PlayerInfoState);
 }
 
 void StateStack::update(sf::Time dt)

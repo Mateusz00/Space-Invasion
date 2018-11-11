@@ -46,10 +46,11 @@ struct AircraftMissileTrigger // Command
 };
 
 
-Player::Player(KeyBinding* keys, int id)
+Player::Player(KeyBinding* keys, int id, std::string& name)
     : mIdentifier(id),
       mScore(0),
-      mKeyBinding(keys)
+      mKeyBinding(keys),
+      mName(name)
 {
     initializeActions();
 
@@ -89,6 +90,15 @@ int Player::getScore() const
 int Player::getID() const
 {
     return mIdentifier;
+}
+void Player::setName(const std::string& name)
+{
+    mName = name;
+}
+
+const std::string& Player::getName() const
+{
+    return mName;
 }
 
 void Player::initializeActions()

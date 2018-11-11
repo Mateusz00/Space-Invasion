@@ -11,6 +11,9 @@ GUI_InputBox::GUI_InputBox(std::string& output, sf::Vector2f boxSize, int maxCha
       mIsForced(isForced),
       mShowCursor(false)
 {
+    if(mIsForced)
+        activate();
+
     mBox.setFillColor(sf::Color(61, 189, 204, 180));
 
     mInputCursor.setFillColor(sf::Color::Black);
@@ -116,10 +119,11 @@ void GUI_InputBox::update(sf::Time dt)
     if(isActive())
     {
         mAccumulatedTime += dt;
-        if(mAccumulatedTime >= sf::seconds(0.06f))
+        if(mAccumulatedTime >= sf::seconds(0.3f))
         {
             mAccumulatedTime = sf::Time::Zero;
             mShowCursor = !mShowCursor;
         }
     }
 }
+// TODO: Add function updating position of input cursor and mIsForced checks
