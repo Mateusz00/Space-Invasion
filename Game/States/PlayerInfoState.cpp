@@ -11,7 +11,7 @@ PlayerInfoState::PlayerInfoState(Context context, StateStack& stateStack)
       mPlayers(context.players),
       mBackgroundSprite(context.textures.get(Textures::TitleScreen)),
       mText("Enter Player1 name: ", context.fonts.get(Fonts::Sansation), 20u),
-      mInputBox(mPlayerName, sf::Vector2f(300.f, 50.f), 15, true, context.fonts),
+      mInputBox(mPlayerName, sf::Vector2f(400.f, 50.f), 11, true, context.fonts),
       mWindow(context.window),
       mModeConfirmed(false),
       mNumberOfPlayers(1)
@@ -41,9 +41,9 @@ PlayerInfoState::PlayerInfoState(Context context, StateStack& stateStack)
 
     //Position text and input box that will be displayed after choosing number of players
     centerOrigin(mText);
-    //centerOrigin(mInputBox);
-    mText.setPosition(windowSize * 0.5f);
-    mInputBox.setPosition(windowSize.x * 0.5f, windowSize.y * 0.55f);
+    centerOrigin(mInputBox);
+    mText.setPosition(windowSize.x * 0.5f, windowSize.y * 0.45f);
+    mInputBox.setPosition(windowSize.x * 0.5f, windowSize.y * 0.53f);
 }
 
 bool PlayerInfoState::draw()
@@ -70,8 +70,7 @@ bool PlayerInfoState::update(sf::Time dt)
 
     if(!mInputBox.isActive()) // After pressing enter input box becomes inActive
     {
-        addPlayer(currentPlayer);
-        ++currentPlayer;
+        addPlayer(currentPlayer++);
 
         if(currentPlayer < mNumberOfPlayers)
         {

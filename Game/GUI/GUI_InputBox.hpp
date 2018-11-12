@@ -23,8 +23,12 @@ class GUI_InputBox : public GUIObject
         virtual sf::FloatRect   getBoundingRect() const override;
         virtual void	        draw(sf::RenderTarget&, sf::RenderStates) const override;
         void	                update(sf::Time);
+        sf::FloatRect           getLocalBounds() const;
 
     private:
+        void                    computeCursorPosition();
+        bool                    isPrintable(sf::Uint32 unicode) const;
+
         std::string&            mOutput;
         sf::RectangleShape      mBox;
         sf::RectangleShape      mInputCursor;
