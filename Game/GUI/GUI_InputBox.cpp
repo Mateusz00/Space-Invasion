@@ -78,6 +78,10 @@ void GUI_InputBox::handleEvent(const sf::Event& event)
                     if(!mIsForced || mString.size() >= 1) // If isForced then user has to enter at least 1 character
                     {
                         mOutput.assign(mString);
+                        mString.clear();
+                        mText.setString(mString);
+                        mInputPosition = 0;
+                        computeCursorPosition();
                         deactivate();
                     }
                     return;
@@ -87,7 +91,7 @@ void GUI_InputBox::handleEvent(const sf::Event& event)
 
         case sf::Event::MouseButtonReleased:
         {
-            if(!mIsForced || mString.size() >= 1) // If isForced then user has to enter at least 1 character
+            if(!mIsForced)
             {
                 sf::Vector2i tempPos(event.mouseButton.x, event.mouseButton.y);
                 sf::Vector2f mousePosition = static_cast<sf::Vector2f>(tempPos);
@@ -146,13 +150,8 @@ sf::FloatRect GUI_InputBox::getLocalBounds() const
 
 void GUI_InputBox::computeCursorPosition()
 {
-    if(mInputPosition == 0)
-        mInputCursor.setPosition(2.f, 2.f);
-    else
-    {
-        sf::Vector2f newPosition = mText.findCharacterPos(mInputPosition);
-        mInputCursor.setPosition(newPosition);
-    }
+    sf::Vector2f newPosition = mText.findCharacterPos(mInputPosition);
+    mInputCursor.setPosition(newPosition);
 }
 
 bool GUI_InputBox::isPrintable(sf::Uint32 unicode) const
