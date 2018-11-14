@@ -5,7 +5,6 @@
 #include <memory>
 #include <cmath>
 #include <limits>
-#include <iostream>
 
 World::World(State::Context context)
     : mTarget(context.window),
@@ -18,12 +17,18 @@ World::World(State::Context context)
       mWorldBounds(0.f, 0.f, mView.getSize().x, 7000.f),
       mPlayerSpawnPosition(mView.getSize().x / 2, mWorldBounds.height - mView.getSize().y / 2.f),
       mScrollingSpeed(-40.f),
-      mScore("0", context.fonts.get(Fonts::BPmonoItalics), 32u)
+      mScore("0", context.fonts.get(Fonts::BPmonoItalics), 32u),
+      mIsDeleting(false)
 {
     buildWorld();
     initializeSpawnPoints();
     mScore.setPosition(mTarget.getSize().x * 0.5f, 18.f);
     mView.setCenter(mPlayerSpawnPosition);
+}
+
+World::~World()
+{
+    mIsDeleting = true;
 }
 
 void World::update(sf::Time dt)
@@ -78,8 +83,8 @@ void World::addCollidable(Entity* entity)
 
 void World::removeCollidable(Entity* entity)
 {
-    mCollidablesList.erase(entity->getPositionOnList());
-    std::cout << "REMOVAL" << std::endl;
+    if(!mIsDeleting)
+        mCollidablesList.erase(entity->getPositionOnList());
 }
 
 ParticleNode& World::getParticleNode() const
@@ -151,8 +156,6 @@ void World::buildWorld()
 
     std::unique_ptr<AmmoNode> ammoNode(new AmmoNode(*mPlayerAircraft, mTextures, mFonts, mView));
     mUIGraph.attachChild(std::move(ammoNode));
-
-
 }
 
 void World::adaptPlayersVelocity()

@@ -62,30 +62,31 @@ bool GameState::handleEvent(const sf::Event& event)
 
 void GameState::updateScoresFile() const
 {
-    std::vector<int> scores(10);
+    using UserScore = std::pair<int, std::string>;
+    std::vector<UserScore> scores(10, UserScore(0, "-"));
 
     // Read top 10 scores from file
     std::ifstream inputScores("Scores.txt");
     if(inputScores.good())
     {
-        std::string text;
-        std::getline(inputScores, text);
-        std::istringstream stream(text);
-
-        for(int i=0; stream.peek() != EOF; ++i)
-            stream >> scores[i];
+        for(int i=0; inputScores.peek() != EOF && i < scores.size(); ++i)
+            inputScores >> scores[i].first >> scores[i].second;
     }
     inputScores.close();
 
     // Add players scores to array of previous scores and sort them in descending order
     for(const Player& player : mPlayers)
-        scores.push_back(player.getScore());
-    std::sort(scores.begin(), scores.end(), [](const int& lhs, const int& rhs){return lhs > rhs;});
+        scores.push_back(std::make_pair(player.getScore(), player.getName()));
+
+    std::sort(scores.begin(), scores.end(), [](const UserScore& lhs, const UserScore& rhs)
+    {
+        return lhs.first > rhs.first;
+    });
 
     // Output new top 10 scores to file
     std::ofstream outputScores("Scores.txt", std::ios::out | std::ios::trunc);
-    for(int i = 0; i < 10; ++i)
-        outputScores << scores[i] << " ";
+    for(int i = 0; i < 9; ++i)
+        outputScores << scores[i].first << " " << scores[i].second << " ";
 }
 
 void GameState::updatePlayersScore()

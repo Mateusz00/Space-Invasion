@@ -14,8 +14,10 @@ PlayerInfoState::PlayerInfoState(Context context, StateStack& stateStack)
       mInputBox(mPlayerName, sf::Vector2f(400.f, 50.f), 11, true, context.fonts),
       mWindow(context.window),
       mModeConfirmed(false),
-      mNumberOfPlayers(1)
+      mNumberOfPlayers(1),
+      mCurrentPlayer(0)
 {
+    mPlayers.clear();
     sf::Vector2f windowSize(static_cast<sf::Vector2f>(mWindow.getSize()));
 
     // Create and position buttons for choosing number of players
@@ -66,13 +68,11 @@ bool PlayerInfoState::draw()
 
 bool PlayerInfoState::update(sf::Time dt)
 {
-    static int currentPlayer = 0;
-
-    if(!mInputBox.isActive()) // After pressing enter input box becomes inActive
+    if(!mInputBox.isActive() && mModeConfirmed) // After pressing enter input box becomes inActive
     {
-        addPlayer(currentPlayer++);
+        addPlayer(mCurrentPlayer++);
 
-        if(currentPlayer < mNumberOfPlayers)
+        if(mCurrentPlayer < mNumberOfPlayers)
         {
             mText.setString("Enter Player2 name: ");
             centerOrigin(mText);

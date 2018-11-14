@@ -28,6 +28,7 @@ class PlayerInfoState : public State
         GUIContainer                mButtons;
         bool                        mModeConfirmed;
         int                         mNumberOfPlayers;
+        int                         mCurrentPlayer;
 };
 
 #endif // PLAYERINFOSTATE_HPP

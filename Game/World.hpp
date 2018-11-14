@@ -18,6 +18,7 @@ class World
 {
     public:
         explicit                        World(State::Context context);
+                                        ~World();
         CommandQueue&                   getCommandQueue();
         void                            update(sf::Time);
         void                            draw();
@@ -75,6 +76,7 @@ class World
         float               mScrollingSpeed;
         ParticleNode*       mParticleNode;
         sf::Text            mScore;
+        bool                mIsDeleting;
 
         std::vector<Aircraft*>              mActiveEnemies;
         std::vector<SpawnPoint>             mSpawnPoints;

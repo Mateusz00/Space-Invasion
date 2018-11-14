@@ -20,6 +20,7 @@ class SceneNode : public sf::Drawable, public sf::Transformable
         using Ptr = std::unique_ptr<SceneNode>;
 
         explicit                SceneNode(Category::Type = Category::None);
+        virtual                 ~SceneNode() = default;
         sf::Vector2f            getWorldPosition() const;
         sf::Transform           getWorldTransform() const;
         void                    attachChild(Ptr child);
