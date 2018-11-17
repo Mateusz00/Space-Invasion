@@ -3,6 +3,7 @@
 
 #include "State.hpp"
 #include "../HighScoresTable.hpp"
+#include "../GUI/GUIContainer.hpp"
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
 
@@ -18,6 +19,7 @@ class HighScoresState : public State
         HighScoresTable     mHighScores;
         sf::Sprite          mBackground;
         sf::Text	        mHeader;
+        GUIContainer        mButtons;
 };
 
 #endif // HIGHSCORESSTATE_HPP
