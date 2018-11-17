@@ -5,6 +5,7 @@
 #include "States/SettingsState.hpp"
 #include "States/GameOverState.hpp"
 #include "States/PlayerInfoState.hpp"
+#include "States/HighScoresState.hpp"
 #include <exception>
 
 StateStack::PendingChange::PendingChange(Action action, States::ID id)
@@ -24,6 +25,7 @@ StateStack::StateStack(State::Context context)
     createStateFactory<GameOverState>(States::MissionFailed, GameOverState::Fail);
     createStateFactory<GameOverState>(States::MissionSuccess, GameOverState::Success);
     createStateFactory<PlayerInfoState>(States::PlayerInfoState);
+    createStateFactory<HighScoresState>(States::HighScoresState);
 }
 
 void StateStack::update(sf::Time dt)

@@ -13,6 +13,7 @@ namespace States
         MissionFailed,
         MissionSuccess,
         PlayerInfoState,
+        HighScoresState,
         None
     };
 }

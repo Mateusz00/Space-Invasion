@@ -14,10 +14,10 @@ MenuState::MenuState(Context context, StateStack& stateStack)
     context.music.playNow(Music::MenuTheme, true);
 
     sf::Vector2f windowSize(static_cast<sf::Vector2f>(mWindow.getSize()));
-    mGUIContainer.setPosition(windowSize * 0.5f);
+    mGUIContainer.setPosition(windowSize.x * 0.5f, windowSize.y * 0.45f);
 
     std::unique_ptr<GUIButton> play(new GUIButton(context, GUIButton::Text, "Play"));
-    play->setPosition(0.f, windowSize.y * -0.15f);
+    play->setPosition(0.f, windowSize.y * -0.12f);
     play->setCallback([this]()
     {
         requestStackPop();
@@ -33,8 +33,16 @@ MenuState::MenuState(Context context, StateStack& stateStack)
     });
     mGUIContainer.push(std::move(settings));
 
+    std::unique_ptr<GUIButton> HighScores(new GUIButton(context, GUIButton::Text, "High Scores"));
+    HighScores->setPosition(0.f, windowSize.y * 0.12f);
+    HighScores->setCallback([this]()
+    {
+        requestStackPush(States::HighScoresState);
+    });
+    mGUIContainer.push(std::move(HighScores));
+
     std::unique_ptr<GUIButton> exit(new GUIButton(context, GUIButton::Text, "Exit"));
-    exit->setPosition(0.f, windowSize.y * 0.15f);
+    exit->setPosition(0.f, windowSize.y * 0.24f);
     exit->setCallback([this]()
     {
         requestStackClear();
