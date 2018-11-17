@@ -5,8 +5,7 @@ namespace States
 {
     enum ID
     {
-        GameState1P,
-        GameState2P,
+        GameState,
         MenuState,
         SettingsState,
         PauseState,

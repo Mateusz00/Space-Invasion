@@ -81,16 +81,7 @@ bool PlayerInfoState::update(sf::Time dt)
         else
         {
             requestStackClear();
-            switch(mNumberOfPlayers)
-            {
-                case 1:
-                    requestStackPush(States::GameState1P);
-                    break;
-
-                case 2:
-                    requestStackPush(States::GameState2P);
-                    break;
-            }
+            requestStackPush(States::GameState);
         }
     }
 

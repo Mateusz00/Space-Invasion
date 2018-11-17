@@ -16,14 +16,13 @@ StateStack::PendingChange::PendingChange(Action action, States::ID id)
 StateStack::StateStack(State::Context context)
     : mContext(context)
 {
-    createStateFactory<GameState>(States::GameState1P, 1);
-    createStateFactory<GameState>(States::GameState2P, 2);
+    createStateFactory<GameState>(States::GameState);
     createStateFactory<MenuState>(States::MenuState);
     createStateFactory<PauseState>(States::PauseState, false);
     createStateFactory<PauseState>(States::NetworkPause, true);
     createStateFactory<SettingsState>(States::SettingsState);
-    createStateFactory<GameOverState>(States::MissionFailed, "Mission Failed");
-    createStateFactory<GameOverState>(States::MissionSuccess, "Mission Success");
+    createStateFactory<GameOverState>(States::MissionFailed, GameOverState::Fail);
+    createStateFactory<GameOverState>(States::MissionSuccess, GameOverState::Success);
     createStateFactory<PlayerInfoState>(States::PlayerInfoState);
 }
 

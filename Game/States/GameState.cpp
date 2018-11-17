@@ -8,7 +8,7 @@
 #include <string>
 #include <unordered_map>
 
-GameState::GameState(Context context, StateStack& stateStack, int playerNumber)
+GameState::GameState(Context context, StateStack& stateStack)
     : State(context, stateStack),
       mWorld(context),
       mPlayers(context.players),
