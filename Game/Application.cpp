@@ -9,8 +9,8 @@ Application::Application()
       mWindow(sf::VideoMode(1024, 700), "2D Fighter Jet Game", sf::Style::Close),
       mStateStack(State::Context(mWindow, mTextures, mFonts, mSounds, mMusicPlayer, mKeyBindings, mPlayers))
 {
-    mKeyBindings.push_back(new KeyBinding());
-    mKeyBindings.push_back(new KeyBinding());
+    mKeyBindings.push_back(new KeyBinding(1));
+    mKeyBindings.push_back(new KeyBinding(2));
     loadResources();
     mWindow.setKeyRepeatEnabled(false);
     mFPSCounter.setFont(mFonts.get(Fonts::Sansation));

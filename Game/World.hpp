@@ -32,6 +32,7 @@ class World
         bool                            hasPlayerReachedEnd() const;
         bool                            hasAlivePlayer() const;
         std::unordered_map<int, int>&   getPlayersScoresMap();
+        Aircraft*                       addAircraft(int id);
 
     private:
         void    buildWorld();
@@ -46,6 +47,7 @@ class World
         void    destroyEntitiesOutsideView();
         void    updateSounds();
         void    updateScore();
+        void    removeDanglingPointers();
 
         enum Layer
         {
@@ -69,7 +71,6 @@ class World
         SceneNode           mSceneGraph;
         SceneNode           mUIGraph;
         CommandQueue        mCommandQueue;
-        Aircraft*           mPlayerAircraft;
         sf::View            mView;
         sf::FloatRect       mWorldBounds;
         sf::Vector2f        mPlayerSpawnPosition;
@@ -78,6 +79,7 @@ class World
         sf::Text            mScore;
         bool                mIsDeleting;
 
+        std::vector<Aircraft*>              mPlayerAircrafts;
         std::vector<Aircraft*>              mActiveEnemies;
         std::vector<SpawnPoint>             mSpawnPoints;
         std::array<SceneNode*, LayerCount>  mSceneLayers;

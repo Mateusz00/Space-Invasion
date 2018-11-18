@@ -22,12 +22,12 @@ class SettingsState : public State
 
     private:
         void	updateLabels();
-        void	addButton(int index, int y, const std::string&, Context);
+        void	addButton(int index, int player, int y, const std::string&, Context);
 
         sf::Sprite								    mBackgroundSprite;
         GUIContainer								mGUIContainer;
-        std::array<GUIButton*, KeyBinding::Count>	mBindingButtons;
-        std::array<GUILabel*, KeyBinding::Count> 	mBindingLabels;
+        std::array<GUIButton*, KeyBinding::Count*2>	mBindingButtons;
+        std::array<GUILabel*, KeyBinding::Count*2> 	mBindingLabels;
         std::pair<bool, Player::Action>             mToggledButton;
         sf::RenderWindow&                           mWindow;
 };

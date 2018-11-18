@@ -1,13 +1,28 @@
 #include "KeyBinding.hpp"
 
-KeyBinding::KeyBinding()
+KeyBinding::KeyBinding(int player)
 {
-    mBinds[sf::Keyboard::W] = Action::MoveUp;
-    mBinds[sf::Keyboard::S] = Action::MoveDown;
-    mBinds[sf::Keyboard::A]	= Action::MoveLeft;
-    mBinds[sf::Keyboard::D] = Action::MoveRight;
-    mBinds[sf::Keyboard::J] = Action::Fire;
-    mBinds[sf::Keyboard::K] = Action::LaunchMissile;
+    switch(player)
+    {
+    case 1:
+        mBinds[sf::Keyboard::W] = Action::MoveUp;
+        mBinds[sf::Keyboard::S] = Action::MoveDown;
+        mBinds[sf::Keyboard::A]	= Action::MoveLeft;
+        mBinds[sf::Keyboard::D] = Action::MoveRight;
+        mBinds[sf::Keyboard::G] = Action::Fire;
+        mBinds[sf::Keyboard::H] = Action::LaunchMissile;
+        break;
+
+    case 2:
+        mBinds[sf::Keyboard::Up] = Action::MoveUp;
+        mBinds[sf::Keyboard::Down] = Action::MoveDown;
+        mBinds[sf::Keyboard::Left]	= Action::MoveLeft;
+        mBinds[sf::Keyboard::Right] = Action::MoveRight;
+        mBinds[sf::Keyboard::Space] = Action::Fire;
+        mBinds[sf::Keyboard::M] = Action::LaunchMissile;
+        break;
+    }
+
 }
 
 void KeyBinding::assignKey(Action action, sf::Keyboard::Key key)

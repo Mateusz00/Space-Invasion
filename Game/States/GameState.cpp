@@ -15,6 +15,9 @@ GameState::GameState(Context context, StateStack& stateStack)
       mWindow(context.window)
 {
     context.music.playNow(Music::BattleTheme, true);
+
+    for(const Player& player : mPlayers)
+        mWorld.addAircraft(player.getID());
 }
 
 bool GameState::draw()

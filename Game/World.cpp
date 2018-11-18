@@ -3,6 +3,7 @@
 #include "SpriteNode.hpp"
 #include "Entities/AmmoNode.hpp"
 #include <memory>
+#include <algorithm>
 #include <cmath>
 #include <limits>
 
@@ -12,7 +13,6 @@ World::World(State::Context context)
       mFonts(context.fonts),
       mSoundPlayer(context.sounds),
       mMusicPlayer(context.music),
-      mPlayerAircraft(nullptr),
       mView(mTarget.getDefaultView()),
       mWorldBounds(0.f, 0.f, mView.getSize().x, 7000.f),
       mPlayerSpawnPosition(mView.getSize().x / 2, mWorldBounds.height - mView.getSize().y / 2.f),
@@ -35,8 +35,8 @@ void World::update(sf::Time dt)
 {
     mView.move(0.f, mScrollingSpeed * dt.asSeconds());
 
-    if(mPlayerAircraft)
-        mPlayerAircraft->setVelocity(0.f, 0.f);
+    for(auto& playerAircraft : mPlayerAircrafts)
+        playerAircraft->setVelocity(0.f, 0.f);
 
     destroyEntitiesOutsideView();
     guideHomingMissiles();
@@ -51,13 +51,11 @@ void World::update(sf::Time dt)
     spawnEnemies();
     mSceneGraph.update(dt, mCommandQueue);
     adaptPlayersPosition();
-
-    if(mPlayerAircraft->isMarkedForRemoval()) // Assign nullptr as remove wrecks removes only entities
-        mPlayerAircraft = nullptr;
-
     updateSounds();
-    mSceneGraph.removeWrecks();
     mUIGraph.update(dt, mCommandQueue);
+
+    removeDanglingPointers(); // Erase pointers of destroyed players aircrafts as remove wrecks removes only entities
+    mSceneGraph.removeWrecks();
 }
 
 void World::draw()
@@ -104,17 +102,37 @@ void World::placeOnLayer(SceneNode::Ptr node, Category::Type layer)
 
 bool World::hasPlayerReachedEnd() const
 {
-    return !mWorldBounds.contains(mPlayerAircraft->getPosition());
+    for(auto& playerAircraft : mPlayerAircrafts)
+    {
+        if(!mWorldBounds.contains(playerAircraft->getPosition()))
+           return true;
+    }
+
+    return false;
 }
 
 bool World::hasAlivePlayer() const
 {
-    return mPlayerAircraft != nullptr;
+    return mPlayerAircrafts.size() > 0;
 }
 
 std::unordered_map<int, int>& World::getPlayersScoresMap()
 {
     return mPlayersScores;
+}
+
+Aircraft* World::addAircraft(int id)
+{
+	std::unique_ptr<Aircraft> playerAircraft(new Aircraft(Aircraft::Ally, mTextures, mFonts, *this, id));
+	playerAircraft->setPosition(mPlayerSpawnPosition.x - 50.f + 100.f*(id%2), mPlayerSpawnPosition.y);
+	playerAircraft->setIdentifier(id);
+	mPlayerAircrafts.emplace_back(playerAircraft.get());
+
+    // temp
+    std::unique_ptr<AmmoNode> ammoNode(new AmmoNode(*playerAircraft, mTextures, mFonts, mView));
+    mUIGraph.attachChild(std::move(ammoNode));
+    mSceneLayers[UpperAir]->attachChild(std::move(playerAircraft));
+	return mPlayerAircrafts.back();
 }
 
 void World::buildWorld()
@@ -144,28 +162,24 @@ void World::buildWorld()
 	finishLine->setPosition(0.f, -50.f);
 	mSceneLayers[Background]->attachChild(std::move(finishLine));
 
-    std::unique_ptr<Aircraft> playerAircraft(new Aircraft(Aircraft::Ally, mTextures, mFonts, *this));
-    playerAircraft->setPosition(mPlayerSpawnPosition); // Change to viewCenter
-    playerAircraft->setIdentifier(0);
-    mPlayerAircraft = playerAircraft.get();
-    mSceneLayers[UpperAir]->attachChild(std::move(playerAircraft));
-
     std::unique_ptr<ParticleNode> particleNode(new ParticleNode(mTextures));
     mParticleNode = particleNode.get();
     mSceneLayers[LowerAir]->attachChild(std::move(particleNode));
-
-    std::unique_ptr<AmmoNode> ammoNode(new AmmoNode(*mPlayerAircraft, mTextures, mFonts, mView));
-    mUIGraph.attachChild(std::move(ammoNode));
 }
 
 void World::adaptPlayersVelocity()
 {
-    sf::Vector2f velocity = mPlayerAircraft->getVelocity();
+    sf::Vector2f velocity;
 
-    if(velocity.x != 0.f && velocity.y != 0.f)
-        mPlayerAircraft->setVelocity(velocity / std::sqrt(2.f));
+    for(auto& playerAircraft : mPlayerAircrafts)
+    {
+        velocity = playerAircraft->getVelocity();
 
-    mPlayerAircraft->accelerate(0.f, mScrollingSpeed);
+        if(velocity.x != 0.f && velocity.y != 0.f)
+            playerAircraft->setVelocity(velocity / std::sqrt(2.f));
+
+        playerAircraft->accelerate(0.f, mScrollingSpeed);
+    }
 }
 
 void World::initializeSpawnPoints()
@@ -264,19 +278,24 @@ void World::adaptPlayersPosition()
 {
     sf::FloatRect viewBounds = getViewBounds();
 	const sf::Vector2f distanceFromBorder(37.5f, 26.f);
-    sf::Vector2f playerPosition = mPlayerAircraft->getPosition();
+    sf::Vector2f playerPosition;
 
-    if(playerPosition.x < viewBounds.left + distanceFromBorder.x)
-        playerPosition.x = viewBounds.left + distanceFromBorder.x;
-    else if(playerPosition.x > viewBounds.left + viewBounds.width - distanceFromBorder.x)
-        playerPosition.x = viewBounds.left + viewBounds.width - distanceFromBorder.x;
+    for(auto& playerAircraft : mPlayerAircrafts)
+    {
+        playerPosition = playerAircraft->getPosition();
 
-    if(playerPosition.y < viewBounds.top + distanceFromBorder.y)
-        playerPosition.y = viewBounds.top + distanceFromBorder.y;
-    else if(playerPosition.y > viewBounds.top + viewBounds.height - distanceFromBorder.y)
-        playerPosition.y = viewBounds.top + viewBounds.height - distanceFromBorder.y;
+        if(playerPosition.x < viewBounds.left + distanceFromBorder.x)
+            playerPosition.x = viewBounds.left + distanceFromBorder.x;
+        else if(playerPosition.x > viewBounds.left + viewBounds.width - distanceFromBorder.x)
+            playerPosition.x = viewBounds.left + viewBounds.width - distanceFromBorder.x;
 
-    mPlayerAircraft->setPosition(playerPosition);
+        if(playerPosition.y < viewBounds.top + distanceFromBorder.y)
+            playerPosition.y = viewBounds.top + distanceFromBorder.y;
+        else if(playerPosition.y > viewBounds.top + viewBounds.height - distanceFromBorder.y)
+            playerPosition.y = viewBounds.top + viewBounds.height - distanceFromBorder.y;
+
+        playerAircraft->setPosition(playerPosition);
+    }
 }
 
 void World::checkCollisions()
@@ -314,13 +333,25 @@ void World::destroyEntitiesOutsideView()
 void World::updateSounds()
 {
     mSoundPlayer.removeStoppedSounds();
-    mSoundPlayer.setListener(mPlayerAircraft->getWorldPosition());
+    mSoundPlayer.setListener(mPlayerAircrafts[0]->getWorldPosition());
 }
 
 void World::updateScore()
 {
-    mScore.setString(toString(mPlayerAircraft->getScore()));
-    centerOrigin(mScore);
+    int cumulativeScore = 0;
 
-    mPlayersScores[mPlayerAircraft->getIdentifier()] = mPlayerAircraft->getScore();
+    for(const auto& playerAircraft : mPlayerAircrafts)
+    {
+        cumulativeScore += playerAircraft->getScore();
+        mPlayersScores[playerAircraft->getIdentifier()] = playerAircraft->getScore();
+    }
+
+    mScore.setString(toString(cumulativeScore));
+    centerOrigin(mScore);
+}
+
+void World::removeDanglingPointers()
+{
+    auto firstToRemove = std::remove_if(mPlayerAircrafts.begin(), mPlayerAircrafts.end(), std::mem_fn(&Aircraft::isMarkedForRemoval));
+	mPlayerAircrafts.erase(firstToRemove, mPlayerAircrafts.end());
 }
