@@ -337,27 +337,27 @@ void Aircraft::changeScore()
 
 void Aircraft::increaseScoreRequest(int value) const
 {
-    Command ScoreIncreaseCommand;
-	ScoreIncreaseCommand.mCategories.push_back(Category::PlayerAircraft);
-	ScoreIncreaseCommand.mAction = castFunctor<Aircraft>([this, value](Aircraft& aircraft, sf::Time dt)
+    Command increaseScoreCommand;
+	increaseScoreCommand.mCategories.push_back(Category::PlayerAircraft);
+	increaseScoreCommand.mAction = castFunctor<Aircraft>([this, value](Aircraft& aircraft, sf::Time dt)
 	{
 	    if(aircraft.getIdentifier() == mAttackerID)
             aircraft.increaseScore(value);
 	});
 
-	getWorld().getCommandQueue().push(ScoreIncreaseCommand);
+	getWorld().getCommandQueue().push(increaseScoreCommand);
 }
 
 void Aircraft::decreaseScoreRequest(int value) const
 {
-    Command decreaseIncreaseCommand;
-	decreaseIncreaseCommand.mCategories.push_back(Category::PlayerAircraft);
-	decreaseIncreaseCommand.mAction = castFunctor<Aircraft>([this, value](Aircraft& aircraft, sf::Time dt)
+    Command decreaseScoreCommand;
+	decreaseScoreCommand.mCategories.push_back(Category::PlayerAircraft);
+	decreaseScoreCommand.mAction = castFunctor<Aircraft>([this, value](Aircraft& aircraft, sf::Time dt)
 	{
         aircraft.increaseScore(-value);
 	});
 
-	getWorld().getCommandQueue().push(decreaseIncreaseCommand);
+	getWorld().getCommandQueue().push(decreaseScoreCommand);
 }
 
 void Aircraft::onRemoval()
