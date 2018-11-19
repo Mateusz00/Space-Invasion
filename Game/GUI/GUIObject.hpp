@@ -5,6 +5,7 @@
 #include <SFML/Graphics/Transformable.hpp>
 #include <SFML/Window/Event.hpp>
 #include <SFML/Graphics/Rect.hpp>
+#include <SFML/System/Vector2.hpp>
 #include <memory>
 
 class GUIObject : public sf::Drawable, public sf::Transformable
@@ -19,7 +20,8 @@ class GUIObject : public sf::Drawable, public sf::Transformable
         virtual bool            isActive() const;
         virtual void	        activate();
         virtual void	        deactivate();
-        virtual void	        handleEvent(const sf::Event&) = 0;
+        virtual void	        handleEvent(const sf::Event&);
+        virtual void            onMouseClick(sf::Vector2i);
         virtual sf::FloatRect   getBoundingRect() const;
 
     private:

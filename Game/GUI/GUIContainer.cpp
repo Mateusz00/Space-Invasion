@@ -24,10 +24,11 @@ bool GUIContainer::isSelectable() const
 
 void GUIContainer::handleEvent(const sf::Event& event)
 {
-    if(event.type == sf::Event::KeyReleased)
+    switch(event.type)
     {
-        switch(event.key.code)
-        {
+        case sf::Event::KeyReleased:
+            switch(event.key.code)
+            {
             case sf::Keyboard::W:
             case sf::Keyboard::Up:
                 selectPrevious();
@@ -43,16 +44,30 @@ void GUIContainer::handleEvent(const sf::Event& event)
                 if(hasSelection())
                     mComponents[mSelected]->activate();
                 break;
-        }
-    }
-    else if(event.type == sf::Event::MouseButtonReleased)
-    {
-        sf::Vector2i tempPos(event.mouseButton.x, event.mouseButton.y);
-        sf::Vector2f mousePosition = static_cast<sf::Vector2f>(tempPos);
-        int index;
+            }
+            break;
 
-        if(checkMouseCollision(mousePosition, index))
-            mComponents[index]->activate();
+        case sf::Event::MouseButtonReleased:
+        {
+            int index;
+            if(checkMouseCollision(sf::Vector2i(event.mouseButton.x, event.mouseButton.y), index))
+                mComponents[index]->activate();
+        }
+        break;
+
+        case sf::Event::MouseButtonPressed:
+        {
+            int index;
+            if(checkMouseCollision(sf::Vector2i(event.mouseButton.x, event.mouseButton.y), index))
+                mComponents[index]->onMouseClick(sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
+        }
+        break;
+    }
+
+    for(auto& component : mComponents)
+    {
+        if(component->isActive())
+            component->handleEvent(event);
     }
 }
 
@@ -63,20 +78,17 @@ sf::FloatRect GUIContainer::getBoundingRect() const
 
 void GUIContainer::update(sf::Window& window)
 {
-    sf::Vector2f mousePosition = static_cast<sf::Vector2f>(sf::Mouse::getPosition(window));
     int index;
 
-    if(checkMouseCollision(mousePosition, index))
+    if(checkMouseCollision(sf::Mouse::getPosition(window), index))
     {
-        mComponents[mSelected]->deselect();
-        mComponents[index]->select();
-        mSelected = index;
+        if(mComponents[index]->isSelectable())
+        {
+            mComponents[mSelected]->deselect();
+            mComponents[index]->select();
+            mSelected = index;
+        }
     }
-}
-
-sf::Vector2f GUIContainer::getPosition() const
-{
-    return getPosition();
 }
 
 void GUIContainer::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -121,13 +133,13 @@ sf::FloatRect GUIContainer::getComponentRect(int componentNumber) const
     return rect;
 }
 
-bool GUIContainer::checkMouseCollision(sf::Vector2f mousePosition, int& index) const
+bool GUIContainer::checkMouseCollision(sf::Vector2i mousePosition, int& index) const
 {
     if(!mComponents.empty())
     {
-        for(int i = 0; i < mComponents.size(); ++i)
+        for(int i=0; i < mComponents.size(); ++i)
         {
-            if(getComponentRect(i).contains(mousePosition) && mComponents[i]->isSelectable())
+            if(getComponentRect(i).contains(static_cast<sf::Vector2f>(mousePosition)))
             {
                 index = i;
                 return true;

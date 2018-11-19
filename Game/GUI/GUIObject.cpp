@@ -40,6 +40,14 @@ void GUIObject::deactivate()
     mIsActive = false;
 }
 
+void GUIObject::handleEvent(const sf::Event&)
+{
+}
+
+void GUIObject::onMouseClick(sf::Vector2i)
+{
+}
+
 sf::FloatRect GUIObject::getBoundingRect() const
 {
 }
