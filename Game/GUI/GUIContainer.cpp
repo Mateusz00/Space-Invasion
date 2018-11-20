@@ -1,8 +1,10 @@
 #include "GUIContainer.hpp"
 #include <SFML/System/Vector2.hpp>
 
-GUIContainer::GUIContainer()
-    : mSelected(-1)
+GUIContainer::GUIContainer(bool allowKeyboardNavigation, bool mVerticalNavigation)
+    : mSelected(-1),
+      mAllowKeyboardNavigation(allowKeyboardNavigation),
+      mVerticalNavigation(mVerticalNavigation)
 {
 }
 
@@ -10,7 +12,7 @@ void GUIContainer::push(ComponentPtr component)
 {
     mComponents.push_back(std::move(component));
 
-	if (!hasSelection() && mComponents.back()->isSelectable())
+    if(!hasSelection() && mComponents.back()->isSelectable() && mAllowKeyboardNavigation)
     {
         mSelected = mComponents.size() - 1;
         mComponents[mSelected]->select();
@@ -29,21 +31,35 @@ void GUIContainer::handleEvent(const sf::Event& event)
         case sf::Event::KeyReleased:
             switch(event.key.code)
             {
-            case sf::Keyboard::W:
-            case sf::Keyboard::Up:
-                selectPrevious();
-                break;
+                case sf::Keyboard::W:
+                case sf::Keyboard::Up:
+                    if(mAllowKeyboardNavigation && mVerticalNavigation)
+                        selectPrevious();
+                    break;
 
-            case sf::Keyboard::S:
-            case sf::Keyboard::Down:
-                selectNext();
-                break;
+                case sf::Keyboard::S:
+                case sf::Keyboard::Down:
+                    if(mAllowKeyboardNavigation && mVerticalNavigation)
+                        selectNext();
+                    break;
 
-            case sf::Keyboard::Enter:
-            case sf::Keyboard::Space:
-                if(hasSelection())
-                    mComponents[mSelected]->activate();
-                break;
+                case sf::Keyboard::A:
+                case sf::Keyboard::Left:
+                    if(mAllowKeyboardNavigation && !mVerticalNavigation)
+                        selectPrevious();
+                    break;
+
+                case sf::Keyboard::D:
+                case sf::Keyboard::Right:
+                    if(mAllowKeyboardNavigation && !mVerticalNavigation)
+                        selectNext();
+                    break;
+
+                case sf::Keyboard::Enter:
+                case sf::Keyboard::Space:
+                    if(hasSelection() && mAllowKeyboardNavigation)
+                        mComponents[mSelected]->activate();
+                    break;
             }
             break;
 
@@ -51,7 +67,11 @@ void GUIContainer::handleEvent(const sf::Event& event)
         {
             int index;
             if(checkMouseCollision(sf::Vector2i(event.mouseButton.x, event.mouseButton.y), index))
+            {
+                deselect();
+                mSelected = index;
                 mComponents[index]->activate();
+            }
         }
         break;
 
@@ -60,6 +80,21 @@ void GUIContainer::handleEvent(const sf::Event& event)
             int index;
             if(checkMouseCollision(sf::Vector2i(event.mouseButton.x, event.mouseButton.y), index))
                 mComponents[index]->onMouseClick(sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
+        }
+        break;
+
+        case sf::Event::MouseMoved:
+        {
+            int index;
+            if(checkMouseCollision(sf::Vector2i(event.mouseMove.x, event.mouseMove.y), index))
+            {
+                if(mComponents[index]->isSelectable())
+                {
+                    deselect();
+                    mComponents[index]->select();
+                    mSelected = index;
+                }
+            }
         }
         break;
     }
@@ -76,19 +111,14 @@ sf::FloatRect GUIContainer::getBoundingRect() const
 	return sf::FloatRect();
 }
 
-void GUIContainer::update(sf::Window& window)
+void GUIContainer::setVerticalNavigation(bool flag)
 {
-    int index;
+    mVerticalNavigation = flag;
+}
 
-    if(checkMouseCollision(sf::Mouse::getPosition(window), index))
-    {
-        if(mComponents[index]->isSelectable())
-        {
-            mComponents[mSelected]->deselect();
-            mComponents[index]->select();
-            mSelected = index;
-        }
-    }
+void GUIContainer::useKeyboardNavigation(bool flag)
+{
+    mAllowKeyboardNavigation = flag;
 }
 
 void GUIContainer::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -100,7 +130,7 @@ void GUIContainer::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 void GUIContainer::selectNext()
 {
-    mComponents[mSelected]->deselect();
+    deselect();
 
     do
         mSelected = ++mSelected % mComponents.size();
@@ -111,13 +141,19 @@ void GUIContainer::selectNext()
 
 void GUIContainer::selectPrevious()
 {
-    mComponents[mSelected]->deselect();
+    deselect();
 
     do
         mSelected = (mSelected - 1 + mComponents.size()) % mComponents.size();
     while(!mComponents[mSelected]->isSelectable());
 
     mComponents[mSelected]->select();
+}
+
+void GUIContainer::deselect()
+{
+    if(mSelected >= 0 && mSelected < mComponents.size())
+        mComponents[mSelected]->deselect();
 }
 
 bool GUIContainer::hasSelection() const

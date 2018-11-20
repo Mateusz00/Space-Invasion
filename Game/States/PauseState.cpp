@@ -65,7 +65,6 @@ bool PauseState::update(sf::Time dt)
 
 bool PauseState::handleEvent(const sf::Event& event)
 {
-    mGUIContainer.update(mWindow);
     mGUIContainer.handleEvent(event);
     return false;
 }

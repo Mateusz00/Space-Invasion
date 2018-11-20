@@ -62,7 +62,6 @@ bool GameOverState::update(sf::Time dt)
 		requestStackPush(States::MenuState);
 	}
 
-	mButtons.update(mWindow);
 	return false;
 }
 

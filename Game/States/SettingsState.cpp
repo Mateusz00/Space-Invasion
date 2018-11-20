@@ -60,7 +60,6 @@ bool SettingsState::handleEvent(const sf::Event& event)
     }
     else
     {
-        mGUIContainer.update(mWindow);
         mGUIContainer.handleEvent(event);
     }
 

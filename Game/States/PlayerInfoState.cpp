@@ -85,9 +85,7 @@ bool PlayerInfoState::update(sf::Time dt)
         }
     }
 
-    if(!mModeConfirmed)
-        mButtons.update(mWindow);
-    else
+    if(mModeConfirmed)
         mInputBox.update(dt);
 
     return false;

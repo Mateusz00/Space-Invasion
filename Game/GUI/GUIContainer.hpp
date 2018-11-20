@@ -10,23 +10,27 @@
 class GUIContainer : public GUIObject
 {
 	public:
-                                GUIContainer();
+                                GUIContainer(bool allowKeyboardNavigation = true, bool mVerticalNavigation = true);
         void			        push(ComponentPtr);
 		virtual bool    		isSelectable() const override;
 		virtual void			handleEvent(const sf::Event&) override;
 		virtual sf::FloatRect 	getBoundingRect() const override;
-		void                    update(sf::Window&);
+		void                    setVerticalNavigation(bool); // False means user can navigate container horizontally
+		void                    useKeyboardNavigation(bool);
 
 	private:
 	    virtual void	        draw(sf::RenderTarget&, sf::RenderStates) const override;
         void		            selectNext();
         void			        selectPrevious();
+        void			        deselect();
         bool                    hasSelection() const;
 		sf::FloatRect           getComponentRect(int componentNumber) const;
 		bool                    checkMouseCollision(sf::Vector2i, int& index) const;
 
 		std::vector<ComponentPtr>	mComponents;
 		int                         mSelected;
+		bool                        mAllowKeyboardNavigation;
+		bool                        mVerticalNavigation;
 };
 
 #endif // GUICONTAINER_HPP

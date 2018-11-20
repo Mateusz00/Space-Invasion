@@ -41,7 +41,6 @@ bool HighScoresState::draw()
 
 bool HighScoresState::update(sf::Time dt)
 {
-    mButtons.update(getContext().window);
     return false;
 }
 
