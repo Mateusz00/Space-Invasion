@@ -18,15 +18,18 @@ class GUIObject : public sf::Drawable, public sf::Transformable
         virtual bool            isSelectable() const = 0;
         bool                    isSelected();
         virtual bool            isActive() const;
-        virtual void	        activate();
+        void	                activate();
         virtual void	        deactivate();
         virtual void	        handleEvent(const sf::Event&);
         virtual void            onMouseClick(sf::Vector2i);
         virtual sf::FloatRect   getBoundingRect() const;
+        void                    setAbsolutePosition();
+        bool                    hasAbsolutePosition() const;
 
     private:
-        bool mIsSelected;
-        bool mIsActive;
+        bool    mIsSelected;
+        bool    mIsActive;
+        bool    mHasAbsolutePosition;
 };
 
 using ComponentPtr = std::unique_ptr<GUIObject>;

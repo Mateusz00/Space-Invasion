@@ -29,17 +29,18 @@ class GUIButton : public GUIObject
                                 GUIButton(State::Context, ButtonType, const std::string&);
         virtual void            select() override;
         virtual void            deselect() override;
-        virtual void            activate() override;
         virtual void            deactivate() override;
 		virtual bool    		isSelectable() const override;
 		virtual void			handleEvent(const sf::Event&) override;
 		virtual sf::FloatRect 	getBoundingRect() const override;
 		void					setCallback(Callback);
 		void                    toggle(bool);
+		virtual void            onMouseClick(sf::Vector2i) override;
 
 	private:
 	    virtual void	        draw(sf::RenderTarget&, sf::RenderStates) const override;
 		void 					changeAppearance(ButtonState);
+		void 					runAssignedFunction();
 
 		ButtonType				mType;
 	    sf::Sprite      		mSprite;

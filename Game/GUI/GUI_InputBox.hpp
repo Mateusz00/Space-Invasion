@@ -17,7 +17,7 @@ class GUI_InputBox : public GUIObject
                                 GUI_InputBox(std::string& output, sf::Vector2f boxSize,
                                              int maxCharacters, bool isForced, const FontHolder&);
         virtual bool            isSelectable() const override;
-        virtual void	        activate() override;
+        virtual void	        onMouseClick(sf::Vector2i) override;
         virtual void	        deactivate() override;
         virtual void	        handleEvent(const sf::Event&) override;
         virtual sf::FloatRect   getBoundingRect() const override;

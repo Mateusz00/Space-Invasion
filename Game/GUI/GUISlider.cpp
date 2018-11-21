@@ -24,10 +24,6 @@ GUISlider::GUISlider(sf::Vector2f sliderSize, float minValue, float maxValue, fl
     mBar.setOutlineThickness(1.f);
 }
 
-void GUISlider::activate()
-{
-}
-
 void GUISlider::deactivate()
 {
     GUIObject::deactivate();

@@ -2,7 +2,8 @@
 
 GUIObject::GUIObject()
     : mIsSelected(false),
-      mIsActive(false)
+      mIsActive(false),
+      mHasAbsolutePosition(false)
 {
 }
 
@@ -46,8 +47,19 @@ void GUIObject::handleEvent(const sf::Event&)
 
 void GUIObject::onMouseClick(sf::Vector2i)
 {
+    activate();
 }
 
 sf::FloatRect GUIObject::getBoundingRect() const
 {
+}
+
+void GUIObject::setAbsolutePosition()
+{
+    mHasAbsolutePosition = true;
+}
+
+bool GUIObject::hasAbsolutePosition() const
+{
+    return mHasAbsolutePosition;
 }

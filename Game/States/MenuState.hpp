@@ -3,7 +3,6 @@
 
 #include "State.hpp"
 #include "../GUI/GUIContainer.hpp"
-#include "../GUI/GUISpeaker.hpp"
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 
@@ -17,7 +16,6 @@ class MenuState : public State
 
     private:
         GUIContainer        mGUIContainer;
-        GUISpeaker          mSpeaker;
         sf::RenderWindow&   mWindow;
         sf::Sprite          mBackgroundSprite;
 };

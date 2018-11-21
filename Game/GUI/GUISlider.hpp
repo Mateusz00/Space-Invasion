@@ -10,7 +10,6 @@ class GUISlider : public GUIObject
 {
     public:
                                 GUISlider(sf::Vector2f size, float minValue, float maxValue, float& out, FontHolder&);
-        virtual void            activate() override;
         virtual void            deactivate() override;
         virtual bool            isSelectable() const override;
         virtual void            handleEvent(const sf::Event&) override;

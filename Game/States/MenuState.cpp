@@ -2,12 +2,14 @@
 #include "../ResourcesID.hpp"
 #include "../MusicPlayer.hpp"
 #include "../GUI/GUIButton.hpp"
+#include "../GUI/GUISwitch.hpp"
+#include "../SoundPlayer.hpp"
+#include "../MusicPlayer.hpp"
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 
 MenuState::MenuState(Context context, StateStack& stateStack)
     : State(context, stateStack),
-      mSpeaker(context),
       mWindow(context.window),
       mBackgroundSprite(context.textures.get(Textures::TitleScreen))
 {
@@ -49,8 +51,21 @@ MenuState::MenuState(Context context, StateStack& stateStack)
     });
     mGUIContainer.push(std::move(exit));
 
-    sf::Vector2f mSpeakerPosition(static_cast<float>(mWindow.getSize().x) - mSpeaker.getSize().x, 0.f); // Left-top corner of window
-    mSpeaker.setPosition(mSpeakerPosition - sf::Vector2f(8.f, -8.f));
+    std::unique_ptr<GUISwitch> speaker(new GUISwitch(context, Textures::Speaker));
+    sf::Vector2f mSpeakerPosition(static_cast<float>(mWindow.getSize().x) - speaker->getBoundingRect().width, 0.f); // top-right
+    speaker->setPosition(mSpeakerPosition - sf::Vector2f(8.f, -8.f)); // Margin
+    speaker->setAbsolutePosition();
+    speaker->setOnCallback([this, context]()
+    {
+        context.sounds.unmute();
+        context.music.unmute();
+    });
+    speaker->setOffCallback([this, context]()
+    {
+        context.sounds.mute();
+        context.music.mute();
+    });
+    mGUIContainer.push(std::move(speaker));
 }
 
 bool MenuState::draw()
@@ -58,7 +73,6 @@ bool MenuState::draw()
 	mWindow.setView(mWindow.getDefaultView());
 	mWindow.draw(mBackgroundSprite);
     mWindow.draw(mGUIContainer);
-    mWindow.draw(mSpeaker);
     return false;
 }
 
@@ -70,6 +84,5 @@ bool MenuState::update(sf::Time dt)
 bool MenuState::handleEvent(const sf::Event& event)
 {
     mGUIContainer.handleEvent(event);
-    mSpeaker.handleEvent(event);
     return false;
 }

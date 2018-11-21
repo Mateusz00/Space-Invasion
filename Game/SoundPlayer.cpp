@@ -11,7 +11,7 @@ namespace
 }
 
 SoundPlayer::SoundPlayer()
-    : mDefaultVolume(80.f)
+    : mVolume(80.f)
 {
 	mSounds.loadFromFile(Sound::AllyGun,        "Resources/GunShot2.ogg");
 	mSounds.loadFromFile(Sound::EnemyGun,       "Resources/GunShot.ogg");
@@ -36,7 +36,7 @@ void SoundPlayer::play(Sound::ID id, sf::Vector2f position)
 	sound.setPosition(position.x, position.y, 0.f);
 	sound.setMinDistance(MIN_DISTANCE_3D);
 	sound.setAttenuation(ATTENUATION);
-	sound.setVolume(mDefaultVolume);
+	sound.setVolume(mVolume);
 	sound.play();
 }
 
@@ -55,10 +55,21 @@ void SoundPlayer::setListener(sf::Vector2f position)
 
 void SoundPlayer::setVolume(float volume)
 {
-    mDefaultVolume = volume;
+    mVolume = volume;
 }
 
 float SoundPlayer::getVolume() const
 {
-    return mDefaultVolume;
+    return mVolume;
+}
+
+void SoundPlayer::mute()
+{
+    mVolumeBeforeMuting = mVolume;
+    setVolume(0.f);
+}
+
+void SoundPlayer::unmute()
+{
+    setVolume(mVolumeBeforeMuting);
 }

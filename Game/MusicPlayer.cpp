@@ -2,7 +2,7 @@
 #include <SFML/Audio/Sound.hpp>
 
 MusicPlayer::MusicPlayer(float volume)
-	: mDefaultVolume(volume),
+	: mVolume(volume),
 	  mIsLooped(false)
 {
     mMusicToFilePath[Music::MenuTheme]   = std::string("Resources/MenuTheme.ogg");
@@ -41,7 +41,7 @@ void MusicPlayer::update()
         if(!mCurrentMusic.openFromFile(filenameIter->second))
             throw std::runtime_error("Could not find file: " + filenameIter->second);
 
-        mCurrentMusic.setVolume(mDefaultVolume);
+        mCurrentMusic.setVolume(mVolume);
         mCurrentMusic.setLoop(mIsLooped);
         mCurrentMusic.play();
         mIsLooped = false; // Loop only one sound
@@ -52,7 +52,7 @@ void MusicPlayer::update()
 void MusicPlayer::setVolume(float volume)
 {
     mCurrentMusic.setVolume(volume);
-	mDefaultVolume = volume;
+	mVolume = volume;
 }
 
 void MusicPlayer::setLoop(bool isLooped)
@@ -62,7 +62,7 @@ void MusicPlayer::setLoop(bool isLooped)
 
 float MusicPlayer::getVolume() const
 {
-	return mDefaultVolume;
+	return mVolume;
 }
 
 void MusicPlayer::pause()
@@ -73,4 +73,15 @@ void MusicPlayer::pause()
 void MusicPlayer::resume()
 {
 	mCurrentMusic.play();
+}
+
+void MusicPlayer::mute()
+{
+    mVolumeBeforeMuting = mVolume;
+    setVolume(0.f);
+}
+
+void MusicPlayer::unmute()
+{
+    setVolume(mVolumeBeforeMuting);
 }

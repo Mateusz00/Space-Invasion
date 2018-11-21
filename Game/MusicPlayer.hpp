@@ -21,13 +21,16 @@ class MusicPlayer
 		float 	getVolume() const;
 		void	pause();
 		void 	resume();
+        void    mute();
+		void    unmute();
 
 	private:
 		std::map<Music::ID, std::string> 	mMusicToFilePath;
 		std::list<Music::ID> 				mMusicPlaylist;
-		float 								mDefaultVolume;
+		float 								mVolume;
 		sf::Music                           mCurrentMusic;
 		bool                                mIsLooped; // Indicates if next music should be looped
+		float                               mVolumeBeforeMuting;
 };
 
 #endif // MUSICPLAYER_HPP

@@ -11,12 +11,6 @@ GUIContainer::GUIContainer(bool allowKeyboardNavigation, bool mVerticalNavigatio
 void GUIContainer::push(ComponentPtr component)
 {
     mComponents.push_back(std::move(component));
-
-    if(!hasSelection() && mComponents.back()->isSelectable() && mAllowKeyboardNavigation)
-    {
-        mSelected = mComponents.size() - 1;
-        mComponents[mSelected]->select();
-    }
 }
 
 bool GUIContainer::isSelectable() const
@@ -63,18 +57,6 @@ void GUIContainer::handleEvent(const sf::Event& event)
             }
             break;
 
-        case sf::Event::MouseButtonReleased:
-        {
-            int index;
-            if(checkMouseCollision(sf::Vector2i(event.mouseButton.x, event.mouseButton.y), index))
-            {
-                deselect();
-                mSelected = index;
-                mComponents[index]->activate();
-            }
-        }
-        break;
-
         case sf::Event::MouseButtonPressed:
         {
             int index;
@@ -88,13 +70,20 @@ void GUIContainer::handleEvent(const sf::Event& event)
             int index;
             if(checkMouseCollision(sf::Vector2i(event.mouseMove.x, event.mouseMove.y), index))
             {
-                if(mComponents[index]->isSelectable())
+                if(index != mSelected && mComponents[index]->isSelectable())
                 {
+                    if(hasSelection())
+                        mComponents[mSelected]->deactivate();
+
                     deselect();
                     mComponents[index]->select();
                     mSelected = index;
                 }
+                else if(!mComponents[index]->isSelectable())
+                    restart();
             }
+            else // If didn't collide with anything after moving mouse then get rid of selection and deactivate object
+                restart();
         }
         break;
     }
@@ -123,9 +112,20 @@ void GUIContainer::useKeyboardNavigation(bool flag)
 
 void GUIContainer::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    states.transform *= getTransform(); // relative to container
     for(const auto& component : mComponents)
-        target.draw(*component, states);
+    {
+        if(component->hasAbsolutePosition())
+            target.draw(*component, states);
+    }
+
+    // Draw relative to container
+    states.transform *= getTransform();
+
+    for(const auto& component : mComponents)
+    {
+        if(!component->hasAbsolutePosition())
+            target.draw(*component, states);
+    }
 }
 
 void GUIContainer::selectNext()
@@ -152,7 +152,7 @@ void GUIContainer::selectPrevious()
 
 void GUIContainer::deselect()
 {
-    if(mSelected >= 0 && mSelected < mComponents.size())
+    if(hasSelection())
         mComponents[mSelected]->deselect();
 }
 
@@ -164,7 +164,9 @@ bool GUIContainer::hasSelection() const
 sf::FloatRect GUIContainer::getComponentRect(int componentNumber) const
 {
     sf::FloatRect rect = mComponents[componentNumber]->getBoundingRect();
-    rect = getTransform().transformRect(rect);
+
+    if(!mComponents[componentNumber]->hasAbsolutePosition())
+        rect = getTransform().transformRect(rect);
 
     return rect;
 }
@@ -184,4 +186,14 @@ bool GUIContainer::checkMouseCollision(sf::Vector2i mousePosition, int& index) c
     }
 
     return false;
+}
+
+void GUIContainer::restart()
+{
+    if(hasSelection())
+    {
+        mComponents[mSelected]->deactivate();
+        deselect();
+        mSelected = -1;
+    }
 }

@@ -26,6 +26,7 @@ class GUIContainer : public GUIObject
         bool                    hasSelection() const;
 		sf::FloatRect           getComponentRect(int componentNumber) const;
 		bool                    checkMouseCollision(sf::Vector2i, int& index) const;
+		void                    restart(); // Removes selection and deactivates selected object
 
 		std::vector<ComponentPtr>	mComponents;
 		int                         mSelected;

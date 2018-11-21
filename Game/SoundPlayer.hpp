@@ -17,11 +17,14 @@ class SoundPlayer
 		void    setListener(sf::Vector2f);
 		void    setVolume(float);
 		float   getVolume() const;
+		void    mute();
+		void    unmute();
 
 	private:
 		SoundBufferHolder				mSounds;
 		std::forward_list<sf::Sound>	mActiveSounds;
-		float 							mDefaultVolume;
+		float 							mVolume;
+		float                           mVolumeBeforeMuting;
 };
 
 #endif // SOUNDPLAYER_HPP

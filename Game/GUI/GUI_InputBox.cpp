@@ -29,7 +29,7 @@ bool GUI_InputBox::isSelectable() const
     return false;
 }
 
-void GUI_InputBox::activate()
+void GUI_InputBox::onMouseClick(sf::Vector2i)
 {
     GUIObject::activate();
     mShowCursor = true;

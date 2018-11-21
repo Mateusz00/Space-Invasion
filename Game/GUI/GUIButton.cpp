@@ -39,23 +39,11 @@ void GUIButton::deselect()
 	changeAppearance(ButtonState::Normal);
 }
 
-void GUIButton::activate()
-{
-    GUIObject::activate();
-	changeAppearance(ButtonState::Pressed);
-	mSounds.play(Sound::ButtonClick);
-
-	if(mCallback)
-		mCallback();
-
-	if(!mIsToggled)
-		deactivate();
-}
-
 void GUIButton::deactivate()
 {
     GUIObject::deactivate();
 	changeAppearance(ButtonState::Selected);
+	mIsToggled = false;
 }
 
 bool GUIButton::isSelectable() const
@@ -65,6 +53,12 @@ bool GUIButton::isSelectable() const
 
 void GUIButton::handleEvent(const sf::Event& event)
 {
+    switch(event.type)
+    {
+        case sf::Event::MouseButtonReleased:
+            runAssignedFunction();
+            break;
+    }
 }
 
 sf::FloatRect GUIButton::getBoundingRect() const
@@ -83,6 +77,13 @@ void GUIButton::setCallback(Callback callback)
 void GUIButton::toggle(bool isToggled)
 {
     mIsToggled = isToggled;
+}
+
+void GUIButton::onMouseClick(sf::Vector2i)
+{
+    activate();
+    changeAppearance(ButtonState::Pressed);
+	mSounds.play(Sound::ButtonClick);
 }
 
 void GUIButton::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -106,4 +107,13 @@ void GUIButton::changeAppearance(ButtonState state)
         else
             mText.setFillColor(sf::Color::Red);
     }
+}
+
+void GUIButton::runAssignedFunction()
+{
+    if(mCallback)
+		mCallback();
+
+	if(!mIsToggled)
+		deactivate();
 }
