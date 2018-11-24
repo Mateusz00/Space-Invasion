@@ -5,19 +5,24 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <algorithm>
 
-GUISlider::GUISlider(sf::Vector2f sliderSize, float minValue, float maxValue, float& out, FontHolder& fonts)
-    : mSlider(sf::Vector2f(std::min(sliderSize.x * 0.1f, 15.f), sliderSize.y)),
-      mBar(sf::Vector2f(sliderSize.x, sliderSize.y * 0.8f)),
-      mValue(out),
-      mMaxValue(maxValue),
-      mMinValue(minValue),
-      mText(toString(mValue), fonts.get(Fonts::Sansation), static_cast<unsigned int>(sliderSize.y * 0.6f))
+GUISlider::GUISlider(float width, float height, float currentValue, FontHolder& fonts, GUIContainer* container)
+    : GUISlider(sf::Vector2f(width, height), currentValue, fonts, container)
 {
-    mText.setPosition(sliderSize.x + 20.f, sliderSize.y * 0.25f);
+}
+
+GUISlider::GUISlider(sf::Vector2f sliderSize, float currentValue, FontHolder& fonts, GUIContainer* container)
+    : mSlider(sf::Vector2f(std::min(sliderSize.x * 0.1f, 15.f), sliderSize.y)),
+      mBar(sf::Vector2f(sliderSize.x, sliderSize.y - 4.f)),
+      mValue(currentValue),
+      mText(toString(static_cast<int>(mValue)), fonts.get(Fonts::Sansation), static_cast<unsigned int>(sliderSize.y * 0.8f)),
+      mContainer(container),
+      mShowValue(true)
+{
+    mText.setPosition(sliderSize.x + 20.f, 0.f);
 
     centerOrigin(mSlider);
     mSlider.setFillColor(sf::Color(96, 38, 38));
-    mSlider.setPosition(0.f, mBar.getLocalBounds().height * 0.5f);
+    mSlider.setPosition(getBoundingRect().width * mValue / 100.f , mBar.getLocalBounds().height * 0.5f);
 
     mBar.setFillColor(sf::Color(58, 27, 27));
     mBar.setOutlineColor(sf::Color(96, 38, 38));
@@ -76,15 +81,41 @@ void GUISlider::onMouseClick(sf::Vector2i mousePosition)
 
 void GUISlider::changeSliderPosition(int mouseXPosition)
 {
-    float distance = static_cast<float>(mouseXPosition) - getTransform().transformRect(mBar.getGlobalBounds()).left;
+    sf::FloatRect boundingRect;
+
+    if(mContainer)
+        boundingRect = mContainer->getTransform().transformRect(getTransform().transformRect(mBar.getGlobalBounds()));
+    else // if nullptr
+        boundingRect = getTransform().transformRect(mBar.getGlobalBounds());
+
+    float distance = static_cast<float>(mouseXPosition) - boundingRect.left;
 
     // Prevent slider from leaving bar
     float percent = std::min(1.f, distance / mBar.getLocalBounds().width);
     percent = std::max(0.f, percent);
 
+    // Assign new value and update text
     mValue = (mMaxValue - mMinValue) * percent;
-    mText.setString(toString(mValue));
+    mText.setString(toString(static_cast<int>(mValue)));
     mSlider.setPosition(mBar.getLocalBounds().width * percent, mSlider.getPosition().y);
+
+    mUpdatingFunction(mValue);
+}
+
+void GUISlider::setUpdatingFunction(std::function<void(float)> func)
+{
+    mUpdatingFunction = func;
+}
+
+void GUISlider::setValueRange(float minValue, float maxValue)
+{
+    mMinValue = minValue;
+    mMaxValue = maxValue;
+}
+
+void GUISlider::setValueVisibility(bool showValue)
+{
+    mShowValue = showValue;
 }
 
 void GUISlider::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -93,5 +124,7 @@ void GUISlider::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
     target.draw(mBar, states);
     target.draw(mSlider, states);
-    target.draw(mText, states);
+
+    if(mShowValue)
+        target.draw(mText, states);
 }

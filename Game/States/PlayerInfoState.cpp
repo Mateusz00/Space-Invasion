@@ -23,7 +23,7 @@ PlayerInfoState::PlayerInfoState(Context context, StateStack& stateStack)
     // Create and position buttons for choosing number of players
     mButtons.setPosition(windowSize * 0.5f);
 
-    std::unique_ptr<GUIButton> onePlayer(new GUIButton(context, GUIButton::Text, "1 Player"));
+    std::unique_ptr<GUIButton> onePlayer(new GUIButton(context, GUIButton::TextButton, "1 Player"));
     onePlayer->setPosition(0.f, windowSize.y * -0.05f);
     onePlayer->setCallback([this]()
     {
@@ -32,7 +32,7 @@ PlayerInfoState::PlayerInfoState(Context context, StateStack& stateStack)
     });
     mButtons.push(std::move(onePlayer));
 
-    std::unique_ptr<GUIButton> twoPlayers(new GUIButton(context, GUIButton::Text, "2 Players"));
+    std::unique_ptr<GUIButton> twoPlayers(new GUIButton(context, GUIButton::TextButton, "2 Players"));
     twoPlayers->setPosition(0.f, windowSize.y * 0.05f);
     twoPlayers->setCallback([this]()
     {

@@ -112,8 +112,15 @@ std::vector<ButtonData> initializeButtonData()
 {
 	std::vector<ButtonData> data(GUIButton::Count);
 
-	data[GUIButton::Settings].textureId = Textures::SettingsButtons;
-	data[GUIButton::Settings].buttonSize = sf::Vector2i(203, 50);
+	data[GUIButton::ControlsButton].buttonType = GUIButton::Textured;
+	data[GUIButton::ControlsButton].textureId = Textures::SettingsButtons;
+	data[GUIButton::ControlsButton].buttonSize = sf::Vector2i(203, 50);
+
+	data[GUIButton::TextButton].buttonType = GUIButton::Text;
+
+	data[GUIButton::OptionsButton].buttonType = GUIButton::SimpleRect;
+	data[GUIButton::OptionsButton].activatedColor = sf::Color::Black;
+	data[GUIButton::OptionsButton].defaultColor = sf::Color(47, 47, 48);
 
 	return data;
 }

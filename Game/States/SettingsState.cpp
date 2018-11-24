@@ -1,34 +1,54 @@
 #include "SettingsState.hpp"
+#include "../GUI/GUISlider.hpp"
+#include "../GUI/GUISwitch.hpp"
+#include "../SoundPlayer.hpp"
+#include "../MusicPlayer.hpp"
 
 SettingsState::SettingsState(Context context, StateStack& stateStack)
     : State(context, stateStack),
       mBackgroundSprite(context.textures.get(Textures::TitleScreen)),
-      mWindow(context.window)
+      mWindow(context.window),
+      mOptionButtons(true, false),
+      mOtherOptions(false),
+      mCurrentOption(Controls)
 {
-    for(int player=0; player < 2; ++player)
-    {
-        addButton(KeyBinding::MoveLeft,         player, 0, "Move Left", context);
-        addButton(KeyBinding::MoveRight,        player,	1, "Move Right", context);
-        addButton(KeyBinding::MoveUp,           player,	2, "Move Up", context);
-        addButton(KeyBinding::MoveDown,         player, 3, "Move Down", context);
-        addButton(KeyBinding::Fire,             player, 4, "Fire", context);
-        addButton(KeyBinding::LaunchMissile,    player, 5, "Missile", context);
-    }
-    updateLabels();
+    sf::Vector2f windowSize = static_cast<sf::Vector2f>(mWindow.getSize());
 
-    std::unique_ptr<GUIButton> returnButton(new GUIButton(context, GUIButton::Text, "Return"));
-    returnButton->setPosition(500.f, 650.f);
-    returnButton->setCallback([this]()
-    {
-        requestStackPop();
-    });
-    mGUIContainer.push(std::move(returnButton));
+    mContainer.setSize(sf::Vector2f(windowSize.x * 0.8f, windowSize.y * 0.9f));
+    mContainer.setPosition(sf::Vector2f(windowSize.x * 0.1f, windowSize.y * 0.05f));
+    mContainer.setFillColor(sf::Color::Black);
+    mContainer.setOutlineColor(sf::Color(183, 124, 7));
+    mContainer.setOutlineThickness(1.f);
+
+    mContainer1.setSize(sf::Vector2f(mContainer.getSize().x, mContainer.getSize().y * 0.08f));
+    mContainer1.setPosition(sf::Vector2f(mContainer.getPosition().x, mContainer.getPosition().y + mContainer.getSize().y - mContainer1.getSize().y));
+    mContainer1.setFillColor(sf::Color(47, 47, 48));
+
+    mOptionButtons.setPosition(mContainer.getPosition());
+    mControls.setPosition(sf::Vector2f(windowSize.x * 0.15f, windowSize.y * 0.175f));
+    mOtherOptions.setPosition(sf::Vector2f(windowSize.x * 0.15f, windowSize.y * 0.2f));
+
+    addGUIElements(context);
 }
 
 bool SettingsState::draw()
 {
 	mWindow.draw(mBackgroundSprite);
-	mWindow.draw(mGUIContainer);
+	mWindow.draw(mContainer);
+	mWindow.draw(mContainer1);
+	mWindow.draw(mOptionButtons);
+
+    switch(mCurrentOption)
+    {
+        case Controls:
+            mWindow.draw(mControls);
+            break;
+
+        case Others:
+            mWindow.draw(mOtherOptions);
+            break;
+    }
+
     return false;
 }
 
@@ -60,7 +80,17 @@ bool SettingsState::handleEvent(const sf::Event& event)
     }
     else
     {
-        mGUIContainer.handleEvent(event);
+        mOptionButtons.handleEvent(event);
+        switch(mCurrentOption)
+        {
+            case Controls:
+                mControls.handleEvent(event);
+                break;
+
+            case Others:
+                mOtherOptions.handleEvent(event);
+                break;
+        }
     }
 
     return false;
@@ -84,18 +114,91 @@ void SettingsState::addButton(int index, int player, int y, const std::string& t
 {
     index += KeyBinding::Count * player;
 
-    std::unique_ptr<GUIButton> newButton(new GUIButton(context, GUIButton::Settings, text));
+    std::unique_ptr<GUIButton> newButton(new GUIButton(context, GUIButton::ControlsButton, text));
     mBindingButtons[index] = newButton.get();
-	newButton->setPosition(80.f + 450.f * player, 80.f * y + 120.f);
+	newButton->setPosition(360.f * player, 80.f * y);
 	newButton->setCallback([index, this]()
     {
         mBindingButtons[index]->toggle(true);
         mToggledButton = std::make_pair(true, static_cast<Player::Action>(index));
     });
-    mGUIContainer.push(std::move(newButton));
+    mControls.push(std::move(newButton));
 
 	std::unique_ptr<GUILabel> newLabel(new GUILabel(text, context.fonts));
 	mBindingLabels[index] = newLabel.get();
-	newLabel->setPosition(350.f + 450.f * player, 80.f * y + 130.f);
-	mGUIContainer.push(std::move(newLabel));
+	newLabel->setPosition(230.f + 360.f * player, 80.f * y + 10.f);
+	mControls.push(std::move(newLabel));
+}
+
+void SettingsState::addGUIElements(Context context)
+{
+    for(int player=0; player < 2; ++player)
+    {
+        addButton(KeyBinding::MoveLeft,         player, 0, "Move Left", context);
+        addButton(KeyBinding::MoveRight,        player,	1, "Move Right", context);
+        addButton(KeyBinding::MoveUp,           player,	2, "Move Up", context);
+        addButton(KeyBinding::MoveDown,         player, 3, "Move Down", context);
+        addButton(KeyBinding::Fire,             player, 4, "Fire", context);
+        addButton(KeyBinding::LaunchMissile,    player, 5, "Missile", context);
+    }
+    updateLabels();
+
+    std::unique_ptr<GUIButton> returnButton(new GUIButton(context, GUIButton::TextButton, "Return"));
+    returnButton->setAbsolutePosition();
+    returnButton->setPosition(context.window.getSize().x * 0.5f, context.window.getSize().y * 0.9f);
+    returnButton->setCallback([this]()
+    {
+        requestStackPop();
+    });
+
+    // Add and position buttons
+    std::unique_ptr<GUIButton> controls(new GUIButton(context, GUIButton::OptionsButton, "Controls"));
+    GUIButton* controlsPtr = controls.get();
+    controls->setPosition(0.f, 0.f);
+    controls->setRectSize(sf::Vector2f(mContainer.getSize().x * 0.5f - 2.f, mContainer1.getSize().y));
+
+    std::unique_ptr<GUIButton> others(new GUIButton(context, GUIButton::OptionsButton, "Others"));
+    GUIButton* othersPtr = others.get();
+    others->setPosition(sf::Vector2f(mContainer.getSize().x * 0.5f, 0.f));
+    others->setRectSize(sf::Vector2f(mContainer.getSize().x * 0.5f, mContainer1.getSize().y));
+
+    // set callbacks
+    controls->setCallback([this, controlsPtr, othersPtr]()
+    {
+        mCurrentOption = Controls;
+        othersPtr->setFreezeFlag(false);
+        othersPtr->deactivate();
+        othersPtr->deselect();
+        controlsPtr->setFreezeFlag(true);
+    });
+    others->setCallback([this, controlsPtr, othersPtr]()
+    {
+        mCurrentOption = Others;
+        controlsPtr->setFreezeFlag(false);
+        controlsPtr->deactivate();
+        controlsPtr->deselect();
+        othersPtr->setFreezeFlag(true);
+    });
+
+    mOptionButtons.push(std::move(controls));
+    mOptionButtons.push(std::move(others));
+    mOptionButtons.push(std::move(returnButton));
+
+    std::unique_ptr<GUISlider> soundEffects(new GUISlider(250.f, 30.f, context.sounds.getVolume(), context.fonts, &mOtherOptions));
+    soundEffects->setPosition(0.f, 0.f);
+    soundEffects->setValueRange(0.f, 100.f);
+    soundEffects->setUpdatingFunction([this, context](float value)
+    {
+        context.sounds.setVolume(value);
+    });
+    mOtherOptions.push(std::move(soundEffects));
+
+    std::unique_ptr<GUISlider> musicVolume(new GUISlider(250.f, 30.f, context.music.getVolume(), context.fonts, &mOtherOptions));
+    musicVolume->setPosition(0.f, 200.f);
+    musicVolume->setValueRange(0.f, 100.f);
+    musicVolume->setUpdatingFunction([this, context](float value)
+    {
+        context.music.setVolume(value);
+    });
+    mOtherOptions.push(std::move(musicVolume));
 }

@@ -10,18 +10,32 @@ namespace
 	const std::vector<ButtonData> table = initializeButtonData();
 }
 
-GUIButton::GUIButton(State::Context context, ButtonType type, const std::string& text)
-	: mType(type),
+GUIButton::GUIButton(State::Context context, ButtonID id, const std::string& text)
+	: mButtonID(id),
+	  mButtonType(table[id].buttonType),
 	  mText(text, context.fonts.get(Fonts::Sansation), 28u),
+	  mIsToggled(false),
+	  mFreezeAppearance(false),
 	  mSounds(context.sounds)
 {
-	if(mType != ButtonType::Text)
+	switch(mButtonType)
 	{
-		mSprite.setTexture(context.textures.get(table[mType].textureId));
-		changeAppearance(ButtonState::Normal);
-		mText.setCharacterSize(18u);
-        auto bounds = mSprite.getGlobalBounds();
-        mText.setPosition(sf::Vector2f(bounds.width  * 0.5f, bounds.height * 0.4f));
+        case ButtonType::Textured:
+        {
+            mSprite.setTexture(context.textures.get(table[mButtonID].textureId));
+            changeAppearance(ButtonState::Normal);
+
+            auto bounds = mSprite.getGlobalBounds();
+            mText.setPosition(sf::Vector2f(bounds.width  * 0.5f, bounds.height * 0.4f));
+            mText.setCharacterSize(18u);
+            break;
+        }
+
+        case ButtonType::SimpleRect:
+        {
+            changeAppearance(ButtonState::Normal);
+            mText.setCharacterSize(18u);
+        }
 	}
 
 	centerOrigin(mText);
@@ -42,8 +56,8 @@ void GUIButton::deselect()
 void GUIButton::deactivate()
 {
     GUIObject::deactivate();
-	changeAppearance(ButtonState::Selected);
-	mIsToggled = false;
+    toggle(false);
+    changeAppearance(ButtonState::Selected);
 }
 
 bool GUIButton::isSelectable() const
@@ -58,15 +72,31 @@ void GUIButton::handleEvent(const sf::Event& event)
         case sf::Event::MouseButtonReleased:
             runAssignedFunction();
             break;
+
+        case sf::Event::KeyReleased:
+            if(event.key.code == sf::Keyboard::Enter || event.key.code == sf::Keyboard::Space)
+            {
+                changeAppearance(ButtonState::Pressed);
+	            mSounds.play(Sound::ButtonClick);
+                runAssignedFunction();
+            }
+            break;
     }
 }
 
 sf::FloatRect GUIButton::getBoundingRect() const
 {
-    if(mSprite.getTexture())
-        return getTransform().transformRect(mSprite.getGlobalBounds());
+    switch(mButtonType)
+    {
+        case ButtonType::Textured:
+            return getTransform().transformRect(mSprite.getGlobalBounds());
 
-    return getTransform().transformRect(mText.getGlobalBounds());
+        case ButtonType::Text:
+            return getTransform().transformRect(mText.getGlobalBounds());
+
+        case ButtonType::SimpleRect:
+            return getTransform().transformRect(mBox.getGlobalBounds());
+    }
 }
 
 void GUIButton::setCallback(Callback callback)
@@ -83,29 +113,68 @@ void GUIButton::onMouseClick(sf::Vector2i)
 {
     activate();
     changeAppearance(ButtonState::Pressed);
-	mSounds.play(Sound::ButtonClick);
+    mSounds.play(Sound::ButtonClick);
+}
+
+void GUIButton::setRectSize(sf::Vector2f boxSize)
+{
+    mBox.setSize(boxSize);
+    mText.setPosition(sf::Vector2f(boxSize.x  * 0.5f, boxSize.y * 0.4f));
+}
+
+void GUIButton::setFreezeFlag(bool flag)
+{
+    mFreezeAppearance = flag;
 }
 
 void GUIButton::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     states.transform *= getTransform();
     target.draw(mSprite, states);
+    target.draw(mBox, states);
     target.draw(mText, states);
 }
 
 void GUIButton::changeAppearance(ButtonState state)
 {
-	if(mSprite.getTexture())
-	{
-		sf::IntRect newRect(0, table[mType].buttonSize.y * state, table[mType].buttonSize.x, table[mType].buttonSize.y);
-		mSprite.setTextureRect(newRect);
-	}
-	else
+    if(!mFreezeAppearance)
     {
-        if(state == ButtonState::Normal)
-            mText.setFillColor(sf::Color::White);
-        else
-            mText.setFillColor(sf::Color::Red);
+        switch(mButtonType)
+        {
+            case ButtonType::Textured:
+            {
+                sf::IntRect newRect(0, table[mButtonID].buttonSize.y * state, table[mButtonID].buttonSize.x, table[mButtonID].buttonSize.y);
+                mSprite.setTextureRect(newRect);
+                break;
+            }
+
+            case ButtonType::Text:
+                if(state == ButtonState::Normal)
+                    mText.setFillColor(sf::Color::White);
+                else
+                    mText.setFillColor(sf::Color::Red);
+                break;
+
+            case ButtonType::SimpleRect:
+                switch(state)
+                {
+                    case ButtonState::Normal:
+                        mBox.setFillColor(table[mButtonID].defaultColor);
+                        mText.setFillColor(sf::Color::White);
+                        break;
+
+                    case ButtonState::Selected:
+                        mBox.setFillColor(table[mButtonID].defaultColor);
+                        mText.setFillColor(sf::Color::Red);
+                        break;
+
+                    case ButtonState::Pressed:
+                        mBox.setFillColor(table[mButtonID].activatedColor);
+                        mText.setFillColor(sf::Color::Red);
+                        break;
+                }
+                break;
+        }
     }
 }
 

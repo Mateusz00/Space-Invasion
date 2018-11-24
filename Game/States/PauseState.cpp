@@ -19,7 +19,7 @@ PauseState::PauseState(Context context, StateStack& stateStack, bool isNetworked
 
     mGUIContainer.setPosition(windowSize * 0.5f);
 
-    std::unique_ptr<GUIButton> returnButton(new GUIButton(context, GUIButton::Text, "Return"));
+    std::unique_ptr<GUIButton> returnButton(new GUIButton(context, GUIButton::TextButton, "Return"));
     returnButton->setPosition(0.f, 0.f);
     returnButton->setCallback([this]()
     {
@@ -27,7 +27,7 @@ PauseState::PauseState(Context context, StateStack& stateStack, bool isNetworked
     });
     mGUIContainer.push(std::move(returnButton));
 
-    std::unique_ptr<GUIButton> backToMenu(new GUIButton(context, GUIButton::Text, "Menu"));
+    std::unique_ptr<GUIButton> backToMenu(new GUIButton(context, GUIButton::TextButton, "Menu"));
     backToMenu->setPosition(0.f, windowSize.y * 0.12f);
     backToMenu->setCallback([this]()
     {

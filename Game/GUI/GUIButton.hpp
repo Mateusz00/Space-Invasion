@@ -4,6 +4,7 @@
 #include "GUIObject.hpp"
 #include "../States/State.hpp"
 #include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
 #include <functional>
 #include <string>
 class SoundPlayer;
@@ -16,7 +17,14 @@ class GUIButton : public GUIObject
 		enum ButtonType
 		{
 			Text,
-			Settings,
+			SimpleRect,
+			Textured
+		};
+        enum ButtonID
+		{
+			ControlsButton,
+			TextButton,
+			OptionsButton,
 			Count
 		};
 		enum ButtonState
@@ -26,7 +34,7 @@ class GUIButton : public GUIObject
 			Pressed
 		};
 
-                                GUIButton(State::Context, ButtonType, const std::string&);
+                                GUIButton(State::Context, ButtonID, const std::string&);
         virtual void            select() override;
         virtual void            deselect() override;
         virtual void            deactivate() override;
@@ -36,17 +44,22 @@ class GUIButton : public GUIObject
 		void					setCallback(Callback);
 		void                    toggle(bool);
 		virtual void            onMouseClick(sf::Vector2i) override;
+		void                    setRectSize(sf::Vector2f);
+		void                    setFreezeFlag(bool);
 
 	private:
 	    virtual void	        draw(sf::RenderTarget&, sf::RenderStates) const override;
 		void 					changeAppearance(ButtonState);
 		void 					runAssignedFunction();
 
-		ButtonType				mType;
+		ButtonID				mButtonID;
+		ButtonType				mButtonType;
 	    sf::Sprite      		mSprite;
+	    sf::RectangleShape      mBox;
 		sf::Text				mText;
 		Callback 				mCallback;
 		bool					mIsToggled;
+		bool					mFreezeAppearance;
 		SoundPlayer& 			mSounds;
 };
 

@@ -17,7 +17,7 @@ HighScoresState::HighScoresState(Context context, StateStack& stateStack)
 	mHeader.setPosition(windowSize.x * 0.5f, windowSize.y * 0.15f);
 	mButtons.setPosition(windowSize.x * 0.5f, windowSize.y * 0.9f);
 
-    std::unique_ptr<GUIButton> returnButton(new GUIButton(context, GUIButton::Text, "Return"));
+    std::unique_ptr<GUIButton> returnButton(new GUIButton(context, GUIButton::TextButton, "Return"));
     returnButton->setPosition(0.f, 0.f);
     returnButton->setCallback([this]()
     {

@@ -27,3 +27,8 @@ void GUILabel::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	states.transform *= getTransform();
 	target.draw(mText, states);
 }
+
+sf::FloatRect GUILabel::getBoundingRect() const
+{
+    return getTransform().transformRect(mText.getGlobalBounds());
+}

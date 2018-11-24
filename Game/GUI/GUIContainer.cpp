@@ -61,7 +61,16 @@ void GUIContainer::handleEvent(const sf::Event& event)
         {
             int index;
             if(checkMouseCollision(sf::Vector2i(event.mouseButton.x, event.mouseButton.y), index))
+            {
+                if(index != mSelected && mComponents[index]->isSelectable())
+                {
+                    restart();
+                    mComponents[index]->select();
+                    mSelected = index;
+                }
+
                 mComponents[index]->onMouseClick(sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
+            }
         }
         break;
 
@@ -72,10 +81,7 @@ void GUIContainer::handleEvent(const sf::Event& event)
             {
                 if(index != mSelected && mComponents[index]->isSelectable())
                 {
-                    if(hasSelection())
-                        mComponents[mSelected]->deactivate();
-
-                    deselect();
+                    restart();
                     mComponents[index]->select();
                     mSelected = index;
                 }

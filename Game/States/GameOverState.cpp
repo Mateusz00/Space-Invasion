@@ -24,7 +24,7 @@ GameOverState::GameOverState(Context context, StateStack& stateStack, Type type)
 
 	if(type == Fail)
     {
-        std::unique_ptr<GUIButton> retryButton(new GUIButton(context, GUIButton::Text, "Retry"));
+        std::unique_ptr<GUIButton> retryButton(new GUIButton(context, GUIButton::TextButton, "Retry"));
         retryButton->setPosition(0.f, windowSize.y * 0.12f);
         retryButton->setCallback([this]()
         {
@@ -34,7 +34,7 @@ GameOverState::GameOverState(Context context, StateStack& stateStack, Type type)
         mButtons.push(std::move(retryButton));
     }
 
-    std::unique_ptr<GUIButton> menuButton(new GUIButton(context, GUIButton::Text, "Menu"));
+    std::unique_ptr<GUIButton> menuButton(new GUIButton(context, GUIButton::TextButton, "Menu"));
     menuButton->setPosition(0.f, 0.f);
     menuButton->setCallback([this]()
     {

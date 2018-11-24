@@ -16,7 +16,7 @@ void GUISwitch::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 bool GUISwitch::isSelectable() const
 {
-    return true;
+    return false;
 }
 
 void GUISwitch::onMouseClick(sf::Vector2i)

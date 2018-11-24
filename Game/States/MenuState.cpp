@@ -18,7 +18,7 @@ MenuState::MenuState(Context context, StateStack& stateStack)
     sf::Vector2f windowSize(static_cast<sf::Vector2f>(mWindow.getSize()));
     mGUIContainer.setPosition(windowSize.x * 0.5f, windowSize.y * 0.45f);
 
-    std::unique_ptr<GUIButton> play(new GUIButton(context, GUIButton::Text, "Play"));
+    std::unique_ptr<GUIButton> play(new GUIButton(context, GUIButton::TextButton, "Play"));
     play->setPosition(0.f, windowSize.y * -0.12f);
     play->setCallback([this]()
     {
@@ -27,7 +27,7 @@ MenuState::MenuState(Context context, StateStack& stateStack)
     });
     mGUIContainer.push(std::move(play));
 
-    std::unique_ptr<GUIButton> settings(new GUIButton(context, GUIButton::Text, "Settings"));
+    std::unique_ptr<GUIButton> settings(new GUIButton(context, GUIButton::TextButton, "Settings"));
     settings->setPosition(0.f, 0.f);
     settings->setCallback([this]()
     {
@@ -35,7 +35,7 @@ MenuState::MenuState(Context context, StateStack& stateStack)
     });
     mGUIContainer.push(std::move(settings));
 
-    std::unique_ptr<GUIButton> HighScores(new GUIButton(context, GUIButton::Text, "High Scores"));
+    std::unique_ptr<GUIButton> HighScores(new GUIButton(context, GUIButton::TextButton, "High Scores"));
     HighScores->setPosition(0.f, windowSize.y * 0.12f);
     HighScores->setCallback([this]()
     {
@@ -43,7 +43,7 @@ MenuState::MenuState(Context context, StateStack& stateStack)
     });
     mGUIContainer.push(std::move(HighScores));
 
-    std::unique_ptr<GUIButton> exit(new GUIButton(context, GUIButton::Text, "Exit"));
+    std::unique_ptr<GUIButton> exit(new GUIButton(context, GUIButton::TextButton, "Exit"));
     exit->setPosition(0.f, windowSize.y * 0.24f);
     exit->setCallback([this]()
     {

@@ -59,8 +59,11 @@ struct AnimationData
 
 struct ButtonData
 {
-	Textures::ID    textureId;
-	sf::Vector2i    buttonSize;
+	GUIButton::ButtonType   buttonType;
+	Textures::ID            textureId;
+	sf::Vector2i            buttonSize;
+	sf::Color               defaultColor;
+    sf::Color               activatedColor;
 };
 
 std::vector<AircraftData>       initializeAircraftData();

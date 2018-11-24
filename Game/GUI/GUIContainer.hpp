@@ -30,6 +30,7 @@ class GUIContainer : public GUIObject
 
 		std::vector<ComponentPtr>	mComponents;
 		int                         mSelected;
+		int                         mClicked;
 		bool                        mAllowKeyboardNavigation;
 		bool                        mVerticalNavigation;
 };
