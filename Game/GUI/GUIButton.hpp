@@ -46,10 +46,10 @@ class GUIButton : public GUIObject
 		virtual void            onMouseClick(sf::Vector2i) override;
 		void                    setRectSize(sf::Vector2f);
 		void                    setFreezeFlag(bool);
+		void 					changeAppearance(ButtonState);
 
 	private:
 	    virtual void	        draw(sf::RenderTarget&, sf::RenderStates) const override;
-		void 					changeAppearance(ButtonState);
 		void 					runAssignedFunction();
 
 		ButtonID				mButtonID;

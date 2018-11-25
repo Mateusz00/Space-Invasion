@@ -103,6 +103,7 @@ void Application::loadResources()
     mTextures.loadFromFile(Textures::Explosion,      "Resources/Explosion.png");
     mTextures.loadFromFile(Textures::TitleScreen,    "Resources/TitleScreen.png");
     mTextures.loadFromFile(Textures::Speaker,        "Resources/Speaker.png");
+    mTextures.loadFromFile(Textures::Checkbox,       "Resources/Checkbox.png");
     mTextures.loadFromFile(Textures::FinishLine,     "Resources/FinishLine.png");
     mTextures.loadFromFile(Textures::SettingsButtons,"Resources/Buttons.png");
 }

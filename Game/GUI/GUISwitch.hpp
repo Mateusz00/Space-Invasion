@@ -12,7 +12,7 @@ class GUISwitch : public GUIObject
     public:
         using Callback = std::function<void()>;
 
-                                GUISwitch(State::Context, Textures::ID);
+                                GUISwitch(State::Context, Textures::ID, bool isSwitchedOn);
         virtual void            handleEvent(const sf::Event&) override;
         virtual void            draw(sf::RenderTarget&, sf::RenderStates) const override;
         virtual bool            isSelectable() const override;
@@ -22,7 +22,7 @@ class GUISwitch : public GUIObject
         virtual sf::FloatRect   getBoundingRect() const override;
 
     private:
-        void                    changeTexture();
+        void                    changeTexture(bool);
 
         sf::Sprite      mSprite;
         bool            mIsSwitchedOn;

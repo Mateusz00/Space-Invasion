@@ -34,7 +34,7 @@ class SettingsState : public State
 
         sf::Sprite							mBackgroundSprite;
         sf::RectangleShape                  mContainer;
-        sf::RectangleShape                  mContainer1;
+        sf::RectangleShape                  mBottomBar;
         GUIContainer                        mOptionButtons;
         GUIContainer                        mControls;
         GUIContainer                        mOtherOptions;

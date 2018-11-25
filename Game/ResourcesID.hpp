@@ -25,7 +25,7 @@ namespace Textures
         TitleScreen,
         SettingsButtons,
         Speaker,
-        MutedSpeaker,
+        Checkbox,
         FinishLine
     };
 }

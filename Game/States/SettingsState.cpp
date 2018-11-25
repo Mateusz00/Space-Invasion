@@ -20,9 +20,9 @@ SettingsState::SettingsState(Context context, StateStack& stateStack)
     mContainer.setOutlineColor(sf::Color(183, 124, 7));
     mContainer.setOutlineThickness(1.f);
 
-    mContainer1.setSize(sf::Vector2f(mContainer.getSize().x, mContainer.getSize().y * 0.08f));
-    mContainer1.setPosition(sf::Vector2f(mContainer.getPosition().x, mContainer.getPosition().y + mContainer.getSize().y - mContainer1.getSize().y));
-    mContainer1.setFillColor(sf::Color(47, 47, 48));
+    mBottomBar.setSize(sf::Vector2f(mContainer.getSize().x, mContainer.getSize().y * 0.08f));
+    mBottomBar.setPosition(sf::Vector2f(mContainer.getPosition().x, mContainer.getPosition().y  + mContainer.getSize().y - mBottomBar.getSize().y));
+    mBottomBar.setFillColor(sf::Color(47, 47, 48));
 
     mOptionButtons.setPosition(mContainer.getPosition());
     mControls.setPosition(sf::Vector2f(windowSize.x * 0.15f, windowSize.y * 0.175f));
@@ -35,7 +35,7 @@ bool SettingsState::draw()
 {
 	mWindow.draw(mBackgroundSprite);
 	mWindow.draw(mContainer);
-	mWindow.draw(mContainer1);
+	mWindow.draw(mBottomBar);
 	mWindow.draw(mOptionButtons);
 
     switch(mCurrentOption)
@@ -155,12 +155,14 @@ void SettingsState::addGUIElements(Context context)
     std::unique_ptr<GUIButton> controls(new GUIButton(context, GUIButton::OptionsButton, "Controls"));
     GUIButton* controlsPtr = controls.get();
     controls->setPosition(0.f, 0.f);
-    controls->setRectSize(sf::Vector2f(mContainer.getSize().x * 0.5f - 2.f, mContainer1.getSize().y));
+    controls->changeAppearance(GUIButton::Pressed);
+    controls->setFreezeFlag(true);
+    controls->setRectSize(sf::Vector2f(mContainer.getSize().x * 0.5f - 2.f, mBottomBar.getSize().y));
 
     std::unique_ptr<GUIButton> others(new GUIButton(context, GUIButton::OptionsButton, "Others"));
     GUIButton* othersPtr = others.get();
     others->setPosition(sf::Vector2f(mContainer.getSize().x * 0.5f, 0.f));
-    others->setRectSize(sf::Vector2f(mContainer.getSize().x * 0.5f, mContainer1.getSize().y));
+    others->setRectSize(sf::Vector2f(mContainer.getSize().x * 0.5f, mBottomBar.getSize().y));
 
     // set callbacks
     controls->setCallback([this, controlsPtr, othersPtr]()
@@ -184,8 +186,12 @@ void SettingsState::addGUIElements(Context context)
     mOptionButtons.push(std::move(others));
     mOptionButtons.push(std::move(returnButton));
 
+    std::unique_ptr<GUILabel> soundText(new GUILabel("Sound", context.fonts));
+    soundText->setPosition(0.f, 0.f);
+    mOtherOptions.push(std::move(soundText));
+
     std::unique_ptr<GUISlider> soundEffects(new GUISlider(250.f, 30.f, context.sounds.getVolume(), context.fonts, &mOtherOptions));
-    soundEffects->setPosition(0.f, 0.f);
+    soundEffects->setPosition(100.f, 0.f);
     soundEffects->setValueRange(0.f, 100.f);
     soundEffects->setUpdatingFunction([this, context](float value)
     {
@@ -193,12 +199,35 @@ void SettingsState::addGUIElements(Context context)
     });
     mOtherOptions.push(std::move(soundEffects));
 
+    std::unique_ptr<GUILabel> musicText(new GUILabel("Music", context.fonts));
+    musicText->setPosition(0.f, 150.f);
+    mOtherOptions.push(std::move(musicText));
+
     std::unique_ptr<GUISlider> musicVolume(new GUISlider(250.f, 30.f, context.music.getVolume(), context.fonts, &mOtherOptions));
-    musicVolume->setPosition(0.f, 200.f);
+    musicVolume->setPosition(100.f, 150.f);
     musicVolume->setValueRange(0.f, 100.f);
     musicVolume->setUpdatingFunction([this, context](float value)
     {
         context.music.setVolume(value);
     });
     mOtherOptions.push(std::move(musicVolume));
+
+    std::unique_ptr<GUILabel> vsyncText(new GUILabel("V-sync", context.fonts));
+    vsyncText->setPosition(0.f, 300.f);
+    mOtherOptions.push(std::move(vsyncText));
+
+    static bool vsyncFlag = false;
+    std::unique_ptr<GUISwitch> vsync(new GUISwitch(context, Textures::Checkbox, vsyncFlag));
+    vsync->setPosition(100.f, 300.f);
+    vsync->setOnCallback([this, context]()
+    {
+        context.window.setVerticalSyncEnabled(true);
+        vsyncFlag = true;
+    });
+    vsync->setOffCallback([this, context]()
+    {
+        context.window.setVerticalSyncEnabled(false);
+        vsyncFlag = false;
+    });
+    mOtherOptions.push(std::move(vsync));
 }

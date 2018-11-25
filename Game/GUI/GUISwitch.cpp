@@ -1,11 +1,10 @@
 #include "GUISwitch.hpp"
 
-GUISwitch::GUISwitch(State::Context context, Textures::ID textureId)
+GUISwitch::GUISwitch(State::Context context, Textures::ID textureId, bool isSwitchedOn)
     : mSprite(context.textures.get(textureId)),
-      mIsSwitchedOn(true)
+      mIsSwitchedOn(isSwitchedOn)
 {
-    const auto& rect = mSprite.getTextureRect();
-    mSprite.setTextureRect(sf::IntRect(rect.left, rect.top, rect.width, rect.height / 2));
+    changeTexture(isSwitchedOn);
 }
 
 void GUISwitch::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -44,7 +43,7 @@ void GUISwitch::handleEvent(const sf::Event& event)
             mOnCallback();
 
         mIsSwitchedOn = !mIsSwitchedOn;
-        changeTexture();
+        changeTexture(mIsSwitchedOn);
         deactivate();
     }
 }
@@ -54,10 +53,8 @@ sf::FloatRect GUISwitch::getBoundingRect() const
     return getTransform().transformRect(mSprite.getGlobalBounds());
 }
 
-void GUISwitch::changeTexture()
+void GUISwitch::changeTexture(bool state) // false - 1 half of texture, true = second
 {
-    const auto& rect = mSprite.getTextureRect();
-    unsigned int textureHeight = mSprite.getTexture()->getSize().y;
-
-    mSprite.setTextureRect(sf::IntRect(rect.left, (rect.top + rect.height) % textureHeight, rect.width, rect.height));
+    const auto& textureSize = mSprite.getTexture()->getSize();
+    mSprite.setTextureRect(sf::IntRect(0.f, (textureSize.y/2.f) * state, textureSize.x, textureSize.y/2.f));
 }

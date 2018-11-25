@@ -11,7 +11,8 @@ namespace
 }
 
 SoundPlayer::SoundPlayer()
-    : mVolume(80.f)
+    : mVolume(80.f),
+      mVolumeBeforeMuting(mVolume)
 {
 	mSounds.loadFromFile(Sound::AllyGun,        "Resources/GunShot2.ogg");
 	mSounds.loadFromFile(Sound::EnemyGun,       "Resources/GunShot.ogg");

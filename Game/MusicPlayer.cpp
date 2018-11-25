@@ -3,7 +3,8 @@
 
 MusicPlayer::MusicPlayer(float volume)
 	: mVolume(volume),
-	  mIsLooped(false)
+	  mIsLooped(false),
+	  mVolumeBeforeMuting(volume)
 {
     mMusicToFilePath[Music::MenuTheme]   = std::string("Resources/MenuTheme.ogg");
 	mMusicToFilePath[Music::BattleTheme] = std::string("Resources/BattleTheme.ogg");
