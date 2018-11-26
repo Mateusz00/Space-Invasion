@@ -123,16 +123,16 @@ std::unordered_map<int, int>& World::getPlayersScoresMap()
 
 Aircraft* World::addAircraft(int id)
 {
-	std::unique_ptr<Aircraft> playerAircraft(new Aircraft(Aircraft::Ally, mTextures, mFonts, *this, id));
-	playerAircraft->setPosition(mPlayerSpawnPosition.x - 50.f + 100.f*(id%2), mPlayerSpawnPosition.y);
-	playerAircraft->setIdentifier(id);
-	mPlayerAircrafts.emplace_back(playerAircraft.get());
+    std::unique_ptr<Aircraft> playerAircraft(new Aircraft(Aircraft::Ally, mTextures, mFonts, *this, id));
+    playerAircraft->setPosition(mPlayerSpawnPosition.x - 50.f + 100.f*(id%2), mPlayerSpawnPosition.y);
+    playerAircraft->setIdentifier(id);
+    mPlayerAircrafts.emplace_back(playerAircraft.get());
 
     // temp
     std::unique_ptr<AmmoNode> ammoNode(new AmmoNode(*playerAircraft, mTextures, mFonts, mView));
     mUIGraph.attachChild(std::move(ammoNode));
     mSceneLayers[UpperAir]->attachChild(std::move(playerAircraft));
-	return mPlayerAircrafts.back();
+    return mPlayerAircrafts.back();
 }
 
 void World::buildWorld()
@@ -154,13 +154,13 @@ void World::buildWorld()
     galaxyBackground->setPosition(mWorldBounds.left, mWorldBounds.top - mView.getSize().y);
     mSceneLayers[Background]->attachChild(std::move(galaxyBackground));
 
-	sf::Texture& finishTexture = mTextures.get(Textures::FinishLine);
-	finishTexture.setRepeated(true);
-	sf::IntRect finishLineRect(0, 0, mTarget.getSize().x, 100);
+    sf::Texture& finishTexture = mTextures.get(Textures::FinishLine);
+    finishTexture.setRepeated(true);
+    sf::IntRect finishLineRect(0, 0, mTarget.getSize().x, 100);
 
-	std::unique_ptr<SpriteNode> finishLine(new SpriteNode(finishTexture, finishLineRect));
-	finishLine->setPosition(0.f, -50.f);
-	mSceneLayers[Background]->attachChild(std::move(finishLine));
+    std::unique_ptr<SpriteNode> finishLine(new SpriteNode(finishTexture, finishLineRect));
+    finishLine->setPosition(0.f, -50.f);
+    mSceneLayers[Background]->attachChild(std::move(finishLine));
 
     std::unique_ptr<ParticleNode> particleNode(new ParticleNode(mTextures));
     mParticleNode = particleNode.get();
@@ -184,27 +184,27 @@ void World::adaptPlayersVelocity()
 
 void World::initializeSpawnPoints()
 {
-	addSpawnPoint(300.f, 5900.f, Aircraft::Enemy);
-	addSpawnPoint(500.f, 5700.f, Aircraft::Enemy);
+    addSpawnPoint(300.f, 5900.f, Aircraft::Enemy);
+    addSpawnPoint(500.f, 5700.f, Aircraft::Enemy);
     addSpawnPoint(300.f, 5150.f, Aircraft::Enemy);
-	addSpawnPoint(500.f, 5250.f, Aircraft::Enemy);
+    addSpawnPoint(500.f, 5250.f, Aircraft::Enemy);
 
-	sortSpawnPoints();
-	// TODO: Add more later
+    sortSpawnPoints();
+    // TODO: Add more later
 }
 
 void World::addSpawnPoint(float x, float y, Aircraft::Type type)
 {
     SpawnPoint spawnPoint{x, y, type};
-	mSpawnPoints.push_back(std::move(spawnPoint));
+    mSpawnPoints.push_back(std::move(spawnPoint));
 }
 
 void World::sortSpawnPoints()
 {
     std::sort(mSpawnPoints.begin(), mSpawnPoints.end(), [](SpawnPoint lhs, SpawnPoint rhs)
-	{
-		return lhs.y < rhs.y;
-	});
+    {
+        return lhs.y < rhs.y;
+    });
 }
 
 sf::FloatRect World::getBattlefieldBounds() const
@@ -223,16 +223,16 @@ sf::FloatRect World::getViewBounds() const
 
 void World::spawnEnemies()
 {
-	while(!mSpawnPoints.empty() && mSpawnPoints.back().y > getBattlefieldBounds().top)
-	{
-		SpawnPoint spawn = mSpawnPoints.back();
+    while(!mSpawnPoints.empty() && mSpawnPoints.back().y > getBattlefieldBounds().top)
+    {
+        SpawnPoint spawn = mSpawnPoints.back();
 
-		std::unique_ptr<Aircraft> enemyAircraft(new Aircraft(spawn.type, mTextures, mFonts, *this));
-		enemyAircraft->setPosition(spawn.x, spawn.y);
-		mSceneLayers[UpperAir]->attachChild(std::move(enemyAircraft));
+        std::unique_ptr<Aircraft> enemyAircraft(new Aircraft(spawn.type, mTextures, mFonts, *this));
+        enemyAircraft->setPosition(spawn.x, spawn.y);
+        mSceneLayers[UpperAir]->attachChild(std::move(enemyAircraft));
 
-		mSpawnPoints.pop_back();
-	}
+        mSpawnPoints.pop_back();
+    }
 }
 
 void World::guideHomingMissiles()
@@ -246,16 +246,16 @@ void World::guideHomingMissiles()
     });
 
     Command homingCommand;
-	homingCommand.mCategories.push_back(Category::AlliedProjectile);
-	homingCommand.mAction = castFunctor<Projectile>([this](Projectile& missile, sf::Time dt)
-	{
-		if(!missile.isGuided())
-			return;
+    homingCommand.mCategories.push_back(Category::AlliedProjectile);
+    homingCommand.mAction = castFunctor<Projectile>([this](Projectile& missile, sf::Time dt)
+    {
+        if(!missile.isGuided())
+            return;
 
-		float smallestDistance = std::numeric_limits<float>::max();
-		Aircraft* closestEnemy = nullptr;
+        float smallestDistance = std::numeric_limits<float>::max();
+        Aircraft* closestEnemy = nullptr;
 
-		for(const auto& enemy : mActiveEnemies)
+        for(const auto& enemy : mActiveEnemies)
         {
             float enemyDistance = vectorLength(missile.getWorldPosition() - enemy->getWorldPosition());
             if(enemyDistance < smallestDistance)
@@ -267,17 +267,17 @@ void World::guideHomingMissiles()
 
         if(closestEnemy)
             missile.guideTowards(closestEnemy->getWorldPosition());
-	});
+    });
 
     mCommandQueue.push(enemyCollector);
-	mCommandQueue.push(homingCommand);
-	mActiveEnemies.clear();
+    mCommandQueue.push(homingCommand);
+    mActiveEnemies.clear();
 }
 
 void World::adaptPlayersPosition()
 {
     sf::FloatRect viewBounds = getViewBounds();
-	const sf::Vector2f distanceFromBorder(37.5f, 26.f);
+    const sf::Vector2f distanceFromBorder(37.5f, 26.f);
     sf::Vector2f playerPosition;
 
     for(auto& playerAircraft : mPlayerAircrafts)
@@ -353,5 +353,6 @@ void World::updateScore()
 void World::removeDanglingPointers()
 {
     auto firstToRemove = std::remove_if(mPlayerAircrafts.begin(), mPlayerAircrafts.end(), std::mem_fn(&Aircraft::isMarkedForRemoval));
-	mPlayerAircrafts.erase(firstToRemove, mPlayerAircrafts.end());
+    mPlayerAircrafts.erase(firstToRemove, mPlayerAircrafts.end());
 }
+
