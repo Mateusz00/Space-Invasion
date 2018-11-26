@@ -40,8 +40,8 @@ void StateStack::update(sf::Time dt)
 
 void StateStack::draw()
 {
-	for(const auto& state : mStack) // Draw states from oldest to newest
-		state->draw();
+    for(const auto& state : mStack) // Draw states from oldest to newest
+        state->draw();
 }
 
 void StateStack::handleEvent(const sf::Event& event)

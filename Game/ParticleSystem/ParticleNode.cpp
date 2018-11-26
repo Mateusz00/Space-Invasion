@@ -43,7 +43,7 @@ void ParticleNode::drawCurrent(sf::RenderTarget& target, sf::RenderStates states
 void ParticleNode::computeVertices() const
 {
     sf::Vector2f textureSize(mTexture.getSize());
-	sf::Vector2f halfTexture = textureSize / 2.f;
+    sf::Vector2f halfTexture = textureSize / 2.f;
     mVertices.clear();
 
     for(const auto& particle : mParticles)
@@ -51,15 +51,15 @@ void ParticleNode::computeVertices() const
         const sf::Vector2f& pos = particle.getPosition();
         const sf::Color& color = particle.getColor();
 
-		addVertex(pos.x - halfTexture.x, pos.y - halfTexture.y, 0.f,           0.f,           color); // Left-top corner
-		addVertex(pos.x + halfTexture.x, pos.y - halfTexture.y, textureSize.x, 0.f,           color); // Right-top corner
-		addVertex(pos.x + halfTexture.x, pos.y + halfTexture.y, textureSize.x, textureSize.y, color); // Right-bottom corner
-		addVertex(pos.x - halfTexture.x, pos.y + halfTexture.y, 0.f,           textureSize.y, color); // Left-bottom corner
+        addVertex(pos.x - halfTexture.x, pos.y - halfTexture.y, 0.f,           0.f,           color); // Left-top corner
+        addVertex(pos.x + halfTexture.x, pos.y - halfTexture.y, textureSize.x, 0.f,           color); // Right-top corner
+        addVertex(pos.x + halfTexture.x, pos.y + halfTexture.y, textureSize.x, textureSize.y, color); // Right-bottom corner
+        addVertex(pos.x - halfTexture.x, pos.y + halfTexture.y, 0.f,           textureSize.y, color); // Left-bottom corner
     }
 }
 
 void ParticleNode::addVertex(float worldX, float worldY, float textureX, float textureY, const sf::Color& color) const
 {
-	sf::Vertex vertex(sf::Vector2f(worldX, worldY), color, sf::Vector2f(textureX, textureY));
-	mVertices.append(vertex);
+    sf::Vertex vertex(sf::Vector2f(worldX, worldY), color, sf::Vector2f(textureX, textureY));
+    mVertices.append(vertex);
 }

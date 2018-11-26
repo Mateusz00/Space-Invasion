@@ -7,19 +7,19 @@
 
 namespace
 {
-	const std::vector<ButtonData> table = initializeButtonData();
+    const std::vector<ButtonData> table = initializeButtonData();
 }
 
 GUIButton::GUIButton(State::Context context, ButtonID id, const std::string& text)
-	: mButtonID(id),
-	  mButtonType(table[id].buttonType),
-	  mText(text, context.fonts.get(Fonts::Sansation), 28u),
-	  mIsToggled(false),
-	  mFreezeAppearance(false),
-	  mSounds(context.sounds)
+    : mButtonID(id),
+      mButtonType(table[id].buttonType),
+      mText(text, context.fonts.get(Fonts::Sansation), 28u),
+      mIsToggled(false),
+      mFreezeAppearance(false),
+      mSounds(context.sounds)
 {
-	switch(mButtonType)
-	{
+    switch(mButtonType)
+    {
         case ButtonType::Textured:
         {
             mSprite.setTexture(context.textures.get(table[mButtonID].textureId));
@@ -36,21 +36,21 @@ GUIButton::GUIButton(State::Context context, ButtonID id, const std::string& tex
             changeAppearance(ButtonState::Normal);
             mText.setCharacterSize(18u);
         }
-	}
+    }
 
-	centerOrigin(mText);
+    centerOrigin(mText);
 }
 
 void GUIButton::select()
 {
-	GUIObject::select();
-	changeAppearance(ButtonState::Selected);
+    GUIObject::select();
+    changeAppearance(ButtonState::Selected);
 }
 
 void GUIButton::deselect()
 {
-	GUIObject::deselect();
-	changeAppearance(ButtonState::Normal);
+    GUIObject::deselect();
+    changeAppearance(ButtonState::Normal);
 }
 
 void GUIButton::deactivate()
@@ -77,7 +77,7 @@ void GUIButton::handleEvent(const sf::Event& event)
             if(event.key.code == sf::Keyboard::Enter || event.key.code == sf::Keyboard::Space)
             {
                 changeAppearance(ButtonState::Pressed);
-	            mSounds.play(Sound::ButtonClick);
+                mSounds.play(Sound::ButtonClick);
                 runAssignedFunction();
             }
             break;
@@ -101,7 +101,7 @@ sf::FloatRect GUIButton::getBoundingRect() const
 
 void GUIButton::setCallback(Callback callback)
 {
-	mCallback = callback;
+    mCallback = callback;
 }
 
 void GUIButton::toggle(bool isToggled)
@@ -181,8 +181,8 @@ void GUIButton::changeAppearance(ButtonState state)
 void GUIButton::runAssignedFunction()
 {
     if(mCallback)
-		mCallback();
+        mCallback();
 
-	if(!mIsToggled)
-		deactivate();
+    if(!mIsToggled)
+        deactivate();
 }

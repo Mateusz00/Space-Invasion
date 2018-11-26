@@ -30,15 +30,15 @@ void State::requestStackPush(States::ID stateID)
 
 void State::requestStackPop()
 {
-	mStateStack.popState();
+    mStateStack.popState();
 }
 
 void State::requestStackClear()
 {
-	mStateStack.clearStates();
+    mStateStack.clearStates();
 }
 
 State::Context State::getContext() const
 {
-	return mContext;
+    return mContext;
 }

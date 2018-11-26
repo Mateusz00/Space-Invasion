@@ -37,9 +37,9 @@ struct ProjectileData
 
 struct PickupData
 {
-	std::function<void(Aircraft&)>	action;
-	Textures::ID					texture;
-    sf::IntRect						textureRect;
+    std::function<void(Aircraft&)>  action;
+    Textures::ID                    texture;
+    sf::IntRect                     textureRect;
 };
 
 struct ParticleData
@@ -50,26 +50,26 @@ struct ParticleData
 
 struct AnimationData
 {
-	int             rows;
-	int             framesPerRow;
-	int             frames;
-	sf::Vector2i 	frameSize;
-	Textures::ID    spriteSheet;
+    int             rows;
+    int             framesPerRow;
+    int             frames;
+    sf::Vector2i    frameSize;
+    Textures::ID    spriteSheet;
 };
 
 struct ButtonData
 {
-	GUIButton::ButtonType   buttonType;
-	Textures::ID            textureId;
-	sf::Vector2i            buttonSize;
-	sf::Color               defaultColor;
+    GUIButton::ButtonType   buttonType;
+    Textures::ID            textureId;
+    sf::Vector2i            buttonSize;
+    sf::Color               defaultColor;
     sf::Color               activatedColor;
 };
 
 std::vector<AircraftData>       initializeAircraftData();
 std::vector<ProjectileData>     initializeProjectileData();
-std::vector<PickupData>		    initializePickupData();
-std::vector<ParticleData>	    initializeParticleData();
+std::vector<PickupData>         initializePickupData();
+std::vector<ParticleData>       initializeParticleData();
 std::vector<AnimationData>      initializeAnimationData();
 std::vector<ButtonData>         initializeButtonData();
 

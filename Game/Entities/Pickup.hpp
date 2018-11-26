@@ -21,16 +21,16 @@ class Pickup : public Entity
         };
 
                                 Pickup(Type, const TextureHolder&, World&);
-        virtual Category::Type	getCategory() const override;
-        virtual sf::FloatRect	getBoundingRect() const override;
-        void 					apply(Aircraft&) const;
+        virtual Category::Type  getCategory() const override;
+        virtual sf::FloatRect   getBoundingRect() const override;
+        void                    apply(Aircraft&) const;
         virtual void            onCollision(Entity&) override;
 
     private:
-        virtual void	        drawCurrent(sf::RenderTarget&, sf::RenderStates) const override;
+        virtual void            drawCurrent(sf::RenderTarget&, sf::RenderStates) const override;
 
-        Type 		    mType;
-        sf::Sprite	    mSprite;
+        Type             mType;
+        sf::Sprite       mSprite;
 };
 
 #endif // PICKUP_HPP

@@ -175,38 +175,38 @@ void Aircraft::shootBullets(SceneNode& layer, const TextureHolder& textures) con
 {
     Projectile::Type projectileType = (!mIsEnemy) ? Projectile::AlliedBullet : Projectile::EnemyBullet;
 
-	switch(mSpreadLevel)
-	{
-		case 1:
-			createProjectile(layer, projectileType,  0.0f,  0.5f,  textures);
-			break;
+    switch(mSpreadLevel)
+    {
+        case 1:
+            createProjectile(layer, projectileType,  0.0f,  0.5f,  textures);
+            break;
 
-		case 2:
-			createProjectile(layer, projectileType, -0.2f,  0.5f,  textures);
-			createProjectile(layer, projectileType,  0.2f,  0.5f,  textures);
-			break;
+        case 2:
+            createProjectile(layer, projectileType, -0.2f,  0.5f,  textures);
+            createProjectile(layer, projectileType,  0.2f,  0.5f,  textures);
+            break;
 
-		case 3:
-			createProjectile(layer, projectileType, -0.25f, 0.25f, textures);
-			createProjectile(layer, projectileType,  0.0f,  0.5f,  textures);
-			createProjectile(layer, projectileType,  0.25f, 0.25f, textures);
-			break;
+        case 3:
+            createProjectile(layer, projectileType, -0.25f, 0.25f, textures);
+            createProjectile(layer, projectileType,  0.0f,  0.5f,  textures);
+            createProjectile(layer, projectileType,  0.25f, 0.25f, textures);
+            break;
 
-		case 4:
-			createProjectile(layer, projectileType, -0.4f,  0.25f, textures);
-			createProjectile(layer, projectileType, -0.15f, 0.5f,  textures);
-			createProjectile(layer, projectileType,  0.15f, 0.5f,  textures);
-			createProjectile(layer, projectileType,  0.4f,  0.25f, textures);
-			break;
+        case 4:
+            createProjectile(layer, projectileType, -0.4f,  0.25f, textures);
+            createProjectile(layer, projectileType, -0.15f, 0.5f,  textures);
+            createProjectile(layer, projectileType,  0.15f, 0.5f,  textures);
+            createProjectile(layer, projectileType,  0.4f,  0.25f, textures);
+            break;
 
-		case 5:
-			createProjectile(layer, projectileType, -0.48f,  0.25f, textures);
-			createProjectile(layer, projectileType, -0.2f,  0.5f,  textures);
-			createProjectile(layer, projectileType,  0.0f,  0.75f, textures);
-			createProjectile(layer, projectileType,  0.2f,  0.5f,  textures);
-			createProjectile(layer, projectileType,  0.48f,  0.25f, textures);
-			break;
-	}
+        case 5:
+            createProjectile(layer, projectileType, -0.48f,  0.25f, textures);
+            createProjectile(layer, projectileType, -0.2f,  0.5f,  textures);
+            createProjectile(layer, projectileType,  0.0f,  0.75f, textures);
+            createProjectile(layer, projectileType,  0.2f,  0.5f,  textures);
+            createProjectile(layer, projectileType,  0.48f,  0.25f, textures);
+            break;
+    }
 }
 
 void Aircraft::createProjectile(SceneNode& layer, Projectile::Type type, float xOffset,
@@ -217,7 +217,7 @@ void Aircraft::createProjectile(SceneNode& layer, Projectile::Type type, float x
     float direction = (!mIsEnemy) ? -1.f : 1.f; // Decides if offsets will make projectile closer to top of window or closer to bottom
     sf::Vector2f offset(mSprite.getLocalBounds().width * xOffset,
                          mSprite.getLocalBounds().height * yOffset * direction);
-	sf::Vector2f velocity(0, projectile->getMaxSpeed());
+    sf::Vector2f velocity(0, projectile->getMaxSpeed());
 
     projectile->setPosition(getWorldPosition() + offset);
     projectile->setVelocity(velocity * direction);
@@ -242,11 +242,11 @@ void Aircraft::launchProjectiles(sf::Time dt, CommandQueue& commands)
     mIsFiring = false;
 
     if(mIsLaunchingMissile)
-	{
-		commands.push(mLaunchMissileCommand);
-		getWorld().getSoundPlayer().play(Sound::Missile, getWorldPosition());
-		mIsLaunchingMissile = false;
-	}
+    {
+        commands.push(mLaunchMissileCommand);
+        getWorld().getSoundPlayer().play(Sound::Missile, getWorldPosition());
+        mIsLaunchingMissile = false;
+    }
 }
 
 void Aircraft::updateMovementPatterns(sf::Time dt)
@@ -338,26 +338,26 @@ void Aircraft::changeScore()
 void Aircraft::increaseScoreRequest(int value) const
 {
     Command increaseScoreCommand;
-	increaseScoreCommand.mCategories.push_back(Category::PlayerAircraft);
-	increaseScoreCommand.mAction = castFunctor<Aircraft>([this, value](Aircraft& aircraft, sf::Time dt)
-	{
-	    if(aircraft.getIdentifier() == mAttackerID)
+    increaseScoreCommand.mCategories.push_back(Category::PlayerAircraft);
+    increaseScoreCommand.mAction = castFunctor<Aircraft>([this, value](Aircraft& aircraft, sf::Time dt)
+    {
+        if(aircraft.getIdentifier() == mAttackerID)
             aircraft.increaseScore(value);
-	});
+    });
 
-	getWorld().getCommandQueue().push(increaseScoreCommand);
+    getWorld().getCommandQueue().push(increaseScoreCommand);
 }
 
 void Aircraft::decreaseScoreRequest(int value) const
 {
     Command decreaseScoreCommand;
-	decreaseScoreCommand.mCategories.push_back(Category::PlayerAircraft);
-	decreaseScoreCommand.mAction = castFunctor<Aircraft>([this, value](Aircraft& aircraft, sf::Time dt)
-	{
+    decreaseScoreCommand.mCategories.push_back(Category::PlayerAircraft);
+    decreaseScoreCommand.mAction = castFunctor<Aircraft>([this, value](Aircraft& aircraft, sf::Time dt)
+    {
         aircraft.increaseScore(-value);
-	});
+    });
 
-	getWorld().getCommandQueue().push(decreaseScoreCommand);
+    getWorld().getCommandQueue().push(decreaseScoreCommand);
 }
 
 void Aircraft::onRemoval()

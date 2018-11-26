@@ -17,10 +17,10 @@ class Projectile : public Entity
         };
 
                                 Projectile(Type, const TextureHolder&, World&, int shooterID);
-        float					getMaxSpeed() const;
-        int						getDamage() const;
-        bool					isGuided() const;
-        void	                guideTowards(sf::Vector2f);
+        float                   getMaxSpeed() const;
+        int                     getDamage() const;
+        bool                    isGuided() const;
+        void                    guideTowards(sf::Vector2f);
         virtual Category::Type  getCategory() const override;
         virtual sf::FloatRect   getBoundingRect() const override;
         virtual void            onCollision(Entity&) override;

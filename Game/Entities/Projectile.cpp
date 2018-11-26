@@ -19,15 +19,15 @@ Projectile::Projectile(Type type, const TextureHolder& textures, World& world, i
     centerOrigin(mSprite);
 
     if(isGuided()) // Adds emitters for missiles
-	{
-		std::unique_ptr<EmitterNode> smoke(new EmitterNode(Particle::Smoke, getWorld().getParticleNode(), 30.f));
-		smoke->setPosition(0.f, mSprite.getLocalBounds().height / 2.f);
-		attachChild(std::move(smoke));
+    {
+        std::unique_ptr<EmitterNode> smoke(new EmitterNode(Particle::Smoke, getWorld().getParticleNode(), 30.f));
+        smoke->setPosition(0.f, mSprite.getLocalBounds().height / 2.f);
+        attachChild(std::move(smoke));
 
-		std::unique_ptr<EmitterNode> propellant(new EmitterNode(Particle::Propellant, getWorld().getParticleNode(), 30.f));
-		propellant->setPosition(0.f, mSprite.getLocalBounds().height / 2.f);
-		attachChild(std::move(propellant));
-	}
+        std::unique_ptr<EmitterNode> propellant(new EmitterNode(Particle::Propellant, getWorld().getParticleNode(), 30.f));
+        propellant->setPosition(0.f, mSprite.getLocalBounds().height / 2.f);
+        attachChild(std::move(propellant));
+    }
 }
 
 float Projectile::getMaxSpeed() const
@@ -35,7 +35,7 @@ float Projectile::getMaxSpeed() const
     return table[mType].speed;
 }
 
-int	Projectile::getDamage() const
+int    Projectile::getDamage() const
 {
     return table[mType].damage;
 }
@@ -52,10 +52,10 @@ void Projectile::guideTowards(sf::Vector2f position)
 
 Category::Type Projectile::getCategory() const
 {
-	if(mType == EnemyBullet)
-		return Category::EnemyProjectile;
-	else
-		return Category::AlliedProjectile;
+    if(mType == EnemyBullet)
+        return Category::EnemyProjectile;
+    else
+        return Category::AlliedProjectile;
 }
 
 sf::FloatRect Projectile::getBoundingRect() const

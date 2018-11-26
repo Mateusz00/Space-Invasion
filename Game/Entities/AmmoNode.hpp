@@ -13,11 +13,11 @@
 class AmmoNode : public SceneNode
 {
     public:
-        AmmoNode(const Aircraft&, const TextureHolder&, const FontHolder&, const sf::View&);
+                        AmmoNode(const Aircraft&, const TextureHolder&, const FontHolder&, const sf::View&);
 
     private:
-        virtual void updateCurrent(sf::Time, CommandQueue&) override;
-        virtual void drawCurrent(sf::RenderTarget&, sf::RenderStates) const override;
+        virtual void    updateCurrent(sf::Time, CommandQueue&) override;
+        virtual void    drawCurrent(sf::RenderTarget&, sf::RenderStates) const override;
 
         const Aircraft&     mObject;
         const sf::View&     mView;

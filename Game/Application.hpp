@@ -28,8 +28,8 @@ class Application
         sf::RenderWindow            mWindow;
         FontHolder                  mFonts;
         TextureHolder               mTextures;
-        SoundPlayer			        mSounds;
-        MusicPlayer			        mMusicPlayer;
+        SoundPlayer                 mSounds;
+        MusicPlayer                 mMusicPlayer;
         std::vector<KeyBinding*>    mKeyBindings;
         sf::Text                    mFPSCounter;
         StateStack                  mStateStack;

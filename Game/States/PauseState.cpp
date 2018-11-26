@@ -12,10 +12,10 @@ PauseState::PauseState(Context context, StateStack& stateStack, bool isNetworked
     sf::Vector2f windowSize(static_cast<sf::Vector2f>(mWindow.getSize()));
 
     mText.setFont(context.fonts.get(Fonts::Sansation));
-	mText.setString("Game Paused");
-	mText.setCharacterSize(60u);
-	centerOrigin(mText);
-	mText.setPosition(windowSize.x * 0.5f, windowSize.y * 0.3f);
+    mText.setString("Game Paused");
+    mText.setCharacterSize(60u);
+    centerOrigin(mText);
+    mText.setPosition(windowSize.x * 0.5f, windowSize.y * 0.3f);
 
     mGUIContainer.setPosition(windowSize * 0.5f);
 
@@ -32,7 +32,7 @@ PauseState::PauseState(Context context, StateStack& stateStack, bool isNetworked
     backToMenu->setCallback([this]()
     {
         requestStackClear();
-		requestStackPush(States::MenuState);
+        requestStackPush(States::MenuState);
     });
     mGUIContainer.push(std::move(backToMenu));
 
@@ -47,13 +47,13 @@ PauseState::~PauseState()
 bool PauseState::draw()
 {
     sf::RectangleShape background; // Optimize
-	background.setFillColor(sf::Color(0, 0, 0, 150));
-	background.setSize(mWindow.getView().getSize());
+    background.setFillColor(sf::Color(0, 0, 0, 150));
+    background.setSize(mWindow.getView().getSize());
 
     mWindow.setView(mWindow.getDefaultView());
-	mWindow.draw(background);
-	mWindow.draw(mText);
-	mWindow.draw(mGUIContainer);
+    mWindow.draw(background);
+    mWindow.draw(mText);
+    mWindow.draw(mGUIContainer);
 
     return mIsNetworked;
 }

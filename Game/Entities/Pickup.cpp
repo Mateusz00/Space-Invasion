@@ -5,7 +5,7 @@
 
 namespace
 {
-	const std::vector<PickupData> table = initializePickupData();
+    const std::vector<PickupData> table = initializePickupData();
 }
 
 Pickup::Pickup(Type type, const TextureHolder& textures, World& world)
@@ -13,27 +13,27 @@ Pickup::Pickup(Type type, const TextureHolder& textures, World& world)
       mType(type),
       mSprite(textures.get(table[type].texture), table[type].textureRect)
 {
-	centerOrigin(mSprite);
+    centerOrigin(mSprite);
 }
 
 Category::Type Pickup::getCategory() const
 {
-	return Category::Pickup;
+    return Category::Pickup;
 }
 
 sf::FloatRect Pickup::getBoundingRect() const
 {
-	return getWorldTransform().transformRect(mSprite.getGlobalBounds());
+    return getWorldTransform().transformRect(mSprite.getGlobalBounds());
 }
 
 void Pickup::apply(Aircraft& player) const
 {
-	table[mType].action(player);
+    table[mType].action(player);
 }
 
 void Pickup::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	target.draw(mSprite, states);
+    target.draw(mSprite, states);
 }
 
 void Pickup::onCollision(Entity& entity)

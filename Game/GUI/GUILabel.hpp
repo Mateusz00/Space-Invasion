@@ -9,15 +9,15 @@ class GUILabel : public GUIObject
 {
     public:
                                 GUILabel(const std::string&, const FontHolder&);
-        void			        setText(const std::string&);
-        virtual bool	        isSelectable() const override;
-        virtual void	        handleEvent(const sf::Event&) override;
+        void                    setText(const std::string&);
+        virtual bool            isSelectable() const override;
+        virtual void            handleEvent(const sf::Event&) override;
         virtual sf::FloatRect   getBoundingRect() const override;
 
     private:
-        void		            draw(sf::RenderTarget&, sf::RenderStates) const;
+        void                    draw(sf::RenderTarget&, sf::RenderStates) const;
 
-        sf::Text    mText;
+        sf::Text mText;
 };
 
 #endif // GUILABEL_HPP

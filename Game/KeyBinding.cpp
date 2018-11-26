@@ -7,7 +7,7 @@ KeyBinding::KeyBinding(int player)
     case 1:
         mBinds[sf::Keyboard::W] = Action::MoveUp;
         mBinds[sf::Keyboard::S] = Action::MoveDown;
-        mBinds[sf::Keyboard::A]	= Action::MoveLeft;
+        mBinds[sf::Keyboard::A]    = Action::MoveLeft;
         mBinds[sf::Keyboard::D] = Action::MoveRight;
         mBinds[sf::Keyboard::G] = Action::Fire;
         mBinds[sf::Keyboard::H] = Action::LaunchMissile;
@@ -16,7 +16,7 @@ KeyBinding::KeyBinding(int player)
     case 2:
         mBinds[sf::Keyboard::Up] = Action::MoveUp;
         mBinds[sf::Keyboard::Down] = Action::MoveDown;
-        mBinds[sf::Keyboard::Left]	= Action::MoveLeft;
+        mBinds[sf::Keyboard::Left]    = Action::MoveLeft;
         mBinds[sf::Keyboard::Right] = Action::MoveRight;
         mBinds[sf::Keyboard::Space] = Action::Fire;
         mBinds[sf::Keyboard::M] = Action::LaunchMissile;
@@ -75,15 +75,15 @@ std::vector<KeyBinding::Action> KeyBinding::getRealtimeActions() const // Return
 
 bool isRealtimeAction(KeyBinding::Action action)
 {
-	switch (action)
-	{
-		case KeyBinding::Action::MoveLeft:    return true;
-		case KeyBinding::Action::MoveRight:   return true;
-		case KeyBinding::Action::MoveDown:    return true;
-		case KeyBinding::Action::MoveUp:      return true;
-		case KeyBinding::Action::Fire:        return true;
+    switch (action)
+    {
+        case KeyBinding::Action::MoveLeft:    return true;
+        case KeyBinding::Action::MoveRight:   return true;
+        case KeyBinding::Action::MoveDown:    return true;
+        case KeyBinding::Action::MoveUp:      return true;
+        case KeyBinding::Action::Fire:        return true;
 
-		default:
-			return false;
-	}
+        default:
+            return false;
+    }
 }

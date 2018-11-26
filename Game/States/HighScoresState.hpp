@@ -18,7 +18,7 @@ class HighScoresState : public State
     private:
         HighScoresTable     mHighScores;
         sf::Sprite          mBackground;
-        sf::Text	        mHeader;
+        sf::Text            mHeader;
         GUIContainer        mButtons;
 };
 

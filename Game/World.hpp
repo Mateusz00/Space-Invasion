@@ -22,7 +22,7 @@ class World
         CommandQueue&                   getCommandQueue();
         void                            update(sf::Time);
         void                            draw();
-        sf::FloatRect	                getViewBounds() const;
+        sf::FloatRect                    getViewBounds() const;
         sf::FloatRect                   getBattlefieldBounds() const;
         void                            addCollidable(Entity*);
         void                            removeCollidable(Entity*);

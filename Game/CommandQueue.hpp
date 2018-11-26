@@ -8,7 +8,7 @@ class CommandQueue
 {
     public:
         void     push(const Command&);
-        Command	 pop();
+        Command  pop();
         bool     isEmpty() const;
 
     private:

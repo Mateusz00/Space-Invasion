@@ -5,9 +5,9 @@
 #include "ResourceHolder.hpp"
 namespace sf
 {
-	class Texture;
-	class Font;
-	class SoundBuffer;
+    class Texture;
+    class Font;
+    class SoundBuffer;
 }
 
 namespace Textures
@@ -41,24 +41,24 @@ namespace Fonts
 
 namespace Sound
 {
-	enum ID
-	{
-		Explosion,
-		GameOver,
-		EnemyGun,
-		AllyGun,
-		Missile,
-		PickUp,
-		ButtonClick
-	};
+    enum ID
+    {
+        Explosion,
+        GameOver,
+        EnemyGun,
+        AllyGun,
+        Missile,
+        PickUp,
+        ButtonClick
+    };
 }
 
 namespace Music
 {
     enum ID
     {
-		MenuTheme,
-		BattleTheme
+        MenuTheme,
+        BattleTheme
     };
 }
 

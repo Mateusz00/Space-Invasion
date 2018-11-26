@@ -24,7 +24,7 @@ class State
             FontHolder&                 fonts;
             SoundPlayer&                sounds;
             MusicPlayer&                music;
-            std::vector<KeyBinding*>&    keys;
+            std::vector<KeyBinding*>&   keys;
             std::vector<Player>&        players;
         };
 

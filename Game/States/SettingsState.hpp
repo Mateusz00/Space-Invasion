@@ -28,11 +28,11 @@ class SettingsState : public State
         virtual bool    handleEvent(const sf::Event&) override;
 
     private:
-        void	        updateLabels();
-        void	        addButton(int index, int player, int y, const std::string&, Context);
+        void            updateLabels();
+        void            addButton(int index, int player, int y, const std::string&, Context);
         void            addGUIElements(Context);
 
-        sf::Sprite							mBackgroundSprite;
+        sf::Sprite                          mBackgroundSprite;
         sf::RectangleShape                  mContainer;
         sf::RectangleShape                  mBottomBar;
         GUIContainer                        mOptionButtons;
@@ -41,8 +41,9 @@ class SettingsState : public State
         Option                              mCurrentOption;
         std::pair<bool, Player::Action>     mToggledButton;
         sf::RenderWindow&                   mWindow;
-        std::array<GUIButton*, KeyBinding::Count*2>	mBindingButtons;
-        std::array<GUILabel*, KeyBinding::Count*2> 	mBindingLabels;
+
+        std::array<GUIButton*, KeyBinding::Count*2>    mBindingButtons;
+        std::array<GUILabel*, KeyBinding::Count*2>     mBindingLabels;
 };
 
 #endif // SETTINGSSTATE_HPP

@@ -12,4 +12,3 @@ std::string toString(const T& value)
     text << value;
     return text.str();
 }
-

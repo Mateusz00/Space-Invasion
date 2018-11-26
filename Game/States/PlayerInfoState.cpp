@@ -51,13 +51,13 @@ PlayerInfoState::PlayerInfoState(Context context, StateStack& stateStack)
 bool PlayerInfoState::draw()
 {
     mWindow.setView(mWindow.getDefaultView());
-	mWindow.draw(mBackgroundSprite);
+    mWindow.draw(mBackgroundSprite);
 
-	if(!mModeConfirmed)
+    if(!mModeConfirmed)
     {
         mWindow.draw(mButtons);
     }
-	else
+    else
     {
         mWindow.draw(mText);
         mWindow.draw(mInputBox);

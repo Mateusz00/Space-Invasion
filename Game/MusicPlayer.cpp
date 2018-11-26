@@ -2,34 +2,34 @@
 #include <SFML/Audio/Sound.hpp>
 
 MusicPlayer::MusicPlayer(float volume)
-	: mVolume(volume),
-	  mIsLooped(false),
-	  mVolumeBeforeMuting(volume)
+    : mVolume(volume),
+      mIsLooped(false),
+      mVolumeBeforeMuting(volume)
 {
     mMusicToFilePath[Music::MenuTheme]   = std::string("Resources/MenuTheme.ogg");
-	mMusicToFilePath[Music::BattleTheme] = std::string("Resources/BattleTheme.ogg");
+    mMusicToFilePath[Music::BattleTheme] = std::string("Resources/BattleTheme.ogg");
 }
 
 void MusicPlayer::playNow(Music::ID id, bool isLooped)
 {
-	mCurrentMusic.stop();
-	addToQueue(id, false); // Place it at the beginning of the queue
-	setLoop(isLooped);
+    mCurrentMusic.stop();
+    addToQueue(id, false); // Place it at the beginning of the queue
+    setLoop(isLooped);
 }
 
 void MusicPlayer::addToQueue(Music::ID id, bool addToEnd)
 {
-	if(addToEnd)
-		mMusicPlaylist.emplace_back(id);
-	else
-		mMusicPlaylist.emplace_front(id);
+    if(addToEnd)
+        mMusicPlaylist.emplace_back(id);
+    else
+        mMusicPlaylist.emplace_front(id);
 }
 
 void MusicPlayer::update()
 {
-	if(!mMusicPlaylist.empty() && mCurrentMusic.getStatus() == sf::Sound::Stopped)
-	{
-	    auto id = mMusicPlaylist.front();
+    if(!mMusicPlaylist.empty() && mCurrentMusic.getStatus() == sf::Sound::Stopped)
+    {
+        auto id = mMusicPlaylist.front();
         auto filenameIter = mMusicToFilePath.find(id);
 
         if(filenameIter == mMusicToFilePath.end())
@@ -47,13 +47,13 @@ void MusicPlayer::update()
         mCurrentMusic.play();
         mIsLooped = false; // Loop only one sound
         mMusicPlaylist.pop_front(); // Delete from queue as it's already playing
-	}
+    }
 }
 
 void MusicPlayer::setVolume(float volume)
 {
     mCurrentMusic.setVolume(volume);
-	mVolume = volume;
+    mVolume = volume;
 }
 
 void MusicPlayer::setLoop(bool isLooped)
@@ -63,17 +63,17 @@ void MusicPlayer::setLoop(bool isLooped)
 
 float MusicPlayer::getVolume() const
 {
-	return mVolume;
+    return mVolume;
 }
 
 void MusicPlayer::pause()
 {
-	mCurrentMusic.pause();
+    mCurrentMusic.pause();
 }
 
 void MusicPlayer::resume()
 {
-	mCurrentMusic.play();
+    mCurrentMusic.play();
 }
 
 void MusicPlayer::mute()

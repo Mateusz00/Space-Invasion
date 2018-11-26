@@ -110,5 +110,5 @@ bool Entity::isMarkedForRemoval() const
 
 bool collision(const Entity& lhs, const Entity& rhs)
 {
-	return lhs.getBoundingRect().intersects(rhs.getBoundingRect());
+    return lhs.getBoundingRect().intersects(rhs.getBoundingRect());
 }

@@ -9,30 +9,30 @@
 
 class GUIContainer : public GUIObject
 {
-	public:
+    public:
                                 GUIContainer(bool allowKeyboardNavigation = true, bool mVerticalNavigation = true);
-        void			        push(ComponentPtr);
-		virtual bool    		isSelectable() const override;
-		virtual void			handleEvent(const sf::Event&) override;
-		virtual sf::FloatRect 	getBoundingRect() const override;
-		void                    setVerticalNavigation(bool); // False means user can navigate container horizontally
-		void                    useKeyboardNavigation(bool);
+        void                    push(ComponentPtr);
+        virtual bool            isSelectable() const override;
+        virtual void            handleEvent(const sf::Event&) override;
+        virtual sf::FloatRect   getBoundingRect() const override;
+        void                    setVerticalNavigation(bool); // False means user can navigate container horizontally
+        void                    useKeyboardNavigation(bool);
 
-	private:
-	    virtual void	        draw(sf::RenderTarget&, sf::RenderStates) const override;
-        void		            selectNext();
-        void			        selectPrevious();
-        void			        deselect();
+    private:
+        virtual void            draw(sf::RenderTarget&, sf::RenderStates) const override;
+        void                    selectNext();
+        void                    selectPrevious();
+        void                    deselect();
         bool                    hasSelection() const;
-		sf::FloatRect           getComponentRect(int componentNumber) const;
-		bool                    checkMouseCollision(sf::Vector2i, int& index) const;
-		void                    restart(); // Removes selection and deactivates selected object
+        sf::FloatRect           getComponentRect(int componentNumber) const;
+        bool                    checkMouseCollision(sf::Vector2i, int& index) const;
+        void                    restart(); // Removes selection and deactivates selected object
 
-		std::vector<ComponentPtr>	mComponents;
-		int                         mSelected;
-		int                         mClicked;
-		bool                        mAllowKeyboardNavigation;
-		bool                        mVerticalNavigation;
+        std::vector<ComponentPtr>   mComponents;
+        int                         mSelected;
+        int                         mClicked;
+        bool                        mAllowKeyboardNavigation;
+        bool                        mVerticalNavigation;
 };
 
 #endif // GUICONTAINER_HPP

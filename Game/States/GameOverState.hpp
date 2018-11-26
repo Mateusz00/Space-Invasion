@@ -22,7 +22,7 @@ class GameOverState : public State
         virtual bool    handleEvent(const sf::Event&) override;
 
     private:
-        sf::Text	        mText;
+        sf::Text            mText;
         sf::Time            mElapsedTime;
         sf::RenderWindow&   mWindow;
         sf::RectangleShape  mBackground;

@@ -33,10 +33,10 @@ SettingsState::SettingsState(Context context, StateStack& stateStack)
 
 bool SettingsState::draw()
 {
-	mWindow.draw(mBackgroundSprite);
-	mWindow.draw(mContainer);
-	mWindow.draw(mBottomBar);
-	mWindow.draw(mOptionButtons);
+    mWindow.draw(mBackgroundSprite);
+    mWindow.draw(mContainer);
+    mWindow.draw(mBottomBar);
+    mWindow.draw(mOptionButtons);
 
     switch(mCurrentOption)
     {
@@ -99,15 +99,15 @@ bool SettingsState::handleEvent(const sf::Event& event)
 void SettingsState::updateLabels()
 {
     for(int i=0; i < KeyBinding::Count; ++i)
-	{
-		auto action = static_cast<Player::Action>(i);
+    {
+        auto action = static_cast<Player::Action>(i);
 
-		for(int j=0; j < getContext().keys.size(); ++j)
+        for(int j=0; j < getContext().keys.size(); ++j)
         {
             sf::Keyboard::Key key = getContext().keys[j]->getAssignedKey(action);
             mBindingLabels[i + KeyBinding::Count*j]->setText(toString(key));
         }
-	}
+    }
 }
 
 void SettingsState::addButton(int index, int player, int y, const std::string& text, Context context)
@@ -116,18 +116,18 @@ void SettingsState::addButton(int index, int player, int y, const std::string& t
 
     std::unique_ptr<GUIButton> newButton(new GUIButton(context, GUIButton::ControlsButton, text));
     mBindingButtons[index] = newButton.get();
-	newButton->setPosition(360.f * player, 80.f * y);
-	newButton->setCallback([index, this]()
+    newButton->setPosition(360.f * player, 80.f * y);
+    newButton->setCallback([index, this]()
     {
         mBindingButtons[index]->toggle(true);
         mToggledButton = std::make_pair(true, static_cast<Player::Action>(index));
     });
     mControls.push(std::move(newButton));
 
-	std::unique_ptr<GUILabel> newLabel(new GUILabel(text, context.fonts));
-	mBindingLabels[index] = newLabel.get();
-	newLabel->setPosition(230.f + 360.f * player, 80.f * y + 10.f);
-	mControls.push(std::move(newLabel));
+    std::unique_ptr<GUILabel> newLabel(new GUILabel(text, context.fonts));
+    mBindingLabels[index] = newLabel.get();
+    newLabel->setPosition(230.f + 360.f * player, 80.f * y + 10.f);
+    mControls.push(std::move(newLabel));
 }
 
 void SettingsState::addGUIElements(Context context)
@@ -135,8 +135,8 @@ void SettingsState::addGUIElements(Context context)
     for(int player=0; player < 2; ++player)
     {
         addButton(KeyBinding::MoveLeft,         player, 0, "Move Left", context);
-        addButton(KeyBinding::MoveRight,        player,	1, "Move Right", context);
-        addButton(KeyBinding::MoveUp,           player,	2, "Move Up", context);
+        addButton(KeyBinding::MoveRight,        player,    1, "Move Right", context);
+        addButton(KeyBinding::MoveUp,           player,    2, "Move Up", context);
         addButton(KeyBinding::MoveDown,         player, 3, "Move Down", context);
         addButton(KeyBinding::Fire,             player, 4, "Fire", context);
         addButton(KeyBinding::LaunchMissile,    player, 5, "Missile", context);

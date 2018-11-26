@@ -8,10 +8,10 @@ namespace
 }
 
 Particle::Particle(sf::Vector2f pos, Type type)
-	: mType(type),
-	  mLifespan(table[mType].lifespan),
-	  mPosition(pos),
-	  mColor(table[mType].color)
+    : mType(type),
+      mLifespan(table[mType].lifespan),
+      mPosition(pos),
+      mColor(table[mType].color)
 {
 }
 

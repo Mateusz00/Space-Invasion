@@ -355,4 +355,3 @@ void World::removeDanglingPointers()
     auto firstToRemove = std::remove_if(mPlayerAircrafts.begin(), mPlayerAircrafts.end(), std::mem_fn(&Aircraft::isMarkedForRemoval));
     mPlayerAircrafts.erase(firstToRemove, mPlayerAircrafts.end());
 }
-

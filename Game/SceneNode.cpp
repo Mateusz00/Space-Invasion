@@ -59,7 +59,7 @@ void SceneNode::executeCommand(const Command& command, sf::Time dt)
 
 sf::FloatRect SceneNode::getBoundingRect() const
 {
-	return sf::FloatRect();
+    return sf::FloatRect();
 }
 
 void SceneNode::draw(sf::RenderTarget& target, sf::RenderStates states) const

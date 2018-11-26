@@ -15,7 +15,7 @@ void GUIContainer::push(ComponentPtr component)
 
 bool GUIContainer::isSelectable() const
 {
-	return false;
+    return false;
 }
 
 void GUIContainer::handleEvent(const sf::Event& event)
@@ -103,7 +103,7 @@ void GUIContainer::handleEvent(const sf::Event& event)
 
 sf::FloatRect GUIContainer::getBoundingRect() const
 {
-	return sf::FloatRect();
+    return sf::FloatRect();
 }
 
 void GUIContainer::setVerticalNavigation(bool flag)

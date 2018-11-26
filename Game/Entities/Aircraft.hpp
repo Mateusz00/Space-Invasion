@@ -54,9 +54,9 @@ class Aircraft : public Entity
 
         Type                    mType;
         sf::Sprite              mSprite;
-        int	                    mFireRateLevel;
-        int	                    mSpreadLevel;
-        int	                    mMissileAmmo;
+        int                     mFireRateLevel;
+        int                     mSpreadLevel;
+        int                     mMissileAmmo;
         int                     mIdentifier;
         bool                    mIsFiring;
         bool                    mIsLaunchingMissile;

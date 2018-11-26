@@ -23,7 +23,7 @@ MenuState::MenuState(Context context, StateStack& stateStack)
     play->setCallback([this]()
     {
         requestStackPop();
-		requestStackPush(States::PlayerInfoState);
+        requestStackPush(States::PlayerInfoState);
     });
     mGUIContainer.push(std::move(play));
 
@@ -73,8 +73,8 @@ MenuState::MenuState(Context context, StateStack& stateStack)
 
 bool MenuState::draw()
 {
-	mWindow.setView(mWindow.getDefaultView());
-	mWindow.draw(mBackgroundSprite);
+    mWindow.setView(mWindow.getDefaultView());
+    mWindow.draw(mBackgroundSprite);
     mWindow.draw(mGUIContainer);
     return false;
 }

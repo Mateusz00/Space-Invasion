@@ -23,7 +23,7 @@ class ParticleNode : public SceneNode
         std::vector<Particle>       mParticles;
         mutable sf::VertexArray     mVertices;
         mutable bool                mNeedsUpdate;
-        const sf::Texture&		    mTexture;
+        const sf::Texture&          mTexture;
 };
 
 #endif // PARTICLENODE_HPP

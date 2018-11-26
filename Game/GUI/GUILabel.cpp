@@ -10,7 +10,7 @@ GUILabel::GUILabel(const std::string& text, const FontHolder& fonts)
 
 void GUILabel::setText(const std::string& text)
 {
-	mText.setString(text);
+    mText.setString(text);
 }
 
 bool GUILabel::isSelectable() const
@@ -24,8 +24,8 @@ void GUILabel::handleEvent(const sf::Event& event)
 
 void GUILabel::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	states.transform *= getTransform();
-	target.draw(mText, states);
+    states.transform *= getTransform();
+    target.draw(mText, states);
 }
 
 sf::FloatRect GUILabel::getBoundingRect() const

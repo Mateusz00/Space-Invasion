@@ -17,12 +17,12 @@ class GUI_InputBox : public GUIObject
                                 GUI_InputBox(std::string& output, sf::Vector2f boxSize,
                                              int maxCharacters, bool isForced, const FontHolder&);
         virtual bool            isSelectable() const override;
-        virtual void	        onMouseClick(sf::Vector2i) override;
-        virtual void	        deactivate() override;
-        virtual void	        handleEvent(const sf::Event&) override;
+        virtual void            onMouseClick(sf::Vector2i) override;
+        virtual void            deactivate() override;
+        virtual void            handleEvent(const sf::Event&) override;
         virtual sf::FloatRect   getBoundingRect() const override;
-        virtual void	        draw(sf::RenderTarget&, sf::RenderStates) const override;
-        void	                update(sf::Time);
+        virtual void            draw(sf::RenderTarget&, sf::RenderStates) const override;
+        void                    update(sf::Time);
         sf::FloatRect           getLocalBounds() const;
 
     private:
