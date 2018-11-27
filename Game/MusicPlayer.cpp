@@ -4,7 +4,7 @@
 MusicPlayer::MusicPlayer(float volume)
     : mVolume(volume),
       mIsLooped(false),
-      mVolumeBeforeMuting(volume)
+      mIsMuted(false)
 {
     mMusicToFilePath[Music::MenuTheme]   = std::string("Resources/MenuTheme.ogg");
     mMusicToFilePath[Music::BattleTheme] = std::string("Resources/BattleTheme.ogg");
@@ -42,7 +42,7 @@ void MusicPlayer::update()
         if(!mCurrentMusic.openFromFile(filenameIter->second))
             throw std::runtime_error("Could not find file: " + filenameIter->second);
 
-        mCurrentMusic.setVolume(mVolume);
+        setVolume(mVolume);
         mCurrentMusic.setLoop(mIsLooped);
         mCurrentMusic.play();
         mIsLooped = false; // Loop only one sound
@@ -52,7 +52,11 @@ void MusicPlayer::update()
 
 void MusicPlayer::setVolume(float volume)
 {
-    mCurrentMusic.setVolume(volume);
+    if(mIsMuted)
+        mCurrentMusic.setVolume(0.f);
+    else
+        mCurrentMusic.setVolume(volume);
+
     mVolume = volume;
 }
 
@@ -78,11 +82,12 @@ void MusicPlayer::resume()
 
 void MusicPlayer::mute()
 {
-    mVolumeBeforeMuting = mVolume;
-    setVolume(0.f);
+    mIsMuted = true;
+    setVolume(mVolume);
 }
 
 void MusicPlayer::unmute()
 {
-    setVolume(mVolumeBeforeMuting);
+    mIsMuted = false;
+    setVolume(mVolume);
 }

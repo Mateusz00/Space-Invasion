@@ -5,6 +5,7 @@
 #include "ResourcesID.hpp"
 #include "SoundPlayer.hpp"
 #include "MusicPlayer.hpp"
+#include "Settings.hpp"
 #include "Player.hpp"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/Time.hpp>
@@ -23,6 +24,7 @@ class Application
         void handleEvents();
         void updateFPSCounter(sf::Time dt);
         void loadResources();
+        void loadSettings();
 
         const sf::Time              TIME_PER_FRAME;
         sf::RenderWindow            mWindow;
@@ -34,6 +36,7 @@ class Application
         sf::Text                    mFPSCounter;
         StateStack                  mStateStack;
         std::vector<Player>         mPlayers;
+        Settings                    mSettings;
 };
 
 #endif // APPLICATION_HPP

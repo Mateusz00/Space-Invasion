@@ -24,7 +24,7 @@ class SoundPlayer
         SoundBufferHolder               mSounds;
         std::forward_list<sf::Sound>    mActiveSounds;
         float                           mVolume;
-        float                           mVolumeBeforeMuting;
+        bool                            mIsMuted;
 };
 
 #endif // SOUNDPLAYER_HPP

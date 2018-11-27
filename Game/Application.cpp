@@ -9,8 +9,7 @@ Application::Application()
       mWindow(sf::VideoMode(1024, 700), "2D Fighter Jet Game", sf::Style::Close),
       mStateStack(State::Context(mWindow, mTextures, mFonts, mSounds, mMusicPlayer, mKeyBindings, mPlayers))
 {
-    mKeyBindings.push_back(new KeyBinding(1));
-    mKeyBindings.push_back(new KeyBinding(2));
+    loadSettings();
     loadResources();
     mWindow.setKeyRepeatEnabled(false);
     mFPSCounter.setFont(mFonts.get(Fonts::Sansation));
@@ -106,4 +105,25 @@ void Application::loadResources()
     mTextures.loadFromFile(Textures::Checkbox,       "Resources/Checkbox.png");
     mTextures.loadFromFile(Textures::FinishLine,     "Resources/FinishLine.png");
     mTextures.loadFromFile(Textures::SettingsButtons,"Resources/Buttons.png");
+}
+
+void Application::loadSettings()
+{
+    mSettings.loadDefaultValues();
+
+    if(mSettings.limitFramerate)
+        mWindow.setFramerateLimit(mSettings.frameLimit);
+
+    if(mSettings.isMuted)
+    {
+        mSounds.mute();
+        mMusicPlayer.mute();
+    }
+
+    mWindow.setVerticalSyncEnabled(mSettings.vsync);
+    mSounds.setVolume(mSettings.soundVolume);
+    mMusicPlayer.setVolume(mSettings.musicVolume);
+
+    mKeyBindings.push_back(new KeyBinding(1, mSettings));
+    mKeyBindings.push_back(new KeyBinding(2, mSettings));
 }

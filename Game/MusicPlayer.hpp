@@ -30,7 +30,7 @@ class MusicPlayer
         float                               mVolume;
         sf::Music                           mCurrentMusic;
         bool                                mIsLooped; // Indicates if next music should be looped
-        float                               mVolumeBeforeMuting;
+        bool                                mIsMuted;
 };
 
 #endif // MUSICPLAYER_HPP
