@@ -3,17 +3,7 @@
 
 KeyBinding::KeyBinding(int player, const Settings& settings)
 {
-    switch(player)
-    {
-    case 1:
-        mBinds = settings.keyBinding1;
-        break;
-
-    case 2:
-        mBinds = settings.keyBinding2;
-        break;
-    }
-
+    mBinds = settings.getKeyBinding(player);
 }
 
 void KeyBinding::assignKey(Action action, sf::Keyboard::Key key)

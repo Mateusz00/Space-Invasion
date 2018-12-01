@@ -109,20 +109,18 @@ void Application::loadResources()
 
 void Application::loadSettings()
 {
-    mSettings.loadDefaultValues();
+    mSettings.load();
 
-    if(mSettings.limitFramerate)
-        mWindow.setFramerateLimit(mSettings.frameLimit);
-
-    if(mSettings.isMuted)
+    if(mSettings.getMuted())
     {
         mSounds.mute();
         mMusicPlayer.mute();
     }
 
-    mWindow.setVerticalSyncEnabled(mSettings.vsync);
-    mSounds.setVolume(mSettings.soundVolume);
-    mMusicPlayer.setVolume(mSettings.musicVolume);
+    mWindow.setFramerateLimit(mSettings.getFramerateLimit());
+    mWindow.setVerticalSyncEnabled(mSettings.getVsync());
+    mSounds.setVolume(mSettings.getSoundVolume());
+    mMusicPlayer.setVolume(mSettings.getMusicVolume());
 
     mKeyBindings.push_back(new KeyBinding(1, mSettings));
     mKeyBindings.push_back(new KeyBinding(2, mSettings));
