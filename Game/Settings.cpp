@@ -1,27 +1,18 @@
 #include "Settings.hpp"
-#include <inicpp/inicpp.h>
 #include <fstream>
-using namespace inicpp;
+#include <iostream>
+using namespace libconfig;
 
 void Settings::load()
 {
+    // Try to open existing configuration file, use default settings if file not found
     if(!loadFromFile())
         loadDefaultValues();
 }
 
-void Settings::saveToFile(inicpp::config* configPtr)
+void Settings::saveToFile()
 {
-    using namespace inicpp;
-    if(configPtr)
-    {
 
-    }
-    else
-    {
-        //configPtr->add_section("Settings");
-        //configPtr->add_option("Settings", "Vsync", mVsync);
-        //parser::save(*configPtr, "config.ini");
-    }
 }
 
 bool Settings::getVsync() const
@@ -49,7 +40,7 @@ void Settings::setSoundVolume(float volume)
     mSoundVolume = volume;
 }
 
-bool Settings::getSoundVolume() const
+float Settings::getSoundVolume() const
 {
     return mSoundVolume;
 }
@@ -59,7 +50,7 @@ void Settings::setMusicVolume(float volume)
     mMusicVolume = volume;
 }
 
-bool Settings::getMusicVolume() const
+float Settings::getMusicVolume() const
 {
     return mMusicVolume;
 }
@@ -69,7 +60,7 @@ void Settings::setFramerateLimit(unsigned int frames)
     mFramerateLimit = frames;
 }
 
-bool Settings::getFramerateLimit() const
+unsigned int Settings::getFramerateLimit() const
 {
     return mFramerateLimit;
 }
@@ -119,20 +110,28 @@ void Settings::loadDefaultValues()
     mKeyBinding2[sf::Keyboard::Space] = KeyBinding::Fire;
     mKeyBinding2[sf::Keyboard::M]     = KeyBinding::LaunchMissile;
 
-    saveToFile(nullptr);
+    saveToFile();
 }
 
 bool Settings::loadFromFile()
 {
-    using namespace inicpp;
+    Config cfg;
 
-    // Try to open existing configuration file, use default settings if file not found
-    std::ifstream configHandle("config.ini");
-    if(!configHandle.good())
+    try
+    {
+        cfg.readFile("config.cfg");
+    }
+    catch(const FileIOException &fioex)
+    {
+        std::cerr << "I/O error while reading file." << std::endl;
         return false;
+    }
+    catch(const ParseException &pex)
+    {
+        std::cerr << "Parse error at " << pex.getFile() << ":" << pex.getLine() << " - " << pex.getError() << std::endl;
+        return false;
+    }
 
-    config settings = parser::load(configHandle);
-
-    saveToFile(&settings);
+    saveToFile();
     return true;
 }
