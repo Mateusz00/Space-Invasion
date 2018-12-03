@@ -90,6 +90,8 @@ void GameState::updateScoresFile() const
     std::ofstream outputScores("Scores.txt", std::ios::out | std::ios::trunc);
     for(int i = 0; i < 9; ++i)
         outputScores << scores[i].first << " " << scores[i].second << " ";
+
+    outputScores.close();
 }
 
 void GameState::updatePlayersScore()

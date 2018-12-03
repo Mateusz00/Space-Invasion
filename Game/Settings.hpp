@@ -3,6 +3,7 @@
 
 #include "KeyBinding.hpp"
 #include <map>
+#include <string>
 #include <libconfig.h++>
 
 class Settings
@@ -28,6 +29,7 @@ class Settings
     private:
         void            loadDefaultValues();
         bool            loadFromFile();
+        void            addControlsToConfig(libconfig::Setting&, const KeyBindMap&, const std::string& player);
 
         bool            mVsync;
         bool            mIsMuted;
