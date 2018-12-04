@@ -36,7 +36,7 @@ class Settings
         float           mSoundVolume;
         float           mMusicVolume;
         unsigned int    mFramerateLimit;
-        KeyBindMap      mKeyBinding1;
+        KeyBindMap      mKeyBinding1; // std::array
         KeyBindMap      mKeyBinding2;
 };
 

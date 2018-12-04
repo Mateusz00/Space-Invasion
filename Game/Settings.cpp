@@ -1,4 +1,5 @@
 #include "Settings.hpp"
+#include "Utility.hpp"
 #include <fstream>
 #include <iostream>
 using namespace libconfig;
@@ -169,19 +170,19 @@ bool Settings::loadFromFile()
         mSoundVolume    = cfg.lookup("SoundVolume");
         mFramerateLimit = cfg.lookup("FrameLimit");
 
-        mKeyBinding1[(sf::Keyboard::Key)(int)cfg.lookup("Player1_MoveUp")]          = KeyBinding::MoveUp;
-        mKeyBinding1[(sf::Keyboard::Key)(int)cfg.lookup("Player1_MoveDown")]        = KeyBinding::MoveDown;
-        mKeyBinding1[(sf::Keyboard::Key)(int)cfg.lookup("Player1_MoveLeft")]        = KeyBinding::MoveLeft;
-        mKeyBinding1[(sf::Keyboard::Key)(int)cfg.lookup("Player1_MoveRight")]       = KeyBinding::MoveRight;
-        mKeyBinding1[(sf::Keyboard::Key)(int)cfg.lookup("Player1_Fire")]            = KeyBinding::Fire;
-        mKeyBinding1[(sf::Keyboard::Key)(int)cfg.lookup("Player1_LaunchMissile")]   = KeyBinding::LaunchMissile;
+        mKeyBinding1[toKey(cfg.lookup("Player1_MoveUp"))]          = KeyBinding::MoveUp;
+        mKeyBinding1[toKey(cfg.lookup("Player1_MoveDown"))]        = KeyBinding::MoveDown;
+        mKeyBinding1[toKey(cfg.lookup("Player1_MoveLeft"))]        = KeyBinding::MoveLeft;
+        mKeyBinding1[toKey(cfg.lookup("Player1_MoveRight"))]       = KeyBinding::MoveRight;
+        mKeyBinding1[toKey(cfg.lookup("Player1_Fire"))]            = KeyBinding::Fire;
+        mKeyBinding1[toKey(cfg.lookup("Player1_LaunchMissile"))]   = KeyBinding::LaunchMissile;
 
-        mKeyBinding2[(sf::Keyboard::Key)(int)cfg.lookup("Player2_MoveUp")]          = KeyBinding::MoveUp;
-        mKeyBinding2[(sf::Keyboard::Key)(int)cfg.lookup("Player2_MoveDown")]        = KeyBinding::MoveDown;
-        mKeyBinding2[(sf::Keyboard::Key)(int)cfg.lookup("Player2_MoveLeft")]        = KeyBinding::MoveLeft;
-        mKeyBinding2[(sf::Keyboard::Key)(int)cfg.lookup("Player2_MoveRight")]       = KeyBinding::MoveRight;
-        mKeyBinding2[(sf::Keyboard::Key)(int)cfg.lookup("Player2_Fire")]            = KeyBinding::Fire;
-        mKeyBinding2[(sf::Keyboard::Key)(int)cfg.lookup("Player2_LaunchMissile")]   = KeyBinding::LaunchMissile;
+        mKeyBinding2[toKey(cfg.lookup("Player2_MoveUp"))]          = KeyBinding::MoveUp;
+        mKeyBinding2[toKey(cfg.lookup("Player2_MoveDown"))]        = KeyBinding::MoveDown;
+        mKeyBinding2[toKey(cfg.lookup("Player2_MoveLeft"))]        = KeyBinding::MoveLeft;
+        mKeyBinding2[toKey(cfg.lookup("Player2_MoveRight"))]       = KeyBinding::MoveRight;
+        mKeyBinding2[toKey(cfg.lookup("Player2_Fire"))]            = KeyBinding::Fire;
+        mKeyBinding2[toKey(cfg.lookup("Player2_LaunchMissile"))]   = KeyBinding::LaunchMissile;
     }
     catch(const SettingNotFoundException& settingEx)
     {
@@ -203,33 +204,19 @@ bool Settings::loadFromFile()
 
 void Settings::addControlsToConfig(libconfig::Setting& root, const KeyBindMap& keyBindings, const std::string& player)
 {
+    #define ADD_ACTION_CASE(ACTION) \
+    case KeyBinding::Action::ACTION:  root.add(player + "_"#ACTION, Setting::TypeString) = toString(keyBind.first);  break;
+
     for(const auto& keyBind : keyBindings)
     {
         switch(keyBind.second)
         {
-            case KeyBinding::Action::MoveUp:
-                root.add(player + "_MoveUp", Setting::TypeInt) = static_cast<int>(keyBind.first);
-                break;
-
-            case KeyBinding::Action::MoveDown:
-                root.add(player + "_MoveDown", Setting::TypeInt) = static_cast<int>(keyBind.first);
-                break;
-
-            case KeyBinding::Action::MoveLeft:
-                root.add(player + "_MoveLeft", Setting::TypeInt) = static_cast<int>(keyBind.first);
-                break;
-
-            case KeyBinding::Action::MoveRight:
-                root.add(player + "_MoveRight", Setting::TypeInt) = static_cast<int>(keyBind.first);
-                break;
-
-            case KeyBinding::Action::Fire:
-                root.add(player + "_Fire", Setting::TypeInt) = static_cast<int>(keyBind.first);
-                break;
-
-            case KeyBinding::Action::LaunchMissile:
-                root.add(player + "_LaunchMissile", Setting::TypeInt) = static_cast<int>(keyBind.first);
-                break;
+            ADD_ACTION_CASE(MoveUp)
+            ADD_ACTION_CASE(MoveDown)
+            ADD_ACTION_CASE(MoveLeft)
+            ADD_ACTION_CASE(MoveRight)
+            ADD_ACTION_CASE(Fire)
+            ADD_ACTION_CASE(LaunchMissile)
         }
     }
 }
