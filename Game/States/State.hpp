@@ -3,6 +3,7 @@
 
 #include "../ResourcesID.hpp"
 #include "../KeyBinding.hpp"
+#include "../Settings.hpp"
 #include "StatesID.hpp"
 #include <SFML/Graphics/RenderWindow.hpp>
 class StateStack;
@@ -17,7 +18,7 @@ class State
         struct Context
         {
             Context(sf::RenderWindow&, TextureHolder&, FontHolder&, SoundPlayer&, MusicPlayer&,
-                    std::vector<KeyBinding*>&, std::vector<Player>&);
+                    std::vector<KeyBinding*>&, std::vector<Player>&, Settings&);
 
             sf::RenderWindow&           window;
             TextureHolder&              textures;
@@ -26,6 +27,7 @@ class State
             MusicPlayer&                music;
             std::vector<KeyBinding*>&   keys;
             std::vector<Player>&        players;
+            Settings&                   settings;
         };
 
                         State(Context, StateStack&);

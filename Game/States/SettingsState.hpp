@@ -3,6 +3,7 @@
 
 #include "State.hpp"
 #include "../KeyBinding.hpp"
+#include "../Settings.hpp"
 #include "../Player.hpp"
 #include "../GUI/GUIContainer.hpp"
 #include "../GUI/GUIButton.hpp"
@@ -35,12 +36,13 @@ class SettingsState : public State
         sf::Sprite                          mBackgroundSprite;
         sf::RectangleShape                  mContainer;
         sf::RectangleShape                  mBottomBar;
-        GUIContainer                        mOptionButtons;
+        GUIContainer                        mOptionButtons; // Bottom bar
         GUIContainer                        mControls;
         GUIContainer                        mOtherOptions;
         Option                              mCurrentOption;
         std::pair<bool, Player::Action>     mToggledButton;
         sf::RenderWindow&                   mWindow;
+        Settings&                           mSettings;
 
         std::array<GUIButton*, KeyBinding::Count*2>    mBindingButtons;
         std::array<GUILabel*, KeyBinding::Count*2>     mBindingLabels;

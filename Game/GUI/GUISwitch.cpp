@@ -53,6 +53,12 @@ sf::FloatRect GUISwitch::getBoundingRect() const
     return getTransform().transformRect(mSprite.getGlobalBounds());
 }
 
+void GUISwitch::setSwitched(bool flag)
+{
+    mIsSwitchedOn = flag;
+    changeTexture(mIsSwitchedOn);
+}
+
 void GUISwitch::changeTexture(bool state) // false - 1 half of texture, true = second
 {
     const auto& textureSize = mSprite.getTexture()->getSize();

@@ -3,6 +3,8 @@
 
 #include "State.hpp"
 #include "../GUI/GUIContainer.hpp"
+#include "../GUI/GUISwitch.hpp"
+#include "../Settings.hpp"
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 
@@ -18,6 +20,8 @@ class MenuState : public State
         GUIContainer        mGUIContainer;
         sf::RenderWindow&   mWindow;
         sf::Sprite          mBackgroundSprite;
+        GUISwitch*          mMute;
+        Settings&           mSetttings;
 };
 
 #endif // MENUSTATE_HPP

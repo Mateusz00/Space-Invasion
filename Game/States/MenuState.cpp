@@ -11,7 +11,8 @@
 MenuState::MenuState(Context context, StateStack& stateStack)
     : State(context, stateStack),
       mWindow(context.window),
-      mBackgroundSprite(context.textures.get(Textures::TitleScreen))
+      mBackgroundSprite(context.textures.get(Textures::TitleScreen)),
+      mSetttings(context.settings)
 {
     context.music.playNow(Music::MenuTheme, true);
 
@@ -51,8 +52,7 @@ MenuState::MenuState(Context context, StateStack& stateStack)
     });
     mGUIContainer.push(std::move(exit));
 
-    static bool isMuted = false;
-    std::unique_ptr<GUISwitch> muteButton(new GUISwitch(context, Textures::Speaker, isMuted));
+    std::unique_ptr<GUISwitch> muteButton(new GUISwitch(context, Textures::Speaker, context.settings.getMuted()));
     sf::Vector2f mSpeakerPosition(static_cast<float>(mWindow.getSize().x) - muteButton->getBoundingRect().width, 0.f); // top-right
     muteButton->setPosition(mSpeakerPosition - sf::Vector2f(8.f, -8.f)); // Margin
     muteButton->setAbsolutePosition();
@@ -60,14 +60,15 @@ MenuState::MenuState(Context context, StateStack& stateStack)
     {
         context.sounds.mute();
         context.music.mute();
-        isMuted = true;
+        context.settings.setMuted(true);
     });
     muteButton->setOffCallback([this, context]()
     {
         context.sounds.unmute();
         context.music.unmute();
-        isMuted = false;
+        context.settings.setMuted(false);
     });
+    mMute = muteButton.get();
     mGUIContainer.push(std::move(muteButton));
 }
 
@@ -81,6 +82,7 @@ bool MenuState::draw()
 
 bool MenuState::update(sf::Time dt)
 {
+    mMute->setSwitched(mSetttings.getMuted());
     return false;
 }
 

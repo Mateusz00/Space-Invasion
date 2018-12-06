@@ -10,7 +10,8 @@ SettingsState::SettingsState(Context context, StateStack& stateStack)
       mWindow(context.window),
       mOptionButtons(true, false),
       mOtherOptions(false),
-      mCurrentOption(Controls)
+      mCurrentOption(Controls),
+      mSettings(context.settings)
 {
     sf::Vector2f windowSize = static_cast<sf::Vector2f>(mWindow.getSize());
 
@@ -135,8 +136,8 @@ void SettingsState::addGUIElements(Context context)
     for(int player=0; player < 2; ++player)
     {
         addButton(KeyBinding::MoveLeft,         player, 0, "Move Left", context);
-        addButton(KeyBinding::MoveRight,        player,    1, "Move Right", context);
-        addButton(KeyBinding::MoveUp,           player,    2, "Move Up", context);
+        addButton(KeyBinding::MoveRight,        player, 1, "Move Right", context);
+        addButton(KeyBinding::MoveUp,           player, 2, "Move Up", context);
         addButton(KeyBinding::MoveDown,         player, 3, "Move Down", context);
         addButton(KeyBinding::Fire,             player, 4, "Fire", context);
         addButton(KeyBinding::LaunchMissile,    player, 5, "Missile", context);
@@ -213,21 +214,40 @@ void SettingsState::addGUIElements(Context context)
     mOtherOptions.push(std::move(musicVolume));
 
     std::unique_ptr<GUILabel> vsyncText(new GUILabel("V-sync", context.fonts));
-    vsyncText->setPosition(0.f, 300.f);
+    vsyncText->setPosition(0.f, 250.f);
     mOtherOptions.push(std::move(vsyncText));
 
-    static bool vsyncFlag = false;
-    std::unique_ptr<GUISwitch> vsync(new GUISwitch(context, Textures::Checkbox, vsyncFlag));
-    vsync->setPosition(100.f, 300.f);
+    std::unique_ptr<GUISwitch> vsync(new GUISwitch(context, Textures::Checkbox, mSettings.getVsync()));
+    vsync->setPosition(100.f, 250.f);
     vsync->setOnCallback([this, context]()
     {
         context.window.setVerticalSyncEnabled(true);
-        vsyncFlag = true;
+        mSettings.setVsync(true);
     });
     vsync->setOffCallback([this, context]()
     {
         context.window.setVerticalSyncEnabled(false);
-        vsyncFlag = false;
+        mSettings.setVsync(false);
     });
     mOtherOptions.push(std::move(vsync));
+
+    std::unique_ptr<GUILabel> muteText(new GUILabel("Mute", context.fonts));
+    muteText->setPosition(0.f, 350.f);
+    mOtherOptions.push(std::move(muteText));
+
+    std::unique_ptr<GUISwitch> mute(new GUISwitch(context, Textures::Checkbox, mSettings.getMuted()));
+    mute->setPosition(100.f, 350.f);
+    mute->setOnCallback([this, context]()
+    {
+        context.music.mute();
+        context.sounds.mute();
+        mSettings.setMuted(true);
+    });
+    mute->setOffCallback([this, context]()
+    {
+        context.music.unmute();
+        context.sounds.unmute();
+        mSettings.setMuted(false);
+    });
+    mOtherOptions.push(std::move(mute));
 }

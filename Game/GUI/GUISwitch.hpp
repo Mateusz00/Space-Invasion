@@ -20,6 +20,7 @@ class GUISwitch : public GUIObject
         void                    setOnCallback(Callback);
         void                    setOffCallback(Callback);
         virtual sf::FloatRect   getBoundingRect() const override;
+        void                    setSwitched(bool);
 
     private:
         void                    changeTexture(bool);
