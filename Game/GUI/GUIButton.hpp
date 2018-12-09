@@ -31,10 +31,11 @@ class GUIButton : public GUIObject
         {
             Normal,
             Selected,
-            Pressed
+            Pressed,
+            Locked
         };
 
-                                GUIButton(State::Context, ButtonID, const std::string&);
+                                GUIButton(State::Context, ButtonID, const std::string&, bool locked = false);
         virtual void            select() override;
         virtual void            deselect() override;
         virtual void            deactivate() override;
@@ -46,6 +47,7 @@ class GUIButton : public GUIObject
         virtual void            onMouseClick(sf::Vector2i) override;
         void                    setRectSize(sf::Vector2f);
         void                    setFreezeFlag(bool);
+        void                    setLocked(bool);
         void                    changeAppearance(ButtonState);
 
     private:
@@ -60,6 +62,7 @@ class GUIButton : public GUIObject
         Callback                mCallback;
         bool                    mIsToggled;
         bool                    mFreezeAppearance;
+        bool                    mIsLocked;
         SoundPlayer&            mSounds;
 };
 

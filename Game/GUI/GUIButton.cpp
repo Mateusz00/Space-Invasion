@@ -10,33 +10,30 @@ namespace
     const std::vector<ButtonData> table = initializeButtonData();
 }
 
-GUIButton::GUIButton(State::Context context, ButtonID id, const std::string& text)
+GUIButton::GUIButton(State::Context context, ButtonID id, const std::string& text, bool locked)
     : mButtonID(id),
       mButtonType(table[id].buttonType),
-      mText(text, context.fonts.get(Fonts::Sansation), 28u),
+      mText(text, context.fonts.get(Fonts::Sansation), 26u),
       mIsToggled(false),
       mFreezeAppearance(false),
+      mIsLocked(locked),
       mSounds(context.sounds)
 {
-    switch(mButtonType)
+    if(!mIsLocked)
+        changeAppearance(ButtonState::Normal);
+    else
+        changeAppearance(ButtonState::Locked);
+
+    if(mButtonType == ButtonType::Textured)
     {
-        case ButtonType::Textured:
-        {
-            mSprite.setTexture(context.textures.get(table[mButtonID].textureId));
-            changeAppearance(ButtonState::Normal);
+        mSprite.setTexture(context.textures.get(table[mButtonID].textureId));
 
-            auto bounds = mSprite.getGlobalBounds();
-            mText.setPosition(sf::Vector2f(bounds.width  * 0.5f, bounds.height * 0.4f));
-            mText.setCharacterSize(18u);
-            break;
-        }
-
-        case ButtonType::SimpleRect:
-        {
-            changeAppearance(ButtonState::Normal);
-            mText.setCharacterSize(18u);
-        }
+        auto bounds = mSprite.getGlobalBounds();
+        mText.setPosition(sf::Vector2f(bounds.width  * 0.5f, bounds.height * 0.4f));
     }
+
+    if(mButtonType != ButtonType::Text)
+        mText.setCharacterSize(18u);
 
     centerOrigin(mText);
 }
@@ -62,7 +59,7 @@ void GUIButton::deactivate()
 
 bool GUIButton::isSelectable() const
 {
-    return true;
+    return !mIsLocked;
 }
 
 void GUIButton::handleEvent(const sf::Event& event)
@@ -111,15 +108,24 @@ void GUIButton::toggle(bool isToggled)
 
 void GUIButton::onMouseClick(sf::Vector2i)
 {
-    activate();
-    changeAppearance(ButtonState::Pressed);
-    mSounds.play(Sound::ButtonClick);
+    if(!mIsLocked)
+    {
+        activate();
+        changeAppearance(ButtonState::Pressed);
+        mSounds.play(Sound::ButtonClick);
+    }
 }
 
 void GUIButton::setRectSize(sf::Vector2f boxSize)
 {
     mBox.setSize(boxSize);
     mText.setPosition(sf::Vector2f(boxSize.x  * 0.5f, boxSize.y * 0.4f));
+}
+
+void GUIButton::setLocked(bool flag)
+{
+    mIsLocked = flag;
+    changeAppearance(ButtonState::Locked);
 }
 
 void GUIButton::setFreezeFlag(bool flag)
@@ -151,6 +157,8 @@ void GUIButton::changeAppearance(ButtonState state)
             case ButtonType::Text:
                 if(state == ButtonState::Normal)
                     mText.setFillColor(sf::Color::White);
+                else if(state == ButtonState::Locked)
+                    mText.setFillColor(sf::Color(114, 114, 114, 100));
                 else
                     mText.setFillColor(sf::Color::Red);
                 break;
@@ -171,6 +179,11 @@ void GUIButton::changeAppearance(ButtonState state)
                     case ButtonState::Pressed:
                         mBox.setFillColor(table[mButtonID].activatedColor);
                         mText.setFillColor(sf::Color::Red);
+                        break;
+
+                    case ButtonState::Locked:
+                        mBox.setFillColor(sf::Color(114, 114, 114, 100));
+                        mText.setFillColor(sf::Color(230, 230, 230, 100));
                         break;
                 }
                 break;
