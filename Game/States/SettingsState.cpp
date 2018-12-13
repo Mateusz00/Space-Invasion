@@ -146,10 +146,18 @@ void SettingsState::addGUIElements(Context context)
 
     std::unique_ptr<GUIButton> returnButton(new GUIButton(context, GUIButton::TextButton, "Return"));
     returnButton->setAbsolutePosition();
-    returnButton->setPosition(context.window.getSize().x * 0.5f, context.window.getSize().y * 0.9f);
+    returnButton->setPosition(context.window.getSize().x * 0.35f, context.window.getSize().y * 0.9f);
     returnButton->setCallback([this]()
     {
         requestStackPop();
+    });
+
+    std::unique_ptr<GUIButton> saveButton(new GUIButton(context, GUIButton::TextButton, "Save"));
+    saveButton->setAbsolutePosition();
+    saveButton->setPosition(context.window.getSize().x * 0.65f, context.window.getSize().y * 0.9f);
+    saveButton->setCallback([this, context]()
+    {
+        context.settings.saveToFile();
     });
 
     // Add and position buttons
@@ -186,6 +194,7 @@ void SettingsState::addGUIElements(Context context)
     mOptionButtons.push(std::move(controls));
     mOptionButtons.push(std::move(others));
     mOptionButtons.push(std::move(returnButton));
+    mOptionButtons.push(std::move(saveButton));
 
     std::unique_ptr<GUILabel> soundText(new GUILabel("Sound", context.fonts));
     soundText->setPosition(0.f, 0.f);
