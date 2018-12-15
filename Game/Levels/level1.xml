@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spawnpoints>
+    <spawn x="300" y="5900" enemyID="1"/>
+    <spawn x="500" y="5700" enemyID="1"/>
+    <spawn x="300" y="5150" enemyID="1"/>
+    <spawn x="500" y="5250" enemyID="1"/>
+</spawnpoints>

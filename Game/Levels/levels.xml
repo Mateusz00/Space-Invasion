@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<levels>
+    <level id="1" file="level1.xml"/>
+    <level id="2" file="level2.xml"/>
+</levels>
