@@ -25,6 +25,7 @@ class GUIButton : public GUIObject
             ControlsButton,
             TextButton,
             OptionsButton,
+            LevelButton,
             Count
         };
         enum ButtonState
@@ -48,7 +49,7 @@ class GUIButton : public GUIObject
         void                    setRectSize(sf::Vector2f);
         void                    setFreezeFlag(bool);
         void                    setLocked(bool);
-        void                    changeAppearance(ButtonState);
+        void                    changeAppearance(int);
 
     private:
         virtual void            draw(sf::RenderTarget&, sf::RenderStates) const override;

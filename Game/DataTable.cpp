@@ -4,7 +4,10 @@
 #include "Entities/Projectile.hpp"
 #include "Entities/Pickup.hpp"
 #include "ParticleSystem/Particle.hpp"
+#include "Exceptions/XMLParseExcepetion.hpp"
 #include <SFML/System/Vector2.hpp>
+#include <pugixml.hpp>
+#include <sstream>
 
 std::vector<AircraftData> initializeAircraftData()
 {
@@ -121,6 +124,45 @@ std::vector<ButtonData> initializeButtonData()
     data[GUIButton::OptionsButton].buttonType = GUIButton::SimpleRect;
     data[GUIButton::OptionsButton].activatedColor = sf::Color::Black;
     data[GUIButton::OptionsButton].defaultColor = sf::Color(47, 47, 48);
+
+    data[GUIButton::LevelButton].buttonType = GUIButton::Textured;
+    data[GUIButton::LevelButton].textureId = Textures::LevelButtons;
+    ///data[GUIButton::LevelButton].buttonSize = sf::Vector2i(, ); TODO: ADD texture
+
+    return data;
+}
+
+std::vector<LevelData> initializeLevelData()
+{
+    using namespace pugi;
+    std::vector<LevelData> data;
+
+    // Load xml file, throw errors
+    xml_document doc;
+    xml_parse_result result = doc.load_file("Levels/levels.xml");
+    if(!result)
+        throw XMLParseExcepetion(result, "levels.xml");
+
+    // Load values and save in LevelData struct
+    xml_node levels = doc.child("levels");
+    for(xml_node levelInfo : levels.children())
+    {
+        std::unique_ptr<LevelData> levelData(new LevelData());
+
+        std::istringstream unlocksValues(levelInfo.attribute("unlocks").as_string());
+        while(unlocksValues.good())
+        {
+            int id;
+            unlocksValues >> id;
+            levelData->levelDependencies.push_back(id);
+        }
+
+        levelData->name = levelInfo.attribute("name").as_string();
+        levelData->x = levelInfo.attribute("x").as_float();
+        levelData->y = levelInfo.attribute("y").as_float();
+
+        data.push_back(std::move(*levelData));
+    }
 
     return data;
 }

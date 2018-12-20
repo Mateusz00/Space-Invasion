@@ -66,11 +66,20 @@ struct ButtonData
     sf::Color               activatedColor;
 };
 
+struct LevelData
+{
+    std::vector<int>   levelDependencies;
+    std::string        name;
+    float              x;
+    float              y;
+};
+
 std::vector<AircraftData>       initializeAircraftData();
 std::vector<ProjectileData>     initializeProjectileData();
 std::vector<PickupData>         initializePickupData();
 std::vector<ParticleData>       initializeParticleData();
 std::vector<AnimationData>      initializeAnimationData();
 std::vector<ButtonData>         initializeButtonData();
+std::vector<LevelData>          initializeLevelData();
 
 #endif // DATATABLE_HPP

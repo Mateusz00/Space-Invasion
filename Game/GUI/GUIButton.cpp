@@ -141,7 +141,7 @@ void GUIButton::draw(sf::RenderTarget& target, sf::RenderStates states) const
     target.draw(mText, states);
 }
 
-void GUIButton::changeAppearance(ButtonState state)
+void GUIButton::changeAppearance(int state)
 {
     if(!mFreezeAppearance)
     {

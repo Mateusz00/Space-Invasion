@@ -1,16 +1,18 @@
 #include "LevelState.hpp"
-const int LevelState::mLevelNumber = 6; // TODO: If possible make number of buttons dynamic using XML
+#include "../DataTable.hpp"
+
+namespace
+{
+    const std::vector<LevelData> levelInfo = initializeLevelData();
+}
 
 LevelState::LevelState(Context context, StateStack& stateStack)
     : State(context, stateStack),
       mBackground(context.textures.get(Textures::TitleScreen)),
       mButtons(true, false),
-      mLines(sf::Triangles, mLevelNumber*2),
+      mLines(sf::Triangles),
       mLevel(0) //temp solution
 {
-    for(int i=0; i < mLevelNumber; ++i)
-        createLevelButton(i);
-
     createConnectionLines();
 }
 
@@ -52,14 +54,4 @@ void LevelState::createConnectionLines()
 void LevelState::createLine(sf::FloatRect ObjBox1, sf::FloatRect ObjBox2, int width)
 {
     // WIP
-}
-
-LevelState::LevelButton::LevelButton(State::Context context, ButtonID id, const std::string& text, int levelID, bool locked)
-    : GUIButton(context, id, text, locked)
-{
-}
-
-int LevelState::LevelButton::getLevelID() const
-{
-    return mLevelID;
 }

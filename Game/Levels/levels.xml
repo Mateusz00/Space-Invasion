@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <levels> 
-    <level file="level1.xml" unlocked_by="0" x="700" y="350"/>
-    <level file="level2.xml" unlocked_by="1" x="500" y="350"/>
+    <level id="0" file="level1.xml" unlocks="1" name="1" x="700" y="350"/>
+    <level id="1" file="level2.xml" unlocks="" name="2" x="500" y="350"/>
 </levels>
 
 <!--
 x&y = Position of buttons, max(x=1024, y=700)
-unlocked_by = level(number) that unlocks(after completion) declared level, 0 means unlocked by default
+unlocks = levels that are unlocked after completing declared level(ids of levels are space separated)
 -->
