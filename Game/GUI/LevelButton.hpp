@@ -2,7 +2,7 @@
 #define LEVELBUTTON_HPP
 
 #include "GUIButton.hpp"
-
+/// Add another sprite that will represent completed-mark
 class LevelButton : public GUIButton
 {
     public:

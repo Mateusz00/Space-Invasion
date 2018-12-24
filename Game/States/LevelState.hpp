@@ -17,8 +17,9 @@ class LevelState : public State
         virtual bool    handleEvent(const sf::Event&) override;
 
     private:
-        void            createLevelButton(int index);
+        void            createLevelButton(int i);
         void            createConnectionLines();
+        void            loadSave();
         void            createLine(sf::FloatRect ObjBox1, sf::FloatRect ObjBox2, int width);
 
         sf::Sprite                  mBackground;

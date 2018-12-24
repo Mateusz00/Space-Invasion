@@ -1,5 +1,6 @@
 #include "LevelState.hpp"
 #include "../DataTable.hpp"
+#include <memory>
 
 namespace
 {
@@ -13,6 +14,9 @@ LevelState::LevelState(Context context, StateStack& stateStack)
       mLines(sf::Triangles),
       mLevel(0) //temp solution
 {
+    for(int i=0; i < levelInfo.size(); ++i)
+        createLevelButton(i);
+
     createConnectionLines();
 }
 
@@ -38,9 +42,17 @@ bool LevelState::handleEvent(const sf::Event& event)
     return false;
 }
 
-void LevelState::createLevelButton(int index)
+void LevelState::createLevelButton(int i)
 {
-    // WIP
+    std::unique_ptr<LevelButton> levelButton(new LevelButton(getContext(), GUIButton::LevelButton, i));
+    levelButton->setPosition(levelInfo[i].x, levelInfo[i].y);
+    levelButton->setCallback([this]()
+    {
+        // TODO: Add Profile class and edit mCurrentLevel variable here
+    });
+
+    mLevelButtons.push_back(levelButton.get());
+    mButtons.push(std::move(levelButton));
 }
 
 void LevelState::createConnectionLines()
@@ -49,6 +61,11 @@ void LevelState::createConnectionLines()
     {
         // WIP
     }
+}
+
+void LevelState::loadSave()
+{
+
 }
 
 void LevelState::createLine(sf::FloatRect ObjBox1, sf::FloatRect ObjBox2, int width)

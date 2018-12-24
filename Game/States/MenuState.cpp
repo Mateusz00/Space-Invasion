@@ -7,6 +7,7 @@
 #include "../MusicPlayer.hpp"
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
+#include <memory>
 
 MenuState::MenuState(Context context, StateStack& stateStack)
     : State(context, stateStack),
