@@ -27,7 +27,9 @@ namespace Textures
         Speaker,
         Checkbox,
         FinishLine,
-        LevelButtons
+        LevelButtons,
+        Checkmark,
+        Lock
     };
 }
 

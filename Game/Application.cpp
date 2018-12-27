@@ -105,6 +105,9 @@ void Application::loadResources()
     mTextures.loadFromFile(Textures::Checkbox,       "Resources/Checkbox.png");
     mTextures.loadFromFile(Textures::FinishLine,     "Resources/FinishLine.png");
     mTextures.loadFromFile(Textures::SettingsButtons,"Resources/Buttons.png");
+    mTextures.loadFromFile(Textures::LevelButtons   ,"Resources/LevelButtons.png");
+    mTextures.loadFromFile(Textures::Checkmark      ,"Resources/Checkmark.png");
+    mTextures.loadFromFile(Textures::Lock           ,"Resources/Lock.png");
 }
 
 void Application::loadSettings()

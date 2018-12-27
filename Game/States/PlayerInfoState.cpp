@@ -68,7 +68,7 @@ bool PlayerInfoState::draw()
 
 bool PlayerInfoState::update(sf::Time dt)
 {
-    if(!mInputBox.isActive() && mModeConfirmed) // After pressing enter input box becomes inActive
+    if(!mInputBox.isActive() && mModeConfirmed)
     {
         addPlayer(mCurrentPlayer++);
 
@@ -81,7 +81,7 @@ bool PlayerInfoState::update(sf::Time dt)
         else
         {
             requestStackClear();
-            requestStackPush(States::GameState);
+            requestStackPush(States::LevelState);
         }
     }
 
@@ -103,5 +103,5 @@ bool PlayerInfoState::handleEvent(const sf::Event& event)
 
 void PlayerInfoState::addPlayer(int playerNumber)
 {
-    mPlayers.emplace_back(getContext().keys[playerNumber], playerNumber, mPlayerName); // Change keys variable to array
+    mPlayers.emplace_back(getContext().keys[playerNumber], playerNumber, mPlayerName);
 }

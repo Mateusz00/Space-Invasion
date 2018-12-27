@@ -44,7 +44,7 @@ bool LevelState::handleEvent(const sf::Event& event)
 
 void LevelState::createLevelButton(int i)
 {
-    std::unique_ptr<LevelButton> levelButton(new LevelButton(getContext(), GUIButton::LevelButton, i));
+    std::unique_ptr<LevelButton> levelButton(new LevelButton(getContext(), GUIButton::LevelButton, levelInfo[i].name, i));
     levelButton->setPosition(levelInfo[i].x, levelInfo[i].y);
     levelButton->setCallback([this]()
     {
@@ -57,7 +57,7 @@ void LevelState::createLevelButton(int i)
 
 void LevelState::createConnectionLines()
 {
-    for(auto& levelButton : mLevelButtons)
+    for(int i=0; i < mLevelButtons.size(); ++i)
     {
         // WIP
     }
@@ -68,7 +68,7 @@ void LevelState::loadSave()
 
 }
 
-void LevelState::createLine(sf::FloatRect ObjBox1, sf::FloatRect ObjBox2, int width)
+void LevelState::createLine(float point1, float point2, int width)
 {
     // WIP
 }

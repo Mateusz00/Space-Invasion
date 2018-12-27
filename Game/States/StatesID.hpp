@@ -14,6 +14,7 @@ namespace States
         MissionSuccess,
         PlayerInfoState,
         HighScoresState,
+        LevelState,
         None
     };
 }

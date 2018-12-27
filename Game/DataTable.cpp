@@ -127,7 +127,7 @@ std::vector<ButtonData> initializeButtonData()
 
     data[GUIButton::LevelButton].buttonType = GUIButton::Textured;
     data[GUIButton::LevelButton].textureId = Textures::LevelButtons;
-    ///data[GUIButton::LevelButton].buttonSize = sf::Vector2i(, ); TODO: ADD texture
+    data[GUIButton::LevelButton].buttonSize = sf::Vector2i(50, 50);
 
     return data;
 }
