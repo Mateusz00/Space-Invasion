@@ -2,7 +2,9 @@
 #define LEVELBUTTON_HPP
 
 #include "GUIButton.hpp"
-/// Add another sprite that will represent completed-mark
+#include "../ResourcesID.hpp"
+#include <SFML/Graphics/Sprite.hpp>
+
 class LevelButton : public GUIButton
 {
     public:
@@ -15,8 +17,15 @@ class LevelButton : public GUIButton
             Completed
         };
 
-                LevelButton(State::Context, ButtonID, const std::string&, int levelID, bool locked = true);
-        void    setCompleted();
+                        LevelButton(State::Context, ButtonID, const std::string&, int levelID, bool locked = true);
+        void            setCompleted();
+        virtual void    setLocked(bool) override;
+
+    private:
+        virtual void    draw(sf::RenderTarget&, sf::RenderStates) const override;
+
+        sf::Sprite      mStateIcon;
+        TextureHolder&  mTextures;
 };
 
 

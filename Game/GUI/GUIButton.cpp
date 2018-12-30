@@ -122,15 +122,17 @@ void GUIButton::setRectSize(sf::Vector2f boxSize)
     mText.setPosition(sf::Vector2f(boxSize.x  * 0.5f, boxSize.y * 0.4f));
 }
 
-void GUIButton::setLocked(bool flag)
+void GUIButton::setLocked(bool locked)
 {
-    mIsLocked = flag;
-    changeAppearance(ButtonState::Locked);
+    mIsLocked = locked;
+
+    if(locked)
+        changeAppearance(ButtonState::Locked);
 }
 
-void GUIButton::setFreezeFlag(bool flag)
+void GUIButton::setFreezeFlag(bool freezed)
 {
-    mFreezeAppearance = flag;
+    mFreezeAppearance = freezed;
 }
 
 void GUIButton::draw(sf::RenderTarget& target, sf::RenderStates states) const

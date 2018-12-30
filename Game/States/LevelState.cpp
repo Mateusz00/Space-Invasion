@@ -44,7 +44,7 @@ bool LevelState::handleEvent(const sf::Event& event)
 
 void LevelState::createLevelButton(int i)
 {
-    std::unique_ptr<LevelButton> levelButton(new LevelButton(getContext(), GUIButton::LevelButton, levelInfo[i].name, i));
+    std::unique_ptr<LevelButton> levelButton(new LevelButton(getContext(), GUIButton::LevelButton, levelInfo[i].name, i, (i > 0) ? true : false));
     levelButton->setPosition(levelInfo[i].x, levelInfo[i].y);
     levelButton->setCallback([this]()
     {
