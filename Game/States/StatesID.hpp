@@ -15,6 +15,7 @@ namespace States
         PlayerInfoState,
         HighScoresState,
         LevelState,
+        ProfileState,
         None
     };
 }

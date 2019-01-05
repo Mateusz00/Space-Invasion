@@ -2,7 +2,8 @@
 #include "../StateStack.hpp"
 
 State::Context::Context(sf::RenderWindow& window, TextureHolder& textures, FontHolder& fonts, SoundPlayer& sounds,
-                          MusicPlayer& music, std::vector<KeyBinding*>& binds, std::vector<Player>& players, Settings& settings)
+                          MusicPlayer& music, std::vector<KeyBinding*>& binds, std::vector<Player>& players,
+                          Settings& settings, Profile& profile)
     : window(window),
       textures(textures),
       fonts(fonts),
@@ -10,7 +11,8 @@ State::Context::Context(sf::RenderWindow& window, TextureHolder& textures, FontH
       music(music),
       keys(binds),
       players(players),
-      settings(settings)
+      settings(settings),
+      profile(profile)
 {
 }
 

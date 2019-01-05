@@ -7,7 +7,7 @@
 Application::Application()
     : TIME_PER_FRAME(sf::seconds(1.f / 60.f)),
       mWindow(sf::VideoMode(1024, 700), "2D Fighter Jet Game", sf::Style::Close),
-      mStateStack(State::Context(mWindow, mTextures, mFonts, mSounds, mMusicPlayer, mKeyBindings, mPlayers, mSettings))
+      mStateStack(State::Context(mWindow, mTextures, mFonts, mSounds, mMusicPlayer, mKeyBindings, mPlayers, mSettings, mProfile))
 {
     loadSettings();
     loadResources();

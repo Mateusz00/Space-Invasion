@@ -50,6 +50,7 @@ class GUIButton : public GUIObject
         void                    setFreezeFlag(bool);
         virtual void            setLocked(bool);
         void                    changeAppearance(int);
+        void                    centerButtonOrigin();
 
     protected:
         virtual void            draw(sf::RenderTarget&, sf::RenderStates) const override;

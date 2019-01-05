@@ -25,7 +25,7 @@ MenuState::MenuState(Context context, StateStack& stateStack)
     play->setCallback([this]()
     {
         requestStackPop();
-        requestStackPush(States::PlayerInfoState);
+        requestStackPush(States::ProfileState);
     });
     mGUIContainer.push(std::move(play));
 

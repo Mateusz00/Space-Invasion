@@ -7,6 +7,7 @@
 #include "States/PlayerInfoState.hpp"
 #include "States/HighScoresState.hpp"
 #include "States/LevelState.hpp"
+#include "States/ProfileState.hpp"
 #include <exception>
 
 StateStack::PendingChange::PendingChange(Action action, States::ID id)
@@ -28,6 +29,7 @@ StateStack::StateStack(State::Context context)
     createStateFactory<PlayerInfoState>(States::PlayerInfoState);
     createStateFactory<HighScoresState>(States::HighScoresState);
     createStateFactory<LevelState>(States::LevelState);
+    createStateFactory<ProfileState>(States::ProfileState);
 }
 
 void StateStack::update(sf::Time dt)

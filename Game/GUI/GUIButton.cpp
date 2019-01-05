@@ -24,12 +24,16 @@ GUIButton::GUIButton(State::Context context, ButtonID id, const std::string& tex
     else
         changeAppearance(ButtonState::Locked);
 
-    if(mButtonType == ButtonType::Textured)
+    switch(mButtonType)
     {
-        mSprite.setTexture(context.textures.get(table[mButtonID].textureId));
+        case ButtonType::Textured:
+            mSprite.setTexture(context.textures.get(table[mButtonID].textureId));
+            centerText(mSprite, mText);
+            break;
 
-        auto bounds = mSprite.getGlobalBounds();
-        mText.setPosition(sf::Vector2f(bounds.width  * 0.5f, bounds.height * 0.4f));
+        case ButtonType::SimpleRect:
+            centerText(mBox, mText);
+            break;
     }
 
     if(mButtonType != ButtonType::Text)
@@ -119,7 +123,7 @@ void GUIButton::onMouseClick(sf::Vector2i)
 void GUIButton::setRectSize(sf::Vector2f boxSize)
 {
     mBox.setSize(boxSize);
-    mText.setPosition(sf::Vector2f(boxSize.x  * 0.5f, boxSize.y * 0.4f));
+    mText.setPosition(sf::Vector2f(boxSize.x  * 0.5f, boxSize.y * 0.5f));
 }
 
 void GUIButton::setLocked(bool locked)
@@ -190,6 +194,28 @@ void GUIButton::changeAppearance(int state)
                 }
                 break;
         }
+    }
+}
+
+void GUIButton::centerButtonOrigin()
+{
+    switch(mButtonType)
+    {
+        case GUIButton::Textured:
+            centerOrigin(mSprite);
+            mText.setPosition(0.f, -mSprite.getLocalBounds().height * 0.1f);
+            centerOrigin(mText);
+            break;
+
+        case GUIButton::SimpleRect:
+            centerOrigin(mBox);
+            mText.setPosition(0.f, 0.f);
+            centerOrigin(mText);
+            break;
+
+        case GUIButton::Text:
+            centerOrigin(mText);
+            break;
     }
 }
 

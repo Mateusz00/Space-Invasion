@@ -31,7 +31,7 @@ void Profile::saveProfile() const
     saveFile.close();
 }
 
-void Profile::loadProfile()
+bool Profile::loadProfile()
 {
     std::ifstream saveFile("save.dat");
 
@@ -66,6 +66,8 @@ void Profile::loadProfile()
         mIsLoaded = true;
         saveFile.close();
     }
+
+    return mIsLoaded;
 }
 
 void Profile::updateData(int levelID, int score)

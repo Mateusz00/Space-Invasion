@@ -7,6 +7,7 @@
 #include "MusicPlayer.hpp"
 #include "Settings.hpp"
 #include "Player.hpp"
+#include "Profile.hpp"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/System/Time.hpp>
 #include <SFML/Graphics/Text.hpp>
@@ -37,6 +38,7 @@ class Application
         StateStack                  mStateStack;
         std::vector<Player>         mPlayers;
         Settings                    mSettings;
+        Profile                     mProfile;
 };
 
 #endif // APPLICATION_HPP

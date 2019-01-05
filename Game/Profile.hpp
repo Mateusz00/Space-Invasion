@@ -10,7 +10,7 @@ class Profile
         Profile();
         ~Profile();
         void saveProfile() const;
-        void loadProfile();
+        bool loadProfile();
         void updateData(int levelID, int score);
         bool isLoaded() const;
 

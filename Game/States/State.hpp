@@ -10,6 +10,7 @@ class StateStack;
 class SoundPlayer;
 class MusicPlayer;
 class Player;
+class Profile;
 
 class State
 {
@@ -18,7 +19,7 @@ class State
         struct Context
         {
             Context(sf::RenderWindow&, TextureHolder&, FontHolder&, SoundPlayer&, MusicPlayer&,
-                    std::vector<KeyBinding*>&, std::vector<Player>&, Settings&);
+                    std::vector<KeyBinding*>&, std::vector<Player>&, Settings&, Profile&);
 
             sf::RenderWindow&           window;
             TextureHolder&              textures;
@@ -28,6 +29,7 @@ class State
             std::vector<KeyBinding*>&   keys;
             std::vector<Player>&        players;
             Settings&                   settings;
+            Profile&                    profile;
         };
 
                         State(Context, StateStack&);

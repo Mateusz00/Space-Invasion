@@ -19,6 +19,9 @@ struct StringKeyMap
 template <typename T>
 void centerOrigin(T&);
 
+template <typename Obj, typename Txt>
+void centerText(const Obj&, Txt&);
+
 template <typename T>
 std::string toString(const T& value);
 
