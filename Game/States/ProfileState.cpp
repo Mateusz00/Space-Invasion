@@ -1,12 +1,14 @@
 #include "ProfileState.hpp"
 #include "../GUI/GUIButton.hpp"
 #include "../Profile.hpp"
+#include "../ResourcesID.hpp"
 #include <SFML/System/Vector2.hpp>
 #include <memory>
 
 ProfileState::ProfileState(Context context, StateStack& stateStack)
     : State(context, stateStack),
-      mProfile(context.profile)
+      mProfile(context.profile),
+      mBackground(context.textures.get(Textures::TitleScreen))
 {
     std::unique_ptr<GUIButton> newGame(new GUIButton(context, GUIButton::ControlsButton, "New Game"));
     newGame->setPosition(0.f, -75.f);
@@ -25,7 +27,7 @@ ProfileState::ProfileState(Context context, StateStack& stateStack)
         if(mProfile.loadProfile())
         {
             requestStackPop();
-            requestStackPush(States::GameState);
+            requestStackPush(States::LevelState);
         }
         else
         {

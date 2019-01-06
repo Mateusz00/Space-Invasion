@@ -29,7 +29,8 @@ namespace Textures
         FinishLine,
         LevelButtons,
         Checkmark,
-        Lock
+        Lock,
+
     };
 }
 

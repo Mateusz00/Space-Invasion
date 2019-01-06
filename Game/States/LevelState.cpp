@@ -17,6 +17,9 @@ LevelState::LevelState(Context context, StateStack& stateStack)
     for(int i=0; i < levelInfo.size(); ++i)
         createLevelButton(i);
 
+    if(!loadProfileData())
+        mLevelButtons[0]->setLocked(false);
+
     createConnectionLines();
 }
 
@@ -44,8 +47,9 @@ bool LevelState::handleEvent(const sf::Event& event)
 
 void LevelState::createLevelButton(int i)
 {
-    std::unique_ptr<LevelButton> levelButton(new LevelButton(getContext(), GUIButton::LevelButton, levelInfo[i].name, i, (i > 0) ? true : false));
+    std::unique_ptr<LevelButton> levelButton(new LevelButton(getContext(), GUIButton::LevelButton, levelInfo[i].name, i));
     levelButton->setPosition(levelInfo[i].x, levelInfo[i].y);
+    levelButton->centerButtonOrigin();
     levelButton->setCallback([this]()
     {
         // TODO: Add Profile class and edit mCurrentLevel variable here
@@ -63,7 +67,7 @@ void LevelState::createConnectionLines()
     }
 }
 
-void LevelState::loadSave()
+bool LevelState::loadProfileData()
 {
 
 }
