@@ -5,7 +5,7 @@ LevelButton::LevelButton(State::Context context, ButtonID id, const std::string&
     : GUIButton(context, id, text, locked),
       mTextures(context.textures)
 {
-    mStateIcon.setPosition(sf::Vector2f(25.f, 25.f));
+    mStateIcon.setPosition(sf::Vector2f(0.f, 0.f));
     setLocked(locked);
 }
 

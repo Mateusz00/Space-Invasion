@@ -58,7 +58,7 @@ void GUIButton::deactivate()
 {
     GUIObject::deactivate();
     toggle(false);
-    changeAppearance(ButtonState::Selected);
+    changeAppearance(ButtonState::Normal);
 }
 
 bool GUIButton::isSelectable() const
@@ -123,7 +123,8 @@ void GUIButton::onMouseClick(sf::Vector2i)
 void GUIButton::setRectSize(sf::Vector2f boxSize)
 {
     mBox.setSize(boxSize);
-    mText.setPosition(sf::Vector2f(boxSize.x  * 0.5f, boxSize.y * 0.5f));
+    //mText.setPosition(sf::Vector2f(boxSize.x  * 0.5f, boxSize.y * 0.5f));
+    centerText(mBox, mText);
 }
 
 void GUIButton::setLocked(bool locked)

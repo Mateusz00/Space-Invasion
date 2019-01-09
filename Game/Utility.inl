@@ -17,6 +17,6 @@ template <typename Obj, typename Txt>
 void centerText(const Obj& object, Txt& text)
 {
     auto bounds = object.getGlobalBounds();
-    text.setPosition(sf::Vector2f(bounds.width  * 0.5f, bounds.height * 0.5f));
+    text.setPosition(sf::Vector2f(bounds.width  * 0.5f, bounds.height * 0.4f));
     centerOrigin(text);
 }

@@ -79,7 +79,7 @@ void GUIContainer::handleEvent(const sf::Event& event)
             int index;
             if(checkMouseCollision(sf::Vector2i(event.mouseMove.x, event.mouseMove.y), index))
             {
-                if(index != mSelected && mComponents[index]->isSelectable())
+                if(mComponents[index]->isSelectable())
                 {
                     restart();
                     mComponents[index]->select();

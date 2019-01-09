@@ -2,7 +2,8 @@
 #include <fstream>
 
 Profile::Profile()
-    : mIsLoaded(false)
+    : mIsLoaded(false),
+      mCurrentLevel(0)
 {
 }
 
@@ -79,4 +80,14 @@ void Profile::updateData(int levelID, int score)
 bool Profile::isLoaded() const
 {
     return mIsLoaded;
+}
+
+void Profile::setCurrentLevel(int level)
+{
+    mCurrentLevel = level;
+}
+
+int Profile::getCurrentLevel() const
+{
+    return mCurrentLevel;
 }

@@ -1,5 +1,7 @@
 #include "LevelState.hpp"
 #include "../DataTable.hpp"
+#include "../Profile.hpp"
+#include "../GUI/GUIButton.hpp"
 #include <memory>
 
 namespace
@@ -12,14 +14,12 @@ LevelState::LevelState(Context context, StateStack& stateStack)
       mBackground(context.textures.get(Textures::TitleScreen)),
       mButtons(true, false),
       mLines(sf::Triangles),
-      mLevel(0) //temp solution
+      mProfile(context.profile)
 {
     for(int i=0; i < levelInfo.size(); ++i)
         createLevelButton(i);
 
-    if(!loadProfileData())
-        mLevelButtons[0]->setLocked(false);
-
+    mLevelButtons[0]->setLocked(false); // First level should always be unlocked
     createConnectionLines();
 }
 
@@ -50,9 +50,15 @@ void LevelState::createLevelButton(int i)
     std::unique_ptr<LevelButton> levelButton(new LevelButton(getContext(), GUIButton::LevelButton, levelInfo[i].name, i));
     levelButton->setPosition(levelInfo[i].x, levelInfo[i].y);
     levelButton->centerButtonOrigin();
-    levelButton->setCallback([this]()
+    levelButton->setCallback([this, i]()
     {
-        // TODO: Add Profile class and edit mCurrentLevel variable here
+        if(mProfile.getCurrentLevel() != i) // Avoid deactivating itself
+        {
+            mLevelButtons[mProfile.getCurrentLevel()]->setFreezeFlag(false);
+            mLevelButtons[mProfile.getCurrentLevel()]->deactivate();
+        }
+        mLevelButtons[i]->setFreezeFlag(true);
+        mProfile.setCurrentLevel(i);
     });
 
     mLevelButtons.push_back(levelButton.get());
@@ -65,11 +71,6 @@ void LevelState::createConnectionLines()
     {
         // WIP
     }
-}
-
-bool LevelState::loadProfileData()
-{
-
 }
 
 void LevelState::createLine(float point1, float point2, int width)

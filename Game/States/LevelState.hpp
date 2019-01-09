@@ -3,10 +3,10 @@
 
 #include "State.hpp"
 #include "../GUI/GUIContainer.hpp"
-#include "../GUI/GUIButton.hpp"
 #include "../GUI/LevelButton.hpp"
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/VertexArray.hpp>
+class Profile;
 
 class LevelState : public State
 {
@@ -19,14 +19,13 @@ class LevelState : public State
     private:
         void            createLevelButton(int i);
         void            createConnectionLines();
-        bool            loadProfileData();
         void            createLine(float point1, float point2, int width);
 
         sf::Sprite                  mBackground;
         GUIContainer                mButtons;
         sf::VertexArray             mLines;
         std::vector<LevelButton*>   mLevelButtons;
-        int                         mLevel;
+        Profile&                    mProfile;
 };
 
 #endif // LEVELSTATE_HPP

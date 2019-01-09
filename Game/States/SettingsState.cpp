@@ -103,7 +103,7 @@ void SettingsState::updateLabels()
     {
         auto action = static_cast<Player::Action>(i);
 
-        for(int j=0; j < getContext().keys.size(); ++j)
+        for(int j=0; j < getContext().keys.size(); ++j) // For each player
         {
             sf::Keyboard::Key key = getContext().keys[j]->getAssignedKey(action);
             mBindingLabels[i + KeyBinding::Count*j]->setText(toString(key));
