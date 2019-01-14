@@ -152,9 +152,10 @@ std::vector<LevelData> initializeLevelData()
         std::istringstream unlocksValues(levelInfo.attribute("unlocks").as_string());
         while(unlocksValues.good())
         {
-            int id;
+            int id = 0;
             unlocksValues >> id;
-            levelData->levelDependencies.push_back(id);
+            if(id != 0)
+                levelData->levelDependencies.push_back(id);
         }
 
         levelData->name = levelInfo.attribute("name").as_string();

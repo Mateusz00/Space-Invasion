@@ -1,8 +1,12 @@
 #include "LevelState.hpp"
 #include "../DataTable.hpp"
 #include "../Profile.hpp"
+#include "../Utility.hpp"
 #include "../GUI/GUIButton.hpp"
+#include <SFML/Graphics/Rect.hpp>
+#include <SFML/System/Vector2.hpp>
 #include <memory>
+#include <vector>
 
 namespace
 {
@@ -28,8 +32,8 @@ bool LevelState::draw()
     auto& window = getContext().window;
 
     window.draw(mBackground);
-    window.draw(mButtons);
     window.draw(mLines);
+    window.draw(mButtons);
 
     return false;
 }
@@ -69,11 +73,35 @@ void LevelState::createConnectionLines()
 {
     for(int i=0; i < mLevelButtons.size(); ++i)
     {
-        // WIP
+        const std::vector<int>& levelDependencies = levelInfo[i].levelDependencies;
+
+        // Get first point of every line segment(center of the button)
+        sf::FloatRect box = mLevelButtons[i]->getBoundingRect();
+        sf::Vector2f center = sf::Vector2f(box.left + box.width*0.5f, box.top + box.height*0.5f);
+
+        // Get second point and create line segment for all dependencies
+        for(const auto& levelID : levelDependencies)
+        {
+            sf::FloatRect box = mLevelButtons[levelID]->getBoundingRect();
+            sf::Vector2f center2(box.left + box.width*0.5f, box.top + box.height*0.5f);
+            createLine(center, center2, 6.f);
+        }
     }
 }
 
-void LevelState::createLine(float point1, float point2, int width)
+void LevelState::createLine(sf::Vector2f point1, sf::Vector2f point2, float width)
 {
-    // WIP
+    sf::Vector2f unitDirection = unitVector(point1 - point2);
+    sf::Vector2f perpendicularVector(-unitDirection.y, unitDirection.x);
+    sf::Vector2f offset = (width * 0.5f) * perpendicularVector;
+
+    // 1st triangle
+    mLines.append(sf::Vertex(point1 - offset, sf::Color(203, 198, 206)));
+    mLines.append(sf::Vertex(point1 + offset, sf::Color(203, 198, 206)));
+    mLines.append(sf::Vertex(point2 - offset, sf::Color(203, 198, 206)));
+
+    // 2nd triangle
+    mLines.append(sf::Vertex(point2 - offset, sf::Color(203, 198, 206)));
+    mLines.append(sf::Vertex(point2 + offset, sf::Color(203, 198, 206)));
+    mLines.append(sf::Vertex(point1 + offset, sf::Color(203, 198, 206)));
 }

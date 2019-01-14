@@ -19,7 +19,7 @@ class LevelState : public State
     private:
         void            createLevelButton(int i);
         void            createConnectionLines();
-        void            createLine(float point1, float point2, int width);
+        void            createLine(sf::Vector2f, sf::Vector2f, float width);
 
         sf::Sprite                  mBackground;
         GUIContainer                mButtons;
