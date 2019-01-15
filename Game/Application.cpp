@@ -92,8 +92,9 @@ void Application::updateFPSCounter(sf::Time dt)
 
 void Application::loadResources()
 {
-    mFonts.loadFromFile   (Fonts::Sansation,         "Resources/Sansation.ttf");
-    mFonts.loadFromFile   (Fonts::BPmonoItalics,     "Resources/BPmonoItalics.ttf");
+    mFonts.loadFromFile(Fonts::Sansation,         "Resources/Sansation.ttf");
+    mFonts.loadFromFile(Fonts::BPmonoItalics,     "Resources/BPmonoItalics.ttf");
+    mFonts.loadFromFile(Fonts::Goodfish,          "Resources/Goodfish.ttf");
     mTextures.loadFromFile(Textures::Background,     "Resources/Background.png");
     mTextures.loadFromFile(Textures::Aircrafts,      "Resources/Airplane1.png");
     mTextures.loadFromFile(Textures::Projectiles,    "Resources/Projectiles.png");

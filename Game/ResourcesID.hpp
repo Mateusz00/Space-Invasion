@@ -39,7 +39,8 @@ namespace Fonts
     enum ID
     {
         Sansation,
-        BPmonoItalics
+        BPmonoItalics,
+        Goodfish
     };
 }
 

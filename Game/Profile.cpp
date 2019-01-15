@@ -3,7 +3,7 @@
 
 Profile::Profile()
     : mIsLoaded(false),
-      mCurrentLevel(0)
+      mCurrentLevel(-1)
 {
 }
 

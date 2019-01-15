@@ -4,6 +4,7 @@
 #include "State.hpp"
 #include "../GUI/GUIContainer.hpp"
 #include "../GUI/LevelButton.hpp"
+#include "../GUI/TextBar.hpp"
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/VertexArray.hpp>
 class Profile;
@@ -26,6 +27,7 @@ class LevelState : public State
         sf::VertexArray             mLines;
         std::vector<LevelButton*>   mLevelButtons;
         Profile&                    mProfile;
+        TextBar                     mErrorMsg;
 };
 
 #endif // LEVELSTATE_HPP

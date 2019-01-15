@@ -1,5 +1,7 @@
 #include "State.hpp"
 #include "../StateStack.hpp"
+#include "../KeyBinding.hpp"
+#include "../Settings.hpp"
 
 State::Context::Context(sf::RenderWindow& window, TextureHolder& textures, FontHolder& fonts, SoundPlayer& sounds,
                           MusicPlayer& music, std::vector<KeyBinding*>& binds, std::vector<Player>& players,

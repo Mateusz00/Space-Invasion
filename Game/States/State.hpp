@@ -2,8 +2,6 @@
 #define STATE_HPP
 
 #include "../ResourcesID.hpp"
-#include "../KeyBinding.hpp"
-#include "../Settings.hpp"
 #include "StatesID.hpp"
 #include <SFML/Graphics/RenderWindow.hpp>
 class StateStack;
@@ -11,6 +9,8 @@ class SoundPlayer;
 class MusicPlayer;
 class Player;
 class Profile;
+class Settings;
+class KeyBinding;
 
 class State
 {

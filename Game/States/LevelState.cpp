@@ -18,13 +18,38 @@ LevelState::LevelState(Context context, StateStack& stateStack)
       mBackground(context.textures.get(Textures::TitleScreen)),
       mButtons(true, false),
       mLines(sf::Triangles),
-      mProfile(context.profile)
+      mProfile(context.profile),
+      mErrorMsg(context.fonts.get(Fonts::Goodfish), "Please choose level", 32u)
 {
     for(int i=0; i < levelInfo.size(); ++i)
         createLevelButton(i);
 
     mLevelButtons[0]->setLocked(false); // First level should always be unlocked
     createConnectionLines();
+
+    const sf::Vector2f windowSize = static_cast<sf::Vector2f>(context.window.getSize());
+    mErrorMsg.setBarSize(sf::Vector2f(windowSize.x, windowSize.y * 0.2f));
+    mErrorMsg.setPosition(windowSize * 0.5f);
+    mErrorMsg.centerOrigin();
+    mErrorMsg.setFadeCooldown(sf::seconds(1.5f));
+    mErrorMsg.setFadeTime(sf::seconds(1.5f));
+    mErrorMsg.setTextFillColor(sf::Color(239, 240, 242, 230));
+    mErrorMsg.setBarFillColor(sf::Color(20, 20, 20, 220));
+
+    std::unique_ptr<GUIButton> confirm(new GUIButton(context, GUIButton::ControlsButton, "Confirm"));
+    confirm->setPosition(windowSize.x * 0.5f, windowSize.y * 0.9f);
+    confirm->centerButtonOrigin();
+    confirm->setCallback([this, context]()
+    {
+        if(context.profile.getCurrentLevel() >= 0)
+        {
+            requestStackClear();
+            requestStackPush(States::GameState);
+        }
+        else
+            mErrorMsg.setActive(true);
+    });
+    mButtons.push(std::move(confirm));
 }
 
 bool LevelState::draw()
@@ -34,12 +59,14 @@ bool LevelState::draw()
     window.draw(mBackground);
     window.draw(mLines);
     window.draw(mButtons);
+    window.draw(mErrorMsg);
 
     return false;
 }
 
-bool LevelState::update(sf::Time)
+bool LevelState::update(sf::Time dt)
 {
+    mErrorMsg.update(dt);
     return false;
 }
 
@@ -56,7 +83,7 @@ void LevelState::createLevelButton(int i)
     levelButton->centerButtonOrigin();
     levelButton->setCallback([this, i]()
     {
-        if(mProfile.getCurrentLevel() != i) // Avoid deactivating itself
+        if(mProfile.getCurrentLevel() != i && mProfile.getCurrentLevel() >= 0) // Avoid deactivating itself
         {
             mLevelButtons[mProfile.getCurrentLevel()]->setFreezeFlag(false);
             mLevelButtons[mProfile.getCurrentLevel()]->deactivate();
