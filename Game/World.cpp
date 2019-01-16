@@ -2,10 +2,12 @@
 #include "Utility.hpp"
 #include "SpriteNode.hpp"
 #include "Entities/AmmoNode.hpp"
+#include "Exceptions/XMLParseException.hpp"
 #include <memory>
 #include <algorithm>
 #include <cmath>
 #include <limits>
+#include <pugixml.hpp>
 
 World::World(State::Context context)
     : mTarget(context.window),
@@ -13,6 +15,7 @@ World::World(State::Context context)
       mFonts(context.fonts),
       mSoundPlayer(context.sounds),
       mMusicPlayer(context.music),
+      mProfile(context.profile),
       mView(mTarget.getDefaultView()),
       mWorldBounds(0.f, 0.f, mView.getSize().x, 7000.f),
       mPlayerSpawnPosition(mView.getSize().x / 2, mWorldBounds.height - mView.getSize().y / 2.f),
@@ -184,13 +187,32 @@ void World::adaptPlayersVelocity()
 
 void World::initializeSpawnPoints()
 {
-    addSpawnPoint(300.f, 5900.f, Aircraft::Enemy);
-    addSpawnPoint(500.f, 5700.f, Aircraft::Enemy);
-    addSpawnPoint(300.f, 5150.f, Aircraft::Enemy);
-    addSpawnPoint(500.f, 5250.f, Aircraft::Enemy);
+    using namespace pugi;
+
+    // Load xml file, throw errors
+    std::string filename("level" + toString(mProfile.getCurrentLevel()+1) + ".xml"); // Level with id=0 is name level1.xml
+    xml_document doc;
+    xml_parse_result result = doc.load_file(("Levels/" + filename).c_str());
+    if(!result)
+        throw XMLParseException(result, filename);
+
+    // Load spawn points of enemies
+    xml_node spawnPoints = doc.child("spawnpoints");
+    for(xml_node spawnPoint : spawnPoints.children())
+    {
+        float x = spawnPoint.attribute("x").as_float();
+        float y = spawnPoint.attribute("y").as_float();
+        int id = spawnPoint.attribute("enemyID").as_int();
+        Aircraft::Type enemyID;
+        if(id > Aircraft::TypeCount || id < 0)
+            throw std::runtime_error("Wrong enemyID in: " + filename);
+        else
+            enemyID = static_cast<Aircraft::Type>(id);
+
+        addSpawnPoint(x, y, enemyID);
+    }
 
     sortSpawnPoints();
-    // TODO: Add more later
 }
 
 void World::addSpawnPoint(float x, float y, Aircraft::Type type)

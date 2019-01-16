@@ -7,6 +7,7 @@
 #include "Entities/Aircraft.hpp"
 #include "ResourcesID.hpp"
 #include "SceneNode.hpp"
+#include "Profile.hpp"
 #include "ParticleSystem/ParticleNode.hpp"
 #include <SFML/Graphics.hpp>
 #include <SFML/System/Time.hpp>
@@ -68,6 +69,7 @@ class World
         FontHolder&         mFonts;
         SoundPlayer&        mSoundPlayer;
         MusicPlayer&        mMusicPlayer;
+        Profile&            mProfile;
         SceneNode           mSceneGraph;
         SceneNode           mUIGraph;
         CommandQueue        mCommandQueue;

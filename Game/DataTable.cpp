@@ -4,7 +4,7 @@
 #include "Entities/Projectile.hpp"
 #include "Entities/Pickup.hpp"
 #include "ParticleSystem/Particle.hpp"
-#include "Exceptions/XMLParseExcepetion.hpp"
+#include "Exceptions/XMLParseException.hpp"
 #include <SFML/System/Vector2.hpp>
 #include <pugixml.hpp>
 #include <sstream>
@@ -141,7 +141,7 @@ std::vector<LevelData> initializeLevelData()
     xml_document doc;
     xml_parse_result result = doc.load_file("Levels/levels.xml");
     if(!result)
-        throw XMLParseExcepetion(result, "levels.xml");
+        throw XMLParseException(result, "levels.xml");
 
     // Load values and save in LevelData struct
     xml_node levels = doc.child("levels");

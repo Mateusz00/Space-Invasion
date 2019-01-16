@@ -5,11 +5,11 @@
 #include <exception>
 #include <string>
 
-class XMLParseExcepetion : public std::exception
+class XMLParseException : public std::exception
 {
     public:
-                            XMLParseExcepetion(const pugi::xml_parse_result&, const std::string& filename);
-                            XMLParseExcepetion(const pugi::xml_parse_result&, const char* filename);
+                            XMLParseException(const pugi::xml_parse_result&, const std::string& filename);
+                            XMLParseException(const pugi::xml_parse_result&, const char* filename);
         virtual const char* what() const noexcept override;
 
     private:
