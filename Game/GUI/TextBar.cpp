@@ -18,6 +18,10 @@ bool TextBar::isActive() const
 
 void TextBar::setActive(bool active)
 {
+    mText.setFillColor(mTextFill);
+    mText.setOutlineColor(mTextOutline);
+    mRect.setFillColor(mRectFill);
+    mRect.setOutlineColor(mRectOutline);
     mFadeCountdown = sf::Time::Zero;
     mIsActive = active;
 }
@@ -100,13 +104,7 @@ void TextBar::update(sf::Time dt)
                 mRect.setOutlineColor(rectOutline);
             }
             else
-            {
-                mText.setFillColor(mTextFill);
-                mText.setOutlineColor(mTextOutline);
-                mRect.setFillColor(mRectFill);
-                mRect.setOutlineColor(mRectOutline);
                 setActive(false);
-            }
         }
     }
 }
