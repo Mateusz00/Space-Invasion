@@ -25,7 +25,7 @@ GameOverState::GameOverState(Context context, StateStack& stateStack, Type type)
     if(type == Fail)
     {
         std::unique_ptr<GUIButton> retryButton(new GUIButton(context, GUIButton::TextButton, "Retry"));
-        retryButton->setPosition(0.f, windowSize.y * 0.12f);
+        retryButton->setPosition(0.f, -windowSize.y * 0.05f);
         retryButton->setCallback([this]()
         {
             requestStackClear();
@@ -34,8 +34,17 @@ GameOverState::GameOverState(Context context, StateStack& stateStack, Type type)
         mButtons.push(std::move(retryButton));
     }
 
+    std::unique_ptr<GUIButton> levelButton(new GUIButton(context, GUIButton::TextButton, "Choose level"));
+    levelButton->setPosition(0.f, windowSize.y * 0.07f);
+    levelButton->setCallback([this]()
+    {
+        requestStackClear();
+        requestStackPush(States::LevelState);
+    });
+    mButtons.push(std::move(levelButton));
+
     std::unique_ptr<GUIButton> menuButton(new GUIButton(context, GUIButton::TextButton, "Menu"));
-    menuButton->setPosition(0.f, 0.f);
+    menuButton->setPosition(0.f, windowSize.y * 0.19f);
     menuButton->setCallback([this]()
     {
         requestStackClear();
@@ -56,10 +65,10 @@ bool GameOverState::draw()
 bool GameOverState::update(sf::Time dt)
 {
     mElapsedTime += dt;
-    if(mElapsedTime > sf::seconds(5))
+    if(mElapsedTime > sf::seconds(6))
     {
         requestStackClear();
-        requestStackPush(States::MenuState);
+        requestStackPush(States::LevelState);
     }
 
     return false;

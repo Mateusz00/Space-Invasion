@@ -20,15 +20,24 @@ PauseState::PauseState(Context context, StateStack& stateStack, bool isNetworked
     mGUIContainer.setPosition(windowSize * 0.5f);
 
     std::unique_ptr<GUIButton> returnButton(new GUIButton(context, GUIButton::TextButton, "Return"));
-    returnButton->setPosition(0.f, 0.f);
+    returnButton->setPosition(0.f, -windowSize.y * 0.05f);
     returnButton->setCallback([this]()
     {
         requestStackPop();
     });
     mGUIContainer.push(std::move(returnButton));
 
+    std::unique_ptr<GUIButton> levelButton(new GUIButton(context, GUIButton::TextButton, "Choose level"));
+    levelButton->setPosition(0.f, windowSize.y * 0.07f);
+    levelButton->setCallback([this]()
+    {
+        requestStackClear();
+        requestStackPush(States::LevelState);
+    });
+    mGUIContainer.push(std::move(levelButton));
+
     std::unique_ptr<GUIButton> backToMenu(new GUIButton(context, GUIButton::TextButton, "Menu"));
-    backToMenu->setPosition(0.f, windowSize.y * 0.12f);
+    backToMenu->setPosition(0.f, windowSize.y * 0.19f);
     backToMenu->setCallback([this]()
     {
         requestStackClear();

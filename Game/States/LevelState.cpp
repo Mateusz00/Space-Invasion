@@ -8,7 +8,7 @@
 #include <memory>
 #include <vector>
 
-namespace
+namespace level
 {
     const std::vector<LevelData> levelInfo = initializeLevelData();
 }
@@ -21,7 +21,7 @@ LevelState::LevelState(Context context, StateStack& stateStack)
       mProfile(context.profile),
       mErrorMsg(context.fonts.get(Fonts::Goodfish), "Please choose level", 32u)
 {
-    for(int i=0; i < levelInfo.size(); ++i)
+    for(int i=0; i < level::levelInfo.size(); ++i)
         createLevelButton(i);
 
     mLevelButtons[0]->setLocked(false); // First level should always be unlocked
@@ -78,8 +78,8 @@ bool LevelState::handleEvent(const sf::Event& event)
 
 void LevelState::createLevelButton(int i)
 {
-    std::unique_ptr<LevelButton> levelButton(new LevelButton(getContext(), GUIButton::LevelButton, levelInfo[i].name, i));
-    levelButton->setPosition(levelInfo[i].x, levelInfo[i].y);
+    std::unique_ptr<LevelButton> levelButton(new LevelButton(getContext(), GUIButton::LevelButton, level::levelInfo[i].name, i));
+    levelButton->setPosition(level::levelInfo[i].x, level::levelInfo[i].y);
     levelButton->centerButtonOrigin();
     levelButton->setCallback([this, i]()
     {
@@ -100,7 +100,7 @@ void LevelState::createConnectionLines()
 {
     for(int i=0; i < mLevelButtons.size(); ++i)
     {
-        const std::vector<int>& levelDependencies = levelInfo[i].levelDependencies;
+        const std::vector<int>& levelDependencies = level::levelInfo[i].levelDependencies;
 
         // Get first point of every line segment(center of the button)
         sf::FloatRect box = mLevelButtons[i]->getBoundingRect();
