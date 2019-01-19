@@ -5,6 +5,7 @@
 #include "../World.hpp"
 #include "../Player.hpp"
 #include "../SoundPlayer.hpp"
+class Profile;
 
 class GameState : public State
 {
@@ -17,10 +18,12 @@ class GameState : public State
     private:
         void            updateScoresFile() const;
         void            updatePlayersScore();
+        int             getCurrentCumulativeScore();
 
         World                   mWorld;
         std::vector<Player>&    mPlayers;
         sf::RenderWindow&       mWindow;
+        Profile&                mProfile;
 };
 
 #endif // GAMESTATE_HPP

@@ -16,13 +16,18 @@ void Profile::saveProfile() const
 {
     std::ofstream saveFile("save.dat");
 
-    for(const auto& levelID : mCompletedLevels)
-        saveFile << levelID << " ";
+    for(const auto& levelInfo : mCompletedLevelsInfo)
+    {
+        saveFile << levelInfo.first << " "; // levelID
 
-    saveFile << "#";
+        for(const auto& playersScores : levelInfo.second)
+        {
+            saveFile << playersScores.first << " "; // playerID
+            saveFile << playersScores.second << " "; // playerScore
+        }
 
-    for(const auto& score : mScores)
-        saveFile << score << " ";
+        saveFile << "&";
+    }
 
     saveFile << "#";
 
@@ -42,21 +47,26 @@ bool Profile::loadProfile()
         while(saveFile.peek() != '#')
         {
             int levelID;
+            std::unordered_map<int, int> playersScores;
+
             saveFile >> levelID;
             saveFile >> std::ws;
-            mCompletedLevels.push_back(levelID);
+
+            // Load all players scores
+            while(saveFile.peek() != '&')
+            {
+                int playerID, score;
+                saveFile >> playerID;
+                saveFile >> score;
+                saveFile >> std::ws;
+
+                playersScores.insert(std::make_pair(playerID, score));
+            }
+
+            mCompletedLevelsInfo.insert(std::make_pair(levelID, playersScores));
         }
 
-        // Load scores
-        while(saveFile.peek() != '#')
-        {
-            int score;
-            saveFile >> score;
-            saveFile >> std::ws;
-            mScores.push_back(score);
-        }
-
-        //Load player names
+        // Load player names
         while(saveFile.peek() != EOF)
         {
             std::string name;
@@ -71,10 +81,9 @@ bool Profile::loadProfile()
     return mIsLoaded;
 }
 
-void Profile::updateData(int levelID, int score)
+void Profile::updateData(int levelID, int playerID, int score)
 {
-    mCompletedLevels.push_back(levelID);
-    mScores.push_back(score);
+    (mCompletedLevelsInfo[levelID])[playerID] = score;
 }
 
 bool Profile::isLoaded() const
@@ -90,4 +99,33 @@ void Profile::setCurrentLevel(int level)
 int Profile::getCurrentLevel() const
 {
     return mCurrentLevel;
+}
+
+int Profile::getLevelScore(int levelID, int playerID) const
+{
+    const auto scoresMap = mCompletedLevelsInfo.find(levelID);
+
+    if(scoresMap != mCompletedLevelsInfo.end())
+    {
+        const auto playerScoreIter = (scoresMap->second).find(playerID);
+
+        if(playerScoreIter != (scoresMap->second).end())
+            return playerScoreIter->second;
+    }
+
+    return 0;
+}
+
+int Profile::getCumulativeLevelScore(int levelID) const
+{
+    const auto scoresMap = mCompletedLevelsInfo.find(levelID);
+    int score = 0;
+
+    if(scoresMap != mCompletedLevelsInfo.end())
+    {
+        for(const auto& playerScore : scoresMap->second)
+            score += playerScore.second;
+    }
+
+    return score;
 }

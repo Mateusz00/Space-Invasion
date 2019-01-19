@@ -1,6 +1,7 @@
 #include "GameState.hpp"
 #include "../Utility.hpp"
 #include "../MusicPlayer.hpp"
+#include "../Profile.hpp"
 #include <SFML/Graphics/Text.hpp>
 #include <fstream>
 #include <iostream>
@@ -12,7 +13,8 @@ GameState::GameState(Context context, StateStack& stateStack)
     : State(context, stateStack),
       mWorld(context),
       mPlayers(context.players),
-      mWindow(context.window)
+      mWindow(context.window),
+      mProfile(context.profile)
 {
     context.music.playNow(Music::BattleTheme, true);
 
@@ -29,7 +31,7 @@ bool GameState::draw()
 bool GameState::update(sf::Time dt)
 {
     mWorld.update(dt);
-    updatePlayersScore();
+    updatePlayersScore(); // Try to move this inside ifs
 
     if(!mWorld.hasAlivePlayer())
     {
@@ -41,7 +43,14 @@ bool GameState::update(sf::Time dt)
     else if(mWorld.hasPlayerReachedEnd())
     {
         requestStackPush(States::MissionSuccess);
-        updateScoresFile();
+
+        std::unordered_map<int, int> playersScores = mWorld.getPlayersScoresMap();
+        int levelID = mProfile.getCurrentLevel();
+        if(getCurrentCumulativeScore() > mProfile.getCumulativeLevelScore(levelID)) // Saves greater score
+        {
+            for(Player& player : mPlayers)
+                mProfile.updateData(levelID, player.getID(), playersScores.at(player.getID()));
+        }
     }
 
     for(Player& player : mPlayers)
@@ -100,4 +109,15 @@ void GameState::updatePlayersScore()
 
     for(Player& player : mPlayers)
         player.setScore(playersScores[player.getID()]);
+}
+
+int GameState::getCurrentCumulativeScore()
+{
+    std::unordered_map<int, int> playersScores = mWorld.getPlayersScoresMap();
+    int score = 0;
+
+    for(const Player& player : mPlayers)
+        score += playersScores.at(player.getID());
+
+    return score;
 }

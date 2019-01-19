@@ -3,22 +3,25 @@
 
 #include <vector>
 #include <string>
+#include <unordered_map>
 
 class Profile
 {
     public:
+        using LevelScoresMap = std::unordered_map<int, std::unordered_map<int, int>>; // LevelID, playersScoresMap
                 Profile();
                 ~Profile();
         void    saveProfile() const;
         bool    loadProfile();
-        void    updateData(int levelID, int score);
+        void    updateData(int levelID, int playerID, int score);
         bool    isLoaded() const;
         void    setCurrentLevel(int);
         int     getCurrentLevel() const;
+        int     getLevelScore(int levelID, int playerID) const; /// Returns 0 if player didn't complete requested level
+        int     getCumulativeLevelScore(int levelID) const; /// Returns 0 if player didn't complete requested level
 
     private:
-        std::vector<int>            mCompletedLevels;
-        std::vector<int>            mScores;
+        LevelScoresMap              mCompletedLevelsInfo; // LevelID, playersScoresMap
         std::vector<std::string>    mPlayerNames;
         bool                        mIsLoaded;
         int                         mCurrentLevel;
