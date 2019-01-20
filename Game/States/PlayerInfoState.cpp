@@ -3,6 +3,7 @@
 #include "../Player.hpp"
 #include "../GUI/GUIButton.hpp"
 #include "../Utility.hpp"
+#include "../Profile.hpp"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <memory>
 
@@ -15,7 +16,8 @@ PlayerInfoState::PlayerInfoState(Context context, StateStack& stateStack)
       mWindow(context.window),
       mModeConfirmed(false),
       mNumberOfPlayers(1),
-      mCurrentPlayer(0)
+      mCurrentPlayer(0),
+      mProfile(context.profile)
 {
     mPlayers.clear();
     sf::Vector2f windowSize(static_cast<sf::Vector2f>(mWindow.getSize()));
@@ -104,4 +106,5 @@ bool PlayerInfoState::handleEvent(const sf::Event& event)
 void PlayerInfoState::addPlayer(int playerNumber)
 {
     mPlayers.emplace_back(getContext().keys[playerNumber], playerNumber, mPlayerName);
+    mProfile.addPlayer(mPlayerName);
 }

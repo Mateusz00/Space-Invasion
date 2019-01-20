@@ -81,6 +81,11 @@ bool Profile::loadProfile()
     return mIsLoaded;
 }
 
+void Profile::addPlayer(std::string name)
+{
+    mPlayerNames.push_back(name);
+}
+
 void Profile::updateData(int levelID, int playerID, int score)
 {
     (mCompletedLevelsInfo[levelID])[playerID] = score;
@@ -101,7 +106,7 @@ int Profile::getCurrentLevel() const
     return mCurrentLevel;
 }
 
-int Profile::getLevelScore(int levelID, int playerID) const
+int Profile::getLevelScore(int levelID, int playerID) const /// Returns 0 if player didn't complete requested level
 {
     const auto scoresMap = mCompletedLevelsInfo.find(levelID);
 
@@ -116,7 +121,7 @@ int Profile::getLevelScore(int levelID, int playerID) const
     return 0;
 }
 
-int Profile::getCumulativeLevelScore(int levelID) const
+int Profile::getCumulativeLevelScore(int levelID) const /// Returns 0 if player didn't complete requested level
 {
     const auto scoresMap = mCompletedLevelsInfo.find(levelID);
     int score = 0;

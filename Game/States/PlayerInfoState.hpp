@@ -7,6 +7,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include <vector>
+class Profile;
 
 class PlayerInfoState : public State
 {
@@ -29,6 +30,7 @@ class PlayerInfoState : public State
         bool                        mModeConfirmed;
         int                         mNumberOfPlayers;
         int                         mCurrentPlayer;
+        Profile&                    mProfile;
 };
 
 #endif // PLAYERINFOSTATE_HPP

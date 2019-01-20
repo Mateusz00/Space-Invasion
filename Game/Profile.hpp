@@ -8,17 +8,18 @@
 class Profile
 {
     public:
-        using LevelScoresMap = std::unordered_map<int, std::unordered_map<int, int>>; // LevelID, playersScoresMap
+        using LevelScoresMap = std::unordered_map<int, std::unordered_map<int, int>>; // LevelID, playerID, score
                 Profile();
                 ~Profile();
         void    saveProfile() const;
         bool    loadProfile();
         void    updateData(int levelID, int playerID, int score);
+        void    addPlayer(std::string name);
         bool    isLoaded() const;
         void    setCurrentLevel(int);
         int     getCurrentLevel() const;
-        int     getLevelScore(int levelID, int playerID) const; /// Returns 0 if player didn't complete requested level
-        int     getCumulativeLevelScore(int levelID) const; /// Returns 0 if player didn't complete requested level
+        int     getLevelScore(int levelID, int playerID) const;
+        int     getCumulativeLevelScore(int levelID) const;
 
     private:
         LevelScoresMap              mCompletedLevelsInfo; // LevelID, playersScoresMap

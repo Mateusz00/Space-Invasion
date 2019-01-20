@@ -37,7 +37,7 @@ LevelState::LevelState(Context context, StateStack& stateStack)
     mErrorMsg.setBarFillColor(sf::Color(20, 20, 20, 220));
 
     std::unique_ptr<GUIButton> confirm(new GUIButton(context, GUIButton::ControlsButton, "Confirm"));
-    confirm->setPosition(windowSize.x * 0.5f, windowSize.y * 0.9f);
+    confirm->setPosition(windowSize.x * 0.5f, windowSize.y * 0.92f);
     confirm->centerButtonOrigin();
     confirm->setCallback([this, context]()
     {
@@ -50,6 +50,25 @@ LevelState::LevelState(Context context, StateStack& stateStack)
             mErrorMsg.setActive(true);
     });
     mButtons.push(std::move(confirm));
+
+    std::unique_ptr<GUIButton> save(new GUIButton(context, GUIButton::ControlsButton, "Save"));
+    save->setPosition(windowSize.x * 0.8f, windowSize.y * 0.92f);
+    save->centerButtonOrigin();
+    save->setCallback([this]()
+    {
+        mProfile.saveProfile();
+    });
+    mButtons.push(std::move(save));
+
+    std::unique_ptr<GUIButton> menu(new GUIButton(context, GUIButton::ControlsButton, "Menu"));
+    menu->setPosition(windowSize.x * 0.2f, windowSize.y * 0.92f);
+    menu->centerButtonOrigin();
+    menu->setCallback([this]()
+    {
+        requestStackClear();
+        requestStackPush(States::MenuState);
+    });
+    mButtons.push(std::move(menu));
 }
 
 bool LevelState::draw()
