@@ -21,10 +21,14 @@ LevelState::LevelState(Context context, StateStack& stateStack)
       mProfile(context.profile),
       mErrorMsg(context.fonts.get(Fonts::Goodfish), "Please choose level", 32u)
 {
+    mProfile.setCurrentLevel(-1);
+
     for(int i=0; i < level::levelInfo.size(); ++i)
         createLevelButton(i);
 
     mLevelButtons[0]->setLocked(false); // First level should always be unlocked
+    updateLevelStates();
+
     createConnectionLines();
 
     const sf::Vector2f windowSize = static_cast<sf::Vector2f>(context.window.getSize());
@@ -60,7 +64,7 @@ LevelState::LevelState(Context context, StateStack& stateStack)
     });
     mButtons.push(std::move(save));
 
-    std::unique_ptr<GUIButton> menu(new GUIButton(context, GUIButton::ControlsButton, "Menu"));
+    std::unique_ptr<GUIButton> menu(new GUIButton(context, GUIButton::ControlsButton, "Quit to Menu"));
     menu->setPosition(windowSize.x * 0.2f, windowSize.y * 0.92f);
     menu->centerButtonOrigin();
     menu->setCallback([this]()
@@ -97,21 +101,22 @@ bool LevelState::handleEvent(const sf::Event& event)
 
 void LevelState::createLevelButton(int i)
 {
-    std::unique_ptr<LevelButton> levelButton(new LevelButton(getContext(), GUIButton::LevelButton, level::levelInfo[i].name, i));
+    int id = level::levelInfo[i].id;
+    std::unique_ptr<LevelButton> levelButton(new LevelButton(getContext(), GUIButton::LevelButton, level::levelInfo[i].name, id));
     levelButton->setPosition(level::levelInfo[i].x, level::levelInfo[i].y);
     levelButton->centerButtonOrigin();
-    levelButton->setCallback([this, i]()
+    levelButton->setCallback([this, id]
     {
-        if(mProfile.getCurrentLevel() != i && mProfile.getCurrentLevel() >= 0) // Avoid deactivating itself
+        if(mProfile.getCurrentLevel() != id && mProfile.getCurrentLevel() >= 0) // Avoid deactivating itself
         {
             mLevelButtons[mProfile.getCurrentLevel()]->setFreezeFlag(false);
             mLevelButtons[mProfile.getCurrentLevel()]->deactivate();
         }
-        mLevelButtons[i]->setFreezeFlag(true);
-        mProfile.setCurrentLevel(i);
+        mLevelButtons[id]->setFreezeFlag(true);
+        mProfile.setCurrentLevel(id);
     });
 
-    mLevelButtons.push_back(levelButton.get());
+    mLevelButtons[id] = levelButton.get();
     mButtons.push(std::move(levelButton));
 }
 
@@ -150,4 +155,18 @@ void LevelState::createLine(sf::Vector2f point1, sf::Vector2f point2, float widt
     mLines.append(sf::Vertex(point2 - offset, sf::Color(203, 198, 206)));
     mLines.append(sf::Vertex(point2 + offset, sf::Color(203, 198, 206)));
     mLines.append(sf::Vertex(point1 + offset, sf::Color(203, 198, 206)));
+}
+
+void LevelState::updateLevelStates()
+{
+    std::vector<int> completedLevels = mProfile.getCompletedLevels();
+
+    for(int levelID : completedLevels)
+    {
+        mLevelButtons[levelID]->setCompleted();
+        std::vector<int> unlock = level::levelInfo[levelID].levelDependencies;
+
+        for(int id : unlock)
+            mLevelButtons[id]->setLocked(false);
+    }
 }

@@ -7,11 +7,6 @@ Profile::Profile()
 {
 }
 
-Profile::~Profile()
-{
-    //dtor
-}
-
 void Profile::saveProfile() const
 {
     std::ofstream saveFile("save.dat");
@@ -62,9 +57,11 @@ bool Profile::loadProfile()
 
                 playersScores.insert(std::make_pair(playerID, score));
             }
+            saveFile.get(); // Get rid of '&'
 
             mCompletedLevelsInfo.insert(std::make_pair(levelID, playersScores));
         }
+        saveFile.get(); // Get rid of '#'
 
         // Load player names
         while(saveFile.peek() != EOF)
@@ -72,6 +69,7 @@ bool Profile::loadProfile()
             std::string name;
             std::getline(saveFile, name, '%');
             mPlayerNames.push_back(name);
+            saveFile >> std::ws;
         }
 
         mIsLoaded = true;
@@ -133,4 +131,14 @@ int Profile::getCumulativeLevelScore(int levelID) const /// Returns 0 if player 
     }
 
     return score;
+}
+
+std::vector<int> Profile::getCompletedLevels() const
+{
+    std::vector<int> completedLevels;
+
+    for(const auto& levelScores : mCompletedLevelsInfo)
+        completedLevels.emplace_back(levelScores.first);
+
+    return completedLevels;
 }

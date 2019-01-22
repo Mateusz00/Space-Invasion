@@ -11,7 +11,7 @@ LevelButton::LevelButton(State::Context context, ButtonID id, const std::string&
 
 void LevelButton::setCompleted()
 {
-    changeAppearance(Completed);
+    mCompleted = true;
     mStateIcon.setTexture(mTextures.get(Textures::Checkmark), true);
     centerOrigin(mStateIcon);
 }
@@ -27,7 +27,8 @@ void LevelButton::setLocked(bool locked)
     }
     else
     {
-        mStateIcon.setTextureRect(sf::IntRect(0,0,0,0));
+        if(!mCompleted)
+            mStateIcon.setTextureRect(sf::IntRect(0,0,0,0));
         changeAppearance(Normal);
     }
 }

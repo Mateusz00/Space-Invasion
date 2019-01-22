@@ -72,6 +72,7 @@ struct LevelData
     std::string        name;
     float              x;
     float              y;
+    int                id;
 };
 
 std::vector<AircraftData>       initializeAircraftData();

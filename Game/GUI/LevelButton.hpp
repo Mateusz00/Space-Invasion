@@ -8,15 +8,6 @@
 class LevelButton : public GUIButton
 {
     public:
-        enum LevelState
-        {
-            Normal,
-            Selected,
-            Pressed,
-            Locked,
-            Completed
-        };
-
                         LevelButton(State::Context, ButtonID, const std::string&, int levelID, bool locked = true);
         void            setCompleted();
         virtual void    setLocked(bool) override;
@@ -26,6 +17,7 @@ class LevelButton : public GUIButton
 
         sf::Sprite      mStateIcon;
         TextureHolder&  mTextures;
+        bool            mCompleted;
 };
 
 

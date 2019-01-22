@@ -21,13 +21,14 @@ class LevelState : public State
         void            createLevelButton(int i);
         void            createConnectionLines();
         void            createLine(sf::Vector2f, sf::Vector2f, float width);
+        void            updateLevelStates();
 
-        sf::Sprite                  mBackground;
-        GUIContainer                mButtons;
-        sf::VertexArray             mLines;
-        std::vector<LevelButton*>   mLevelButtons;
-        Profile&                    mProfile;
-        TextBar                     mErrorMsg;
+        sf::Sprite                              mBackground;
+        GUIContainer                            mButtons;
+        sf::VertexArray                         mLines;
+        Profile&                                mProfile;
+        TextBar                                 mErrorMsg;
+        std::unordered_map<int, LevelButton*>   mLevelButtons;
 };
 
 #endif // LEVELSTATE_HPP

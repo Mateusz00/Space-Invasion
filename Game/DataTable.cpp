@@ -161,6 +161,7 @@ std::vector<LevelData> initializeLevelData()
         levelData->name = levelInfo.attribute("name").as_string();
         levelData->x = levelInfo.attribute("x").as_float();
         levelData->y = levelInfo.attribute("y").as_float();
+        levelData->id = levelInfo.attribute("id").as_int();
 
         data.push_back(std::move(*levelData));
     }
