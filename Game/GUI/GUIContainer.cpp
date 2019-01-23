@@ -62,7 +62,7 @@ void GUIContainer::handleEvent(const sf::Event& event)
             int index;
             if(checkMouseCollision(sf::Vector2i(event.mouseButton.x, event.mouseButton.y), index))
             {
-                if(index != mSelected && mComponents[index]->isSelectable())
+                if(index != mSelected && mComponents[index]->isSelectable()) // If cursor collided with already selected button then don't deactivate it just ignore it
                 {
                     restart();
                     mComponents[index]->select();
@@ -79,7 +79,7 @@ void GUIContainer::handleEvent(const sf::Event& event)
             int index;
             if(checkMouseCollision(sf::Vector2i(event.mouseMove.x, event.mouseMove.y), index))
             {
-                if(mComponents[index]->isSelectable())
+                if(index != mSelected && mComponents[index]->isSelectable())
                 {
                     restart();
                     mComponents[index]->select();

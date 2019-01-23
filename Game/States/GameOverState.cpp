@@ -22,17 +22,14 @@ GameOverState::GameOverState(Context context, StateStack& stateStack, Type type)
     mBackground.setFillColor(sf::Color(0, 0, 0, 140));
     mBackground.setSize(mWindow.getView().getSize());
 
-    if(type == Fail)
+    std::unique_ptr<GUIButton> retryButton(new GUIButton(context, GUIButton::TextButton, "Retry"));
+    retryButton->setPosition(0.f, -windowSize.y * 0.05f);
+    retryButton->setCallback([this]()
     {
-        std::unique_ptr<GUIButton> retryButton(new GUIButton(context, GUIButton::TextButton, "Retry"));
-        retryButton->setPosition(0.f, -windowSize.y * 0.05f);
-        retryButton->setCallback([this]()
-        {
-            requestStackClear();
-            requestStackPush(States::GameState);
-        });
-        mButtons.push(std::move(retryButton));
-    }
+        requestStackClear();
+        requestStackPush(States::GameState);
+    });
+    mButtons.push(std::move(retryButton));
 
     std::unique_ptr<GUIButton> levelButton(new GUIButton(context, GUIButton::TextButton, "Choose level"));
     levelButton->setPosition(0.f, windowSize.y * 0.07f);

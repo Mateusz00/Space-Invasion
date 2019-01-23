@@ -5,3 +5,6 @@
     <spawn x="300" y="5050" enemyID="1"/>
     <spawn x="500" y="5050" enemyID="1"/>
 </spawnpoints>
+<leveldata>
+	<levelwidth>7000</levelwidth>
+</leveldata>

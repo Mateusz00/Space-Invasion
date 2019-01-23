@@ -6,6 +6,7 @@
 #include <memory>
 #include <algorithm>
 #include <cmath>
+#include <sstream>
 #include <limits>
 #include <pugixml.hpp>
 
@@ -17,14 +18,12 @@ World::World(State::Context context)
       mMusicPlayer(context.music),
       mProfile(context.profile),
       mView(mTarget.getDefaultView()),
-      mWorldBounds(0.f, 0.f, mView.getSize().x, 7000.f),
-      mPlayerSpawnPosition(mView.getSize().x / 2, mWorldBounds.height - mView.getSize().y / 2.f),
       mScrollingSpeed(-40.f),
       mScore("0", context.fonts.get(Fonts::BPmonoItalics), 32u),
       mIsDeleting(false)
 {
+    loadLevelData();
     buildWorld();
-    initializeSpawnPoints();
     mScore.setPosition(mTarget.getSize().x * 0.5f, 18.f);
     mView.setCenter(mPlayerSpawnPosition);
 }
@@ -151,10 +150,10 @@ void World::buildWorld()
     sf::Texture& background = mTextures.get(Textures::Background);
     background.setRepeated(true);
     sf::IntRect backgroundRect(mWorldBounds);
-    backgroundRect.height += static_cast<int>(mView.getSize().y);
+    backgroundRect.height += static_cast<int>(mView.getSize().y); // Make background higher by view size to prevent user from seeing black space
 
     std::unique_ptr<SpriteNode> galaxyBackground(new SpriteNode(background, backgroundRect));
-    galaxyBackground->setPosition(mWorldBounds.left, mWorldBounds.top - mView.getSize().y);
+    galaxyBackground->setPosition(mWorldBounds.left, mWorldBounds.top - mView.getSize().y); // Position it higher by view size to prevent user from seeing black space
     mSceneLayers[Background]->attachChild(std::move(galaxyBackground));
 
     sf::Texture& finishTexture = mTextures.get(Textures::FinishLine);
@@ -185,7 +184,7 @@ void World::adaptPlayersVelocity()
     }
 }
 
-void World::initializeSpawnPoints()
+void World::loadLevelData()
 {
     using namespace pugi;
 
@@ -213,6 +212,24 @@ void World::initializeSpawnPoints()
     }
 
     sortSpawnPoints();
+
+    // Load data about level length etc.
+    float length;
+    xml_node levelData = doc.child("leveldata");
+    std::string lengthString = levelData.child_value("levelwidth");
+    std::runtime_error lengthExcepetion("In level" + toString(mProfile.getCurrentLevel()+1) + ".xml: Value can't be empty or zero");
+
+    if(lengthString.empty())
+        throw lengthExcepetion;
+
+    std::istringstream lengthStream(lengthString);
+    lengthStream >> length;
+
+    if(length <= 0.f)
+        throw lengthExcepetion;
+
+    mWorldBounds = sf::FloatRect(0.f, 0.f, mView.getSize().x, length);
+    mPlayerSpawnPosition = sf::Vector2f(mView.getSize().x / 2, mWorldBounds.height - mView.getSize().y / 2.f);
 }
 
 void World::addSpawnPoint(float x, float y, Aircraft::Type type)

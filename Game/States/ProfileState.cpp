@@ -15,6 +15,7 @@ ProfileState::ProfileState(Context context, StateStack& stateStack)
     newGame->centerButtonOrigin();
     newGame->setCallback([this]()
     {
+        mProfile.clearAllData();
         requestStackPop();
         requestStackPush(States::PlayerInfoState);
     });

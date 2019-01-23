@@ -21,6 +21,7 @@ class Profile
         int                 getLevelScore(int levelID, int playerID) const;
         int                 getCumulativeLevelScore(int levelID) const;
         std::vector<int>    getCompletedLevels() const;
+        void                clearAllData();
 
     private:
         LevelScoresMap              mCompletedLevelsInfo; // LevelID, playersScoresMap

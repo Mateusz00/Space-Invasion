@@ -38,7 +38,6 @@ class World
     private:
         void    buildWorld();
         void    adaptPlayersVelocity();
-        void    initializeSpawnPoints();
         void    addSpawnPoint(float x, float y, Aircraft::Type);
         void    sortSpawnPoints();
         void    spawnEnemies();
@@ -49,6 +48,7 @@ class World
         void    updateSounds();
         void    updateScore();
         void    removeDanglingPointers();
+        void    loadLevelData();
 
         enum Layer
         {

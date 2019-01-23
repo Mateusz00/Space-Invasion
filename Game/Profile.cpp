@@ -34,6 +34,7 @@ void Profile::saveProfile() const
 
 bool Profile::loadProfile()
 {
+    clearAllData();
     std::ifstream saveFile("save.dat");
 
     if(saveFile.good())
@@ -141,4 +142,11 @@ std::vector<int> Profile::getCompletedLevels() const
         completedLevels.emplace_back(levelScores.first);
 
     return completedLevels;
+}
+
+void Profile::clearAllData()
+{
+    mPlayerNames.clear();
+    mCompletedLevelsInfo.clear();
+    mIsLoaded = false;
 }
