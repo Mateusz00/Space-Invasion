@@ -3,27 +3,27 @@
 #include "HealthBar.hpp"
 #include "../Utility.hpp"
 #include "../World.hpp"
-#include "../DataTable.hpp"
+#include "../DataaircraftInfo.hpp"
 #include "../AnimationNode.hpp"
 #include <vector>
 #include <memory>
 namespace
 {
-    const std::vector<AircraftData> table = initializeAircraftData();
+    const std::vector<AircraftData> aircraftInfo = initializeAircraftData();
+    const std::vector<AircraftTextureData> textureInfo = initializeAircraftTextureData();
 }
 
-
-Aircraft::Aircraft(Type type, const TextureHolder& textures, const FontHolder& fonts, World& world, int id)
-    : Entity(table[type].hitpoints, true, world),
-      mType(type),
-      mSprite(textures.get(table[type].texture), table[type].textureRect),
+Aircraft::Aircraft(int typeID, const TextureHolder& textures, const FontHolder& fonts, World& world, int id)
+    : Entity(aircraftInfo[typeID].hitpoints, true, world),
+      mTypeID(typeID),
+      mSprite(textures.get(aircraftInfo[typeID].texture), aircraftInfo[typeID].textureRect),
       mFireRateLevel(2),
       mSpreadLevel(1),
       mMissileAmmo(2),
       mIdentifier(id),
       mIsFiring(false),
       mIsLaunchingMissile(false),
-      mIsEnemy(mType != Ally),
+      mIsEnemy(mTypeID != 0),
       mShowExplosion(true),
       mTravelledDistance(0.f),
       mDirectionIndex(0),
@@ -35,7 +35,7 @@ Aircraft::Aircraft(Type type, const TextureHolder& textures, const FontHolder& f
 
     // Create HealthBar for aircraft
     float offset = (mIsEnemy) ? -0.7f : 0.7f;
-    std::unique_ptr<HealthBar> healthBar(new HealthBar(*this, table[mType].hitpoints));
+    std::unique_ptr<HealthBar> healthBar(new HealthBar(*this, aircraftInfo[mTypeID].hitpoints));
     healthBar->setPosition(0.f, mSprite.getLocalBounds().height * offset);
     attachChild(std::move(healthBar));
 
@@ -113,7 +113,7 @@ void Aircraft::setIdentifier(int id)
 
 void Aircraft::fire()
 {
-    if(table[mType].fireInterval.asSeconds() > 0)
+    if(aircraftInfo[mTypeID].fireInterval.asSeconds() > 0)
         mIsFiring = true;
 }
 
@@ -128,7 +128,7 @@ void Aircraft::launchMissile()
 
 float Aircraft::getMaxSpeed() const
 {
-    return table[mType].speed;
+    return aircraftInfo[mTypeID].speed;
 }
 
 sf::FloatRect Aircraft::getLocalBounds() const
@@ -145,12 +145,12 @@ void Aircraft::updateRollAnimation(sf::Time dt)
 {
     mLastRoll += dt;
 
-    if(table[mType].hasRollAnimation && mLastRoll.asSeconds() > 0.1f)
+    if(aircraftInfo[mTypeID].hasRollAnimation && mLastRoll.asSeconds() > 0.1f)
     {
         sf::IntRect currentRect = mSprite.getTextureRect();
-        sf::IntRect defaultRect = table[mType].textureRect;
+        sf::IntRect defaultRect = aircraftInfo[mTypeID].textureRect;
 
-        if(getVelocity().x > 0.f && currentRect.left < defaultRect.width * (table[mType].spriteNumber-1))
+        if(getVelocity().x > 0.f && currentRect.left < defaultRect.width * (aircraftInfo[mTypeID].spriteNumber-1))
         {
             currentRect.left += currentRect.width;
             mLastRoll = sf::Time::Zero;
@@ -233,7 +233,7 @@ void Aircraft::launchProjectiles(sf::Time dt, CommandQueue& commands)
     {
         commands.push(mFireCommand);
         getWorld().getSoundPlayer().play((mIsEnemy ? Sound::EnemyGun : Sound::AllyGun), getWorldPosition());
-        mFireCooldown += table[mType].fireInterval / static_cast<float>(mFireRateLevel);
+        mFireCooldown += aircraftInfo[mTypeID].fireInterval / static_cast<float>(mFireRateLevel);
     }
     else if(mFireCooldown > sf::Time::Zero)
     {
@@ -251,7 +251,7 @@ void Aircraft::launchProjectiles(sf::Time dt, CommandQueue& commands)
 
 void Aircraft::updateMovementPatterns(sf::Time dt)
 {
-    const std::vector<AircraftData::Direction>& directions = table[mType].directions;
+    const std::vector<AircraftData::Direction>& directions = aircraftInfo[mTypeID].directions;
     if(!directions.empty())
     {
         if(mTravelledDistance > directions[mDirectionIndex].distance)

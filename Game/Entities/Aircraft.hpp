@@ -52,7 +52,7 @@ class Aircraft : public Entity
         void            decreaseScoreRequest(int) const;
         virtual void    onRemoval() override;
 
-        Type                    mType;
+        int                     mTypeID;
         sf::Sprite              mSprite;
         int                     mFireRateLevel;
         int                     mSpreadLevel;

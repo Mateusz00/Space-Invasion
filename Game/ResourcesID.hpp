@@ -30,7 +30,6 @@ namespace Textures
         LevelButtons,
         Checkmark,
         Lock,
-
     };
 }
 

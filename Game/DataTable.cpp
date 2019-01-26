@@ -11,29 +11,25 @@
 
 std::vector<AircraftData> initializeAircraftData()
 {
-    std::vector<AircraftData> data(Aircraft::TypeCount);
+    std::vector<AircraftData> data; // Size of vector depends on number of elements in aircrafts.xml (stores info about file paths)
+    // TODO: Add function that will get number of aircraft types, and another one for loading data about them
 
-    data[Aircraft::Ally].hitpoints = 100;
-    data[Aircraft::Ally].speed = 150.f;
-    data[Aircraft::Ally].texture = Textures::Aircrafts;
-    data[Aircraft::Ally].textureRect = sf::IntRect(150, 0, 75, 42);
-    data[Aircraft::Ally].fireInterval = sf::seconds(1.2f);
-    data[Aircraft::Ally].hasRollAnimation = true;
-    data[Aircraft::Ally].spriteNumber = 5;
+    return data;
+}
 
-    data[Aircraft::Enemy].hitpoints = 50;
-    data[Aircraft::Enemy].speed = 140.f;
-    data[Aircraft::Enemy].texture = Textures::Aircrafts;
-    data[Aircraft::Enemy].textureRect = sf::IntRect(0, 43, 60, 42);
-    data[Aircraft::Enemy].fireInterval = sf::seconds(2.f);
-    data[Aircraft::Enemy].hasRollAnimation = false;
-    data[Aircraft::Enemy].spriteNumber = 0;
-    data[Aircraft::Enemy].directions.push_back(AircraftData::Direction{ 85.f, 80.f});
-    data[Aircraft::Enemy].directions.push_back(AircraftData::Direction{-85.f, 80.f});
-    data[Aircraft::Enemy].directions.push_back(AircraftData::Direction{ 85.f, 150.f});
-    data[Aircraft::Enemy].directions.push_back(AircraftData::Direction{ 20.f, 20.f});
-    data[Aircraft::Enemy].directions.push_back(AircraftData::Direction{-70.f, 150.f});
-    data[Aircraft::Enemy].directions.push_back(AircraftData::Direction{ 10.f, 20.f});
+std::vector<AircraftTextureData> initializeAircraftTextureData();
+{
+    std::vector<AircraftTextureData> data(2);
+
+    data[0].texture = Textures::Aircrafts; // Player
+    data[0].textureRect = sf::IntRect(150, 0, 75, 42);
+    data[0].hasRollAnimation = true;
+    data[0].spriteNumber = 5;
+
+    data[1].texture = Textures::Aircrafts; // Enemy
+    data[1].textureRect = sf::IntRect(0, 43, 60, 42);
+    data[1].hasRollAnimation = false;
+    data[1].spriteNumber = 0;
 
     return data;
 }
@@ -42,17 +38,14 @@ std::vector<ProjectileData> initializeProjectileData()
 {
     std::vector<ProjectileData> data(Projectile::TypeCount);
 
-    data[Projectile::AlliedBullet].speed = 250.f;
     data[Projectile::AlliedBullet].damage = 20.f;
     data[Projectile::AlliedBullet].texture = Textures::Projectiles;
     data[Projectile::AlliedBullet].textureRect = sf::IntRect(13, 0, 4, 15);
 
-    data[Projectile::EnemyBullet].speed = 250.f;
     data[Projectile::EnemyBullet].damage = 20.f;
     data[Projectile::EnemyBullet].texture = Textures::Projectiles;
     data[Projectile::EnemyBullet].textureRect = sf::IntRect(13, 15, 4, 15);
 
-    data[Projectile::Missile].speed = 120.f;
     data[Projectile::Missile].damage = 100.f;
     data[Projectile::Missile].texture = Textures::Projectiles;
     data[Projectile::Missile].textureRect = sf::IntRect(0, 0, 13, 30);
@@ -165,6 +158,14 @@ std::vector<LevelData> initializeLevelData()
 
         data.push_back(std::move(*levelData));
     }
+
+    return data;
+}
+
+std::vector<AttackData> initializeAttackData()
+{
+    std::vector<AttackData> data; // Size of vector depends on number of elements in attacks.xml (stores info about file paths)
+    // TODO: Add function that will get number of attacks, and another one for loading data about them
 
     return data;
 }
