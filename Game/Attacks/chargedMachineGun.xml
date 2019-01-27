@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<attack>
+    <chargetime>1.5</chargetime>
+    <repeat cooldown="0.15" times="4"></repeat>
+    <cooldown>3.5</cooldown>
+    <projectiles>
+        <projectile id="2" speed="250" aimed="no" offsets="" behaviorID="0"></projectile>
+    </projectiles>
+</attack>

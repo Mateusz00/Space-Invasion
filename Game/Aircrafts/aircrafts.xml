@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aircrafts>
+    <aircraft id="0" file="player.xml"/>
+    <aircraft id="1" file="agile.xml"/>
+    <aircraft id="2" file="turret.xml"/>
+    <aircraft id="3" file="tanky.xml"/>
+    <aircraft id="4" file="shielded.xml"/>
+</aircrafts>

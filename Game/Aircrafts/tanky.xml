@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aircraft>
+    <hitpoints>150</hitpoints>
+    <speed>80</speed>
+    <textureID>1</textureID>
+
+    <directions>
+        <direction angle="" distance="" speedPercentage=""></direction>
+    </directions>
+
+    <attacks>
+        <attack attackID="" probability=""></attack>
+    </attacks>
+</aircraft>

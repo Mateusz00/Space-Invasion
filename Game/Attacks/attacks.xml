@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<attacks>
+    <attack id="0" file="bullet.xml"/>
+    <attack id="1" file="turretAimed.xml"/>
+    <attack id="2" file="aircraftOrbital.xml"/>
+    <attack id="3" file="bulletOrbital.xml"/>
+    <attack id="4" file="doubleSpiral.xml"/>
+    <attack id="5" file="guidedBullet.xml"/>
+    <attack id="6" file="chargedMachineGun.xml"/>
+</attacks>
