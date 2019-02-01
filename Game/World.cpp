@@ -202,11 +202,11 @@ void World::loadLevelData()
         float x = spawnPoint.attribute("x").as_float();
         float y = spawnPoint.attribute("y").as_float();
         int id = spawnPoint.attribute("enemyID").as_int();
-        Aircraft::Type enemyID;
-        if(id > Aircraft::TypeCount || id < 0)
-            throw std::runtime_error("Wrong enemyID in: " + filename);
-        else
-            enemyID = static_cast<Aircraft::Type>(id);
+        Aircraft::Type enemyID; ///Ch
+        if(id > Aircraft::TypeCount || id < 0)///
+            throw std::runtime_error("Wrong enemyID in: " + filename);///
+        else///
+            enemyID = static_cast<Aircraft::Type>(id);///
 
         addSpawnPoint(x, y, enemyID);
     }

@@ -2,28 +2,28 @@
 #define ATTACK_HPP
 
 #include "Projectile.hpp"
-#include <SFML/Graphics/Transformable.hpp>
+#include "ResourcesID.hpp"
+#include "Command.hpp"
 #include <SFML/System/Time.hpp>
 #include <vector>
+class CommandQueue;
 
-class Attack : public sf::Transformable
+class Attack
 {
     public:
-        enum Behavior
-        {
-            StraightLine,///
-            Guided,///
-            Spiral,///
-            Orbital///
-        };
-
-        Attack();
-        void pushProjectile(Projectile*);
-        void update(sf::Time);
+                Attack(int id, const TextureHolder&);
+        void    update(sf::Time, CommandQueue&);
 
     private:
-        std::vector<Projectile*> mProjectiles;
-        int mAttackID; /// Will be read from XML file
+        void    setActive(bool);
+        void    pushProjectile(Projectile*);
+        void    createProjectile(SceneNode& layer, int num);
+
+        std::vector<Projectile*>    mProjectiles;
+        int                         mAttackID;
+        bool                        mIsActive;
+        sf::Vector2f                mPosition;
+        Command                     mAttackCommand;
 };
 
 #endif // ATTACK_HPP

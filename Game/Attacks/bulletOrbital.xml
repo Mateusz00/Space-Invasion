@@ -4,11 +4,11 @@
     <repeat cooldown="0" times="0"></repeat>
     <cooldown>4</cooldown>
     <projectiles>
-        <projectile id="2" speed="100" aimed="no" offsets="" behaviorID="0"></projectile>
-        <projectile id="2" speed="150" aimed="no" offsets="" behaviorID="3"></projectile>
-        <projectile id="2" speed="150" aimed="no" offsets="" behaviorID="3"></projectile>
-        <projectile id="2" speed="150" aimed="no" offsets="" behaviorID="3"></projectile>
-        <projectile id="2" speed="150" aimed="no" offsets="" behaviorID="3"></projectile>
-        <projectile id="2" speed="150" aimed="no" offsets="" behaviorID="3"></projectile>
+        <projectile id="2" speed="100" aimed="no" offsets="" behaviorID="0" direction=""></projectile>
+        <projectile id="2" speed="150" aimed="no" offsets="" behaviorID="3" direction=""></projectile>
+        <projectile id="2" speed="150" aimed="no" offsets="" behaviorID="3" direction=""></projectile>
+        <projectile id="2" speed="150" aimed="no" offsets="" behaviorID="3" direction=""></projectile>
+        <projectile id="2" speed="150" aimed="no" offsets="" behaviorID="3" direction=""></projectile>
+        <projectile id="2" speed="150" aimed="no" offsets="" behaviorID="3" direction=""></projectile>
     </projectiles>
 </attack>

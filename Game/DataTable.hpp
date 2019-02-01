@@ -9,6 +9,7 @@
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/Color.hpp>
 #include <vector>
+#include <unordered_map>
 class Aircraft;
 
 struct AircraftData
@@ -86,21 +87,24 @@ struct AttackData
 {
     sf::Time                        chargingTime = sf::Seconds(0.f);
     bool                            attackInPlayerDirection;
-    std::vector<float>              projectileSpeeds;
-    std::vector<Projectile::Type>   projectileTypes;
-    std::vector<sf::Vector2f>       projectileOffsets;
-    std::vector<Attack::Behavior>   projectileBehavior;
+    int                             repeats;
+    sf::Time                        repeatCooldown;
+    std::vector<float>              speeds;
+    std::vector<Projectile::Type>   types;
+    std::vector<sf::Vector2f>       offsets;
+    std::vector<sf::Vector2f>       directions;
+    std::vector<Attack::Behavior>   behavior;
     sf::Time                        cooldown;
 };
 
-std::vector<AircraftData>           initializeAircraftData();
-std::vector<AircraftTextureData>    initializeAircraftTextureData();
-std::vector<ProjectileData>         initializeProjectileData();
-std::vector<PickupData>             initializePickupData();
-std::vector<ParticleData>           initializeParticleData();
-std::vector<AnimationData>          initializeAnimationData();
-std::vector<ButtonData>             initializeButtonData();
-std::vector<LevelData>              initializeLevelData();
-std::vector<AttackData>             initializeAttackData();
+std::vector<AircraftData>               initializeAircraftData();
+std::vector<AircraftTextureData>        initializeAircraftTextureData();
+std::vector<ProjectileData>             initializeProjectileData();
+std::vector<PickupData>                 initializePickupData();
+std::vector<ParticleData>               initializeParticleData();
+std::vector<AnimationData>              initializeAnimationData();
+std::vector<ButtonData>                 initializeButtonData();
+std::vector<LevelData>                  initializeLevelData();
+std::unordered_map<int, AttackData>     initializeAttackData();
 
 #endif // DATATABLE_HPP

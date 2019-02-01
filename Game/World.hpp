@@ -61,7 +61,7 @@ class World
         {
             float x;
             float y;
-            Aircraft::Type type;
+            Aircraft::Type type; ///Change to int
         };
 
         sf::RenderTarget&   mTarget;

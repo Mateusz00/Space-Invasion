@@ -162,10 +162,13 @@ std::vector<LevelData> initializeLevelData()
     return data;
 }
 
-std::vector<AttackData> initializeAttackData()
+std::unordered_map<int, AttackData> initializeAttackData();
 {
-    std::vector<AttackData> data; // Size of vector depends on number of elements in attacks.xml (stores info about file paths)
+    std::unordered_map<int, AttackData> data;
+    // For every tag in attacks.xml: get path, get all data, create id, data pair in map
+    // Size of vector depends on number of elements in attacks.xml (stores info about file paths)(?)
     // TODO: Add function that will get number of attacks, and another one for loading data about them
+    // Do the same for AircraftData
 
     return data;
 }
