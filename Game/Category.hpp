@@ -11,6 +11,7 @@ namespace Category
         EnemyProjectile,
         AlliedProjectile,
         Pickup,
+        Attack,
         None
     };
 }

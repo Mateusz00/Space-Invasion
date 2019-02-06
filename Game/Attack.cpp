@@ -1,4 +1,5 @@
 #include "Attack.hpp"
+#include "Category.hpp"
 #include "DataTable.hpp"
 #include "CommandQueue.hpp"
 #include "Utility.hpp"
@@ -7,11 +8,13 @@ namespace
     const std::unordered_map<int, AttackData> attackData = initializeAttackData();
 }
 
-Attack::Attack(int id, const TextureHolder& textures, sf::Vector2f pos)
-    : mAttackID(id),
+Attack::Attack(int id, const TextureHolder& textures, sf::Vector2f pos, World& world, AttackManager& manager)
+    : Entity(1, false, world),
+      mAttackID(id),
       mTextures(textures),
       mIsActive(false),
-      mPosition(pos)
+      mPosition(pos),
+      mAttackManager(manager)
 {
     mAttackCommand.mCategories.push_back(Category::AirLayer);
     mAttackCommand.mAction = [this](SceneNode& node, sf::Time)
@@ -21,9 +24,9 @@ Attack::Attack(int id, const TextureHolder& textures, sf::Vector2f pos)
     };
 }
 
-void Attack::pushProjectile(Projectile* projectile)
+Attack::~Attack()
 {
-    mProjectiles.push_back(projectile);
+    // Notify AttackManager about removal of Attack
 }
 
 void Attack::update(sf::Time dt, CommandQueue& commandQueue)
@@ -50,11 +53,46 @@ void Attack::createProjectile(SceneNode& layer, int num)
     projectile->setPosition(mPosition + offset);
     projectile->setVelocity(velocity);
 
-    pushProjectile(projectile.get());
-    layer.attachChild(std::move(projectile));
+    mProjectiles.push_back(std::move(projectile));
 }
 
-void Attack::setActive(bool isActive)
+void Attack::activate()
 {
-    mIsActive = isActive;
+    mIsActive = true;
+}
+
+void Attack::deactivate()
+{
+    mIsActive = false;
+    mProjectiles.clear();
+}
+
+bool Attack::isActive() const
+{
+    return mIsActive;
+}
+
+Category::Type Attack::getCategory()
+{
+    return Category::Attack;
+}
+
+sf::FloatRect Attack::getBoundingRect()
+{
+    // Rect containing all projectiles
+}
+
+void Attack::drawCurrent(sf::RenderTarget&, sf::RenderStates)
+{
+    // Draw projectiles
+}
+
+void Attack::updateCurrent(sf::Time, CommandQueue&)
+{
+    // Update movement
+}
+
+bool Attack::isMarkedForRemoval()
+{
+    // True when all projectiles are markedForRemoval or mProjectiles is empty and attack is active
 }

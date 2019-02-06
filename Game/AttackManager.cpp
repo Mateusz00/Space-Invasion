@@ -1,8 +1,9 @@
 #include "AttackManager.hpp"
 #include "CommandQueue.hpp"
 
-AttackManager::AttackManager(const TextureHolder& textures)
-    : mTextures(textures)
+AttackManager::AttackManager(const TextureHolder& textures, World& world)
+    : mTextures(textures),
+      mWorld(world)
 {
 }
 
@@ -28,6 +29,10 @@ void AttackManager::forceCooldown(sf::Time cooldown)
 
 void AttackManager::update(sf::Time dt, CommandQueue commandQueue)
 {
+    mCurrentAttacks.cl
+
+    for(auto& attack : mCurrentAttacks)
+        attack.update(dt, commandQueue);
     // First delete finished attacks then let attack send commands
 }
 
