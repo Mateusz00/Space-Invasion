@@ -17,7 +17,7 @@ std::vector<AircraftData> initializeAircraftData()
     return data;
 }
 
-std::vector<AircraftTextureData> initializeAircraftTextureData();
+std::vector<AircraftTextureData> initializeAircraftTextureData()
 {
     std::vector<AircraftTextureData> data(2);
 
@@ -162,7 +162,7 @@ std::vector<LevelData> initializeLevelData()
     return data;
 }
 
-std::unordered_map<int, AttackData> initializeAttackData();
+std::unordered_map<int, AttackData> initializeAttackData()
 {
     std::unordered_map<int, AttackData> data;
     // For every tag in attacks.xml: get path, get all data, create id, data pair in map

@@ -1,9 +1,14 @@
 #include "AttackManager.hpp"
+#include "Attack.hpp"
+#include "DataTable.hpp"
 #include "CommandQueue.hpp"
+#include "Utility.hpp"
+#include "Attacks.hpp"
 
-AttackManager::AttackManager(const TextureHolder& textures, World& world)
+AttackManager::AttackManager(const TextureHolder& textures, World& world, int shooterID)
     : mTextures(textures),
-      mWorld(world)
+      mWorld(world),
+      mShooterID(shooterID)
 {
 }
 
@@ -12,14 +17,22 @@ void AttackManager::pushAttack(int id, int probability)
     mAttacks.push_back(std::make_pair(id, probability));
 }
 
-void AttackManager::useAttack()
+void AttackManager::useAttack(int id, CommandQueue& commands)
 {
+    Command launchAttack;
+    launchAttack.mCategories.push_back(Category::AirLayer);
+    launchAttack.mAction = [this, id](SceneNode& layer, sf::Time)
+    {
+        std::unique_ptr<Attack> attack(new Attack(id, mTextures, mPosition, mWorld, mShooterID));
+        layer.attachChild(std::move(attack));
+    };
 
+    commands.push(launchAttack);
 }
 
-void AttackManager::forceAttack(int id) // For players attacks
+void AttackManager::forceAttack(int id, CommandQueue& commands) // For players attacks
 {
-
+    useAttack(id, commands);
 }
 
 void AttackManager::forceCooldown(sf::Time cooldown)
@@ -27,13 +40,43 @@ void AttackManager::forceCooldown(sf::Time cooldown)
     mCooldown = cooldown;
 }
 
-void AttackManager::update(sf::Time dt, CommandQueue commandQueue)
+void AttackManager::update(sf::Time dt, CommandQueue& commandQueue)
 {
-    mCurrentAttacks.cl
+    int attackID;
+
+    if(mCooldown <= sf::Time::Zero)
+    {
+        attackID = getNewAttack();
+        useAttack(attackID, commandQueue);
+        mCooldown += Attacks::attackData.at(attackID).cooldown;
+    }
 
     for(auto& attack : mCurrentAttacks)
-        attack.update(dt, commandQueue);
-    // First delete finished attacks then let attack send commands
+    {
+        if(attack->isBarrier())
+            attack->updatePosition(mPosition);
+
+        attack->update(dt, commandQueue);
+    }
+
+    clearFinishedAttacks();
+}
+
+int AttackManager::getNewAttack() const
+{
+    int range1 = 0, range2 = 0, num = randomInt(1, 100);
+
+    for(const auto& attack : mAttacks)
+    {
+        range2 += attack.second; // probability
+
+        if(num > range1 && num <= range2)
+            return attack.first; // id
+
+        range1 += attack.second;
+    }
+
+    return 0;
 }
 
 void AttackManager::updatePosition(sf::Vector2f position)
@@ -43,5 +86,12 @@ void AttackManager::updatePosition(sf::Vector2f position)
 
 void AttackManager::clearFinishedAttacks()
 {
-
+    for(auto attack = mCurrentAttacks.begin(); attack != mCurrentAttacks.end(); ++attack)
+    {
+        if(!(*attack)->isActive())
+        {
+            (*attack)->markForRemoval();
+            mCurrentAttacks.erase(attack);
+        }
+    }
 }

@@ -141,7 +141,7 @@ void World::buildWorld()
 {
     for(int i=0; i < LayerCount; ++i)
     {
-        Category::Type category = (i == LowerAir) ? Category::AirLayer : Category::None; // LowerAir for particles, UpperAir for collidables
+        Category::Type category = (i == LowerAir) ? Category::AirLayer : Category::None;
         SceneNode::Ptr layer(new SceneNode(category));
         mSceneLayers[i] = layer.get();
         mSceneGraph.attachChild(std::move(layer));

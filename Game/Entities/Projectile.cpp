@@ -32,10 +32,10 @@ Projectile::Projectile(Type type, const TextureHolder& textures, World& world, i
 
 float Projectile::getMaxSpeed() const
 {
-    return table[mType].speed;
+    return mSpeed;
 }
 
-int    Projectile::getDamage() const
+int Projectile::getDamage() const
 {
     return table[mType].damage;
 }
@@ -66,6 +66,10 @@ sf::FloatRect Projectile::getBoundingRect() const
 int Projectile::getShootersID() const
 {
     return mShooterID;
+}
+
+void Projectile::setBehavior(int)
+{
 }
 
 void Projectile::updateCurrent(sf::Time dt, CommandQueue& commands)

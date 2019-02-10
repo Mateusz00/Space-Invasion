@@ -3,7 +3,7 @@
 #include "HealthBar.hpp"
 #include "../Utility.hpp"
 #include "../World.hpp"
-#include "../DataaircraftInfo.hpp"
+#include "../DataTable.hpp"
 #include "../AnimationNode.hpp"
 #include <vector>
 #include <memory>
@@ -16,7 +16,7 @@ namespace
 Aircraft::Aircraft(int typeID, const TextureHolder& textures, const FontHolder& fonts, World& world, int id)
     : Entity(aircraftInfo[typeID].hitpoints, true, world),
       mTypeID(typeID),
-      mSprite(textures.get(aircraftInfo[typeID].texture), aircraftInfo[typeID].textureRect),
+      mSprite(textures.get(textureInfo[typeID].texture), textureInfo[typeID].textureRect),
       mFireRateLevel(2),
       mSpreadLevel(1),
       mMissileAmmo(2),
@@ -113,8 +113,8 @@ void Aircraft::setIdentifier(int id)
 
 void Aircraft::fire()
 {
-    if(aircraftInfo[mTypeID].fireInterval.asSeconds() > 0)
-        mIsFiring = true;
+    //if(aircraftInfo[mTypeID].fireInterval.asSeconds() > 0)
+        //mIsFiring = true;
 }
 
 void Aircraft::launchMissile()
@@ -145,12 +145,12 @@ void Aircraft::updateRollAnimation(sf::Time dt)
 {
     mLastRoll += dt;
 
-    if(aircraftInfo[mTypeID].hasRollAnimation && mLastRoll.asSeconds() > 0.1f)
+    if(textureInfo[mTypeID].hasRollAnimation && mLastRoll.asSeconds() > 0.1f)
     {
         sf::IntRect currentRect = mSprite.getTextureRect();
-        sf::IntRect defaultRect = aircraftInfo[mTypeID].textureRect;
+        sf::IntRect defaultRect = textureInfo[mTypeID].textureRect;
 
-        if(getVelocity().x > 0.f && currentRect.left < defaultRect.width * (aircraftInfo[mTypeID].spriteNumber-1))
+        if(getVelocity().x > 0.f && currentRect.left < defaultRect.width * (textureInfo[mTypeID].spriteNumber-1))
         {
             currentRect.left += currentRect.width;
             mLastRoll = sf::Time::Zero;
@@ -233,7 +233,7 @@ void Aircraft::launchProjectiles(sf::Time dt, CommandQueue& commands)
     {
         commands.push(mFireCommand);
         getWorld().getSoundPlayer().play((mIsEnemy ? Sound::EnemyGun : Sound::AllyGun), getWorldPosition());
-        mFireCooldown += aircraftInfo[mTypeID].fireInterval / static_cast<float>(mFireRateLevel);
+        //mFireCooldown += aircraftInfo[mTypeID].fireInterval / static_cast<float>(mFireRateLevel);
     }
     else if(mFireCooldown > sf::Time::Zero)
     {

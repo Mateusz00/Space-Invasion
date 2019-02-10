@@ -91,6 +91,7 @@ int Player::getID() const
 {
     return mIdentifier;
 }
+
 void Player::setName(const std::string& name)
 {
     mName = name;

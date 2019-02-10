@@ -2,7 +2,8 @@
 StraightLine - 0
 Guided - 1
 Spiral - 2
-Orbital - 3
+Orbiting - 3
+Barrier - 4
 
 [Chargetime]
 If set to 0 then it means that this attack is instant

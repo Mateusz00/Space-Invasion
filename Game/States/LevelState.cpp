@@ -7,8 +7,7 @@
 #include <SFML/System/Vector2.hpp>
 #include <memory>
 #include <vector>
-
-namespace level
+namespace
 {
     const std::vector<LevelData> levelInfo = initializeLevelData();
 }
@@ -23,7 +22,7 @@ LevelState::LevelState(Context context, StateStack& stateStack)
 {
     mProfile.setCurrentLevel(-1);
 
-    for(int i=0; i < level::levelInfo.size(); ++i)
+    for(int i=0; i < levelInfo.size(); ++i)
         createLevelButton(i);
 
     mLevelButtons[0]->setLocked(false); // First level should always be unlocked
@@ -101,9 +100,9 @@ bool LevelState::handleEvent(const sf::Event& event)
 
 void LevelState::createLevelButton(int i)
 {
-    int id = level::levelInfo[i].id;
-    std::unique_ptr<LevelButton> levelButton(new LevelButton(getContext(), GUIButton::LevelButton, level::levelInfo[i].name, id));
-    levelButton->setPosition(level::levelInfo[i].x, level::levelInfo[i].y);
+    int id = levelInfo[i].id;
+    std::unique_ptr<LevelButton> levelButton(new LevelButton(getContext(), GUIButton::LevelButton, levelInfo[i].name, id));
+    levelButton->setPosition(levelInfo[i].x, levelInfo[i].y);
     levelButton->centerButtonOrigin();
     levelButton->setCallback([this, id]
     {
@@ -124,7 +123,7 @@ void LevelState::createConnectionLines()
 {
     for(int i=0; i < mLevelButtons.size(); ++i)
     {
-        const std::vector<int>& levelDependencies = level::levelInfo[i].levelDependencies;
+        const std::vector<int>& levelDependencies = levelInfo[i].levelDependencies;
 
         // Get first point of every line segment(center of the button)
         sf::FloatRect box = mLevelButtons[i]->getBoundingRect();
@@ -164,7 +163,7 @@ void LevelState::updateLevelStates()
     for(int levelID : completedLevels)
     {
         mLevelButtons[levelID]->setCompleted();
-        std::vector<int> unlock = level::levelInfo[levelID].levelDependencies;
+        std::vector<int> unlock = levelInfo[levelID].levelDependencies;
 
         for(int id : unlock)
             mLevelButtons[id]->setLocked(false);

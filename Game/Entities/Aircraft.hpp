@@ -15,7 +15,7 @@ class Aircraft : public Entity
     public:
         enum Type{Ally, Enemy, TypeCount};
 
-                                Aircraft(Type, const TextureHolder&, const FontHolder&, World&, int id = 600);
+                                Aircraft(int, const TextureHolder&, const FontHolder&, World&, int id = 600);
         Category::Type          getCategory() const override;
         void                    increaseFireRate();
         void                    increaseSpread();

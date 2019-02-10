@@ -85,7 +85,7 @@ struct LevelData
 
 struct AttackData
 {
-    sf::Time                        chargingTime = sf::Seconds(0.f);
+    sf::Time                        chargingTime = sf::seconds(0.f);
     bool                            attackInPlayerDirection;
     int                             repeats;
     sf::Time                        repeatCooldown;

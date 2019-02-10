@@ -25,6 +25,7 @@ class Projectile : public Entity
         virtual sf::FloatRect   getBoundingRect() const override;
         virtual void            onCollision(Entity&) override;
         int                     getShootersID() const;
+        void                    setBehavior(int);
 
     private:
         virtual void            updateCurrent(sf::Time, CommandQueue&) override;
@@ -34,6 +35,7 @@ class Projectile : public Entity
         sf::Sprite      mSprite;
         sf::Vector2f    mTargetDirection;
         int             mShooterID;
+        float           mSpeed; // TODO: Initialize it in ctor
 };
 
 #endif // PROJECTILE_HPP
