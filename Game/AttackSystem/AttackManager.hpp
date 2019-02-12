@@ -1,7 +1,7 @@
 #ifndef ATTACKMANAGER_HPP
 #define ATTACKMANAGER_HPP
 
-#include "ResourcesID.hpp"
+#include "../ResourcesID.hpp"
 #include <SFML/System/Time.hpp>
 #include <SFML/System/Vector2.hpp>
 class CommandQueue;

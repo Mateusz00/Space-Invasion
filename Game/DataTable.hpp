@@ -4,7 +4,7 @@
 #include "ResourcesID.hpp"
 #include "Entities/Projectile.hpp"
 #include "GUI/GUIButton.hpp"
-#include "Attack.hpp"
+#include "AttackSystem/Attack.hpp"
 #include <SFML/System/Time.hpp>
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/Color.hpp>

@@ -1,8 +1,8 @@
 #include "AttackManager.hpp"
 #include "Attack.hpp"
-#include "DataTable.hpp"
-#include "CommandQueue.hpp"
-#include "Utility.hpp"
+#include "../DataTable.hpp"
+#include "../CommandQueue.hpp"
+#include "../Utility.hpp"
 #include "Attacks.hpp"
 
 AttackManager::AttackManager(const TextureHolder& textures, World& world, int shooterID)

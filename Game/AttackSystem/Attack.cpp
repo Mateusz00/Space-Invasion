@@ -1,9 +1,9 @@
 #include "Attack.hpp"
 #include "Attacks.hpp"
-#include "Category.hpp"
-#include "DataTable.hpp"
-#include "CommandQueue.hpp"
-#include "Utility.hpp"
+#include "../Category.hpp"
+#include "../DataTable.hpp"
+#include "../CommandQueue.hpp"
+#include "../Utility.hpp"
 using namespace Attacks;
 
 Attack::Attack(int id, const TextureHolder& textures, sf::Vector2f pos, World& world, int shooterID)

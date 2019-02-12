@@ -1,10 +1,10 @@
 #ifndef ATTACK_HPP
 #define ATTACK_HPP
 
-#include "Projectile.hpp"
-#include "Entity.hpp"
-#include "ResourcesID.hpp"
-#include "Command.hpp"
+#include "../Entities/Projectile.hpp"
+#include "../Entities/Entity.hpp"
+#include "../ResourcesID.hpp"
+#include "../Command.hpp"
 #include <SFML/System/Time.hpp>
 #include <vector>
 class CommandQueue;

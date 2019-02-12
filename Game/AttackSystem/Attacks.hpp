@@ -1,7 +1,7 @@
 #ifndef ATTACKS_HPP
 #define ATTACKS_HPP
 
-#include "DataTable.hpp"
+#include "../DataTable.hpp"
 
 namespace Attacks
 {
