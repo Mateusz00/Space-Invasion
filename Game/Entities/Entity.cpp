@@ -6,7 +6,6 @@ using ListIterator = std::list<Entity*>::iterator;
 
 Entity::Entity(int hitpoints, bool isCollidable, World& world)
     : mHitpoints(hitpoints),
-      mIsCollidable(isCollidable),
       mWorld(world)
 {
     if(isCollidable)
@@ -17,6 +16,14 @@ Entity::~Entity()
 {
     std::cout << "Deleting Collidable!" << std::endl;
     mWorld.removeCollidable(this);
+}
+
+Entity& Entity::operator=(const Entity& other)
+{
+    setVelocity(other.getVelocity());
+    setHitpoints(other.getHitpoints());
+    mPosition = other.getPositionOnList();
+    return *this;
 }
 
 int Entity::getHitpoints() const
@@ -76,7 +83,7 @@ void Entity::destroy()
     mHitpoints = 0;
 }
 
-ListIterator& Entity::getPositionOnList()
+ListIterator Entity::getPositionOnList() const
 {
     return mPosition;
 }

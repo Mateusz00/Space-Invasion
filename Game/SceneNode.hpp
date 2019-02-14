@@ -30,6 +30,7 @@ class SceneNode : public sf::Drawable, public sf::Transformable
         virtual Category::Type  getCategory() const;
         virtual sf::FloatRect   getBoundingRect() const;
         void                    removeWrecks();
+        virtual bool            isMarkedForRemoval() const;
 
     private:
         virtual void    draw(sf::RenderTarget&, sf::RenderStates) const override final;
@@ -37,7 +38,6 @@ class SceneNode : public sf::Drawable, public sf::Transformable
         void            drawChildren(sf::RenderTarget&, sf::RenderStates) const;
         virtual void    updateCurrent(sf::Time, CommandQueue&);
         void            updateChildren(sf::Time, CommandQueue&);
-        virtual bool    isMarkedForRemoval() const;
         virtual void    onRemoval();
 
         Category::Type      mCategory;

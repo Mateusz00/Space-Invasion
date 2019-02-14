@@ -16,13 +16,8 @@ Attack::Attack(int id, const TextureHolder& textures, sf::Vector2f pos, World& w
       mShooterID(shooterID)
 {
     const auto projectileNumber = attackData.at(mAttackID).types.size();
-
-    mAttackCommand.mCategories.push_back(Category::AirLayer);
-    mAttackCommand.mAction = [this, projectileNumber](SceneNode& node, sf::Time)
-    {
-        for(int i=0; i < projectileNumber; ++i)
-            createProjectile(node, i);
-    };
+    for(int i=0; i < projectileNumber; ++i)
+        createProjectile(i);
 }
 
 Attack::~Attack()
@@ -32,23 +27,26 @@ Attack::~Attack()
 
 void Attack::update(sf::Time dt, CommandQueue& commandQueue)
 {
-    // Delete all projectiles that are marked for removal
+    auto iter = std::remove_if(mProjectiles.begin(), mProjectiles.end(), std::mem_fn(&Projectile::isMarkedForRemoval));
+    mProjectiles.erase(iter, mProjectiles.end());
+
     //Complete later
 }
 
-void Attack::createProjectile(SceneNode& layer, int num)
+void Attack::createProjectile(int num)
 {
-    /*Projectile::Type type = attackData.at(mAttackID).types[num];
-    mProjectiles.emplace_back(type, mTextures, getWorld(), mShooterID);
-    auto projectile = mProjectiles.back();
+    Projectile::Type type = attackData.at(mAttackID).types[num];
+    std::unique_ptr<Projectile> projectile(new Projectile(type, mTextures, getWorld(), mShooterID));
 
     sf::Vector2f offset(attackData.at(mAttackID).offsets[num]);
     sf::Vector2f direction(unitVector(attackData.at(mAttackID).directions[num]));
     sf::Vector2f velocity(direction * attackData.at(mAttackID).speeds[num]);
 
-    projectile.setBehavior(attackData.at(mAttackID).behavior[num]);
-    projectile.setPosition(mPosition + offset);
-    projectile.setVelocity(velocity);*/
+    projectile->setBehavior(attackData.at(mAttackID).behavior[num]);
+    projectile->setPosition(mPosition + offset);
+    projectile->setVelocity(velocity);
+
+    mProjectiles.push_back(std::move(projectile));
 }
 
 void Attack::activate()
@@ -77,7 +75,7 @@ sf::FloatRect Attack::getBoundingRect() const
     // Rect containing all projectiles
 }
 
-void Attack::drawCurrent(sf::RenderTarget&, sf::RenderStates) const
+void Attack::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
     // Draw projectiles
 }

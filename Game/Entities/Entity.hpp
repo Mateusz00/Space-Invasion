@@ -14,6 +14,7 @@ class Entity : public SceneNode
 
         explicit                Entity(int hitpoints, bool isCollidable, World&);
         virtual                 ~Entity();
+        Entity&                 operator=(const Entity& other);
         int                     getHitpoints() const;
         void                    setHitpoints(int hitpoints);
         sf::Vector2f            getVelocity() const;
@@ -24,7 +25,7 @@ class Entity : public SceneNode
         void                    damage(int hitpoints);
         void                    repair(int hitpoints);
         void                    destroy();
-        ListIterator&           getPositionOnList();
+        ListIterator            getPositionOnList() const;
         World&                  getWorld() const;
         virtual sf::FloatRect   getLocalBounds() const;
         virtual void            onCollision(Entity&);
@@ -37,7 +38,6 @@ class Entity : public SceneNode
     private:
         sf::Vector2f            mVelocity;
         int                     mHitpoints;
-        bool                    mIsCollidable;
         World&                  mWorld;
         ListIterator            mPosition;
 };

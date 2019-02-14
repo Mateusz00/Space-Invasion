@@ -56,7 +56,7 @@ void AttackManager::update(sf::Time dt, CommandQueue& commandQueue)
         if(attack->isBarrier())
             attack->updatePosition(mPosition);
 
-        attack->update(dt, commandQueue);
+        attack->update(dt, commandQueue); // ensures that attacks are updated after AttackManager and not earlier(could happen while updating scene graph)
     }
 
     clearFinishedAttacks();

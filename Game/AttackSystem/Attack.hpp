@@ -39,16 +39,15 @@ class Attack : public Entity
         virtual void            updateCurrent(sf::Time, CommandQueue&) override;
         void                    activate();
         void                    deactivate();
-        void                    createProjectile(SceneNode& layer, int num);
+        void                    createProjectile(int num);
 
-        std::vector<Projectile>     mProjectiles;
-        int                         mAttackID;
-        const TextureHolder&        mTextures;
-        bool                        mIsActive;
-        bool                        mIsReadyToDelete;
-        sf::Vector2f                mPosition;
-        Command                     mAttackCommand;
-        int                         mShooterID;
+        std::vector<std::unique_ptr<Projectile>>    mProjectiles;
+        int                                         mAttackID;
+        const TextureHolder&                        mTextures;
+        bool                                        mIsActive;
+        bool                                        mIsReadyToDelete;
+        sf::Vector2f                                mPosition;
+        int                                         mShooterID;
 };
 
 #endif // ATTACK_HPP
