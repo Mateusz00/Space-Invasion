@@ -4,7 +4,7 @@
 #include "../DataTable.hpp"
 #include "../CommandQueue.hpp"
 #include "../Utility.hpp"
-using namespace Attacks;
+using Attacks::attackData;
 
 Attack::Attack(int id, const TextureHolder& textures, sf::Vector2f pos, World& world, int shooterID)
     : Entity(1, false, world),

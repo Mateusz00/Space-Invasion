@@ -4,6 +4,6 @@
     <repeat cooldown="0" times="0"></repeat>
     <cooldown>3</cooldown>
     <projectiles>
-        <projectile id="2" speed="130" aimed="yes" offsets="" behaviorID="1" direction=""></projectile>
+        <projectile id="2" speed="130" aimed="yes" offsets="0 30" behaviorID="1" direction="0 30"></projectile>
     </projectiles>
 </attack>

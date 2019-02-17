@@ -5,7 +5,8 @@
 
 namespace Attacks
 {
-    const std::unordered_map<int, AttackData> attackData = initializeAttackData();
+    extern const std::unordered_map<int, AttackData> attackData;
 }
 
 #endif // ATTACKS_HPP
+

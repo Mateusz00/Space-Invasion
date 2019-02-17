@@ -191,11 +191,12 @@ std::unordered_map<int, AttackData> initializeAttackData()
         // Load all values
         AttackData attackData;
 
-        xml_node repeatNode     = attackDoc.child("repeat");
-        xml_node projectiles    = attackDoc.child("projectiles");
+        xml_node mainNode       = attackDoc.child("attack");
+        xml_node repeatNode     = mainNode.child("repeat");
+        xml_node projectiles    = mainNode.child("projectiles");
 
-        attackData.chargingTime     = sf::seconds(std::stof(attackDoc.child("chargetime").value()));
-        attackData.cooldown         = sf::seconds(std::stof(attackDoc.child("cooldown").value()));
+        attackData.chargingTime     = sf::seconds(std::stof(mainNode.child("chargetime").text().get()));
+        attackData.cooldown         = sf::seconds(std::stof(mainNode.child("cooldown").text().get()));
         attackData.repeatCooldown   = sf::seconds(repeatNode.attribute("cooldown").as_float());
         attackData.repeats          = repeatNode.attribute("times").as_int();
 
@@ -207,12 +208,14 @@ std::unordered_map<int, AttackData> initializeAttackData()
             std::string::size_type index;
             AttackData::ProjectileInfo projectileInfo;
 
-            projectileInfo.offset      = sf::Vector2f(std::stof(offsetStr, &index), std::stof(offsetStr.substr(index)));
-            projectileInfo.direction   = sf::Vector2f(std::stof(directionStr, &index), std::stof(directionStr.substr(index)));
-            projectileInfo.speed       = projectile.attribute("speed").as_float();
-            projectileInfo.type        = static_cast<Projectile::Type>(projectile.attribute("id").as_int());
-            projectileInfo.behavior    = static_cast<Attack::Behavior>(projectile.attribute("behaviorID").as_int());
-            projectileInfo.isAimed     = projectile.attribute("isAimed").as_bool();
+            projectileInfo.offset.x      = std::stof(offsetStr, &index);
+            projectileInfo.offset.y      = std::stof(offsetStr.substr(index));
+            projectileInfo.direction.x   = std::stof(directionStr, &index);
+            projectileInfo.direction.y   = std::stof(directionStr.substr(index));
+            projectileInfo.speed         = projectile.attribute("speed").as_float();
+            projectileInfo.type          = static_cast<Projectile::Type>(projectile.attribute("id").as_int());
+            projectileInfo.behavior      = static_cast<Attack::Behavior>(projectile.attribute("behaviorID").as_int());
+            projectileInfo.isAimed       = projectile.attribute("isAimed").as_bool();
 
             switch(projectileInfo.behavior)
             {
