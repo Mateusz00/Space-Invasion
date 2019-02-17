@@ -85,15 +85,27 @@ struct LevelData
 
 struct AttackData
 {
-    sf::Time                        chargingTime = sf::seconds(0.f);
+    union BehaviorData
+    {
+        float maxDeviation;
+        float radius;
+    };
+    struct ProjectileInfo
+    {
+        float               speed;
+        Projectile::Type    type;
+        sf::Vector2f        offset;
+        sf::Vector2f        direction;
+        Attack::Behavior    behavior;
+        BehaviorData        behaviorData;
+        bool                isAimed;
+    };
+
+    sf::Time                        chargingTime;
     bool                            attackInPlayerDirection;
     int                             repeats;
     sf::Time                        repeatCooldown;
-    std::vector<float>              speeds;
-    std::vector<Projectile::Type>   types;
-    std::vector<sf::Vector2f>       offsets;
-    std::vector<sf::Vector2f>       directions;
-    std::vector<Attack::Behavior>   behavior;
+    std::vector<ProjectileInfo>     projectiles;
     sf::Time                        cooldown;
 };
 

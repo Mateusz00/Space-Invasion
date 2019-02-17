@@ -1,5 +1,6 @@
 #include "DataTable.hpp"
 #include "AnimationNode.hpp"
+#include "Utility.hpp"
 #include "Entities/Aircraft.hpp"
 #include "Entities/Projectile.hpp"
 #include "Entities/Pickup.hpp"
@@ -164,11 +165,72 @@ std::vector<LevelData> initializeLevelData()
 
 std::unordered_map<int, AttackData> initializeAttackData()
 {
-    std::unordered_map<int, AttackData> data;
-    // For every tag in attacks.xml: get path, get all data, create id, data pair in map
-    // Size of vector depends on number of elements in attacks.xml (stores info about file paths)(?)
-    // TODO: Add function that will get number of attacks, and another one for loading data about them
-    // Do the same for AircraftData
+    using namespace pugi;
+    std::unordered_map<int, AttackData>  data;
+    std::unordered_map<int, std::string> pathsMap;
+
+    // Get paths for attacks files
+    xml_document pathsDoc;
+    xml_parse_result result = pathsDoc.load_file("Attacks/attacks.xml");
+    if(!result)
+        throw XMLParseException(result, "attacks.xml");
+
+    xml_node paths = pathsDoc.child("attacks");
+    for(xml_node path : paths.children())
+        pathsMap.emplace(path.attribute("id").as_int(), (std::string("Attacks/") + path.attribute("file").as_string()));
+
+    // Load attacks from corresponding files
+    for(const auto& path : pathsMap)
+    {
+        // Load file
+        xml_document attackDoc;
+        xml_parse_result result = attackDoc.load_file(path.second.c_str());
+        if(!result)
+            throw XMLParseException(result, path.second);
+
+        // Load all values
+        AttackData attackData;
+
+        xml_node repeatNode     = attackDoc.child("repeat");
+        xml_node projectiles    = attackDoc.child("projectiles");
+
+        attackData.chargingTime     = sf::seconds(std::stof(attackDoc.child("chargetime").value()));
+        attackData.cooldown         = sf::seconds(std::stof(attackDoc.child("cooldown").value()));
+        attackData.repeatCooldown   = sf::seconds(repeatNode.attribute("cooldown").as_float());
+        attackData.repeats          = repeatNode.attribute("times").as_int();
+
+        // Load info about each projectile of an attack
+        for(xml_node projectile : projectiles.children())
+        {
+            std::string offsetStr(projectile.attribute("offsets").as_string());
+            std::string directionStr(projectile.attribute("direction").as_string());
+            std::string::size_type index;
+            AttackData::ProjectileInfo projectileInfo;
+
+            projectileInfo.offset      = sf::Vector2f(std::stof(offsetStr, &index), std::stof(offsetStr.substr(index)));
+            projectileInfo.direction   = sf::Vector2f(std::stof(directionStr, &index), std::stof(directionStr.substr(index)));
+            projectileInfo.speed       = projectile.attribute("speed").as_float();
+            projectileInfo.type        = static_cast<Projectile::Type>(projectile.attribute("id").as_int());
+            projectileInfo.behavior    = static_cast<Attack::Behavior>(projectile.attribute("behaviorID").as_int());
+            projectileInfo.isAimed     = projectile.attribute("isAimed").as_bool();
+
+            switch(projectileInfo.behavior)
+            {
+                case Attack::Behavior::Barrier:
+                case Attack::Behavior::Orbiting:
+                    projectileInfo.behaviorData.radius = vectorLength(projectileInfo.offset);
+                    break;
+
+                case Attack::Behavior::Spiral:
+                    projectileInfo.behaviorData.maxDeviation = projectile.attribute("deviation").as_float();
+                    break;
+            }
+
+            attackData.projectiles.push_back(std::move(projectileInfo));
+        }
+
+        data.emplace(path.first, std::move(attackData));
+    }
 
     return data;
 }

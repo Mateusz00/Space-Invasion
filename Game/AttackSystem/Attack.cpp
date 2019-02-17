@@ -15,7 +15,7 @@ Attack::Attack(int id, const TextureHolder& textures, sf::Vector2f pos, World& w
       mPosition(pos),
       mShooterID(shooterID)
 {
-    const auto projectileNumber = attackData.at(mAttackID).types.size();
+    const auto projectileNumber = attackData.at(mAttackID).projectiles.size();
     for(int i=0; i < projectileNumber; ++i)
         createProjectile(i);
 }
@@ -35,14 +35,14 @@ void Attack::update(sf::Time dt, CommandQueue& commandQueue)
 
 void Attack::createProjectile(int num)
 {
-    Projectile::Type type = attackData.at(mAttackID).types[num];
+    Projectile::Type type = attackData.at(mAttackID).projectiles[num].type;
     std::unique_ptr<Projectile> projectile(new Projectile(type, mTextures, getWorld(), mShooterID));
 
-    sf::Vector2f offset(attackData.at(mAttackID).offsets[num]);
-    sf::Vector2f direction(unitVector(attackData.at(mAttackID).directions[num]));
-    sf::Vector2f velocity(direction * attackData.at(mAttackID).speeds[num]);
+    sf::Vector2f offset(attackData.at(mAttackID).projectiles[num].offset);
+    sf::Vector2f direction(unitVector(attackData.at(mAttackID).projectiles[num].direction));
+    sf::Vector2f velocity(direction * attackData.at(mAttackID).projectiles[num].speed);
 
-    projectile->setBehavior(attackData.at(mAttackID).behavior[num]);
+    projectile->setBehavior(attackData.at(mAttackID).projectiles[num].behavior);
     projectile->setPosition(mPosition + offset);
     projectile->setVelocity(velocity);
 
@@ -103,11 +103,11 @@ void Attack::markForRemoval()
 
 bool Attack::isBarrier() const
 {
-    const auto& behaviorArray = attackData.at(mAttackID).behavior;
+    const auto& projectilesArray = attackData.at(mAttackID).projectiles;
 
-    for(const auto& behavior : behaviorArray)
+    for(const auto& projectile : projectilesArray)
     {
-        if(behavior == Behavior::Barrier)
+        if(projectile.behavior == Behavior::Barrier)
             return true;
     }
 
