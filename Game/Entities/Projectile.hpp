@@ -20,12 +20,12 @@ class Projectile : public Entity
         float                   getMaxSpeed() const;
         int                     getDamage() const;
         bool                    isGuided() const;
-        void                    guideTowards(sf::Vector2f);
         virtual Category::Type  getCategory() const override;
         virtual sf::FloatRect   getBoundingRect() const override;
         virtual void            onCollision(Entity&) override;
         int                     getShootersID() const;
         void                    setBehavior(int);
+        int                     getBehavior() const;
 
     private:
         virtual void            updateCurrent(sf::Time, CommandQueue&) override;
@@ -35,6 +35,7 @@ class Projectile : public Entity
         sf::Sprite      mSprite;
         sf::Vector2f    mTargetDirection;
         int             mShooterID;
+        int             mBehavior;
         float           mSpeed; // TODO: Initialize it in ctor
 };
 

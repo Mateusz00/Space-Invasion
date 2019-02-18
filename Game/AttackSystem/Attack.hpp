@@ -8,11 +8,13 @@
 #include <SFML/System/Time.hpp>
 #include <vector>
 class CommandQueue;
+class Aircraft;
 class World;
 
 class Attack : public Entity
 {
     public:
+        using Targets = const std::vector<Aircraft*>&;
         enum Behavior
         {
             StraightLine,
@@ -22,7 +24,7 @@ class Attack : public Entity
             Barrier
         };
 
-                                Attack(int id, const TextureHolder&, sf::Vector2f pos, World&, int shooterID);
+                                Attack(int id, const TextureHolder&, sf::Vector2f pos, World&, int shooterID, Targets);
         virtual                 ~Attack();
         void                    update(sf::Time, CommandQueue&);
         bool                    isActive() const;
@@ -36,12 +38,14 @@ class Attack : public Entity
 
     private:
         virtual void            drawCurrent(sf::RenderTarget&, sf::RenderStates) const override;
-        virtual void            updateCurrent(sf::Time, CommandQueue&) override;
         void                    activate();
         void                    deactivate();
+        void                    createProjectiles();
         void                    createProjectile(int num);
+        sf::Vector2f            getClosestTarget(const Projectile*) const;
 
         std::vector<std::unique_ptr<Projectile>>    mProjectiles;
+        Targets                                     mPossibleTargets;
         int                                         mAttackID;
         const TextureHolder&                        mTextures;
         bool                                        mIsActive;

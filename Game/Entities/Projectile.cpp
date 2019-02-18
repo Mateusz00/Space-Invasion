@@ -45,11 +45,6 @@ bool Projectile::isGuided() const
     return (mType == Type::Missile);
 }
 
-void Projectile::guideTowards(sf::Vector2f position)
-{
-    mTargetDirection = unitVector(position - getWorldPosition());
-}
-
 Category::Type Projectile::getCategory() const
 {
     if(mType == EnemyBullet)
@@ -68,21 +63,21 @@ int Projectile::getShootersID() const
     return mShooterID;
 }
 
-void Projectile::setBehavior(int)
+void Projectile::setBehavior(int behaviorID)
 {
+    mBehavior = behaviorID;
+}
+
+int Projectile::getBehavior() const
+{
+    return mBehavior;
 }
 
 void Projectile::updateCurrent(sf::Time dt, CommandQueue& commands)
 {
-    if(isGuided())
-    {
-        sf::Vector2f newVelocity = unitVector(dt.asSeconds() * mTargetDirection * 170.f + getVelocity()); // getVelocity makes movement more parabolic
-        newVelocity *= getMaxSpeed();
-        setVelocity(newVelocity);
+    float angle = std::atan2(getVelocity().y, getVelocity().x);
+    setRotation(toDegree(angle) + 90.f);
 
-        float angle = std::atan2(newVelocity.y, newVelocity.x);
-        setRotation(toDegree(angle) + 90.f);
-    }
     Entity::updateCurrent(dt, commands);
 }
 

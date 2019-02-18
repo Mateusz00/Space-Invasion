@@ -276,41 +276,7 @@ void World::spawnEnemies()
 
 void World::guideHomingMissiles()
 {
-    Command enemyCollector;
-    enemyCollector.mCategories.push_back(Category::EnemyAircraft);
-    enemyCollector.mAction = castFunctor<Aircraft>([this](Aircraft& enemy, sf::Time dt)
-    {
-        if(!enemy.isMarkedForRemoval())
-            mActiveEnemies.push_back(&enemy);
-    });
-
-    Command homingCommand;
-    homingCommand.mCategories.push_back(Category::AlliedProjectile);
-    homingCommand.mAction = castFunctor<Projectile>([this](Projectile& missile, sf::Time dt)
-    {
-        if(!missile.isGuided())
-            return;
-
-        float smallestDistance = std::numeric_limits<float>::max();
-        Aircraft* closestEnemy = nullptr;
-
-        for(const auto& enemy : mActiveEnemies)
-        {
-            float enemyDistance = vectorLength(missile.getWorldPosition() - enemy->getWorldPosition());
-            if(enemyDistance < smallestDistance)
-            {
-                closestEnemy = enemy;
-                smallestDistance = enemyDistance;
-            }
-        }
-
-        if(closestEnemy)
-            missile.guideTowards(closestEnemy->getWorldPosition());
-    });
-
-    mCommandQueue.push(enemyCollector);
-    mCommandQueue.push(homingCommand);
-    mActiveEnemies.clear();
+    ///
 }
 
 void World::adaptPlayersPosition()
