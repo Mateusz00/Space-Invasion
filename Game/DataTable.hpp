@@ -88,7 +88,7 @@ struct AttackData
     union BehaviorData
     {
         float maxDeviation;
-        float radius;
+        float angularSpeed;
     };
     struct ProjectileInfo
     {

@@ -25,7 +25,6 @@ class Attack : public Entity
         };
 
                                 Attack(int id, const TextureHolder&, sf::Vector2f pos, World&, int shooterID, Targets);
-        virtual                 ~Attack();
         void                    update(sf::Time, CommandQueue&);
         bool                    isActive() const;
         virtual Category::Type  getCategory() const;

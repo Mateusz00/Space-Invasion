@@ -10,11 +10,12 @@ namespace
     const std::vector<ProjectileData> table = initializeProjectileData();
 }
 
-Projectile::Projectile(Type type, const TextureHolder& textures, World& world, int shooterID)
+Projectile::Projectile(Type type, const TextureHolder& textures, World& world, int shooterID, float speed)
     : Entity(1, true, world),
       mType(type),
       mSprite(textures.get(table[type].texture), table[type].textureRect),
-      mShooterID(shooterID)
+      mShooterID(shooterID),
+      mSpeed(speed)
 {
     centerOrigin(mSprite);
 

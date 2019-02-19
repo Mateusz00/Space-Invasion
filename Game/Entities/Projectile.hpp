@@ -16,7 +16,7 @@ class Projectile : public Entity
             TypeCount
         };
 
-                                Projectile(Type, const TextureHolder&, World&, int shooterID);
+                                Projectile(Type, const TextureHolder&, World&, int shooterID, float speed);
         float                   getMaxSpeed() const;
         int                     getDamage() const;
         bool                    isGuided() const;
@@ -36,7 +36,7 @@ class Projectile : public Entity
         sf::Vector2f    mTargetDirection;
         int             mShooterID;
         int             mBehavior;
-        float           mSpeed; // TODO: Initialize it in ctor
+        float           mSpeed;
 };
 
 #endif // PROJECTILE_HPP

@@ -221,7 +221,7 @@ std::unordered_map<int, AttackData> initializeAttackData()
             {
                 case Attack::Behavior::Barrier:
                 case Attack::Behavior::Orbiting:
-                    projectileInfo.behaviorData.radius = vectorLength(projectileInfo.offset);
+                    projectileInfo.behaviorData.angularSpeed = projectile.attribute("angularSpeed").as_float();
                     break;
 
                 case Attack::Behavior::Spiral:

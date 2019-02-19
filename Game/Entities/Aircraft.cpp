@@ -212,7 +212,7 @@ void Aircraft::shootBullets(SceneNode& layer, const TextureHolder& textures) con
 void Aircraft::createProjectile(SceneNode& layer, Projectile::Type type, float xOffset,
                                  float yOffset, const TextureHolder& textures) const
 {
-    std::unique_ptr<Projectile> projectile(new Projectile(type, textures, getWorld(), mIdentifier));
+    /*std::unique_ptr<Projectile> projectile(new Projectile(type, textures, getWorld(), mIdentifier));
 
     float direction = (!mIsEnemy) ? -1.f : 1.f; // Decides if offsets will make projectile closer to top of window or closer to bottom
     sf::Vector2f offset(mSprite.getLocalBounds().width * xOffset,
@@ -221,7 +221,7 @@ void Aircraft::createProjectile(SceneNode& layer, Projectile::Type type, float x
 
     projectile->setPosition(getWorldPosition() + offset);
     projectile->setVelocity(velocity * direction);
-    layer.attachChild(std::move(projectile));
+    layer.attachChild(std::move(projectile));*/
 }
 
 void Aircraft::launchProjectiles(sf::Time dt, CommandQueue& commands)

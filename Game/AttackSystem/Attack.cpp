@@ -20,27 +20,20 @@ Attack::Attack(int id, const TextureHolder& textures, sf::Vector2f pos, World& w
     createProjectiles();
 }
 
-Attack::~Attack()
-{
-    // Notify AttackManager about removal of Attack
-}
-
 void Attack::update(sf::Time dt, CommandQueue& commandQueue)
 {
     // Remove projectiles that are marked for removal
     auto iter = std::remove_if(mProjectiles.begin(), mProjectiles.end(), std::mem_fn(&Projectile::isMarkedForRemoval));
     mProjectiles.erase(iter, mProjectiles.end());
 
-    // Deactivate if no projectiles
-    // TODO: apply aim
+    if(mProjectiles.empty())
+        deactivate();
+
     // Update movement
     for(auto& projectile : mProjectiles)
     {
         switch(static_cast<Attack::Behavior>(projectile->getBehavior()))
         {
-            case Behavior::StraightLine:
-
-                break;
             case Behavior::Guided:
             {
                 sf::Vector2f newVel = unitVector(dt.asSeconds() * getClosestTarget(projectile.get()) * 170.f + getVelocity()); // getVelocity and 170.f makes movement more parabolic
@@ -72,19 +65,20 @@ void Attack::createProjectiles()
 void Attack::createProjectile(int num)
 {
     Projectile::Type type = attackData.at(mAttackID).projectiles[num].type;
-    std::unique_ptr<Projectile> projectile(new Projectile(type, mTextures, getWorld(), mShooterID));
+    float speed = attackData.at(mAttackID).projectiles[num].speed;
+    std::unique_ptr<Projectile> projectile(new Projectile(type, mTextures, getWorld(), mShooterID, speed));
 
+    sf::Vector2f direction;
     sf::Vector2f offset(attackData.at(mAttackID).projectiles[num].offset);
-
-    //if(attackData.at(mAttackID).projectiles[num].isAimed)
-        /// W.I.P.
-    //else
-        sf::Vector2f direction(unitVector(attackData.at(mAttackID).projectiles[num].direction));
-
-    sf::Vector2f velocity(direction * attackData.at(mAttackID).projectiles[num].speed);
-
-    projectile->setBehavior(attackData.at(mAttackID).projectiles[num].behavior);
     projectile->setPosition(mPosition + offset);
+    projectile->setBehavior(attackData.at(mAttackID).projectiles[num].behavior);
+
+    if(attackData.at(mAttackID).projectiles[num].isAimed && !mPossibleTargets.empty())
+        direction = unitVector(getClosestTarget(projectile.get()));
+    else
+        direction = unitVector(attackData.at(mAttackID).projectiles[num].direction);
+
+    sf::Vector2f velocity(direction * speed);
     projectile->setVelocity(velocity);
 
     mProjectiles.push_back(std::move(projectile));
@@ -117,7 +111,8 @@ sf::FloatRect Attack::getBoundingRect() const
 
 void Attack::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    // Draw projectiles
+    for(auto& projectile : mProjectiles)
+        target.draw(*projectile, states);
 }
 
 void Attack::removeEntity()
@@ -128,7 +123,10 @@ void Attack::removeEntity()
 
 bool Attack::isMarkedForRemoval() const
 {
-    // True when all projectiles are markedForRemoval or mProjectiles is empty and attack is active and isReadyToDelete
+    if(mProjectiles.empty() && mIsReadyToDelete)
+        return true;
+    else
+        return false;
 }
 
 void Attack::markForRemoval()
@@ -155,6 +153,7 @@ void Attack::updatePosition(sf::Vector2f pos)
 }
 
 sf::Vector2f Attack::getClosestTarget(const Projectile* projectile) const
+/// Returns direction vector
 {
     float smallestDistance = std::numeric_limits<float>::max();
     Aircraft* closestTarget = nullptr;
