@@ -64,14 +64,14 @@ int Projectile::getShootersID() const
     return mShooterID;
 }
 
-void Projectile::setBehavior(int behaviorID)
+void Projectile::setPattern(AttackPattern::ID id)
 {
-    mBehavior = behaviorID;
+    mPattern = id;
 }
 
-int Projectile::getBehavior() const
+AttackPattern::ID Projectile::getPattern() const
 {
-    return mBehavior;
+    return mPattern;
 }
 
 void Projectile::updateCurrent(sf::Time dt, CommandQueue& commands)

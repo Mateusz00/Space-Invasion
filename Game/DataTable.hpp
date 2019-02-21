@@ -4,7 +4,7 @@
 #include "ResourcesID.hpp"
 #include "Entities/Projectile.hpp"
 #include "GUI/GUIButton.hpp"
-#include "AttackSystem/Attack.hpp"
+#include "AttackSystem/AttackPattern.hpp"
 #include <SFML/System/Time.hpp>
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/Color.hpp>
@@ -85,10 +85,10 @@ struct LevelData
 
 struct AttackData
 {
-    union BehaviorData
+    union PatternData
     {
         float maxDeviation;
-        float angularSpeed;
+        int gravityCenterID;
     };
     struct ProjectileInfo
     {
@@ -96,8 +96,18 @@ struct AttackData
         Projectile::Type    type;
         sf::Vector2f        offset;
         sf::Vector2f        direction;
-        Attack::Behavior    behavior;
-        BehaviorData        behaviorData;
+        AttackPattern::ID   pattern;
+        PatternData         patternData;
+        bool                isAimed;
+    };
+    struct GravityCenterInfo
+    {
+        float               speed;
+        int                 id;
+        sf::Vector2f        offset;
+        sf::Vector2f        direction;
+        AttackPattern::ID   pattern;
+        PatternData         patternData;
         bool                isAimed;
     };
 
@@ -105,8 +115,9 @@ struct AttackData
     bool                            attackInPlayerDirection;
     int                             repeats;
     sf::Time                        repeatCooldown;
-    std::vector<ProjectileInfo>     projectiles;
     sf::Time                        cooldown;
+    std::vector<ProjectileInfo>     projectiles;
+    std::vector<GravityCenterInfo>  gravityCenters;
 };
 
 std::vector<AircraftData>               initializeAircraftData();

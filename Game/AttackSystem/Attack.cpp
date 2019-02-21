@@ -1,4 +1,5 @@
 #include "Attack.hpp"
+#include "AttackPattern.hpp"
 #include "Attacks.hpp"
 #include "../Category.hpp"
 #include "../Entities/Aircraft.hpp"
@@ -32,21 +33,31 @@ void Attack::update(sf::Time dt, CommandQueue& commandQueue)
     // Update movement
     for(auto& projectile : mProjectiles)
     {
-        switch(static_cast<Attack::Behavior>(projectile->getBehavior()))
+        switch(static_cast<AttackPattern::ID>(projectile->getPattern()))
         {
-            case Behavior::Guided:
+            case AttackPattern::Guided:
             {
                 sf::Vector2f newVel = unitVector(dt.asSeconds() * getClosestTarget(projectile.get()) * 170.f + getVelocity()); // getVelocity and 170.f makes movement more parabolic
                 newVel *= projectile->getMaxSpeed();
                 projectile->setVelocity(newVel);
                 break;
             }
-            case Behavior::Spiral:
+            case AttackPattern::Spiral:
                 break;
-            case Behavior::Orbiting:
+            case AttackPattern::Orbiting:
+            {
+                // Update center's position and apply angular displacement
+                sf::Vector2f centerToProjectileVector = projectile->getWorldPosition() /*- mPosition*/;
+                float radius = vectorLength(centerToProjectileVector);
                 break;
-            case Behavior::Barrier:
+            }
+            case AttackPattern::Barrier:
+            {
+                // Center's position is updated during attack manager's update
+                sf::Vector2f centerToProjectileVector = projectile->getWorldPosition() - mPosition;
+                float radius = vectorLength(centerToProjectileVector);
                 break;
+            }
         }
     }
 
@@ -71,7 +82,7 @@ void Attack::createProjectile(int num)
     sf::Vector2f direction;
     sf::Vector2f offset(attackData.at(mAttackID).projectiles[num].offset);
     projectile->setPosition(mPosition + offset);
-    projectile->setBehavior(attackData.at(mAttackID).projectiles[num].behavior);
+    projectile->setPattern(attackData.at(mAttackID).projectiles[num].pattern);
 
     if(attackData.at(mAttackID).projectiles[num].isAimed && !mPossibleTargets.empty())
         direction = unitVector(getClosestTarget(projectile.get()));
@@ -134,22 +145,21 @@ void Attack::markForRemoval()
     mIsReadyToDelete = true;
 }
 
-bool Attack::isBarrier() const
+void Attack::updateBarrierPosition(sf::Vector2f displacement)
 {
-    const auto& projectilesArray = attackData.at(mAttackID).projectiles;
+    bool isBarrier = false;
 
-    for(const auto& projectile : projectilesArray)
+    for(auto& projectile : mProjectiles)
     {
-        if(projectile.behavior == Behavior::Barrier)
-            return true;
+        if(projectile->getPattern() == AttackPattern::Barrier)
+        {
+            isBarrier = true;
+            projectile->move(displacement);
+        }
     }
 
-    return false;
-}
-
-void Attack::updatePosition(sf::Vector2f pos)
-{
-    mPosition = pos;
+    if(isBarrier)
+        mPosition = mPosition + displacement;
 }
 
 sf::Vector2f Attack::getClosestTarget(const Projectile* projectile) const

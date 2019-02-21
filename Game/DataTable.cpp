@@ -9,6 +9,8 @@
 #include <SFML/System/Vector2.hpp>
 #include <pugixml.hpp>
 #include <sstream>
+#include <iostream>
+using namespace pugi;
 
 std::vector<AircraftData> initializeAircraftData()
 {
@@ -128,7 +130,6 @@ std::vector<ButtonData> initializeButtonData()
 
 std::vector<LevelData> initializeLevelData()
 {
-    using namespace pugi;
     std::vector<LevelData> data;
 
     // Load xml file, throw errors
@@ -165,7 +166,6 @@ std::vector<LevelData> initializeLevelData()
 
 std::unordered_map<int, AttackData> initializeAttackData()
 {
-    using namespace pugi;
     std::unordered_map<int, AttackData>  data;
     std::unordered_map<int, std::string> pathsMap;
 
@@ -191,9 +191,10 @@ std::unordered_map<int, AttackData> initializeAttackData()
         // Load all values
         AttackData attackData;
 
-        xml_node mainNode       = attackDoc.child("attack");
-        xml_node repeatNode     = mainNode.child("repeat");
-        xml_node projectiles    = mainNode.child("projectiles");
+        xml_node mainNode           = attackDoc.child("attack");
+        xml_node repeatNode         = mainNode.child("repeat");
+        xml_node projectiles        = mainNode.child("projectiles");
+        xml_node gravityCenters     = mainNode.child("gravityCenters");
 
         attackData.chargingTime     = sf::seconds(std::stof(mainNode.child("chargetime").text().get()));
         attackData.cooldown         = sf::seconds(std::stof(mainNode.child("cooldown").text().get()));
@@ -203,10 +204,16 @@ std::unordered_map<int, AttackData> initializeAttackData()
         // Load info about each projectile of an attack
         for(xml_node projectile : projectiles.children())
         {
-            std::string offsetStr(projectile.attribute("offsets").as_string());
-            std::string directionStr(projectile.attribute("direction").as_string());
-            std::string::size_type index;
             AttackData::ProjectileInfo projectileInfo;
+
+            std::string offsetStr(projectile.attribute("offsets").as_string("0 0"));
+            std::string directionStr(projectile.attribute("direction").as_string("0 0"));
+            std::string::size_type index;
+
+            if(offsetStr.empty())
+                offsetStr = "0 0";
+            if(directionStr.empty())
+                directionStr = "0 0";
 
             projectileInfo.offset.x      = std::stof(offsetStr, &index);
             projectileInfo.offset.y      = std::stof(offsetStr.substr(index));
@@ -214,22 +221,58 @@ std::unordered_map<int, AttackData> initializeAttackData()
             projectileInfo.direction.y   = std::stof(directionStr.substr(index));
             projectileInfo.speed         = projectile.attribute("speed").as_float();
             projectileInfo.type          = static_cast<Projectile::Type>(projectile.attribute("id").as_int());
-            projectileInfo.behavior      = static_cast<Attack::Behavior>(projectile.attribute("behaviorID").as_int());
-            projectileInfo.isAimed       = projectile.attribute("isAimed").as_bool();
+            projectileInfo.pattern      = static_cast<AttackPattern::ID>(projectile.attribute("patternID").as_int());
+            projectileInfo.isAimed       = projectile.attribute("isAimed").as_bool(); ///Returns def value if null handle check if it's possible to omit unnecessary attributes
 
-            switch(projectileInfo.behavior)
+            switch(projectileInfo.pattern)
             {
-                case Attack::Behavior::Barrier:
-                case Attack::Behavior::Orbiting:
-                    projectileInfo.behaviorData.angularSpeed = projectile.attribute("angularSpeed").as_float();
+                case AttackPattern::ID::Orbiting:
+                    projectileInfo.patternData.gravityCenterID = projectile.attribute("gravityCenterID").as_int(); ///TEST
                     break;
 
-                case Attack::Behavior::Spiral:
-                    projectileInfo.behaviorData.maxDeviation = projectile.attribute("deviation").as_float();
+                case AttackPattern::ID::Spiral:
+                    projectileInfo.patternData.maxDeviation = projectile.attribute("deviation").as_float();
                     break;
             }
 
             attackData.projectiles.push_back(std::move(projectileInfo));
+        }
+
+        // Load gravityCenters
+        for(xml_node gravityCenter : gravityCenters.children())
+        {
+            AttackData::GravityCenterInfo gravityCenterInfo;
+
+            std::string offsetStr(gravityCenter.attribute("offsets").as_string("0 0"));
+            std::string directionStr(gravityCenter.attribute("direction").as_string("0 0"));
+            std::string::size_type index;
+
+            if(offsetStr.empty())
+                offsetStr = "0 0";
+            if(directionStr.empty())
+                directionStr = "0 0";
+
+            gravityCenterInfo.offset.x      = std::stof(offsetStr, &index);
+            gravityCenterInfo.offset.y      = std::stof(offsetStr.substr(index));
+            gravityCenterInfo.direction.x   = std::stof(directionStr, &index);
+            gravityCenterInfo.direction.y   = std::stof(directionStr.substr(index));
+            gravityCenterInfo.speed         = gravityCenter.attribute("speed").as_float();
+            gravityCenterInfo.id            = gravityCenter.attribute("id").as_int();
+            gravityCenterInfo.pattern      = static_cast<AttackPattern::ID>(gravityCenter.attribute("patternID").as_int());
+            gravityCenterInfo.isAimed       = gravityCenter.attribute("isAimed").as_bool(); ///Returns def value if null handle check if it's possible to omit unnecessary attributes
+
+            switch(gravityCenterInfo.pattern)
+            {
+                case AttackPattern::Orbiting:
+                    gravityCenterInfo.patternData.gravityCenterID = gravityCenter.attribute("gravityCenterID").as_int(); ///TEST
+                    break;
+
+                case AttackPattern::Spiral:
+                    gravityCenterInfo.patternData.maxDeviation = gravityCenter.attribute("deviation").as_float();
+                    break;
+            }
+
+            attackData.gravityCenters.push_back(std::move(gravityCenterInfo));
         }
 
         data.emplace(path.first, std::move(attackData));

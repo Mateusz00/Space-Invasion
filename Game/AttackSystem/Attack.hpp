@@ -1,6 +1,7 @@
 #ifndef ATTACK_HPP
 #define ATTACK_HPP
 
+#include "GravityCenter.hpp"
 #include "../Entities/Projectile.hpp"
 #include "../Entities/Entity.hpp"
 #include "../ResourcesID.hpp"
@@ -15,14 +16,6 @@ class Attack : public Entity
 {
     public:
         using Targets = const std::vector<Aircraft*>&;
-        enum Behavior
-        {
-            StraightLine,
-            Guided,
-            Spiral,
-            Orbiting,
-            Barrier
-        };
 
                                 Attack(int id, const TextureHolder&, sf::Vector2f pos, World&, int shooterID, Targets);
         void                    update(sf::Time, CommandQueue&);
@@ -32,8 +25,7 @@ class Attack : public Entity
         virtual void            removeEntity();
         virtual bool            isMarkedForRemoval() const override; // AttackManager checks it
         void                    markForRemoval();
-        bool                    isBarrier() const;
-        void                    updatePosition(sf::Vector2f);
+        void                    updateBarrierPosition(sf::Vector2f displacement);
 
     private:
         virtual void            drawCurrent(sf::RenderTarget&, sf::RenderStates) const override;
@@ -44,6 +36,7 @@ class Attack : public Entity
         sf::Vector2f            getClosestTarget(const Projectile*) const;
 
         std::vector<std::unique_ptr<Projectile>>    mProjectiles;
+        std::unordered_map<int, GravityCenter>      mGravityCenters;
         Targets                                     mPossibleTargets;
         int                                         mAttackID;
         const TextureHolder&                        mTextures;

@@ -3,6 +3,7 @@
 
 #include "Entity.hpp"
 #include "../ResourcesID.hpp"
+#include "../AttackSystem/AttackPattern.hpp"
 #include <SFML/Graphics/Sprite.hpp>
 
 class Projectile : public Entity
@@ -24,19 +25,19 @@ class Projectile : public Entity
         virtual sf::FloatRect   getBoundingRect() const override;
         virtual void            onCollision(Entity&) override;
         int                     getShootersID() const;
-        void                    setBehavior(int);
-        int                     getBehavior() const;
+        void                    setPattern(AttackPattern::ID);
+        AttackPattern::ID       getPattern() const;
 
     private:
         virtual void            updateCurrent(sf::Time, CommandQueue&) override;
         virtual void            drawCurrent(sf::RenderTarget&, sf::RenderStates) const override;
 
-        Type            mType;
-        sf::Sprite      mSprite;
-        sf::Vector2f    mTargetDirection;
-        int             mShooterID;
-        int             mBehavior;
-        float           mSpeed;
+        Type                mType;
+        sf::Sprite          mSprite;
+        sf::Vector2f        mTargetDirection;
+        int                 mShooterID;
+        AttackPattern::ID   mPattern;
+        float               mSpeed;
 };
 
 #endif // PROJECTILE_HPP

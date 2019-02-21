@@ -55,12 +55,7 @@ void AttackManager::update(sf::Time dt, CommandQueue& commandQueue)
     }
 
     for(auto& attack : mCurrentAttacks)
-    {
-        if(attack->isBarrier())
-            attack->updatePosition(mPosition);
-
         attack->update(dt, commandQueue); // ensures that attacks are updated after AttackManager and not earlier(could happen while updating scene graph)
-    }
 
     clearFinishedAttacks();
     commandQueue.push(mTargetsCollector);
@@ -85,6 +80,11 @@ int AttackManager::getNewAttack() const
 
 void AttackManager::updatePosition(sf::Vector2f position)
 {
+    sf::Vector2f displacement = position - mPosition;
+
+    for(auto& attack : mCurrentAttacks)
+        attack->updateBarrierPosition(displacement);
+
     mPosition = position;
 }
 
