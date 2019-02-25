@@ -48,8 +48,7 @@ void Entity::setVelocity(sf::Vector2f velocity)
 
 void Entity::setVelocity(float x, float y)
 {
-    mVelocity.x = x;
-    mVelocity.y = y;
+    setVelocity(sf::Vector2f(x, y));
 }
 
 void Entity::accelerate(sf::Vector2f velocity)

@@ -11,6 +11,12 @@ namespace AttackPattern
         Orbiting,
         Barrier
     };
+
+    union PatternData
+    {
+        int     gravityCenterID;
+        float   maxDeviation;
+    };
 }
 
 

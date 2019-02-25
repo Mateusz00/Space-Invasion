@@ -33,7 +33,7 @@ class Attack : public Entity
         void                    deactivate();
         void                    createProjectiles();
         void                    createProjectile(int num);
-        sf::Vector2f            getClosestTarget(const Projectile*) const;
+        sf::Vector2f            getClosestTarget(const sf::Transformable*) const;
 
         std::vector<std::unique_ptr<Projectile>>    mProjectiles;
         std::unordered_map<int, GravityCenter>      mGravityCenters;

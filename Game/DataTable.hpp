@@ -85,39 +85,34 @@ struct LevelData
 
 struct AttackData
 {
-    union PatternData
-    {
-        float maxDeviation;
-        int gravityCenterID;
-    };
     struct ProjectileInfo
     {
-        float               speed;
-        Projectile::Type    type;
-        sf::Vector2f        offset;
-        sf::Vector2f        direction;
-        AttackPattern::ID   pattern;
-        PatternData         patternData;
-        bool                isAimed;
+        float                           speed;
+        Projectile::Type                type;
+        sf::Vector2f                    offset;
+        sf::Vector2f                    direction;
+        AttackPattern::ID               pattern;
+        AttackPattern::PatternData      patternData;
+        bool                            isAimed;
     };
     struct GravityCenterInfo
     {
-        float               speed;
-        int                 id;
-        sf::Vector2f        offset;
-        sf::Vector2f        direction;
-        AttackPattern::ID   pattern;
-        PatternData         patternData;
-        bool                isAimed;
+        float                           speed;
+        int                             id;
+        sf::Vector2f                    offset;
+        sf::Vector2f                    direction;
+        AttackPattern::ID               pattern;
+        AttackPattern::PatternData      patternData;
+        bool                            isAimed;
     };
 
-    sf::Time                        chargingTime;
-    bool                            attackInPlayerDirection;
-    int                             repeats;
-    sf::Time                        repeatCooldown;
-    sf::Time                        cooldown;
-    std::vector<ProjectileInfo>     projectiles;
-    std::vector<GravityCenterInfo>  gravityCenters;
+    sf::Time                            chargingTime;
+    bool                                attackInPlayerDirection;
+    int                                 repeats;
+    sf::Time                            repeatCooldown;
+    sf::Time                            cooldown;
+    std::vector<ProjectileInfo>         projectiles;
+    std::vector<GravityCenterInfo>      gravityCenters;
 };
 
 std::vector<AircraftData>               initializeAircraftData();

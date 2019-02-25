@@ -74,6 +74,11 @@ AttackPattern::ID Projectile::getPattern() const
     return mPattern;
 }
 
+AttackPattern::PatternData Projectile::getPatternData() const
+{
+    return mPatternData;
+}
+
 void Projectile::updateCurrent(sf::Time dt, CommandQueue& commands)
 {
     float angle = std::atan2(getVelocity().y, getVelocity().x);

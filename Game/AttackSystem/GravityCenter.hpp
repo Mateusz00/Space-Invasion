@@ -1,15 +1,30 @@
 #ifndef GRAVITYCENTER_HPP
 #define GRAVITYCENTER_HPP
 
+#include "AttackPattern.hpp"
 #include <SFML/System/Vector2.hpp>
+#include <SFML/Graphics/Transformable.hpp>
+class CommandQueue;
 
-class GravityCenter
+class GravityCenter : public sf::Transformable
 {
     public:
-        GravityCenter();
+                                        GravityCenter();
+        float                           getSpeed() const;
+        void                            setSpeed();
+        AttackPattern::ID               getPatternID() const;
+        AttackPattern::PatternData      getPatternData() const;
+        sf::Vector2f                    getVelocity() const;
+        void                            setVelocity(sf::Vector2f);
+        void                            setVelocity(float x, float y);
+        void                            update(sf::Time, CommandQueue&);
 
     private:
-        sf::Vector2f mPosition;
+        AttackPattern::ID               mPattern;
+        AttackPattern::PatternData      mPatternData;
+        float                           mSpeed;
+        sf::Vector2f                    mVelocity;
+
 };
 
 #endif // GRAVITYCENTER_HPP
