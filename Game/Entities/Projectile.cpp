@@ -69,6 +69,11 @@ void Projectile::setPattern(AttackPattern::ID id)
     mPattern = id;
 }
 
+void Projectile::setPatternData(AttackPattern::PatternData data)
+{
+    mPatternData = data;
+}
+
 AttackPattern::ID Projectile::getPattern() const
 {
     return mPattern;

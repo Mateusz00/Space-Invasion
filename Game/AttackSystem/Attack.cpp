@@ -7,7 +7,7 @@
 #include "../CommandQueue.hpp"
 #include "../Utility.hpp"
 using Attacks::attackData;
-///ADD createGravityCenters()
+
 Attack::Attack(int id, const TextureHolder& textures, sf::Vector2f pos, World& world, int shooterID, Targets targets)
     : Entity(1, false, world),
       mPossibleTargets(targets),
@@ -18,6 +18,7 @@ Attack::Attack(int id, const TextureHolder& textures, sf::Vector2f pos, World& w
       mPosition(pos),
       mShooterID(shooterID)
 {
+    createGravityCenters();
     createProjectiles();
 }
 
@@ -27,8 +28,6 @@ void Attack::update(sf::Time dt, CommandQueue& commandQueue)
     auto iter = std::remove_if(mProjectiles.begin(), mProjectiles.end(), std::mem_fn(&Projectile::isMarkedForRemoval));
     mProjectiles.erase(iter, mProjectiles.end());
 
-    // TODO: Remove gravityCenters without projectiles and without other gravity centers orbiting around it
-
     if(mProjectiles.empty())
         deactivate();
 
@@ -37,38 +36,55 @@ void Attack::update(sf::Time dt, CommandQueue& commandQueue)
     {
         int gravityCenterID = gravityCenterPair.first;
         GravityCenter& gravityCenter = gravityCenterPair.second;
+        sf::Vector2f displacement;
 
         switch(gravityCenter.getPatternID())
         {
             case AttackPattern::Guided:
             {
-                sf::Vector2f newVel = unitVector(dt.asSeconds() * getClosestTarget(&gravityCenter) * 170.f + gravityCenter.getVelocity()); // getVelocity and 170.f makes movement smoother
-                newVel *= gravityCenter.getSpeed();
-                projectile->setVelocity(newVel);
+                sf::Vector2f newDirection = unitVector(dt.asSeconds() * getClosestTarget(&gravityCenter) * 170.f + gravityCenter.getVelocity()); // getVelocity and 170.f makes movement smoother
+                displacement = newDirection * gravityCenter.getSpeed() * dt.asSeconds();
                 break;
             }
             case AttackPattern::Spiral:
                 break;
             case AttackPattern::Orbiting:
             {
-                // Update center's position and apply angular displacement
-                sf::Vector2f dir = gravityCenter.getPosition() /*- mPosition*/;
+                // Apply angular displacement
+                sf::Vector2f centerPos = mGravityCenters.at(gravityCenter.getPatternData().gravityCenterID).getPosition();
+                sf::Vector2f oldPos = gravityCenter.getPosition();
+                sf::Vector2f dir = oldPos - centerPos;
+                sf::Vector2f newPosition;
+
                 float radius = vectorLength(dir);
+                float newAngle = toDegree(std::atan2(dir.y, dir.x)) + 90.f + gravityCenter.getSpeed() * dt.asSeconds();
+                newPosition.x = mPosition.x + std::sin(toRadian(newAngle)) * radius;
+                newPosition.y = mPosition.y + -(std::cos(toRadian(newAngle)) * radius);
+                displacement = newPosition - oldPos;
                 break;
             }
             case AttackPattern::Barrier:
             {
                 // Center's position is updated during attack manager's update, apply only angular displacement
-                sf::Vector2f dir = gravityCenter.getPosition() - mPosition;
+                sf::Vector2f oldPos = gravityCenter.getPosition();
+                sf::Vector2f dir = oldPos - mPosition;
+                sf::Vector2f newPosition;
+
                 float radius = vectorLength(dir);
                 float newAngle = toDegree(std::atan2(dir.y, dir.x)) + 90.f + gravityCenter.getSpeed() * dt.asSeconds();
-                sf::Vector2f newPosition;
                 newPosition.x = mPosition.x + std::sin(toRadian(newAngle)) * radius;
                 newPosition.y = mPosition.y + -(std::cos(toRadian(newAngle)) * radius);
-                gravityCenter.setPosition(newPosition);
+                displacement = newPosition - oldPos;
                 break;
             }
+            default:
+                displacement = gravityCenter.getVelocity() * dt.asSeconds();
+                break;
         }
+
+        // Apply displacement vector to gravity center and it's projectiles and gravityCenters
+        gravityCenter.move(displacement);
+        applyDisplacement(gravityCenterID, displacement);
     }
 
     // Update projectiles positions
@@ -87,9 +103,15 @@ void Attack::update(sf::Time dt, CommandQueue& commandQueue)
                 break;
             case AttackPattern::Orbiting:
             {
-                // Update center's position and apply angular displacement
-                sf::Vector2f dir = projectile->getWorldPosition() /*- mPosition*/;
+                // Apply angular displacement
+                sf::Vector2f centerPos = mGravityCenters.at(projectile->getPatternData().gravityCenterID).getPosition();
+                sf::Vector2f dir = projectile->getWorldPosition() - centerPos;
                 float radius = vectorLength(dir);
+                float newAngle = toDegree(std::atan2(dir.y, dir.x)) + 90.f + projectile->getMaxSpeed() * dt.asSeconds();
+                sf::Vector2f newPosition;
+                newPosition.x = mPosition.x + std::sin(toRadian(newAngle)) * radius;
+                newPosition.y = mPosition.y + -(std::cos(toRadian(newAngle)) * radius);
+                projectile->setPosition(newPosition);
                 break;
             }
             case AttackPattern::Barrier:
@@ -121,24 +143,63 @@ void Attack::createProjectiles()
 
 void Attack::createProjectile(int num)
 {
-    Projectile::Type type = attackData.at(mAttackID).projectiles[num].type;
-    float speed = attackData.at(mAttackID).projectiles[num].speed;
+    const auto& projectileInfo = attackData.at(mAttackID).projectiles[num];
+    Projectile::Type type = projectileInfo.type;
+    float speed = projectileInfo.speed;
     std::unique_ptr<Projectile> projectile(new Projectile(type, mTextures, getWorld(), mShooterID, speed));
 
-    sf::Vector2f direction;
-    sf::Vector2f offset(attackData.at(mAttackID).projectiles[num].offset);
-    projectile->setPosition(mPosition + offset);
-    projectile->setPattern(attackData.at(mAttackID).projectiles[num].pattern);
+    projectile->setPattern(projectileInfo.pattern);
+    projectile->setPatternData(projectileInfo.patternData);
 
-    if(attackData.at(mAttackID).projectiles[num].isAimed && !mPossibleTargets.empty())
+    sf::Vector2f direction;
+    sf::Vector2f offset(projectileInfo.offset);
+
+    if(projectile->getPattern() == AttackPattern::Orbiting)
+        projectile->setPosition(mGravityCenters.at(projectileInfo.patternData.gravityCenterID).getPosition() + offset);
+    else
+        projectile->setPosition(mPosition + offset);
+
+    if(projectileInfo.isAimed && !mPossibleTargets.empty())
         direction = unitVector(getClosestTarget(projectile.get()));
     else
-        direction = unitVector(attackData.at(mAttackID).projectiles[num].direction);
+        direction = unitVector(projectileInfo.direction);
 
     sf::Vector2f velocity(direction * speed);
     projectile->setVelocity(velocity);
 
     mProjectiles.push_back(std::move(projectile));
+}
+
+void Attack::createGravityCenters()
+{
+    const auto gravityCentersNumber = attackData.at(mAttackID).gravityCenters.size();
+
+    for(int i=0; i < gravityCentersNumber; ++i)
+        createGravityCenter(i);
+}
+
+void Attack::createGravityCenter(int num)
+{
+    const auto& gravityCenterData = attackData.at(mAttackID).gravityCenters[num];
+    GravityCenter gravityCenter(gravityCenterData.speed, gravityCenterData.pattern, gravityCenterData.patternData);
+
+    sf::Vector2f direction;
+    sf::Vector2f offset(gravityCenterData.offset);
+
+    if(gravityCenter.getPatternID() == AttackPattern::Orbiting)
+        gravityCenter.setPosition(mGravityCenters.at(gravityCenter.getPatternData().gravityCenterID).getPosition() + offset);
+    else
+        gravityCenter.setPosition(mPosition + offset);
+
+    if(gravityCenterData.isAimed && !mPossibleTargets.empty())
+        direction = unitVector(getClosestTarget(&gravityCenter));
+    else
+        direction = unitVector(gravityCenterData.direction);
+
+    sf::Vector2f velocity(direction * gravityCenterData.speed);
+    gravityCenter.setVelocity(velocity);
+
+    mGravityCenters.insert(std::make_pair(gravityCenterData.id, std::move(gravityCenter)));
 }
 
 void Attack::activate()
@@ -163,7 +224,22 @@ Category::Type Attack::getCategory() const
 
 sf::FloatRect Attack::getBoundingRect() const
 {
-    // Rect containing all projectiles
+    float maxTop, maxBottom, maxLeft, maxRight;
+
+    maxTop      = std::numeric_limits<float>::max();
+    maxBottom   = std::numeric_limits<float>::min();
+    maxLeft     = std::numeric_limits<float>::max();
+    maxRight    = std::numeric_limits<float>::min();
+
+    for(const auto& projectile : mProjectiles)
+    {
+        maxTop      = std::min(maxTop, projectile->getBoundingRect().top);
+        maxBottom   = std::max(maxBottom, projectile->getBoundingRect().top + projectile->getBoundingRect().height);
+        maxLeft     = std::min(maxLeft, projectile->getBoundingRect().left);
+        maxRight    = std::max(maxRight, projectile->getBoundingRect().left + projectile->getBoundingRect().width);
+    }
+
+    return sf::FloatRect(maxLeft, maxTop, maxRight - maxLeft, maxBottom - maxTop); // Rect containing all projectiles
 }
 
 void Attack::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
@@ -195,6 +271,14 @@ void Attack::updateBarrierPosition(sf::Vector2f displacement)
 {
     bool isBarrier = false;
 
+    for(auto& gravityCenter : mGravityCenters)
+    {
+        if(gravityCenter.second.getPatternID() == AttackPattern::Barrier)
+        {
+            isBarrier = true;
+            gravityCenter.second.move(displacement);
+        }
+    }
     for(auto& projectile : mProjectiles)
     {
         if(projectile->getPattern() == AttackPattern::Barrier)
@@ -206,6 +290,31 @@ void Attack::updateBarrierPosition(sf::Vector2f displacement)
 
     if(isBarrier)
         mPosition = mPosition + displacement;
+}
+
+void Attack::applyDisplacement(int gravityCenterID, sf::Vector2f displacement)
+{
+    std::vector<int> changedCenters;
+
+    for(auto& gravityCenter : mGravityCenters)
+    {
+        if(gravityCenter.second.getPatternID() == AttackPattern::Orbiting)
+            if(gravityCenter.second.getPatternData().gravityCenterID == gravityCenterID)
+            {
+                gravityCenter.move(displacement);
+                changedCenters.push_back(gravityCenter.second.getPatternData().gravityCenterID);
+            }
+    }
+
+    for(auto& projectile : mProjectiles)
+    {
+        if(projectile->getPattern() == AttackPattern::Orbiting)
+            if(projectile->getPatternData().gravityCenterID == gravityCenterID)
+                projectile->move(displacement);
+    }
+
+    for(int id : changedCenters)
+        applyDisplacement(id, displacement);
 }
 
 sf::Vector2f Attack::getClosestTarget(const sf::Transformable* object) const

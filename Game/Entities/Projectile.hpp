@@ -26,6 +26,7 @@ class Projectile : public Entity
         virtual void                    onCollision(Entity&) override;
         int                             getShootersID() const;
         void                            setPattern(AttackPattern::ID);
+        void                            setPatternData(AttackPattern::PatternData);
         AttackPattern::ID               getPattern() const;
         AttackPattern::PatternData      getPatternData() const;
 

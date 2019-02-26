@@ -3,15 +3,16 @@
 
 #include "AttackPattern.hpp"
 #include <SFML/System/Vector2.hpp>
+#include <SFML/System/Time.hpp>
 #include <SFML/Graphics/Transformable.hpp>
 class CommandQueue;
 
 class GravityCenter : public sf::Transformable
 {
     public:
-                                        GravityCenter();
+                                        GravityCenter(float speed, AttackPattern::ID, AttackPattern::PatternData);
         float                           getSpeed() const;
-        void                            setSpeed();
+        void                            setSpeed(float);
         AttackPattern::ID               getPatternID() const;
         AttackPattern::PatternData      getPatternData() const;
         sf::Vector2f                    getVelocity() const;
@@ -24,7 +25,6 @@ class GravityCenter : public sf::Transformable
         AttackPattern::PatternData      mPatternData;
         float                           mSpeed;
         sf::Vector2f                    mVelocity;
-
 };
 
 #endif // GRAVITYCENTER_HPP

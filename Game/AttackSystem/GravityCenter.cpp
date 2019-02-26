@@ -1,6 +1,9 @@
 #include "GravityCenter.hpp"
 
-GravityCenter::GravityCenter()
+GravityCenter::GravityCenter(float speed, AttackPattern::ID patternID, AttackPattern::PatternData patternData)
+    : mSpeed(speed),
+      mPattern(patternID),
+      mPatternData(patternData)
 {
 }
 
@@ -22,4 +25,24 @@ void GravityCenter::setVelocity(float x, float y)
 void GravityCenter::update(sf::Time dt, CommandQueue&)
 {
     move(mVelocity * dt.asSeconds());
+}
+
+float GravityCenter::getSpeed() const
+{
+    return mSpeed;
+}
+
+void GravityCenter::setSpeed(float speed)
+{
+    mSpeed = speed;
+}
+
+AttackPattern::ID GravityCenter::getPatternID() const
+{
+    return mPattern;
+}
+
+AttackPattern::PatternData GravityCenter::getPatternData() const
+{
+    return mPatternData;
 }

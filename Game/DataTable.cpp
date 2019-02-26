@@ -9,7 +9,6 @@
 #include <SFML/System/Vector2.hpp>
 #include <pugixml.hpp>
 #include <sstream>
-#include <iostream>
 using namespace pugi;
 
 std::vector<AircraftData> initializeAircraftData()
@@ -221,7 +220,7 @@ std::unordered_map<int, AttackData> initializeAttackData()
             projectileInfo.direction.y   = std::stof(directionStr.substr(index));
             projectileInfo.speed         = projectile.attribute("speed").as_float();
             projectileInfo.type          = static_cast<Projectile::Type>(projectile.attribute("id").as_int());
-            projectileInfo.pattern      = static_cast<AttackPattern::ID>(projectile.attribute("patternID").as_int());
+            projectileInfo.pattern       = static_cast<AttackPattern::ID>(projectile.attribute("patternID").as_int());
             projectileInfo.isAimed       = projectile.attribute("isAimed").as_bool(); ///Returns def value if null handle check if it's possible to omit unnecessary attributes
 
             switch(projectileInfo.pattern)
@@ -258,13 +257,16 @@ std::unordered_map<int, AttackData> initializeAttackData()
             gravityCenterInfo.direction.y   = std::stof(directionStr.substr(index));
             gravityCenterInfo.speed         = gravityCenter.attribute("speed").as_float();
             gravityCenterInfo.id            = gravityCenter.attribute("id").as_int();
-            gravityCenterInfo.pattern      = static_cast<AttackPattern::ID>(gravityCenter.attribute("patternID").as_int());
+            gravityCenterInfo.pattern       = static_cast<AttackPattern::ID>(gravityCenter.attribute("patternID").as_int());
             gravityCenterInfo.isAimed       = gravityCenter.attribute("isAimed").as_bool(); ///Returns def value if null handle check if it's possible to omit unnecessary attributes
 
             switch(gravityCenterInfo.pattern)
             {
                 case AttackPattern::Orbiting:
-                    gravityCenterInfo.patternData.gravityCenterID = gravityCenter.attribute("gravityCenterID").as_int(); ///TEST
+                    gravityCenterInfo.patternData.gravityCenterID = gravityCenter.attribute("gravityCenterID").as_int();
+                    if(gravityCenterInfo.id <= gravityCenterInfo.patternData.gravityCenterID)
+                        throw std::logic_error("Wrong gravityCenter id in XML file (attackID="
+                                               + toString(path.first) + ")");
                     break;
 
                 case AttackPattern::Spiral:
