@@ -46,7 +46,7 @@ void Attack::update(sf::Time dt, CommandQueue& commandQueue)
                 displacement = newDirection * gravityCenter.getSpeed() * dt.asSeconds();
                 break;
             }
-            case AttackPattern::Spiral:
+            case AttackPattern::Wave:
                 break;
             case AttackPattern::Orbiting:
             {
@@ -99,7 +99,8 @@ void Attack::update(sf::Time dt, CommandQueue& commandQueue)
                 projectile->setVelocity(newVel);
                 break;
             }
-            case AttackPattern::Spiral:
+            case AttackPattern::Wave:
+
                 break;
             case AttackPattern::Orbiting:
             {
@@ -301,7 +302,7 @@ void Attack::applyDisplacement(int gravityCenterID, sf::Vector2f displacement)
         if(gravityCenter.second.getPatternID() == AttackPattern::Orbiting)
             if(gravityCenter.second.getPatternData().gravityCenterID == gravityCenterID)
             {
-                gravityCenter.move(displacement);
+                gravityCenter.second.move(displacement);
                 changedCenters.push_back(gravityCenter.second.getPatternData().gravityCenterID);
             }
     }

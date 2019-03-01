@@ -1,7 +1,7 @@
 [Pattern IDs]
 StraightLine - 0
 Guided - 1
-Spiral - 2
+Wave - 2
 Orbiting - 3
 Barrier - 4
 
@@ -17,4 +17,5 @@ If set to 0 then it means that this attack is instant
 2. speed - speed of projectile, when projectile's pattern is  Oribiting/Barrier then it is interpreted as angular speed
 3. aimed - boolean value. When true, projectile is directed at closest target(when there is no target then direction is read from projectile's attributes)
 4. gravityCenterID - use only for orbiting projectiles
-5. maxDeviation - use only for projectile with spiral pattern
+5. amplitude - use only for projectiles with wave pattern
+5. waveLength - use only for projectiles with wave pattern

@@ -229,8 +229,13 @@ std::unordered_map<int, AttackData> initializeAttackData()
                     projectileInfo.patternData.gravityCenterID = projectile.attribute("gravityCenterID").as_int(); ///TEST
                     break;
 
-                case AttackPattern::ID::Spiral:
-                    projectileInfo.patternData.maxDeviation = projectile.attribute("deviation").as_float();
+                case AttackPattern::ID::Wave:
+                    projectileInfo.patternData.waveData[0] = projectile.attribute("amplitude").as_float();
+                    projectileInfo.patternData.waveData[1] = projectile.attribute("waveLength").as_float();
+
+                    if(projectileInfo.offset.x > projectileInfo.patternData.waveData[0])
+                        throw std::logic_error("Error(attackID=" + toString(path.first) +
+                                               "): Offset.x is higher than amplitude!");
                     break;
             }
 
@@ -264,13 +269,19 @@ std::unordered_map<int, AttackData> initializeAttackData()
             {
                 case AttackPattern::Orbiting:
                     gravityCenterInfo.patternData.gravityCenterID = gravityCenter.attribute("gravityCenterID").as_int();
+
                     if(gravityCenterInfo.id <= gravityCenterInfo.patternData.gravityCenterID)
-                        throw std::logic_error("Wrong gravityCenter id in XML file (attackID="
-                                               + toString(path.first) + ")");
+                        throw std::logic_error("Wrong gravityCenter id(" + toString(gravityCenterInfo.id) +
+                                               ")in XML file (attackID=" + toString(path.first) + ")");
                     break;
 
-                case AttackPattern::Spiral:
-                    gravityCenterInfo.patternData.maxDeviation = gravityCenter.attribute("deviation").as_float();
+                case AttackPattern::Wave:
+                    gravityCenterInfo.patternData.waveData[0] = gravityCenter.attribute("amplitude").as_float();
+                    gravityCenterInfo.patternData.waveData[1] = gravityCenter.attribute("waveLength").as_float();
+
+                    if(gravityCenterInfo.offset.x > gravityCenterInfo.patternData.waveData[0])
+                        throw std::logic_error("Error(gravityID=" + toString(gravityCenterInfo.id) + ", attackID="
+                                                + toString(path.first) + "): Offset.x is higher than amplitude!");
                     break;
             }
 
