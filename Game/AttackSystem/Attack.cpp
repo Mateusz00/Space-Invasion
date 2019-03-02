@@ -31,6 +31,7 @@ void Attack::update(sf::Time dt, CommandQueue& commandQueue)
     if(mProjectiles.empty())
         deactivate();
 
+
     // Update gravityCenters positions
     for(auto& gravityCenterPair : mGravityCenters)
     {
@@ -90,6 +91,8 @@ void Attack::update(sf::Time dt, CommandQueue& commandQueue)
     // Update projectiles positions
     for(auto& projectile : mProjectiles)
     {
+        projectile->updateTime(dt);
+
         switch(static_cast<AttackPattern::ID>(projectile->getPattern()))
         {
             case AttackPattern::Guided:
@@ -100,8 +103,23 @@ void Attack::update(sf::Time dt, CommandQueue& commandQueue)
                 break;
             }
             case AttackPattern::Wave:
+            {
+                float angle = std::atan2(-projectile->getDirection().y, projectile->getDirection().x) + toRadian(90.f);
+                sf::Vector2f perpendicular(-projectile->getDirection().y, projectile->getDirection().x);
+                sf::Vector2f startPos(projectile->getStartPos());
 
+                sf::Vector2f newPos1(startPos.x + projectile->getMaxSpeed() * std::sin(angle) * projectile->activeTime(),
+                                     startPos.y + projectile->getMaxSpeed() * std::cos(angle)* projectile->activeTime());
+
+                float times = vectorLength(startPos - newPos1) / projectile->getPatternData().waveData[1];
+                float perpendicularLength = (std::sin(times * 3.1415f) * projectile->getPatternData().waveData[0]);
+
+                sf::Vector2f newPos2(perpendicular.x + perpendicularLength * std::sin(angle + toRadian(90.f)),
+                                     perpendicular.y + perpendicularLength * std::cos(angle + toRadian(90.f)));
+
+                projectile->setVelocity(newPos1 + newPos2 - projectile->getPosition());
                 break;
+            }
             case AttackPattern::Orbiting:
             {
                 // Apply angular displacement
@@ -167,6 +185,8 @@ void Attack::createProjectile(int num)
 
     sf::Vector2f velocity(direction * speed);
     projectile->setVelocity(velocity);
+    projectile->setDirection(direction);
+    projectile->setStartPos(projectile->getPosition());
 
     mProjectiles.push_back(std::move(projectile));
 }

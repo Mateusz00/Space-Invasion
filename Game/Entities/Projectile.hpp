@@ -29,6 +29,12 @@ class Projectile : public Entity
         void                            setPatternData(AttackPattern::PatternData);
         AttackPattern::ID               getPattern() const;
         AttackPattern::PatternData      getPatternData() const;
+        void                            setDirection(sf::Vector2f);
+        sf::Vector2f                    getDirection() const;
+        void                            setStartPos(sf::Vector2f);
+        sf::Vector2f                    getStartPos() const;
+        float                           activeTime() const;
+        void                            updateTime(sf::Time dt);
 
     private:
         virtual void            updateCurrent(sf::Time, CommandQueue&) override;
@@ -40,6 +46,9 @@ class Projectile : public Entity
         AttackPattern::ID               mPattern;
         AttackPattern::PatternData      mPatternData;
         float                           mSpeed;
+        sf::Vector2f                    mDirection;
+        sf::Vector2f                    mStartPos;
+        sf::Time                        mTimeActive;
 };
 
 #endif // PROJECTILE_HPP

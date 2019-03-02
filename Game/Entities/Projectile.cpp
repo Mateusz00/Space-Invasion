@@ -121,3 +121,34 @@ void Projectile::onCollision(Entity& entity)
         }
     }
 }
+
+void Projectile::setDirection(sf::Vector2f dir)
+{
+    mDirection = dir;
+}
+
+sf::Vector2f Projectile::getDirection() const
+{
+    return mDirection;
+}
+
+void Projectile::setStartPos(sf::Vector2f pos)
+{
+    mStartPos = pos;
+}
+
+sf::Vector2f Projectile::getStartPos() const
+{
+    return mStartPos;
+}
+
+float Projectile::activeTime() const
+/// Returns seconds that elapsed since creation of this projectile
+{
+    return mTimeActive.asSeconds();
+}
+
+void Projectile::updateTime(sf::Time dt)
+{
+    mTimeActive += dt;
+}
