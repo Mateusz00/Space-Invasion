@@ -6,6 +6,7 @@
 #include "../DataTable.hpp"
 #include "../CommandQueue.hpp"
 #include "../Utility.hpp"
+#include "../Application.hpp"
 using Attacks::attackData;
 
 Attack::Attack(int id, const TextureHolder& textures, sf::Vector2f pos, World& world, int shooterID, Targets targets)
@@ -117,7 +118,9 @@ void Attack::update(sf::Time dt, CommandQueue& commandQueue)
                 sf::Vector2f newPos2(perpendicular.x + perpendicularLength * std::sin(angle + toRadian(90.f)),
                                      perpendicular.y + perpendicularLength * std::cos(angle + toRadian(90.f)));
 
-                projectile->setVelocity(newPos1 + newPos2 - projectile->getPosition());
+                // getTimePerFrame nullifies effect of multiplying by time_per_frame in entity's update func
+                float seconds = Application::getTimePerFrame().asSeconds();
+                projectile->setVelocity((newPos1 + newPos2 - projectile->getPosition()) / seconds);
                 break;
             }
             case AttackPattern::Orbiting:
@@ -130,7 +133,10 @@ void Attack::update(sf::Time dt, CommandQueue& commandQueue)
                 sf::Vector2f newPosition;
                 newPosition.x = mPosition.x + std::sin(toRadian(newAngle)) * radius;
                 newPosition.y = mPosition.y + -(std::cos(toRadian(newAngle)) * radius);
-                projectile->setPosition(newPosition);
+
+                // getTimePerFrame nullifies effect of multiplying by time_per_frame in entity's update func
+                float seconds = Application::getTimePerFrame().asSeconds();
+                projectile->setVelocity((newPosition - projectile->getPosition()) / seconds);
                 break;
             }
             case AttackPattern::Barrier:
@@ -142,7 +148,10 @@ void Attack::update(sf::Time dt, CommandQueue& commandQueue)
                 sf::Vector2f newPosition;
                 newPosition.x = mPosition.x + std::sin(toRadian(newAngle)) * radius;
                 newPosition.y = mPosition.y + -(std::cos(toRadian(newAngle)) * radius);
-                projectile->setPosition(newPosition);
+
+                // getTimePerFrame nullifies effect of multiplying by time_per_frame in entity's update func
+                float seconds = Application::getTimePerFrame().asSeconds();
+                projectile->setVelocity((newPosition - projectile->getPosition()) / seconds);
                 break;
             }
         }
