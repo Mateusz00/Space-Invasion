@@ -4,9 +4,10 @@
 #include <SFML/System/Clock.hpp>
 #include <SFML/Window/Event.hpp>
 
+const sf::Time Application::TIME_PER_FRAME = sf::seconds(1.f / 60.f);
+
 Application::Application()
-    : TIME_PER_FRAME(sf::seconds(1.f / 60.f)),
-      mWindow(sf::VideoMode(1024, 700), "2D Fighter Jet Game", sf::Style::Close),
+    : mWindow(sf::VideoMode(1024, 700), "2D Fighter Jet Game", sf::Style::Close),
       mStateStack(State::Context(mWindow, mTextures, mFonts, mSounds, mMusicPlayer, mKeyBindings, mPlayers, mSettings, mProfile))
 {
     loadSettings();
@@ -128,4 +129,9 @@ void Application::loadSettings()
 
     mKeyBindings.push_back(new KeyBinding(1, mSettings));
     mKeyBindings.push_back(new KeyBinding(2, mSettings));
+}
+
+sf::Time Application::getTimePerFrame()
+{
+    return TIME_PER_FRAME;
 }

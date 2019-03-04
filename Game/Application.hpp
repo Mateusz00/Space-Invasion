@@ -15,9 +15,10 @@
 class Application
 {
     public:
-             Application();
-             ~Application();
-        void run();
+                            Application();
+                            ~Application();
+        void                run();
+        static sf::Time     getTimePerFrame();
 
     private:
         void draw();
@@ -27,7 +28,7 @@ class Application
         void loadResources();
         void loadSettings();
 
-        const sf::Time              TIME_PER_FRAME;
+        static const sf::Time       TIME_PER_FRAME;
         sf::RenderWindow            mWindow;
         FontHolder                  mFonts;
         TextureHolder               mTextures;
