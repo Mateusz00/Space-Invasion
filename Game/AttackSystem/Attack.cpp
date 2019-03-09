@@ -38,6 +38,7 @@ void Attack::update(sf::Time dt, CommandQueue& commandQueue)
     {
         int gravityCenterID = gravityCenterPair.first;
         GravityCenter& gravityCenter = gravityCenterPair.second;
+        gravityCenter.updateTime(dt);
         sf::Vector2f displacement;
 
         switch(gravityCenter.getPatternID())
@@ -45,11 +46,29 @@ void Attack::update(sf::Time dt, CommandQueue& commandQueue)
             case AttackPattern::Guided:
             {
                 sf::Vector2f newDirection = unitVector(dt.asSeconds() * getClosestTarget(&gravityCenter) * 170.f + gravityCenter.getVelocity()); // getVelocity and 170.f makes movement smoother
-                displacement = newDirection * gravityCenter.getSpeed() * dt.asSeconds();
+                displacement = newDirection * gravityCenter.getSpeed();
+                gravityCenter.setVelocity(displacement);
                 break;
             }
             case AttackPattern::Wave:
+            {
+                float angle = std::atan2(-gravityCenter.getDirection().y, gravityCenter.getDirection().x) + toRadian(90.f);
+                sf::Vector2f perpendicular(-gravityCenter.getDirection().y, gravityCenter.getDirection().x);
+                sf::Vector2f startPos(gravityCenter.getStartPos());
+
+                sf::Vector2f newPos1(startPos.x + gravityCenter.getSpeed() * std::sin(angle) * gravityCenter.activeTime(),
+                                     startPos.y + gravityCenter.getSpeed() * std::cos(angle)* gravityCenter.activeTime());
+
+                float times = vectorLength(startPos - newPos1) / gravityCenter.getPatternData().waveData[1];
+                float perpendicularLength = (std::sin(times * 3.1415f) * gravityCenter.getPatternData().waveData[0]);
+
+                sf::Vector2f newPos2(perpendicular.x + perpendicularLength * std::sin(angle + toRadian(90.f)),
+                                     perpendicular.y + perpendicularLength * std::cos(angle + toRadian(90.f)));
+
+                // getTimePerFrame nullifies effect of multiplying by time_per_frame in entity's update func
+                gravityCenter.setVelocity(displacement * Application::getTimePerFrame().asSeconds());
                 break;
+            }
             case AttackPattern::Orbiting:
             {
                 // Apply angular displacement
@@ -61,8 +80,9 @@ void Attack::update(sf::Time dt, CommandQueue& commandQueue)
                 float radius = vectorLength(dir);
                 float newAngle = toDegree(std::atan2(dir.y, dir.x)) + 90.f + gravityCenter.getSpeed() * dt.asSeconds();
                 newPosition.x = mPosition.x + std::sin(toRadian(newAngle)) * radius;
-                newPosition.y = mPosition.y + -(std::cos(toRadian(newAngle)) * radius);
+                newPosition.y = mPosition.y - std::cos(toRadian(newAngle)) * radius;
                 displacement = newPosition - oldPos;
+                gravityCenter.setVelocity(displacement * Application::getTimePerFrame().asSeconds());
                 break;
             }
             case AttackPattern::Barrier:
@@ -75,17 +95,15 @@ void Attack::update(sf::Time dt, CommandQueue& commandQueue)
                 float radius = vectorLength(dir);
                 float newAngle = toDegree(std::atan2(dir.y, dir.x)) + 90.f + gravityCenter.getSpeed() * dt.asSeconds();
                 newPosition.x = mPosition.x + std::sin(toRadian(newAngle)) * radius;
-                newPosition.y = mPosition.y + -(std::cos(toRadian(newAngle)) * radius);
+                newPosition.y = mPosition.y - std::cos(toRadian(newAngle)) * radius;
                 displacement = newPosition - oldPos;
+                gravityCenter.setVelocity(displacement * Application::getTimePerFrame().asSeconds());
                 break;
             }
-            default:
-                displacement = gravityCenter.getVelocity() * dt.asSeconds();
-                break;
         }
 
         // Apply displacement vector to gravity center and it's projectiles and gravityCenters
-        gravityCenter.move(displacement);
+        gravityCenter.update(dt, commandQueue);
         applyDisplacement(gravityCenterID, displacement);
     }
 
@@ -132,7 +150,7 @@ void Attack::update(sf::Time dt, CommandQueue& commandQueue)
                 float newAngle = toDegree(std::atan2(dir.y, dir.x)) + 90.f + projectile->getMaxSpeed() * dt.asSeconds();
                 sf::Vector2f newPosition;
                 newPosition.x = mPosition.x + std::sin(toRadian(newAngle)) * radius;
-                newPosition.y = mPosition.y + -(std::cos(toRadian(newAngle)) * radius);
+                newPosition.y = mPosition.y - std::cos(toRadian(newAngle)) * radius;
 
                 // getTimePerFrame nullifies effect of multiplying by time_per_frame in entity's update func
                 float seconds = Application::getTimePerFrame().asSeconds();
@@ -147,7 +165,7 @@ void Attack::update(sf::Time dt, CommandQueue& commandQueue)
                 float newAngle = toDegree(std::atan2(dir.y, dir.x)) + 90.f + projectile->getMaxSpeed() * dt.asSeconds();
                 sf::Vector2f newPosition;
                 newPosition.x = mPosition.x + std::sin(toRadian(newAngle)) * radius;
-                newPosition.y = mPosition.y + -(std::cos(toRadian(newAngle)) * radius);
+                newPosition.y = mPosition.y - std::cos(toRadian(newAngle)) * radius;
 
                 // getTimePerFrame nullifies effect of multiplying by time_per_frame in entity's update func
                 float seconds = Application::getTimePerFrame().asSeconds();
@@ -197,7 +215,7 @@ void Attack::createProjectile(int num)
     projectile->setDirection(direction);
     projectile->setStartPos(projectile->getPosition());
 
-    mProjectiles.push_back(std::move(projectile));
+    mProjectiles.emplace_back(std::move(projectile));
 }
 
 void Attack::createGravityCenters()
@@ -228,8 +246,10 @@ void Attack::createGravityCenter(int num)
 
     sf::Vector2f velocity(direction * gravityCenterData.speed);
     gravityCenter.setVelocity(velocity);
+    gravityCenter.setDirection(direction);
+    gravityCenter.setStartPos(gravityCenter.getPosition());
 
-    mGravityCenters.insert(std::make_pair(gravityCenterData.id, std::move(gravityCenter)));
+    mGravityCenters.emplace(gravityCenterData.id, std::move(gravityCenter));///
 }
 
 void Attack::activate()

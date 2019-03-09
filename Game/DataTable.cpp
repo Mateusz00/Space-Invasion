@@ -13,8 +13,61 @@ using namespace pugi;
 
 std::vector<AircraftData> initializeAircraftData()
 {
-    std::vector<AircraftData> data; // Size of vector depends on number of elements in aircrafts.xml (stores info about file paths)
-    // TODO: Add function that will get number of aircraft types, and another one for loading data about them
+    std::vector<AircraftData> data;
+    std::map<int, std::string> pathsMap;
+
+    // Get paths for aircraft xml files
+    xml_document pathsDoc;
+    xml_parse_result result = pathsDoc.load_file("Aircrafts/aircrafts.xml");
+    if(!result)
+        throw XMLParseException(result, "aircrafts.xml");
+
+    xml_node paths = pathsDoc.child("aircrafts");
+    for(xml_node path : paths.children())
+        pathsMap.emplace(path.attribute("id").as_int(), (std::string("Aircrafts/") + path.attribute("file").as_string()));
+
+    for(const auto& path : pathsMap)
+    {
+        // Load file
+        xml_document aircraftDoc;
+        xml_parse_result result = aircraftDoc.load_file(path.second.c_str());
+        if(!result)
+            throw XMLParseException(result, path.second);
+
+        // Load all values
+        AircraftData aircraftData;
+
+        xml_node mainNode           = aircraftDoc.child("aircraft");
+        xml_node directionsNode     = mainNode.child("directions");
+        xml_node attacksNode        = mainNode.child("attacks");
+
+        aircraftData.hitpoints      = std::stoi(mainNode.child("hitpoints").text().get());
+        aircraftData.speed          = std::stof(mainNode.child("speed").text().get());
+        aircraftData.textureID      = std::stoi(mainNode.child("textureID").text().get());
+
+        // Load movement pattern of enemy
+        for(xml_node direction : directionsNode.children())
+        {
+            AircraftData::Direction directionData;
+
+            directionData.angle             = direction.attribute("angle").as_float();
+            directionData.distance          = direction.attribute("distance").as_float();
+            directionData.speedPercentage   = direction.attribute("speedPercentage").as_float();
+
+            aircraftData.directions.emplace_back(std::move(directionData));
+        }
+
+        // Load attacks of that aircraft
+        for(xml_node attack : attacksNode.children())
+        {
+            int attackID        = attack.attribute("attackID").as_int();
+            int probability     = attack.attribute("probability").as_int();
+
+            aircraftData.attacks.emplace(attackID, probability);
+        }
+
+        data.emplace_back(std::move(aircraftData));
+    }
 
     return data;
 }

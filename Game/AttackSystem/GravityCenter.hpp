@@ -19,12 +19,21 @@ class GravityCenter : public sf::Transformable
         void                            setVelocity(sf::Vector2f);
         void                            setVelocity(float x, float y);
         void                            update(sf::Time, CommandQueue&);
+        void                            setDirection(sf::Vector2f);
+        sf::Vector2f                    getDirection() const;
+        void                            setStartPos(sf::Vector2f);
+        sf::Vector2f                    getStartPos() const;
+        float                           activeTime() const;
+        void                            updateTime(sf::Time dt);
 
     private:
         AttackPattern::ID               mPattern;
         AttackPattern::PatternData      mPatternData;
         float                           mSpeed;
         sf::Vector2f                    mVelocity;
+        sf::Vector2f                    mDirection;
+        sf::Vector2f                    mStartPos;
+        sf::Time                        mTimeActive;
 };
 
 #endif // GRAVITYCENTER_HPP
