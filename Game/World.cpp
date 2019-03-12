@@ -78,13 +78,12 @@ CommandQueue& World::getCommandQueue()
 void World::addCollidable(Entity* entity)
 {
     mCollidablesList.emplace_back(entity);
-    entity->getPositionOnList() = --(mCollidablesList.end());
 }
 
 void World::removeCollidable(Entity* entity)
 {
     if(!mIsDeleting)
-        mCollidablesList.erase(entity->getPositionOnList());
+        mCollidablesList.remove(entity);
 }
 
 ParticleNode& World::getParticleNode() const

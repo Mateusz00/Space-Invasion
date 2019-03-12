@@ -17,25 +17,35 @@ AttackManager::AttackManager(const TextureHolder& textures, World& world, int sh
 
 void AttackManager::pushAttack(int id, int probability)
 {
-    mAttacks.push_back(std::make_pair(id, probability));
+    mAttacks.emplace_back(id, probability);
 }
 
 void AttackManager::useAttack(int id, CommandQueue& commands)
 {
+    if(id == -1)
+        return;
+
     Command launchAttack;
     launchAttack.mCategories.push_back(Category::AirLayer);
     launchAttack.mAction = [this, id](SceneNode& layer, sf::Time)
     {
         std::unique_ptr<Attack> attack(new Attack(id, mTextures, mPosition, mWorld, mShooterID, mPossibleTargets));
+        mCurrentAttacks.emplace_back(attack.get());
         layer.attachChild(std::move(attack));
     };
 
     commands.push(launchAttack);
+    mCooldown += Attacks::attackData.at(id).cooldown;
 }
 
-void AttackManager::forceAttack(int id, CommandQueue& commands) // For players attacks
+void AttackManager::forceAttack(int id, CommandQueue& commands)
 {
     useAttack(id, commands);
+}
+
+sf::Time AttackManager::getCooldown() const
+{
+    return mCooldown;
 }
 
 void AttackManager::forceCooldown(sf::Time cooldown)
@@ -43,15 +53,25 @@ void AttackManager::forceCooldown(sf::Time cooldown)
     mCooldown = cooldown;
 }
 
-void AttackManager::update(sf::Time dt, CommandQueue& commandQueue)
+bool AttackManager::tryAttack(int id, CommandQueue& commands) // For players attacks
 {
-    int attackID;
-
     if(mCooldown <= sf::Time::Zero)
     {
-        attackID = getNewAttack();
+        useAttack(id, commands);
+        return true;
+    }
+
+    return false;
+}
+
+void AttackManager::update(sf::Time dt, CommandQueue& commandQueue)
+{
+    mCooldown = std::max(mCooldown - dt, sf::Time::Zero);
+
+    if(mCooldown <= sf::Time::Zero && !mIsAllied)
+    {
+        int attackID = getNewAttack();
         useAttack(attackID, commandQueue);
-        mCooldown += Attacks::attackData.at(attackID).cooldown;
     }
 
     for(auto& attack : mCurrentAttacks)
@@ -75,7 +95,7 @@ int AttackManager::getNewAttack() const
         range1 += attack.second;
     }
 
-    return 0;
+    return -1;
 }
 
 void AttackManager::updatePosition(sf::Vector2f position)
@@ -90,14 +110,17 @@ void AttackManager::updatePosition(sf::Vector2f position)
 
 void AttackManager::clearFinishedAttacks()
 {
-    for(auto attack = mCurrentAttacks.begin(); attack != mCurrentAttacks.end(); ++attack)
+    auto newBeg = std::remove_if(mCurrentAttacks.begin(), mCurrentAttacks.end(), [](Attack* attack)
     {
-        if(!(*attack)->isActive())
+        if(!attack->isActive())
         {
-            (*attack)->markForRemoval();
-            mCurrentAttacks.erase(attack);
+            attack->markForRemoval();
+            return true;
         }
-    }
+        return false;
+    });
+
+    mCurrentAttacks.erase(newBeg, mCurrentAttacks.end());
 }
 
 void AttackManager::initializeCommands()

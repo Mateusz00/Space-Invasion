@@ -15,9 +15,9 @@ class World;
 class Attack : public Entity
 {
     public:
-        using Targets = const std::vector<Aircraft*>&;
+        using Targets = std::vector<Aircraft*>;
 
-                                Attack(int id, const TextureHolder&, sf::Vector2f pos, World&, int shooterID, Targets);
+                                Attack(int id, const TextureHolder&, sf::Vector2f pos, World&, int shooterID, const Targets&);
         void                    update(sf::Time, CommandQueue&);
         bool                    isActive() const;
         virtual Category::Type  getCategory() const;
@@ -40,7 +40,7 @@ class Attack : public Entity
 
         std::vector<std::unique_ptr<Projectile>>    mProjectiles;
         std::unordered_map<int, GravityCenter>      mGravityCenters;
-        Targets                                     mPossibleTargets;
+        const Targets&                              mPossibleTargets;
         int                                         mAttackID;
         const TextureHolder&                        mTextures;
         bool                                        mIsActive;

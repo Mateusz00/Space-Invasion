@@ -17,19 +17,18 @@ Aircraft::Aircraft(int typeID, const TextureHolder& textures, const FontHolder& 
     : Entity(aircraftInfo[typeID].hitpoints, true, world),
       mTypeID(typeID),
       mSprite(textures.get(textureInfo[typeID].texture), textureInfo[typeID].textureRect),
-      mFireRateLevel(2),
+      mFireRateLevel(3),
       mSpreadLevel(1),
       mMissileAmmo(2),
       mIdentifier(id),
-      mIsFiring(false),
-      mIsLaunchingMissile(false),
-      mIsEnemy(mTypeID != 0),
+      mIsEnemy(typeID != 0),
       mShowExplosion(true),
       mTravelledDistance(0.f),
       mDirectionIndex(0),
       mTextures(textures),
       mAttackerID(0),
-      mScore(0)
+      mScore(0),
+      mAttackManager(textures, world, id, !mIsEnemy)
 {
     centerOrigin(mSprite);
 
@@ -39,17 +38,10 @@ Aircraft::Aircraft(int typeID, const TextureHolder& textures, const FontHolder& 
     healthBar->setPosition(0.f, mSprite.getLocalBounds().height * offset);
     attachChild(std::move(healthBar));
 
-    mFireCommand.mCategories.push_back(Category::AirLayer);
-    mFireCommand.mAction = [this, &textures](SceneNode& node, sf::Time)
-    {
-        shootBullets(node, textures);
-    };
-
-    mLaunchMissileCommand.mCategories.push_back(Category::AirLayer);
-    mLaunchMissileCommand.mAction = [this, &textures](SceneNode& node, sf::Time)
-    {
-        createProjectile(node, Projectile::Missile, 0.f, 0.5f, textures);
-    };
+    // Add attacks to manager
+    const auto& attacks = aircraftInfo[typeID].attacks;
+    for(const auto& attackPair : attacks)
+        mAttackManager.pushAttack(attackPair.first, attackPair.second);
 }
 
 void Aircraft::updateCurrent(sf::Time dt, CommandQueue& commands)
@@ -57,8 +49,9 @@ void Aircraft::updateCurrent(sf::Time dt, CommandQueue& commands)
     // Add more
     updateMovementPatterns(dt);
     updateRollAnimation(dt);
-    launchProjectiles(dt, commands);
     Entity::updateCurrent(dt, commands);
+    mAttackManager.updatePosition(getWorldPosition());
+    mAttackManager.update(dt, commands);
 }
 
 void Aircraft::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
@@ -76,13 +69,13 @@ Category::Type Aircraft::getCategory() const
 
 void Aircraft::increaseFireRate()
 {
-    if(mFireRateLevel < 8)
+    if(mFireRateLevel < 6)
         ++mFireRateLevel;
 }
 
 void Aircraft::increaseSpread()
 {
-    if(mSpreadLevel < 5)
+    if(mSpreadLevel < 3)
         ++mSpreadLevel;
 }
 
@@ -101,7 +94,7 @@ void Aircraft::changeMissileAmmo(int amount)
     mMissileAmmo += amount;
 }
 
-int  Aircraft::getIdentifier() const
+int Aircraft::getIdentifier() const
 {
     return mIdentifier;
 }
@@ -113,15 +106,15 @@ void Aircraft::setIdentifier(int id)
 
 void Aircraft::fire()
 {
-    //if(aircraftInfo[mTypeID].fireInterval.asSeconds() > 0)
-        //mIsFiring = true;
+    if(mAttackManager.tryAttack(mSpreadLevel+1, getWorld().getCommandQueue()))
+        mAttackManager.forceCooldown(mAttackManager.getCooldown() / static_cast<float>(mFireRateLevel));
 }
 
 void Aircraft::launchMissile()
 {
     if(mMissileAmmo > 0)
     {
-        mIsLaunchingMissile = true;
+        mAttackManager.forceAttack(0, getWorld().getCommandQueue());
         --mMissileAmmo;
     }
 }
@@ -171,84 +164,6 @@ void Aircraft::updateRollAnimation(sf::Time dt)
     }
 }
 
-void Aircraft::shootBullets(SceneNode& layer, const TextureHolder& textures) const // TODO: Modify values
-{
-    Projectile::Type projectileType = (!mIsEnemy) ? Projectile::AlliedBullet : Projectile::EnemyBullet;
-
-    switch(mSpreadLevel)
-    {
-        case 1:
-            createProjectile(layer, projectileType,  0.0f,  0.5f,  textures);
-            break;
-
-        case 2:
-            createProjectile(layer, projectileType, -0.2f,  0.5f,  textures);
-            createProjectile(layer, projectileType,  0.2f,  0.5f,  textures);
-            break;
-
-        case 3:
-            createProjectile(layer, projectileType, -0.25f, 0.25f, textures);
-            createProjectile(layer, projectileType,  0.0f,  0.5f,  textures);
-            createProjectile(layer, projectileType,  0.25f, 0.25f, textures);
-            break;
-
-        case 4:
-            createProjectile(layer, projectileType, -0.4f,  0.25f, textures);
-            createProjectile(layer, projectileType, -0.15f, 0.5f,  textures);
-            createProjectile(layer, projectileType,  0.15f, 0.5f,  textures);
-            createProjectile(layer, projectileType,  0.4f,  0.25f, textures);
-            break;
-
-        case 5:
-            createProjectile(layer, projectileType, -0.48f,  0.25f, textures);
-            createProjectile(layer, projectileType, -0.2f,  0.5f,  textures);
-            createProjectile(layer, projectileType,  0.0f,  0.75f, textures);
-            createProjectile(layer, projectileType,  0.2f,  0.5f,  textures);
-            createProjectile(layer, projectileType,  0.48f,  0.25f, textures);
-            break;
-    }
-}
-
-void Aircraft::createProjectile(SceneNode& layer, Projectile::Type type, float xOffset,
-                                 float yOffset, const TextureHolder& textures) const
-{
-    /*std::unique_ptr<Projectile> projectile(new Projectile(type, textures, getWorld(), mIdentifier));
-
-    float direction = (!mIsEnemy) ? -1.f : 1.f; // Decides if offsets will make projectile closer to top of window or closer to bottom
-    sf::Vector2f offset(mSprite.getLocalBounds().width * xOffset,
-                         mSprite.getLocalBounds().height * yOffset * direction);
-    sf::Vector2f velocity(0, projectile->getMaxSpeed());
-
-    projectile->setPosition(getWorldPosition() + offset);
-    projectile->setVelocity(velocity * direction);
-    layer.attachChild(std::move(projectile));*/
-}
-
-void Aircraft::launchProjectiles(sf::Time dt, CommandQueue& commands)
-{
-    if(mIsEnemy)
-        fire();
-
-    if(mIsFiring && mFireCooldown <= sf::Time::Zero)
-    {
-        commands.push(mFireCommand);
-        getWorld().getSoundPlayer().play((mIsEnemy ? Sound::EnemyGun : Sound::AllyGun), getWorldPosition());
-        //mFireCooldown += aircraftInfo[mTypeID].fireInterval / static_cast<float>(mFireRateLevel);
-    }
-    else if(mFireCooldown > sf::Time::Zero)
-    {
-        mFireCooldown -= dt;
-    }
-    mIsFiring = false;
-
-    if(mIsLaunchingMissile)
-    {
-        commands.push(mLaunchMissileCommand);
-        getWorld().getSoundPlayer().play(Sound::Missile, getWorldPosition());
-        mIsLaunchingMissile = false;
-    }
-}
-
 void Aircraft::updateMovementPatterns(sf::Time dt)
 {
     const std::vector<AircraftData::Direction>& directions = aircraftInfo[mTypeID].directions;
@@ -287,7 +202,7 @@ void Aircraft::onCollision(Entity& entity)
 void Aircraft::removeEntity()
 {
     Entity::removeEntity();
-    mShowExplosion = false; //
+    mShowExplosion = false;
 }
 
 void Aircraft::increaseScore(int value)

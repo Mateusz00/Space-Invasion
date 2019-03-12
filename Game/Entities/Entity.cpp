@@ -1,12 +1,10 @@
 #include "Entity.hpp"
 #include "../World.hpp"
-#include <iostream>
-using ListIterator = std::list<Entity*>::iterator;
-
 
 Entity::Entity(int hitpoints, bool isCollidable, World& world)
     : mHitpoints(hitpoints),
-      mWorld(world)
+      mWorld(world),
+      mIsCollidable(isCollidable)
 {
     if(isCollidable)
         mWorld.addCollidable(this);
@@ -14,15 +12,14 @@ Entity::Entity(int hitpoints, bool isCollidable, World& world)
 
 Entity::~Entity()
 {
-    std::cout << "Deleting Collidable!" << std::endl;
-    mWorld.removeCollidable(this);
+    if(mIsCollidable)
+        mWorld.removeCollidable(this);
 }
 
 Entity& Entity::operator=(const Entity& other)
 {
     setVelocity(other.getVelocity());
     setHitpoints(other.getHitpoints());
-    mPosition = other.getPositionOnList();
     return *this;
 }
 
@@ -80,11 +77,6 @@ void Entity::repair(int hitpoints)
 void Entity::destroy()
 {
     mHitpoints = 0;
-}
-
-ListIterator Entity::getPositionOnList() const
-{
-    return mPosition;
 }
 
 World& Entity::getWorld() const

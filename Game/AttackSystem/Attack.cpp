@@ -9,7 +9,7 @@
 #include "../Application.hpp"
 using Attacks::attackData;
 
-Attack::Attack(int id, const TextureHolder& textures, sf::Vector2f pos, World& world, int shooterID, Targets targets)
+Attack::Attack(int id, const TextureHolder& textures, sf::Vector2f pos, World& world, int shooterID, const Targets& targets)
     : Entity(1, false, world),
       mPossibleTargets(targets),
       mAttackID(id),

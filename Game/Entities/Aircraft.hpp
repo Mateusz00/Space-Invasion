@@ -6,6 +6,7 @@
 #include "../Command.hpp"
 #include "../CommandQueue.hpp"
 #include "../ResourcesID.hpp"
+#include "../AttackSystem/AttackManager.hpp"
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/System/Time.hpp>
 class Entity;
@@ -15,7 +16,7 @@ class Aircraft : public Entity
     public:
         enum Type{Ally, Enemy, TypeCount};
 
-                                Aircraft(int, const TextureHolder&, const FontHolder&, World&, int id = 600);
+                                Aircraft(int, const TextureHolder&, const FontHolder&, World&, int id = 99999);
         Category::Type          getCategory() const override;
         void                    increaseFireRate();
         void                    increaseSpread();
@@ -41,9 +42,6 @@ class Aircraft : public Entity
 
     private:
         void            updateRollAnimation(sf::Time);
-        void            shootBullets(SceneNode&, const TextureHolder&) const;
-        void            createProjectile(SceneNode&, Projectile::Type, float xOffset, float yOffset, const TextureHolder&) const;
-        void            launchProjectiles(sf::Time, CommandQueue&);
         void            updateMovementPatterns(sf::Time);
         void            createPickup() const;
         void            createExplosion() const;
@@ -58,19 +56,15 @@ class Aircraft : public Entity
         int                     mSpreadLevel;
         int                     mMissileAmmo;
         int                     mIdentifier;
-        bool                    mIsFiring;
-        bool                    mIsLaunchingMissile;
         bool                    mIsEnemy;
         bool                    mShowExplosion;
         float                   mTravelledDistance;
         int                     mDirectionIndex;
-        sf::Time                mFireCooldown;
         sf::Time                mLastRoll;
-        Command                 mFireCommand;
-        Command                 mLaunchMissileCommand;
         const TextureHolder&    mTextures;
         int                     mAttackerID;
         int                     mScore;
+        AttackManager           mAttackManager;
 };
 
 #endif // AIRCRAFT_HPP

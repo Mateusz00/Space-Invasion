@@ -16,8 +16,10 @@ class AttackManager
         explicit    AttackManager(const TextureHolder&, World& world, int shooterID, bool isAllied);
         void        pushAttack(int id, int probability);
         void        forceAttack(int id, CommandQueue&);
+        sf::Time    getCooldown() const;
         void        forceCooldown(sf::Time);
-        void        update(sf::Time, CommandQueue&); // Not used
+        bool        tryAttack(int id, CommandQueue&);
+        void        update(sf::Time, CommandQueue&);
         void        updatePosition(sf::Vector2f);
 
     private:
