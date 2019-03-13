@@ -176,11 +176,12 @@ void Aircraft::updateMovementPatterns(sf::Time dt)
         }
 
         float radians = toRadian(directions[mDirectionIndex].angle);
-        float velx = getMaxSpeed() * std::sin(radians);
-        float vely = getMaxSpeed() * std::cos(radians);
+        float speedPercentage = directions[mDirectionIndex].speedPercentage/100.f;
+        float velx = getMaxSpeed() * std::sin(radians) * speedPercentage;
+        float vely = getMaxSpeed() * std::cos(radians) * speedPercentage;
 
         setVelocity(velx, vely);
-        mTravelledDistance += getMaxSpeed() * dt.asSeconds();
+        mTravelledDistance += getMaxSpeed() * dt.asSeconds() * speedPercentage;
     }
 }
 
