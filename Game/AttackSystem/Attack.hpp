@@ -18,7 +18,7 @@ class Attack : public Entity
         using Targets = std::vector<Aircraft*>;
 
                                 Attack(int id, const TextureHolder&, sf::Vector2f pos, World&, int shooterID, const Targets&);
-        void                    update(sf::Time, CommandQueue&);
+        void                    updateCurrent(sf::Time, CommandQueue&);
         bool                    isActive() const;
         virtual Category::Type  getCategory() const;
         virtual sf::FloatRect   getBoundingRect() const override; // AttackManager checks if attack isn't visible and deletes it

@@ -74,8 +74,8 @@ void AttackManager::update(sf::Time dt, CommandQueue& commandQueue)
         useAttack(attackID, commandQueue);
     }
 
-    for(auto& attack : mCurrentAttacks)
-        attack->update(dt, commandQueue); // ensures that attacks are updated after AttackManager and not earlier(could happen while updating scene graph)
+    ///for(auto& attack : mCurrentAttacks)
+        ///attack->updateCurrent(dt, commandQueue); // ensures that attacks are updated after AttackManager and not earlier(could happen while updating scene graph)
 
     clearFinishedAttacks();
     commandQueue.push(mTargetsCollector);

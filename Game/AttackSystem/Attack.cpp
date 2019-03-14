@@ -7,6 +7,7 @@
 #include "../CommandQueue.hpp"
 #include "../Utility.hpp"
 #include "../Application.hpp"
+#include <iostream>
 using Attacks::attackData;
 
 Attack::Attack(int id, const TextureHolder& textures, sf::Vector2f pos, World& world, int shooterID, const Targets& targets)
@@ -23,7 +24,7 @@ Attack::Attack(int id, const TextureHolder& textures, sf::Vector2f pos, World& w
     createProjectiles();
 }
 
-void Attack::update(sf::Time dt, CommandQueue& commandQueue)
+void Attack::updateCurrent(sf::Time dt, CommandQueue& commandQueue)
 {
     // Remove projectiles that are marked for removal
     auto iter = std::remove_if(mProjectiles.begin(), mProjectiles.end(), std::mem_fn(&Projectile::isMarkedForRemoval));
@@ -201,7 +202,18 @@ void Attack::createProjectile(int num)
     sf::Vector2f offset(projectileInfo.offset);
 
     if(projectile->getPattern() == AttackPattern::Orbiting)
-        projectile->setPosition(mGravityCenters.at(projectileInfo.patternData.gravityCenterID).getPosition() + offset);
+    {
+        try
+        {
+            projectile->setPosition(mGravityCenters.at(projectileInfo.patternData.gravityCenterID).getPosition() + offset);
+        }
+        catch(const std::out_of_range& oor)
+        {
+            std::cout << "Could not find gravityCenter(id=" << projectileInfo.patternData.gravityCenterID
+                      << ") in (AttackID=" << mAttackID << ", projectileNumber=" << num << ")" << std::endl;
+            throw oor;
+        }
+    }
     else
         projectile->setPosition(mPosition + offset);
 
