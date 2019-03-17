@@ -17,7 +17,8 @@ class Attack : public Entity
     public:
         using Targets = std::vector<Aircraft*>;
 
-                                Attack(int id, const TextureHolder&, sf::Vector2f pos, World&, int shooterID, const Targets&);
+                                Attack(int id, const TextureHolder&, sf::Vector2f pos, World&, int shooterID,
+                                        const Targets&, bool isAllied);
         void                    updateCurrent(sf::Time, CommandQueue&);
         bool                    isActive() const;
         virtual Category::Type  getCategory() const;
@@ -45,6 +46,7 @@ class Attack : public Entity
         const TextureHolder&                        mTextures;
         bool                                        mIsActive;
         bool                                        mIsReadyToDelete;
+        bool                                        mIsAllied;
         sf::Vector2f                                mPosition;
         int                                         mShooterID;
 };

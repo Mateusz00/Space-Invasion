@@ -29,7 +29,7 @@ void AttackManager::useAttack(int id, CommandQueue& commands)
     launchAttack.mCategories.push_back(Category::AirLayer);
     launchAttack.mAction = [this, id](SceneNode& layer, sf::Time)
     {
-        std::unique_ptr<Attack> attack(new Attack(id, mTextures, mPosition, mWorld, mShooterID, mPossibleTargets));
+        std::unique_ptr<Attack> attack(new Attack(id, mTextures, mPosition, mWorld, mShooterID, mPossibleTargets, mIsAllied));
         mCurrentAttacks.emplace_back(attack.get());
         layer.attachChild(std::move(attack));
     };

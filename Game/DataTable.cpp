@@ -274,7 +274,7 @@ std::unordered_map<int, AttackData> initializeAttackData()
             projectileInfo.speed         = projectile.attribute("speed").as_float();
             projectileInfo.type          = static_cast<Projectile::Type>(projectile.attribute("id").as_int());
             projectileInfo.pattern       = static_cast<AttackPattern::ID>(projectile.attribute("patternID").as_int());
-            projectileInfo.isAimed       = projectile.attribute("isAimed").as_bool(); ///Returns def value if null handle check if it's possible to omit unnecessary attributes
+            projectileInfo.isAimed       = projectile.attribute("aimed").as_bool(); ///Returns def value if null handle check if it's possible to omit unnecessary attributes
 
             switch(projectileInfo.pattern)
             {
@@ -316,7 +316,7 @@ std::unordered_map<int, AttackData> initializeAttackData()
             gravityCenterInfo.speed         = gravityCenter.attribute("speed").as_float();
             gravityCenterInfo.id            = gravityCenter.attribute("id").as_int();
             gravityCenterInfo.pattern       = static_cast<AttackPattern::ID>(gravityCenter.attribute("patternID").as_int());
-            gravityCenterInfo.isAimed       = gravityCenter.attribute("isAimed").as_bool(); ///Returns def value if null handle check if it's possible to omit unnecessary attributes
+            gravityCenterInfo.isAimed       = gravityCenter.attribute("aimed").as_bool(); ///Returns def value if null handle check if it's possible to omit unnecessary attributes
 
             switch(gravityCenterInfo.pattern)
             {

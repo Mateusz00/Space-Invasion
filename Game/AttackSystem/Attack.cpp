@@ -10,13 +10,15 @@
 #include <iostream>
 using Attacks::attackData;
 
-Attack::Attack(int id, const TextureHolder& textures, sf::Vector2f pos, World& world, int shooterID, const Targets& targets)
+Attack::Attack(int id, const TextureHolder& textures, sf::Vector2f pos, World& world, int shooterID,
+                const Targets& targets, bool isAllied)
     : Entity(1, false, world),
       mPossibleTargets(targets),
       mAttackID(id),
       mTextures(textures),
       mIsActive(true),
       mIsReadyToDelete(false),
+      mIsAllied(isAllied),
       mPosition(pos),
       mShooterID(shooterID)
 {
@@ -217,10 +219,23 @@ void Attack::createProjectile(int num)
     else
         projectile->setPosition(mPosition + offset);
 
-    if(projectileInfo.isAimed && !mPossibleTargets.empty())
-        direction = unitVector(getClosestTarget(projectile.get()));
+    sf::Vector2f targetVector = getClosestTarget(projectile.get());
+    if(projectileInfo.isAimed && !mPossibleTargets.empty() && targetVector != sf::Vector2f())
+        direction = unitVector(targetVector);
     else
-        direction = unitVector(projectileInfo.direction);
+    {
+        try
+        {
+            direction = unitVector(projectileInfo.direction);
+        }
+        catch(const std::logic_error& err)
+        {
+            std::cout << "Error: Length of direction vector is 0!(AttackID=" << mAttackID
+                      << ", projectile=" << num << ")" << std::endl;
+            throw err;
+        }
+    }
+
 
     sf::Vector2f velocity(direction * speed);
     projectile->setVelocity(velocity);
@@ -251,10 +266,22 @@ void Attack::createGravityCenter(int num)
     else
         gravityCenter.setPosition(mPosition + offset);
 
-    if(gravityCenterData.isAimed && !mPossibleTargets.empty())
-        direction = unitVector(getClosestTarget(&gravityCenter));
+    sf::Vector2f targetVector = getClosestTarget(&gravityCenter);
+    if(gravityCenterData.isAimed && !mPossibleTargets.empty() && targetVector != sf::Vector2f())
+        direction = unitVector(targetVector);
     else
-        direction = unitVector(gravityCenterData.direction);
+    {
+        try
+        {
+            direction = unitVector(gravityCenterData.direction);
+        }
+        catch(const std::logic_error& err)
+        {
+            std::cout << "Error: Length of direction vector is 0!(AttackID=" << mAttackID
+                      << ", projectile=" << num << ")" << std::endl;
+            throw err;
+        }
+    }
 
     sf::Vector2f velocity(direction * gravityCenterData.speed);
     gravityCenter.setVelocity(velocity);
@@ -387,7 +414,13 @@ sf::Vector2f Attack::getClosestTarget(const sf::Transformable* object) const
 
     for(const auto& target : mPossibleTargets)
     {
-        if(target->getWorldPosition().y < object->getPosition().y) // Avoids projectile/gravityCenter turning back
+        bool isTargetBehind;
+        if(mIsAllied)
+            isTargetBehind = target->getWorldPosition().y < object->getPosition().y; // Avoids projectile/gravityCenter turning back
+        else
+            isTargetBehind = target->getWorldPosition().y > object->getPosition().y; // Avoids projectile/gravityCenter turning back
+
+        if(isTargetBehind)
         {
             float targetDistance = vectorLength(object->getPosition() - target->getWorldPosition());
             if(targetDistance < smallestDistance)
