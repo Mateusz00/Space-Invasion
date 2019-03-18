@@ -20,7 +20,7 @@ void AttackManager::pushAttack(int id, int probability)
     mAttacks.emplace_back(id, probability);
 }
 
-void AttackManager::useAttack(int id, CommandQueue& commands)
+void AttackManager::useAttack(int id, CommandQueue& commands, bool applyCooldown)
 {
     if(id == -1)
         return;
@@ -35,7 +35,9 @@ void AttackManager::useAttack(int id, CommandQueue& commands)
     };
 
     commands.push(launchAttack);
-    mCooldown += Attacks::attackData.at(id).cooldown;
+
+    if(applyCooldown)
+        mCooldown += Attacks::attackData.at(id).cooldown;
 }
 
 void AttackManager::forceAttack(int id, CommandQueue& commands)
@@ -66,12 +68,26 @@ bool AttackManager::tryAttack(int id, CommandQueue& commands) // For players att
 
 void AttackManager::update(sf::Time dt, CommandQueue& commandQueue)
 {
+    // Update cool-downs
     mCooldown = std::max(mCooldown - dt, sf::Time::Zero);
+    for(std::pair<const int, sf::Time>& repeatCooldown : mRepeatCooldowns)
+        repeatCooldown.second = std::max(repeatCooldown.second - dt, sf::Time::Zero);
 
     if(mCooldown <= sf::Time::Zero && !mIsAllied)
     {
         int attackID = getNewAttack();
         useAttack(attackID, commandQueue);
+    }
+
+    // Manage repeated attacks
+    for(std::pair<const int, int>& repeatPair : mRepeats)
+    {
+        if(mRepeatCooldowns.at(repeatPair.first) <= sf::Time::Zero)
+        {
+            useAttack(repeatPair.first, commandQueue, false);
+            mRepeatCooldowns[repeatPair.first] += Attacks::attackData.at(repeatPair.first).repeatCooldown;
+            --repeatPair.second;
+        }
     }
 
     ///for(auto& attack : mCurrentAttacks)
@@ -81,7 +97,7 @@ void AttackManager::update(sf::Time dt, CommandQueue& commandQueue)
     commandQueue.push(mTargetsCollector);
 }
 
-int AttackManager::getNewAttack() const
+int AttackManager::getNewAttack()
 {
     int range1 = 0, range2 = 0, num = randomInt(1, 100);
 
@@ -90,7 +106,15 @@ int AttackManager::getNewAttack() const
         range2 += attack.second; // probability
 
         if(num > range1 && num <= range2)
+        {
+            if(Attacks::attackData.at(attack.first).repeats > 0)
+            {
+                mRepeats[attack.first] = Attacks::attackData.at(attack.first).repeats;
+                mRepeatCooldowns.emplace(attack.first, sf::Time::Zero);
+            }
+
             return attack.first; // id
+        }
 
         range1 += attack.second;
     }
@@ -119,6 +143,17 @@ void AttackManager::clearFinishedAttacks()
         }
         return false;
     });
+
+    for(auto it = mRepeats.begin(); it != mRepeats.end() && !mRepeats.empty();)
+    {
+        if(it->second <= 0) // repeats
+        {
+            mRepeatCooldowns.erase(it->first);
+            mRepeats.erase(it);
+        }
+        else
+            ++it;
+    }
 
     mCurrentAttacks.erase(newBeg, mCurrentAttacks.end());
 }

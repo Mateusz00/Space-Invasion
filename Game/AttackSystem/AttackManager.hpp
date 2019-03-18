@@ -24,8 +24,8 @@ class AttackManager
 
     private:
         void        clearFinishedAttacks();
-        int         getNewAttack() const;
-        void        useAttack(int id, CommandQueue&);
+        int         getNewAttack();
+        void        useAttack(int id, CommandQueue&, bool applyCooldown = true);
         void        initializeCommands();
 
         std::vector<std::pair<int, int>>    mAttacks; // id, probability
@@ -38,6 +38,8 @@ class AttackManager
         int                                 mShooterID;
         bool                                mIsAllied;
         Command                             mTargetsCollector;
+        std::unordered_map<int, int>        mRepeats; // id, times
+        std::unordered_map<int, sf::Time>   mRepeatCooldowns;
 };
 
 #endif // ATTACKMANAGER_HPP
