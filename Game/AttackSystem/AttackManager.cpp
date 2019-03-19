@@ -70,13 +70,33 @@ void AttackManager::update(sf::Time dt, CommandQueue& commandQueue)
 {
     // Update cool-downs
     mCooldown = std::max(mCooldown - dt, sf::Time::Zero);
+
     for(std::pair<const int, sf::Time>& repeatCooldown : mRepeatCooldowns)
         repeatCooldown.second = std::max(repeatCooldown.second - dt, sf::Time::Zero);
 
+    for(std::pair<const int, sf::Time>& attack : mChargingAttacks)
+        attack.second = std::max(attack.second - dt, sf::Time::Zero);
+
+    // Get new attack if possible
     if(mCooldown <= sf::Time::Zero && !mIsAllied)
     {
         int attackID = getNewAttack();
         useAttack(attackID, commandQueue);
+    }
+
+    // Use attacks that have been charged
+    for(std::pair<const int, sf::Time>& attack : mChargingAttacks)
+    {
+        if(attack.second <= sf::Time::Zero)
+        {
+            if(Attacks::attackData.at(attack.first).repeats > 0)
+            {
+                mRepeats[attack.first] = Attacks::attackData.at(attack.first).repeats;
+                mRepeatCooldowns.emplace(attack.first, sf::Time::Zero);
+            }
+            else
+                useAttack(attack.first, commandQueue, false);
+        }
     }
 
     // Manage repeated attacks
@@ -107,13 +127,22 @@ int AttackManager::getNewAttack()
 
         if(num > range1 && num <= range2)
         {
-            if(Attacks::attackData.at(attack.first).repeats > 0)
+            if(Attacks::attackData.at(attack.first).chargingTime == sf::Time::Zero)
             {
-                mRepeats[attack.first] = Attacks::attackData.at(attack.first).repeats;
-                mRepeatCooldowns.emplace(attack.first, sf::Time::Zero);
-            }
+                if(Attacks::attackData.at(attack.first).repeats > 0)
+                {
+                    mRepeats[attack.first] = Attacks::attackData.at(attack.first).repeats;
+                    mRepeatCooldowns.emplace(attack.first, sf::Time::Zero);
+                }
 
-            return attack.first; // id
+                return attack.first; // id
+            }
+            else
+            {
+                mCooldown += Attacks::attackData.at(attack.first).cooldown;
+                mChargingAttacks.emplace(attack.first, Attacks::attackData.at(attack.first).chargingTime);
+                return -1;
+            }
         }
 
         range1 += attack.second;
@@ -151,6 +180,14 @@ void AttackManager::clearFinishedAttacks()
             mRepeatCooldowns.erase(it->first);
             mRepeats.erase(it);
         }
+        else
+            ++it;
+    }
+
+    for(auto it = mChargingAttacks.begin(); it != mChargingAttacks.end() && !mChargingAttacks.empty();)
+    {
+        if(it->second <= sf::Time::Zero)
+            mChargingAttacks.erase(it->first);
         else
             ++it;
     }

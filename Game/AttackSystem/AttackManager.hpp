@@ -40,6 +40,7 @@ class AttackManager
         Command                             mTargetsCollector;
         std::unordered_map<int, int>        mRepeats; // id, times
         std::unordered_map<int, sf::Time>   mRepeatCooldowns;
+        std::unordered_map<int, sf::Time>   mChargingAttacks;
 };
 
 #endif // ATTACKMANAGER_HPP
