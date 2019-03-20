@@ -4,6 +4,7 @@
 #include "../DataTable.hpp"
 #include "../CommandQueue.hpp"
 #include "../Utility.hpp"
+#include "../World.hpp"
 #include "Attacks.hpp"
 
 AttackManager::AttackManager(const TextureHolder& textures, World& world, int shooterID, bool isAllied)
@@ -13,6 +14,7 @@ AttackManager::AttackManager(const TextureHolder& textures, World& world, int sh
       mIsAllied(isAllied)
 {
     initializeCommands();
+    world.getCommandQueue().push(mTargetsCollector);
 }
 
 void AttackManager::pushAttack(int id, int probability)
