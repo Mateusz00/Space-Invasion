@@ -47,9 +47,10 @@ void Attack::updateCurrent(sf::Time dt, CommandQueue& commandQueue)
         {
             case AttackPattern::Guided:
             {
-                sf::Vector2f newDirection = unitVector(dt.asSeconds() * getClosestTarget(&gravityCenter) * 170.f + gravityCenter.getVelocity()); // getVelocity and 170.f makes movement smoother
-                displacement = newDirection * gravityCenter.getSpeed();
-                gravityCenter.setVelocity(displacement);
+                sf::Vector2f newVelocity = unitVector(dt.asSeconds() * getClosestTarget(&gravityCenter) * 170.f + gravityCenter.getVelocity()); // getVelocity and 170.f makes movement smoother
+                newVelocity *= gravityCenter.getSpeed();
+                displacement = newVelocity * dt.asSeconds();
+                gravityCenter.setVelocity(newVelocity);
                 break;
             }
             case AttackPattern::Wave:
@@ -68,7 +69,7 @@ void Attack::updateCurrent(sf::Time dt, CommandQueue& commandQueue)
                                      perpendicular.y + perpendicularLength * std::cos(angle + toRadian(90.f)));
 
                 // getTimePerFrame nullifies effect of multiplying by time_per_frame in entity's update func
-                gravityCenter.setVelocity(displacement * Application::getTimePerFrame().asSeconds());
+                gravityCenter.setVelocity(displacement / Application::getTimePerFrame().asSeconds());
                 break;
             }
             case AttackPattern::Orbiting:
@@ -84,7 +85,7 @@ void Attack::updateCurrent(sf::Time dt, CommandQueue& commandQueue)
                 newPosition.x = centerPos.x + std::sin(toRadian(newAngle)) * radius;
                 newPosition.y = centerPos.y - std::cos(toRadian(newAngle)) * radius;
                 displacement = newPosition - oldPos;
-                gravityCenter.setVelocity(displacement * Application::getTimePerFrame().asSeconds());
+                gravityCenter.setVelocity(displacement / Application::getTimePerFrame().asSeconds());
                 break;
             }
             case AttackPattern::Barrier:
@@ -99,7 +100,7 @@ void Attack::updateCurrent(sf::Time dt, CommandQueue& commandQueue)
                 newPosition.x = mPosition.x + std::sin(toRadian(newAngle)) * radius;
                 newPosition.y = mPosition.y - std::cos(toRadian(newAngle)) * radius;
                 displacement = newPosition - oldPos;
-                gravityCenter.setVelocity(displacement * Application::getTimePerFrame().asSeconds());
+                gravityCenter.setVelocity(displacement / Application::getTimePerFrame().asSeconds());
                 break;
             }
             default:
