@@ -82,6 +82,7 @@ class World
         bool                mIsDeleting;
 
         std::vector<Aircraft*>              mPlayerAircrafts;
+        std::vector<Aircraft*>              mEnemies;
         std::vector<SpawnPoint>             mSpawnPoints;
         std::array<SceneNode*, LayerCount>  mSceneLayers;
         std::list<Entity*>                  mCollidablesList;

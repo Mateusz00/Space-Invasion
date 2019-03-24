@@ -14,6 +14,7 @@ class AttackManager
 {
     public:
         explicit    AttackManager(const TextureHolder&, World& world, int shooterID, bool isAllied);
+                    ~AttackManager();
         void        pushAttack(int id, int probability);
         void        forceAttack(int id, CommandQueue&);
         sf::Time    getCooldown() const;
@@ -26,10 +27,8 @@ class AttackManager
         void        clearFinishedAttacks();
         int         getNewAttack();
         void        useAttack(int id, CommandQueue&, bool applyCooldown = true);
-        void        initializeCommands();
 
         std::vector<std::pair<int, int>>    mAttacks; // id, probability
-        std::vector<Aircraft*>              mPossibleTargets;
         std::vector<Attack*>                mCurrentAttacks;
         sf::Time                            mCooldown;
         const TextureHolder&                mTextures;
@@ -37,7 +36,6 @@ class AttackManager
         World&                              mWorld;
         int                                 mShooterID;
         bool                                mIsAllied;
-        Command                             mTargetsCollector;
         std::unordered_map<int, int>        mRepeats; // id, times
         std::unordered_map<int, sf::Time>   mRepeatCooldowns;
         std::unordered_map<int, sf::Time>   mChargingAttacks;

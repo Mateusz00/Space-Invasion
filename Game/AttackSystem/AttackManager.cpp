@@ -9,12 +9,15 @@
 
 AttackManager::AttackManager(const TextureHolder& textures, World& world, int shooterID, bool isAllied)
     : mTextures(textures),
+      mCooldown(sf::seconds(0.1f)),
       mWorld(world),
       mShooterID(shooterID),
       mIsAllied(isAllied)
 {
-    initializeCommands();
-    world.getCommandQueue().push(mTargetsCollector);
+}
+
+AttackManager::~AttackManager()
+{
 }
 
 void AttackManager::pushAttack(int id, int probability)
@@ -31,7 +34,7 @@ void AttackManager::useAttack(int id, CommandQueue& commands, bool applyCooldown
     launchAttack.mCategories.push_back(Category::AirLayer);
     launchAttack.mAction = [this, id](SceneNode& layer, sf::Time)
     {
-        std::unique_ptr<Attack> attack(new Attack(id, mTextures, mPosition, mWorld, mShooterID, mPossibleTargets, mIsAllied));
+        std::unique_ptr<Attack> attack(new Attack(id, mTextures, mPosition, mWorld, mShooterID, mIsAllied));
         mCurrentAttacks.emplace_back(attack.get());
         layer.attachChild(std::move(attack));
     };
@@ -116,7 +119,6 @@ void AttackManager::update(sf::Time dt, CommandQueue& commandQueue)
         ///attack->updateCurrent(dt, commandQueue); // ensures that attacks are updated after AttackManager and not earlier(could happen while updating scene graph)
 
     clearFinishedAttacks();
-    commandQueue.push(mTargetsCollector);
 }
 
 int AttackManager::getNewAttack()
@@ -195,18 +197,4 @@ void AttackManager::clearFinishedAttacks()
     }
 
     mCurrentAttacks.erase(newBeg, mCurrentAttacks.end());
-}
-
-void AttackManager::initializeCommands()
-{
-    if(mIsAllied)
-        mTargetsCollector.mCategories.push_back(Category::EnemyAircraft);
-    else
-        mTargetsCollector.mCategories.push_back(Category::PlayerAircraft);
-
-    mTargetsCollector.mAction = castFunctor<Aircraft>([this](Aircraft& target, sf::Time dt)
-    {
-        if(!target.isMarkedForRemoval())
-            mPossibleTargets.push_back(&target);
-    });
 }

@@ -1,4 +1,5 @@
 #include "World.hpp"
+#include "Attack.hpp"
 #include "Utility.hpp"
 #include "SpriteNode.hpp"
 #include "Entities/AmmoNode.hpp"
@@ -275,7 +276,26 @@ void World::spawnEnemies()
 
 void World::guideHomingMissiles()
 {
-    ///
+    Command mEnemyCollector;
+    mEnemyCollector.mCategories.push_back(Category::EnemyAircraft);
+    mEnemyCollector.mAction = castFunctor<Aircraft>([this](Aircraft& target, sf::Time dt)
+    {
+        if(!target.isMarkedForRemoval())
+            mEnemies.emplace_back(&target);
+    });
+
+    Command mGuideCommand;
+    mGuideCommand.mCategories.push_back(Category::Attack);
+    mGuideCommand.mAction = castFunctor<Attack>([this](Attack& attack, sf::Time dt)
+    {
+        if(attack.isAllied())
+            attack.updateTargets(&mEnemies);
+        else
+            attack.updateTargets(&mPlayerAircrafts);
+    });
+
+    mCommandQueue.push(mEnemyCollector);
+    mCommandQueue.push(mGuideCommand);
 }
 
 void World::adaptPlayersPosition()

@@ -10,24 +10,31 @@
 #include <iostream>
 using Attacks::attackData;
 
-Attack::Attack(int id, const TextureHolder& textures, sf::Vector2f pos, World& world, int shooterID,
-                const Targets& targets, bool isAllied)
+Attack::Attack(int id, const TextureHolder& textures, sf::Vector2f pos, World& world, int shooterID, bool isAllied)
     : Entity(1, false, world),
-      mPossibleTargets(targets),
+      mTargets(nullptr),
       mAttackID(id),
       mTextures(textures),
       mIsActive(true),
       mIsReadyToDelete(false),
       mIsAllied(isAllied),
+      mWasCreated(false),
       mPosition(pos),
       mShooterID(shooterID)
 {
-    createGravityCenters();
-    createProjectiles();
+    //createGravityCenters();
+    //createProjectiles();
 }
 
 void Attack::updateCurrent(sf::Time dt, CommandQueue& commandQueue)
 {
+    if(!mWasCreated)
+    {
+        createGravityCenters();
+        createProjectiles();
+        mWasCreated = true;
+    }
+
     // Remove projectiles that are marked for removal
     auto iter = std::remove_if(mProjectiles.begin(), mProjectiles.end(), std::mem_fn(&Projectile::isMarkedForRemoval));
     mProjectiles.erase(iter, mProjectiles.end());
@@ -49,7 +56,6 @@ void Attack::updateCurrent(sf::Time dt, CommandQueue& commandQueue)
             {
                 sf::Vector2f newVelocity = unitVector(dt.asSeconds() * getClosestTarget(&gravityCenter) * 170.f + gravityCenter.getVelocity()); // getVelocity and 170.f makes movement smoother
                 newVelocity *= gravityCenter.getSpeed();
-                displacement = newVelocity * dt.asSeconds();
                 gravityCenter.setVelocity(newVelocity);
                 break;
             }
@@ -58,9 +64,10 @@ void Attack::updateCurrent(sf::Time dt, CommandQueue& commandQueue)
                 float angle = std::atan2(-gravityCenter.getDirection().y, gravityCenter.getDirection().x) + toRadian(90.f);
                 sf::Vector2f perpendicular(-gravityCenter.getDirection().y, gravityCenter.getDirection().x);
                 sf::Vector2f startPos(gravityCenter.getStartPos());
+                sf::Vector2f oldPos = gravityCenter.getPosition();
 
                 sf::Vector2f newPos1(startPos.x + gravityCenter.getSpeed() * std::sin(angle) * gravityCenter.activeTime(),
-                                     startPos.y + gravityCenter.getSpeed() * std::cos(angle)* gravityCenter.activeTime());
+                                     startPos.y + gravityCenter.getSpeed() * std::cos(angle) * gravityCenter.activeTime());
 
                 float times = vectorLength(startPos - newPos1) / gravityCenter.getPatternData().waveData[1];
                 float perpendicularLength = (std::sin(times * 3.1415f) * gravityCenter.getPatternData().waveData[0]);
@@ -69,7 +76,7 @@ void Attack::updateCurrent(sf::Time dt, CommandQueue& commandQueue)
                                      perpendicular.y + perpendicularLength * std::cos(angle + toRadian(90.f)));
 
                 // getTimePerFrame nullifies effect of multiplying by time_per_frame in entity's update func
-                gravityCenter.setVelocity(displacement / Application::getTimePerFrame().asSeconds());
+                gravityCenter.setVelocity((newPos1 + newPos2 - oldPos) / Application::getTimePerFrame().asSeconds());
                 break;
             }
             case AttackPattern::Orbiting:
@@ -84,8 +91,7 @@ void Attack::updateCurrent(sf::Time dt, CommandQueue& commandQueue)
                 float newAngle = toDegree(std::atan2(dir.y, dir.x)) + 90.f + gravityCenter.getSpeed() * dt.asSeconds();
                 newPosition.x = centerPos.x + std::sin(toRadian(newAngle)) * radius;
                 newPosition.y = centerPos.y - std::cos(toRadian(newAngle)) * radius;
-                displacement = newPosition - oldPos;
-                gravityCenter.setVelocity(displacement / Application::getTimePerFrame().asSeconds());
+                gravityCenter.setVelocity((newPosition - oldPos) / Application::getTimePerFrame().asSeconds());
                 break;
             }
             case AttackPattern::Barrier:
@@ -99,16 +105,13 @@ void Attack::updateCurrent(sf::Time dt, CommandQueue& commandQueue)
                 float newAngle = toDegree(std::atan2(dir.y, dir.x)) + 90.f + gravityCenter.getSpeed() * dt.asSeconds();
                 newPosition.x = mPosition.x + std::sin(toRadian(newAngle)) * radius;
                 newPosition.y = mPosition.y - std::cos(toRadian(newAngle)) * radius;
-                displacement = newPosition - oldPos;
-                gravityCenter.setVelocity(displacement / Application::getTimePerFrame().asSeconds());
+                gravityCenter.setVelocity((newPosition - oldPos) / Application::getTimePerFrame().asSeconds());
                 break;
             }
-            default:
-                displacement = gravityCenter.getVelocity() * dt.asSeconds();
-                break;
         }
 
         // Apply displacement vector to gravity center and it's projectiles and gravityCenters
+        displacement = gravityCenter.getVelocity() * dt.asSeconds();
         gravityCenter.update(dt, commandQueue);
         applyDisplacement(gravityCenterID, displacement);
     }
@@ -223,7 +226,7 @@ void Attack::createProjectile(int num)
         projectile->setPosition(mPosition + offset);
 
     sf::Vector2f targetVector = getClosestTarget(projectile.get());
-    if(projectileInfo.isAimed && !mPossibleTargets.empty() && targetVector != sf::Vector2f())
+    if(projectileInfo.isAimed && targetVector != sf::Vector2f())
         direction = unitVector(targetVector);
     else
     {
@@ -270,7 +273,7 @@ void Attack::createGravityCenter(int num)
         gravityCenter.setPosition(mPosition + offset);
 
     sf::Vector2f targetVector = getClosestTarget(&gravityCenter);
-    if(gravityCenterData.isAimed && !mPossibleTargets.empty() && targetVector != sf::Vector2f())
+    if(gravityCenterData.isAimed && targetVector != sf::Vector2f())
         direction = unitVector(targetVector);
     else
     {
@@ -410,32 +413,57 @@ void Attack::applyDisplacement(int gravityCenterID, sf::Vector2f displacement)
 }
 
 sf::Vector2f Attack::getClosestTarget(const sf::Transformable* object) const
-/// Returns direction vector
+/// Returns normalized direction vector
 {
-    float smallestDistance = std::numeric_limits<float>::max();
-    Aircraft* closestTarget = nullptr;
-
-    for(const auto& target : mPossibleTargets)
+    if(mTargets != nullptr)
     {
-        bool isTargetBehind;
-        if(mIsAllied)
-            isTargetBehind = target->getWorldPosition().y < object->getPosition().y; // Avoids projectile/gravityCenter turning back
-        else
-            isTargetBehind = target->getWorldPosition().y > object->getPosition().y; // Avoids projectile/gravityCenter turning back
+        float smallestDistance = std::numeric_limits<float>::max();
+        Aircraft* closestTarget = nullptr;
 
-        if(isTargetBehind)
+        for(const auto& target : *mTargets)
         {
-            float targetDistance = vectorLength(object->getPosition() - target->getWorldPosition());
-            if(targetDistance < smallestDistance)
+            bool isTargetBehind;
+            if(mIsAllied)
+                isTargetBehind = target->getWorldPosition().y < object->getPosition().y; // Avoids projectile/gravityCenter turning back
+            else
+                isTargetBehind = target->getWorldPosition().y > object->getPosition().y; // Avoids projectile/gravityCenter turning back
+
+            if(isTargetBehind)
             {
-                closestTarget = target;
-                smallestDistance = targetDistance;
+                float targetDistance = vectorLength(object->getPosition() - target->getWorldPosition());
+                if(targetDistance < smallestDistance)
+                {
+                    closestTarget = target;
+                    smallestDistance = targetDistance;
+                }
             }
         }
+
+        if(closestTarget)
+            return unitVector(closestTarget->getWorldPosition() - object->getPosition());
     }
 
-    if(closestTarget)
-        return unitVector(closestTarget->getWorldPosition() - object->getPosition());
-    else
-        return sf::Vector2f();
+    return sf::Vector2f();
+}
+
+bool Attack::isAllied() const
+{
+    return mIsAllied;
+}
+
+void Attack::updateTargets(const std::vector<Aircraft*>* targets)
+{
+    mTargets = targets;
+
+    /*for(auto& projectile : mProjectiles)
+    {
+        if(projectile->getPattern() == AttackPattern::Guided)
+            projectile->setTarget(getClosestTarget(projectile, targets));
+    }
+
+    for(auto& gravityCenterPair : mGravityCenters)
+    {
+        if(gravityCenterPair.second.getPattern() == AttackPattern::Guided)
+            gravityCenterPair.second.setTarget(getClosestTarget(&gravityCenterPair.second, targets));
+    }*/
 }

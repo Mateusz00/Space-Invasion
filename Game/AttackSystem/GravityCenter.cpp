@@ -53,6 +53,7 @@ void GravityCenter::setDirection(sf::Vector2f dir)
 }
 
 sf::Vector2f GravityCenter::getDirection() const
+/// Returns initial direction of projectile
 {
     return mDirection;
 }

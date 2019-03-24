@@ -15,10 +15,7 @@ class World;
 class Attack : public Entity
 {
     public:
-        using Targets = std::vector<Aircraft*>;
-
-                                Attack(int id, const TextureHolder&, sf::Vector2f pos, World&, int shooterID,
-                                        const Targets&, bool isAllied);
+                                Attack(int id, const TextureHolder&, sf::Vector2f pos, World&, int shooterID, bool isAllied);
         void                    updateCurrent(sf::Time, CommandQueue&);
         bool                    isActive() const;
         virtual Category::Type  getCategory() const;
@@ -26,7 +23,9 @@ class Attack : public Entity
         virtual void            removeEntity();
         virtual bool            isMarkedForRemoval() const override; // AttackManager checks it
         void                    markForRemoval();
-        void                    updateBarrierPosition(sf::Vector2f displacement);
+        void                    updateBarrierPosition(sf::Vector2f displacement);///
+        bool                    isAllied() const;
+        void                    updateTargets(const std::vector<Aircraft*>* targets);
 
     private:
         virtual void            drawCurrent(sf::RenderTarget&, sf::RenderStates) const override;
@@ -41,12 +40,13 @@ class Attack : public Entity
 
         std::vector<std::unique_ptr<Projectile>>    mProjectiles;
         std::unordered_map<int, GravityCenter>      mGravityCenters;
-        const Targets&                              mPossibleTargets;
+        const std::vector<Aircraft*>*               mTargets;
         int                                         mAttackID;
         const TextureHolder&                        mTextures;
         bool                                        mIsActive;
         bool                                        mIsReadyToDelete;
         bool                                        mIsAllied;
+        bool                                        mWasCreated;
         sf::Vector2f                                mPosition;
         int                                         mShooterID;
 };
