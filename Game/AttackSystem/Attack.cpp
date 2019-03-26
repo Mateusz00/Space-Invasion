@@ -10,9 +10,10 @@
 #include <iostream>
 using Attacks::attackData;
 
-Attack::Attack(int id, const TextureHolder& textures, sf::Vector2f pos, World& world, int shooterID, bool isAllied)
+Attack::Attack(int id, const TextureHolder& textures, sf::Vector2f pos, World& world, int shooterID,
+                bool isAllied, const std::vector<Aircraft*>& targets)
     : Entity(1, false, world),
-      mTargets(nullptr),
+      mTargets(targets),
       mAttackID(id),
       mTextures(textures),
       mIsActive(true),
@@ -22,19 +23,12 @@ Attack::Attack(int id, const TextureHolder& textures, sf::Vector2f pos, World& w
       mPosition(pos),
       mShooterID(shooterID)
 {
-    //createGravityCenters();
-    //createProjectiles();
+    createGravityCenters();
+    createProjectiles();
 }
 
 void Attack::updateCurrent(sf::Time dt, CommandQueue& commandQueue)
 {
-    if(!mWasCreated)
-    {
-        createGravityCenters();
-        createProjectiles();
-        mWasCreated = true;
-    }
-
     // Remove projectiles that are marked for removal
     auto iter = std::remove_if(mProjectiles.begin(), mProjectiles.end(), std::mem_fn(&Projectile::isMarkedForRemoval));
     mProjectiles.erase(iter, mProjectiles.end());
@@ -415,55 +409,35 @@ void Attack::applyDisplacement(int gravityCenterID, sf::Vector2f displacement)
 sf::Vector2f Attack::getClosestTarget(const sf::Transformable* object) const
 /// Returns normalized direction vector
 {
-    if(mTargets != nullptr)
+    float smallestDistance = std::numeric_limits<float>::max();
+    Aircraft* closestTarget = nullptr;
+
+    for(const auto& target : mTargets)
     {
-        float smallestDistance = std::numeric_limits<float>::max();
-        Aircraft* closestTarget = nullptr;
+        bool isTargetBehind;
+        if(mIsAllied)
+            isTargetBehind = target->getWorldPosition().y < object->getPosition().y; // Avoids projectile/gravityCenter turning back
+        else
+            isTargetBehind = target->getWorldPosition().y > object->getPosition().y; // Avoids projectile/gravityCenter turning back
 
-        for(const auto& target : *mTargets)
+        if(isTargetBehind)
         {
-            bool isTargetBehind;
-            if(mIsAllied)
-                isTargetBehind = target->getWorldPosition().y < object->getPosition().y; // Avoids projectile/gravityCenter turning back
-            else
-                isTargetBehind = target->getWorldPosition().y > object->getPosition().y; // Avoids projectile/gravityCenter turning back
-
-            if(isTargetBehind)
+            float targetDistance = vectorLength(object->getPosition() - target->getWorldPosition());
+            if(targetDistance < smallestDistance)
             {
-                float targetDistance = vectorLength(object->getPosition() - target->getWorldPosition());
-                if(targetDistance < smallestDistance)
-                {
-                    closestTarget = target;
-                    smallestDistance = targetDistance;
-                }
+                closestTarget = target;
+                smallestDistance = targetDistance;
             }
         }
-
-        if(closestTarget)
-            return unitVector(closestTarget->getWorldPosition() - object->getPosition());
     }
 
-    return sf::Vector2f();
+    if(closestTarget)
+        return unitVector(closestTarget->getWorldPosition() - object->getPosition());
+    else
+        return sf::Vector2f();
 }
 
 bool Attack::isAllied() const
 {
     return mIsAllied;
-}
-
-void Attack::updateTargets(const std::vector<Aircraft*>* targets)
-{
-    mTargets = targets;
-
-    /*for(auto& projectile : mProjectiles)
-    {
-        if(projectile->getPattern() == AttackPattern::Guided)
-            projectile->setTarget(getClosestTarget(projectile, targets));
-    }
-
-    for(auto& gravityCenterPair : mGravityCenters)
-    {
-        if(gravityCenterPair.second.getPattern() == AttackPattern::Guided)
-            gravityCenterPair.second.setTarget(getClosestTarget(&gravityCenterPair.second, targets));
-    }*/
 }

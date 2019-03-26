@@ -13,7 +13,8 @@ class World;
 class AttackManager
 {
     public:
-        explicit    AttackManager(const TextureHolder&, World& world, int shooterID, bool isAllied);
+        explicit    AttackManager(const TextureHolder&, World& world, int shooterID,
+                                   bool isAllied, const std::vector<Aircraft*>& targets);
                     ~AttackManager();
         void        pushAttack(int id, int probability);
         void        forceAttack(int id, CommandQueue&);
@@ -39,6 +40,7 @@ class AttackManager
         std::unordered_map<int, int>        mRepeats; // id, times
         std::unordered_map<int, sf::Time>   mRepeatCooldowns;
         std::unordered_map<int, sf::Time>   mChargingAttacks;
+        const std::vector<Aircraft*>&       mTargets;
 };
 
 #endif // ATTACKMANAGER_HPP

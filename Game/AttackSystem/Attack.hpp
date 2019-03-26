@@ -15,7 +15,8 @@ class World;
 class Attack : public Entity
 {
     public:
-                                Attack(int id, const TextureHolder&, sf::Vector2f pos, World&, int shooterID, bool isAllied);
+                                Attack(int id, const TextureHolder&, sf::Vector2f pos, World&, int shooterID,
+                                        bool isAllied, const std::vector<Aircraft*>& targets);
         void                    updateCurrent(sf::Time, CommandQueue&);
         bool                    isActive() const;
         virtual Category::Type  getCategory() const;
@@ -25,7 +26,6 @@ class Attack : public Entity
         void                    markForRemoval();
         void                    updateBarrierPosition(sf::Vector2f displacement);///
         bool                    isAllied() const;
-        void                    updateTargets(const std::vector<Aircraft*>* targets);
 
     private:
         virtual void            drawCurrent(sf::RenderTarget&, sf::RenderStates) const override;
@@ -40,7 +40,7 @@ class Attack : public Entity
 
         std::vector<std::unique_ptr<Projectile>>    mProjectiles;
         std::unordered_map<int, GravityCenter>      mGravityCenters;
-        const std::vector<Aircraft*>*               mTargets;
+        const std::vector<Aircraft*>&               mTargets;
         int                                         mAttackID;
         const TextureHolder&                        mTextures;
         bool                                        mIsActive;

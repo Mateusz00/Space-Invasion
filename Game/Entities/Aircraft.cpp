@@ -13,7 +13,8 @@ namespace
     const std::vector<AircraftTextureData> textureInfo = initializeAircraftTextureData();
 }
 
-Aircraft::Aircraft(int typeID, const TextureHolder& textures, const FontHolder& fonts, World& world, int id)
+Aircraft::Aircraft(int typeID, const TextureHolder& textures, const FontHolder& fonts,
+                    World& world, const std::vector<Aircraft*>& targets, int id)
     : Entity(aircraftInfo[typeID].hitpoints, true, world),
       mTypeID(typeID),
       mSprite(textures.get(textureInfo[typeID].texture), textureInfo[typeID].textureRect),
@@ -28,7 +29,7 @@ Aircraft::Aircraft(int typeID, const TextureHolder& textures, const FontHolder& 
       mTextures(textures),
       mAttackerID(0),
       mScore(0),
-      mAttackManager(textures, world, id, !mIsEnemy)
+      mAttackManager(textures, world, id, !mIsEnemy, targets)
 {
     centerOrigin(mSprite);
 

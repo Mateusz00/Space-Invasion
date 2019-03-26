@@ -16,7 +16,8 @@ class Aircraft : public Entity
     public:
         enum Type{Ally, Enemy, TypeCount};
 
-                                Aircraft(int, const TextureHolder&, const FontHolder&, World&, int id = 99999);
+                                Aircraft(int, const TextureHolder&, const FontHolder&, World&,
+                                          const std::vector<Aircraft*>& targets, int id = 99999);
         Category::Type          getCategory() const override;
         void                    increaseFireRate();
         void                    increaseSpread();

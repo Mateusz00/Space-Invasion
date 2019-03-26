@@ -125,7 +125,7 @@ std::unordered_map<int, int>& World::getPlayersScoresMap()
 
 Aircraft* World::addAircraft(int id)
 {
-    std::unique_ptr<Aircraft> playerAircraft(new Aircraft(Aircraft::Ally, mTextures, mFonts, *this, id));
+    std::unique_ptr<Aircraft> playerAircraft(new Aircraft(Aircraft::Ally, mTextures, mFonts, *this, mEnemies, id));
     playerAircraft->setPosition(mPlayerSpawnPosition.x - 50.f + 100.f*(id%2), mPlayerSpawnPosition.y);
     playerAircraft->setIdentifier(id);
     mPlayerAircrafts.emplace_back(playerAircraft.get());
@@ -266,7 +266,7 @@ void World::spawnEnemies()
     {
         SpawnPoint spawn = mSpawnPoints.back();
 
-        std::unique_ptr<Aircraft> enemyAircraft(new Aircraft(spawn.type, mTextures, mFonts, *this));
+        std::unique_ptr<Aircraft> enemyAircraft(new Aircraft(spawn.type, mTextures, mFonts, *this, mPlayerAircrafts));
         enemyAircraft->setPosition(spawn.x, spawn.y);
         mSceneLayers[UpperAir]->attachChild(std::move(enemyAircraft));
 
@@ -284,18 +284,7 @@ void World::guideHomingMissiles()
             mEnemies.emplace_back(&target);
     });
 
-    Command mGuideCommand;
-    mGuideCommand.mCategories.push_back(Category::Attack);
-    mGuideCommand.mAction = castFunctor<Attack>([this](Attack& attack, sf::Time dt)
-    {
-        if(attack.isAllied())
-            attack.updateTargets(&mEnemies);
-        else
-            attack.updateTargets(&mPlayerAircrafts);
-    });
-
     mCommandQueue.push(mEnemyCollector);
-    mCommandQueue.push(mGuideCommand);
 }
 
 void World::adaptPlayersPosition()
