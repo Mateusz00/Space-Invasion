@@ -18,10 +18,6 @@ AttackManager::AttackManager(const TextureHolder& textures, World& world, int sh
 {
 }
 
-AttackManager::~AttackManager()
-{
-}
-
 void AttackManager::pushAttack(int id, int probability)
 {
     mAttacks.emplace_back(id, probability);
@@ -199,4 +195,10 @@ void AttackManager::clearFinishedAttacks()
     }
 
     mCurrentAttacks.erase(newBeg, mCurrentAttacks.end());
+}
+
+void AttackManager::onRemoval()
+{
+    for(auto& attack : mCurrentAttacks)
+        attack->markForRemoval();
 }

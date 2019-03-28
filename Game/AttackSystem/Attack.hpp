@@ -6,6 +6,7 @@
 #include "../Entities/Entity.hpp"
 #include "../ResourcesID.hpp"
 #include "../Command.hpp"
+#include "../Category.hpp"
 #include <SFML/System/Time.hpp>
 #include <vector>
 class CommandQueue;
@@ -19,9 +20,9 @@ class Attack : public Entity
                                         bool isAllied, const std::vector<Aircraft*>& targets);
         void                    updateCurrent(sf::Time, CommandQueue&);
         bool                    isActive() const;
-        virtual Category::Type  getCategory() const;
+        virtual Category::Type  getCategory() const override;
         virtual sf::FloatRect   getBoundingRect() const override; // AttackManager checks if attack isn't visible and deletes it
-        virtual void            removeEntity();
+        virtual void            removeEntity() override;
         virtual bool            isMarkedForRemoval() const override; // AttackManager checks it
         void                    markForRemoval();
         void                    updateBarrierPosition(sf::Vector2f displacement);///

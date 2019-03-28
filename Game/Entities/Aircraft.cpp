@@ -282,4 +282,5 @@ void Aircraft::onRemoval()
     createPickup();
     createExplosion();
     changeScore();
+    mAttackManager.onRemoval();
 }

@@ -131,7 +131,7 @@ void Attack::updateCurrent(sf::Time dt, CommandQueue& commandQueue)
                 sf::Vector2f startPos(projectile->getStartPos());
 
                 sf::Vector2f newPos1(startPos.x + projectile->getMaxSpeed() * std::sin(angle) * projectile->activeTime(),
-                                     startPos.y + projectile->getMaxSpeed() * std::cos(angle)* projectile->activeTime());
+                                     startPos.y + projectile->getMaxSpeed() * std::cos(angle) * projectile->activeTime());
 
                 float times = vectorLength(startPos - newPos1) / projectile->getPatternData().waveData[1];
                 float perpendicularLength = (std::sin(times * 3.1415f) * projectile->getPatternData().waveData[0]);

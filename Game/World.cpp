@@ -332,8 +332,7 @@ void World::checkCollisions()
 void World::destroyEntitiesOutsideView()
 {
     Command command;
-    command.mCategories.push_back(Category::EnemyProjectile);
-    command.mCategories.push_back(Category::AlliedProjectile);
+    command.mCategories.push_back(Category::Attack);
     command.mCategories.push_back(Category::EnemyAircraft);
     command.mAction = castFunctor<Entity>([this](Entity& object, sf::Time dt)
     {
