@@ -23,16 +23,18 @@ PauseState::PauseState(Context context, StateStack& stateStack, bool isNetworked
     returnButton->setPosition(0.f, -windowSize.y * 0.05f);
     returnButton->setCallback([this]()
     {
+        getContext().music.resume();
         requestStackPop();
     });
     mGUIContainer.push(std::move(returnButton));
 
     std::unique_ptr<GUIButton> levelButton(new GUIButton(context, GUIButton::TextButton, "Choose level"));
     levelButton->setPosition(0.f, windowSize.y * 0.07f);
-    levelButton->setCallback([this]()
+    levelButton->setCallback([this, context]()
     {
         requestStackClear();
         requestStackPush(States::LevelState);
+        context.music.playNow(Music::MenuTheme, true);
     });
     mGUIContainer.push(std::move(levelButton));
 
@@ -46,11 +48,6 @@ PauseState::PauseState(Context context, StateStack& stateStack, bool isNetworked
     mGUIContainer.push(std::move(backToMenu));
 
     context.music.pause();
-}
-
-PauseState::~PauseState()
-{
-    getContext().music.resume();
 }
 
 bool PauseState::draw()

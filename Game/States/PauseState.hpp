@@ -9,7 +9,6 @@ class PauseState : public State
 {
     public:
                         PauseState(Context, StateStack&, bool isNetworked);
-        virtual         ~PauseState() override;
         virtual bool    draw() override;
         virtual bool    update(sf::Time) override;
         virtual bool    handleEvent(const sf::Event&) override;

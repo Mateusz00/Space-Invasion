@@ -2,6 +2,7 @@
 #include "../Utility.hpp"
 #include "../GUI/GUIButton.hpp"
 #include "../ResourceHolder.hpp"
+#include "../MusicPlayer.hpp"
 #include <SFML/Graphics/View.hpp>
 #include <string>
 
@@ -33,10 +34,11 @@ GameOverState::GameOverState(Context context, StateStack& stateStack, Type type)
 
     std::unique_ptr<GUIButton> levelButton(new GUIButton(context, GUIButton::TextButton, "Choose level"));
     levelButton->setPosition(0.f, windowSize.y * 0.07f);
-    levelButton->setCallback([this]()
+    levelButton->setCallback([this, context]()
     {
         requestStackClear();
         requestStackPush(States::LevelState);
+        context.music.playNow(Music::MenuTheme, true);
     });
     mButtons.push(std::move(levelButton));
 

@@ -1,6 +1,9 @@
 # Prerequisites
 *.d
+
+# Game files
 *.cfg
+Scores.txt
 
 # Code Blocks
 *.cbp
