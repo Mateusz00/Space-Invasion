@@ -32,6 +32,7 @@ World::World(State::Context context)
 World::~World()
 {
     mIsDeleting = true;
+    mSoundPlayer.setListener(sf::Vector3f(0.f, 0.f, -1.f));
 }
 
 void World::update(sf::Time dt)

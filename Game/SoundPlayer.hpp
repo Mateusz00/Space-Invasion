@@ -15,6 +15,7 @@ class SoundPlayer
         void    play(Sound::ID, sf::Vector2f);
         void    removeStoppedSounds();
         void    setListener(sf::Vector2f);
+        void    setListener(sf::Vector3f);
         void    setVolume(float);
         float   getVolume() const;
         void    mute();

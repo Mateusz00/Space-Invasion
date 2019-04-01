@@ -56,7 +56,12 @@ void SoundPlayer::removeStoppedSounds()
 
 void SoundPlayer::setListener(sf::Vector2f position)
 {
-    sf::Listener::setPosition(sf::Vector3f(position.x, position.y, LISTENER_Z));
+    setListener(sf::Vector3f(position.x, position.y, LISTENER_Z));
+}
+
+void SoundPlayer::setListener(sf::Vector3f position)
+{
+    sf::Listener::setPosition(position);
 }
 
 void SoundPlayer::setVolume(float volume)
