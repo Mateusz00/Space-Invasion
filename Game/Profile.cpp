@@ -1,9 +1,12 @@
 #include "Profile.hpp"
+#include "Player.hpp"
 #include <fstream>
 
-Profile::Profile()
+Profile::Profile(std::vector<Player>& players, std::vector<KeyBinding*>& keys)
     : mIsLoaded(false),
-      mCurrentLevel(-1)
+      mCurrentLevel(-1),
+      mPlayers(players),
+      mKeys(keys)
 {
 }
 
@@ -76,6 +79,7 @@ bool Profile::loadProfile()
         mIsLoaded = true;
         saveFile.close();
     }
+    updatePlayers();
 
     return mIsLoaded;
 }
@@ -149,4 +153,12 @@ void Profile::clearAllData()
     mPlayerNames.clear();
     mCompletedLevelsInfo.clear();
     mIsLoaded = false;
+    mPlayers.clear();
+    mCurrentLevel = -1;
+}
+
+void Profile::updatePlayers()
+{
+    for(int playerNumber=0; playerNumber < mPlayerNames.size(); ++playerNumber)
+        mPlayers.emplace_back(mKeys[playerNumber], playerNumber, mPlayerNames[playerNumber]);
 }

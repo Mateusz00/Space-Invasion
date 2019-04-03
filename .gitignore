@@ -4,6 +4,7 @@
 # Game files
 *.cfg
 Scores.txt
+save.dat
 
 # Code Blocks
 *.cbp

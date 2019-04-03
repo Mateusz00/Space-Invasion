@@ -18,8 +18,6 @@ class PlayerInfoState : public State
         virtual bool    handleEvent(const sf::Event&) override;
 
     private:
-        void            addPlayer(int playerNumber);
-
         std::vector<Player>&        mPlayers;
         sf::Sprite                  mBackgroundSprite;
         sf::Text                    mText;

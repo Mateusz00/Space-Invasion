@@ -4,6 +4,7 @@
 #include "../GUI/GUIButton.hpp"
 #include "../Utility.hpp"
 #include "../Profile.hpp"
+#include "../Utility.hpp"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <memory>
 
@@ -72,16 +73,18 @@ bool PlayerInfoState::update(sf::Time dt)
 {
     if(!mInputBox.isActive() && mModeConfirmed)
     {
-        addPlayer(mCurrentPlayer++);
+        mCurrentPlayer++;
+        mProfile.addPlayer(mPlayerName);
 
         if(mCurrentPlayer < mNumberOfPlayers)
         {
-            mText.setString("Enter Player2 name: ");
+            mText.setString("Enter Player" + toString(mCurrentPlayer+1) + " name: ");
             centerOrigin(mText);
             mInputBox.activate();
         }
         else
         {
+            mProfile.updatePlayers();
             requestStackClear();
             requestStackPush(States::LevelState);
         }
@@ -101,10 +104,4 @@ bool PlayerInfoState::handleEvent(const sf::Event& event)
         mInputBox.handleEvent(event);
 
     return false;
-}
-
-void PlayerInfoState::addPlayer(int playerNumber)
-{
-    mPlayers.emplace_back(getContext().keys[playerNumber], playerNumber, mPlayerName);
-    mProfile.addPlayer(mPlayerName);
 }

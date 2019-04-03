@@ -4,13 +4,15 @@
 #include <vector>
 #include <string>
 #include <unordered_map>
+class Player;
+class KeyBinding;
 
 class Profile
 {
     public:
         using LevelScoresMap = std::unordered_map<int, std::unordered_map<int, int>>; // LevelID, playerID, score
 
-                            Profile();
+                            Profile(std::vector<Player>&, std::vector<KeyBinding*>&);
         void                saveProfile() const;
         bool                loadProfile();
         void                updateData(int levelID, int playerID, int score);
@@ -22,12 +24,15 @@ class Profile
         int                 getCumulativeLevelScore(int levelID) const;
         std::vector<int>    getCompletedLevels() const;
         void                clearAllData();
+        void                updatePlayers();
 
     private:
         LevelScoresMap              mCompletedLevelsInfo; // LevelID, playersScoresMap
         std::vector<std::string>    mPlayerNames;
         bool                        mIsLoaded;
         int                         mCurrentLevel;
+        std::vector<Player>&        mPlayers;
+        std::vector<KeyBinding*>&   mKeys;
 };
 
 #endif // PROFILE_HPP
