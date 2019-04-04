@@ -28,6 +28,7 @@ class AttackManager
         void        clearFinishedAttacks();
         int         getNewAttack();
         void        useAttack(int id, CommandQueue&, bool applyCooldown = true);
+        void        initiateRepeatedAttack(int id);
 
         std::vector<std::pair<int, int>>    mAttacks; // id, probability
         std::vector<Attack*>                mCurrentAttacks;

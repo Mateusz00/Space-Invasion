@@ -19,7 +19,7 @@ Projectile::Projectile(Type type, const TextureHolder& textures, World& world, i
 {
     centerOrigin(mSprite);
 
-    if(isGuided()) // Adds emitters for missiles
+    if(mType == Type::Missile) // Adds emitters for missiles
     {
         std::unique_ptr<EmitterNode> smoke(new EmitterNode(Particle::Smoke, getWorld().getParticleNode(), 30.f));
         smoke->setPosition(0.f, mSprite.getLocalBounds().height / 2.f);
@@ -39,11 +39,6 @@ float Projectile::getMaxSpeed() const
 int Projectile::getDamage() const
 {
     return table[mType].damage;
-}
-
-bool Projectile::isGuided() const
-{
-    return (mType == Type::Missile);
 }
 
 Category::Type Projectile::getCategory() const

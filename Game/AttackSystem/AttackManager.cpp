@@ -93,10 +93,7 @@ void AttackManager::update(sf::Time dt, CommandQueue& commandQueue)
         if(attack.second <= sf::Time::Zero)
         {
             if(Attacks::attackData.at(attack.first).repeats > 0)
-            {
-                mRepeats[attack.first] = Attacks::attackData.at(attack.first).repeats;
-                mRepeatCooldowns.emplace(attack.first, sf::Time::Zero);
-            }
+                initiateRepeatedAttack(attack.first);
             else
                 useAttack(attack.first, commandQueue, false);
         }
@@ -112,9 +109,6 @@ void AttackManager::update(sf::Time dt, CommandQueue& commandQueue)
             --repeatPair.second;
         }
     }
-
-    ///for(auto& attack : mCurrentAttacks)
-        ///attack->updateCurrent(dt, commandQueue); // ensures that attacks are updated after AttackManager and not earlier(could happen while updating scene graph)
 
     clearFinishedAttacks();
 }
@@ -133,8 +127,8 @@ int AttackManager::getNewAttack()
             {
                 if(Attacks::attackData.at(attack.first).repeats > 0)
                 {
-                    mRepeats[attack.first] = Attacks::attackData.at(attack.first).repeats;
-                    mRepeatCooldowns.emplace(attack.first, sf::Time::Zero);
+                    initiateRepeatedAttack(attack.first);
+                    return -1;
                 }
 
                 return attack.first; // id
@@ -201,4 +195,10 @@ void AttackManager::onRemoval()
 {
     for(auto& attack : mCurrentAttacks)
         attack->markForRemoval();
+}
+
+void AttackManager::initiateRepeatedAttack(int id)
+{
+    mRepeats[id] = Attacks::attackData.at(id).repeats;
+    mRepeatCooldowns.emplace(id, sf::Time::Zero);
 }
