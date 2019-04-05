@@ -17,6 +17,7 @@ class KeyBinding
             MoveRight,
             Fire,
             LaunchMissile,
+            SpeedBoost,
             Count
         };
 

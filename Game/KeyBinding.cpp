@@ -63,6 +63,7 @@ bool isRealtimeAction(KeyBinding::Action action)
         case KeyBinding::Action::MoveDown:    return true;
         case KeyBinding::Action::MoveUp:      return true;
         case KeyBinding::Action::Fire:        return true;
+        case KeyBinding::Action::SpeedBoost:  return true;
 
         default:
             return false;

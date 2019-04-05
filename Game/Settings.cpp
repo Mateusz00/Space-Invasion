@@ -131,15 +131,17 @@ void Settings::loadDefaultValues()
     mKeyBinding1[sf::Keyboard::S] = KeyBinding::MoveDown;
     mKeyBinding1[sf::Keyboard::A] = KeyBinding::MoveLeft;
     mKeyBinding1[sf::Keyboard::D] = KeyBinding::MoveRight;
-    mKeyBinding1[sf::Keyboard::G] = KeyBinding::Fire;
-    mKeyBinding1[sf::Keyboard::H] = KeyBinding::LaunchMissile;
+    mKeyBinding1[sf::Keyboard::F] = KeyBinding::Fire;
+    mKeyBinding1[sf::Keyboard::G] = KeyBinding::LaunchMissile;
+    mKeyBinding1[sf::Keyboard::H] = KeyBinding::SpeedBoost;
 
-    mKeyBinding2[sf::Keyboard::Up]    = KeyBinding::MoveUp;
-    mKeyBinding2[sf::Keyboard::Down]  = KeyBinding::MoveDown;
-    mKeyBinding2[sf::Keyboard::Left]  = KeyBinding::MoveLeft;
-    mKeyBinding2[sf::Keyboard::Right] = KeyBinding::MoveRight;
-    mKeyBinding2[sf::Keyboard::Space] = KeyBinding::Fire;
-    mKeyBinding2[sf::Keyboard::M]     = KeyBinding::LaunchMissile;
+    mKeyBinding2[sf::Keyboard::Up]          = KeyBinding::MoveUp;
+    mKeyBinding2[sf::Keyboard::Down]        = KeyBinding::MoveDown;
+    mKeyBinding2[sf::Keyboard::Left]        = KeyBinding::MoveLeft;
+    mKeyBinding2[sf::Keyboard::Right]       = KeyBinding::MoveRight;
+    mKeyBinding2[sf::Keyboard::Comma]       = KeyBinding::Fire;
+    mKeyBinding2[sf::Keyboard::Period]      = KeyBinding::LaunchMissile;
+    mKeyBinding2[sf::Keyboard::Backslash]   = KeyBinding::SpeedBoost;
 
     saveToFile();
 }
@@ -176,6 +178,7 @@ bool Settings::loadFromFile()
         mKeyBinding1[toKey(cfg.lookup("Player1_MoveRight"))]       = KeyBinding::MoveRight;
         mKeyBinding1[toKey(cfg.lookup("Player1_Fire"))]            = KeyBinding::Fire;
         mKeyBinding1[toKey(cfg.lookup("Player1_LaunchMissile"))]   = KeyBinding::LaunchMissile;
+        mKeyBinding1[toKey(cfg.lookup("Player1_SpeedBoost"))]      = KeyBinding::SpeedBoost;
 
         mKeyBinding2[toKey(cfg.lookup("Player2_MoveUp"))]          = KeyBinding::MoveUp;
         mKeyBinding2[toKey(cfg.lookup("Player2_MoveDown"))]        = KeyBinding::MoveDown;
@@ -183,6 +186,7 @@ bool Settings::loadFromFile()
         mKeyBinding2[toKey(cfg.lookup("Player2_MoveRight"))]       = KeyBinding::MoveRight;
         mKeyBinding2[toKey(cfg.lookup("Player2_Fire"))]            = KeyBinding::Fire;
         mKeyBinding2[toKey(cfg.lookup("Player2_LaunchMissile"))]   = KeyBinding::LaunchMissile;
+        mKeyBinding2[toKey(cfg.lookup("Player2_SpeedBoost"))]      = KeyBinding::SpeedBoost;
     }
     catch(const SettingNotFoundException& settingEx)
     {
@@ -217,6 +221,7 @@ void Settings::addControlsToConfig(libconfig::Setting& root, const KeyBindMap& k
             ADD_ACTION_CASE(MoveRight)
             ADD_ACTION_CASE(Fire)
             ADD_ACTION_CASE(LaunchMissile)
+            ADD_ACTION_CASE(SpeedBoost)
         }
     }
 }

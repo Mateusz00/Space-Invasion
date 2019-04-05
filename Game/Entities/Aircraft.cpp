@@ -29,7 +29,9 @@ Aircraft::Aircraft(int typeID, const TextureHolder& textures, const FontHolder& 
       mTextures(textures),
       mAttackerID(0),
       mScore(0),
-      mAttackManager(textures, world, id, !mIsEnemy, targets)
+      mAttackManager(textures, world, id, !mIsEnemy, targets),
+      mBoosted(false),
+      mBoostFuel(100)
 {
     centerOrigin(mSprite);
 
@@ -47,12 +49,12 @@ Aircraft::Aircraft(int typeID, const TextureHolder& textures, const FontHolder& 
 
 void Aircraft::updateCurrent(sf::Time dt, CommandQueue& commands)
 {
-    // Add more
     updateMovementPatterns(dt);
     updateRollAnimation(dt);
     Entity::updateCurrent(dt, commands);
     mAttackManager.updatePosition(getWorldPosition());
     mAttackManager.update(dt, commands);
+    updateBoostFuel();
 }
 
 void Aircraft::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
@@ -109,6 +111,18 @@ void Aircraft::fire()
 {
     if(mAttackManager.tryAttack(mSpreadLevel+1, getWorld().getCommandQueue()))
         mAttackManager.forceCooldown(mAttackManager.getCooldown() / static_cast<float>(mFireRateLevel));
+}
+
+void Aircraft::boostSpeed()
+{
+    if(mBoostFuel >= 4.f)
+        mBoosted = true;
+}
+
+void Aircraft::trySpeedBoost()
+{
+    if(mBoosted)
+        setVelocity(getVelocity() * 2.f);
 }
 
 void Aircraft::launchMissile()
@@ -283,4 +297,15 @@ void Aircraft::onRemoval()
     createExplosion();
     changeScore();
     mAttackManager.onRemoval();
+}
+
+void Aircraft::updateBoostFuel()
+{
+    if(mBoosted)
+    {
+        mBoostFuel = std::max(mBoostFuel - 4.f, 0.f);
+        mBoosted = false;
+    }
+    else
+        mBoostFuel = std::min(mBoostFuel + 1.f, 100.f);
 }

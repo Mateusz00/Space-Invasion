@@ -117,7 +117,7 @@ void SettingsState::addButton(int index, int player, int y, const std::string& t
 
     std::unique_ptr<GUIButton> newButton(new GUIButton(context, GUIButton::ControlsButton, text));
     mBindingButtons[index] = newButton.get();
-    newButton->setPosition(360.f * player, 80.f * y);
+    newButton->setPosition(360.f * player, 70.f * y);
     newButton->setCallback([index, this]()
     {
         mBindingButtons[index]->toggle(true);
@@ -127,7 +127,7 @@ void SettingsState::addButton(int index, int player, int y, const std::string& t
 
     std::unique_ptr<GUILabel> newLabel(new GUILabel(text, context.fonts));
     mBindingLabels[index] = newLabel.get();
-    newLabel->setPosition(230.f + 360.f * player, 80.f * y + 10.f);
+    newLabel->setPosition(230.f + 360.f * player, 70.f * y + 10.f);
     mControls.push(std::move(newLabel));
 }
 
@@ -141,6 +141,7 @@ void SettingsState::addGUIElements(Context context)
         addButton(KeyBinding::MoveDown,         player, 3, "Move Down", context);
         addButton(KeyBinding::Fire,             player, 4, "Fire", context);
         addButton(KeyBinding::LaunchMissile,    player, 5, "Missile", context);
+        addButton(KeyBinding::SpeedBoost,       player, 6, "Speed Boost", context);
     }
     updateLabels();
 

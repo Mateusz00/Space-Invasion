@@ -23,7 +23,7 @@ class Player
         const std::string&  getName() const;
 
     private:
-        void initializeActions();
+        void                initializeActions();
 
         int                                 mIdentifier;
         int                                 mScore;

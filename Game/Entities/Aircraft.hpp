@@ -27,6 +27,8 @@ class Aircraft : public Entity
         int                     getIdentifier() const;
         void                    setIdentifier(int);
         void                    fire();
+        void                    boostSpeed();
+        void                    trySpeedBoost();
         void                    launchMissile();
         float                   getMaxSpeed() const;
         virtual sf::FloatRect   getLocalBounds() const override;
@@ -50,6 +52,7 @@ class Aircraft : public Entity
         void            increaseScoreRequest(int) const;
         void            decreaseScoreRequest(int) const;
         virtual void    onRemoval() override;
+        void            updateBoostFuel();
 
         int                     mTypeID;
         sf::Sprite              mSprite;
@@ -66,6 +69,8 @@ class Aircraft : public Entity
         int                     mAttackerID;
         int                     mScore;
         AttackManager           mAttackManager;
+        bool                    mBoosted;
+        float                   mBoostFuel;
 };
 
 #endif // AIRCRAFT_HPP

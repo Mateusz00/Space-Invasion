@@ -181,6 +181,7 @@ void World::adaptPlayersVelocity()
         if(velocity.x != 0.f && velocity.y != 0.f)
             playerAircraft->setVelocity(velocity / std::sqrt(2.f));
 
+        playerAircraft->trySpeedBoost();
         playerAircraft->accelerate(0.f, mScrollingSpeed);
     }
 }

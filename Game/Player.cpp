@@ -1,6 +1,20 @@
 #include "Player.hpp"
 #include "Entities/Aircraft.hpp"
 
+struct AircraftSpeedBoost // Command
+{
+    AircraftSpeedBoost(int id) : identifier(id)
+    {
+    }
+
+    void operator() (Aircraft& aircraft, sf::Time dt) const
+    {
+        if(aircraft.getIdentifier() == identifier)
+            aircraft.boostSpeed();
+    }
+    int identifier;
+};
+
 struct AircraftMover // Command
 {
     AircraftMover(float x, float y, int id)
@@ -110,4 +124,5 @@ void Player::initializeActions()
     mActionBinding[Action::MoveRight].mAction     = castFunctor<Aircraft>(AircraftMover(1,  0, mIdentifier));
     mActionBinding[Action::Fire].mAction          = castFunctor<Aircraft>(AircraftFireTrigger(mIdentifier));
     mActionBinding[Action::LaunchMissile].mAction = castFunctor<Aircraft>(AircraftMissileTrigger(mIdentifier));
+    mActionBinding[Action::SpeedBoost].mAction    = castFunctor<Aircraft>(AircraftSpeedBoost(mIdentifier));
 }
