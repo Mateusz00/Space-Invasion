@@ -43,9 +43,9 @@ void AttackManager::useAttack(int id, CommandQueue& commands, bool applyCooldown
         mCooldown += Attacks::attackData.at(id).cooldown;
 }
 
-void AttackManager::forceAttack(int id, CommandQueue& commands)
+void AttackManager::forceAttack(int id, CommandQueue& commands, bool applyCooldown)
 {
-    useAttack(id, commands);
+    useAttack(id, commands, applyCooldown);
 }
 
 sf::Time AttackManager::getCooldown() const

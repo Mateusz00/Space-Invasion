@@ -219,8 +219,8 @@ void Attack::createProjectile(int num)
     else
         projectile->setPosition(mPosition + offset);
 
-    sf::Vector2f targetVector = getClosestTarget(projectile.get());
-    if(projectileInfo.isAimed && targetVector != sf::Vector2f())
+    sf::Vector2f targetVector;
+    if(projectileInfo.isAimed && (targetVector = getClosestTarget(projectile.get())) != sf::Vector2f())
         direction = unitVector(targetVector);
     else
     {
@@ -266,8 +266,8 @@ void Attack::createGravityCenter(int num)
     else
         gravityCenter.setPosition(mPosition + offset);
 
-    sf::Vector2f targetVector = getClosestTarget(&gravityCenter);
-    if(gravityCenterData.isAimed && targetVector != sf::Vector2f())
+    sf::Vector2f targetVector;
+    if(gravityCenterData.isAimed && (targetVector = getClosestTarget(&gravityCenter)) != sf::Vector2f())
         direction = unitVector(targetVector);
     else
     {

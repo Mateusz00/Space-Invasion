@@ -16,7 +16,7 @@ class AttackManager
         explicit    AttackManager(const TextureHolder&, World& world, int shooterID,
                                    bool isAllied, const std::vector<Aircraft*>& targets);
         void        pushAttack(int id, int probability);
-        void        forceAttack(int id, CommandQueue&);
+        void        forceAttack(int id, CommandQueue&, bool applyCooldown);
         sf::Time    getCooldown() const;
         void        forceCooldown(sf::Time);
         bool        tryAttack(int id, CommandQueue&);

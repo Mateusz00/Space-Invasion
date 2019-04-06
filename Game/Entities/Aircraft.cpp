@@ -129,7 +129,7 @@ void Aircraft::launchMissile()
 {
     if(mMissileAmmo > 0)
     {
-        mAttackManager.forceAttack(0, getWorld().getCommandQueue());
+        mAttackManager.forceAttack(0, getWorld().getCommandQueue(), false);
         --mMissileAmmo;
     }
 }

@@ -286,6 +286,7 @@ void World::guideHomingMissiles()
             mEnemies.emplace_back(&target);
     });
 
+    mEnemies.clear();
     mCommandQueue.push(mEnemyCollector);
 }
 
