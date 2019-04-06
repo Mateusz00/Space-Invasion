@@ -10,6 +10,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/System/Time.hpp>
 class Entity;
+class Bar;
 
 class Aircraft : public Entity
 {
@@ -71,6 +72,7 @@ class Aircraft : public Entity
         AttackManager           mAttackManager;
         bool                    mBoosted;
         float                   mBoostFuel;
+        Bar*                    mHealthBar;
 };
 
 #endif // AIRCRAFT_HPP

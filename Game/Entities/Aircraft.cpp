@@ -1,6 +1,6 @@
 #include "Aircraft.hpp"
 #include "Pickup.hpp"
-#include "HealthBar.hpp"
+#include "Bar.hpp"
 #include "../Utility.hpp"
 #include "../World.hpp"
 #include "../DataTable.hpp"
@@ -37,8 +37,10 @@ Aircraft::Aircraft(int typeID, const TextureHolder& textures, const FontHolder& 
 
     // Create HealthBar for aircraft
     float offset = (mIsEnemy) ? -0.7f : 0.7f;
-    std::unique_ptr<HealthBar> healthBar(new HealthBar(*this, aircraftInfo[mTypeID].hitpoints));
+    sf::Vector2f barSize(getLocalBounds().width * 0.7f, 4.f);
+    std::unique_ptr<Bar> healthBar(new Bar(getHitpoints(), aircraftInfo[mTypeID].hitpoints, barSize));
     healthBar->setPosition(0.f, mSprite.getLocalBounds().height * offset);
+    mHealthBar = healthBar.get();
     attachChild(std::move(healthBar));
 
     // Add attacks to manager
@@ -52,6 +54,7 @@ void Aircraft::updateCurrent(sf::Time dt, CommandQueue& commands)
     updateMovementPatterns(dt);
     updateRollAnimation(dt);
     Entity::updateCurrent(dt, commands);
+    mHealthBar->updateValue(getHitpoints());
     mAttackManager.updatePosition(getWorldPosition());
     mAttackManager.update(dt, commands);
     updateBoostFuel();
