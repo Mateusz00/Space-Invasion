@@ -38,8 +38,10 @@ Aircraft::Aircraft(int typeID, const TextureHolder& textures, const FontHolder& 
     // Create HealthBar for aircraft
     float offset = (mIsEnemy) ? -0.7f : 0.7f;
     sf::Vector2f barSize(getLocalBounds().width * 0.7f, 4.f);
+
     std::unique_ptr<Bar> healthBar(new Bar(getHitpoints(), aircraftInfo[mTypeID].hitpoints, barSize));
     healthBar->setPosition(0.f, mSprite.getLocalBounds().height * offset);
+    healthBar->setColorRange(sf::Color::Green, sf::Color::Red);
     mHealthBar = healthBar.get();
     attachChild(std::move(healthBar));
 
