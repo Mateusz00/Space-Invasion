@@ -26,8 +26,6 @@ void Bar::updateCurrent(sf::Time dt, CommandQueue& commands)
     percent = (percent > 1.f) ? 1.f : percent; // Stops Bar from enlarging more than it's initial size
     percent = (percent < 0.f) ? 0.f : percent; // Must be a positive value
 
-    ///if(percent > 0)
-    ///{
     // Shrink and change color depending on percent
     sf::Uint8 newR = mMaxColor.r - mColorRange[0] * (1-percent);
     sf::Uint8 newG = mMaxColor.g - mColorRange[1] * (1-percent);
@@ -37,7 +35,6 @@ void Bar::updateCurrent(sf::Time dt, CommandQueue& commands)
 
     mBar.setSize(sf::Vector2f(mMaxSize.x * percent, mMaxSize.y));
     centerOrigin(mBar);
-    ///}
 }
 
 void Bar::setPosition(sf::Vector2f position)

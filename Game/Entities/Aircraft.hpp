@@ -71,8 +71,10 @@ class Aircraft : public Entity
         int                     mScore;
         AttackManager           mAttackManager;
         bool                    mBoosted;
+        bool                    mBoostCooldown;
         float                   mBoostFuel;
         Bar*                    mHealthBar;
+        Bar*                    mBoostFuelBar;
 };
 
 #endif // AIRCRAFT_HPP

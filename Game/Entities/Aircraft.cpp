@@ -11,6 +11,10 @@ namespace
 {
     const std::vector<AircraftData> aircraftInfo = initializeAircraftData();
     const std::vector<AircraftTextureData> textureInfo = initializeAircraftTextureData();
+    constexpr float FUEL_MAX = 100.f;
+    constexpr float FUEL_MIN = 25.f;
+    constexpr float FUEL_BURN_RATE = 4.4f;
+    constexpr float FUEL_REFILL_RATE = 0.3f;
 }
 
 Aircraft::Aircraft(int typeID, const TextureHolder& textures, const FontHolder& fonts,
@@ -31,7 +35,9 @@ Aircraft::Aircraft(int typeID, const TextureHolder& textures, const FontHolder& 
       mScore(0),
       mAttackManager(textures, world, id, !mIsEnemy, targets),
       mBoosted(false),
-      mBoostFuel(100)
+      mBoostCooldown(false),
+      mBoostFuel(FUEL_MAX),
+      mBoostFuelBar(nullptr)
 {
     centerOrigin(mSprite);
 
@@ -41,9 +47,19 @@ Aircraft::Aircraft(int typeID, const TextureHolder& textures, const FontHolder& 
 
     std::unique_ptr<Bar> healthBar(new Bar(getHitpoints(), aircraftInfo[mTypeID].hitpoints, barSize));
     healthBar->setPosition(0.f, mSprite.getLocalBounds().height * offset);
-    healthBar->setColorRange(sf::Color::Green, sf::Color::Red);
+    healthBar->setColorRange(sf::Color(33, 196, 1), sf::Color(206, 12, 12));
     mHealthBar = healthBar.get();
     attachChild(std::move(healthBar));
+
+    // Create boost fuel bar for players
+    if(!mIsEnemy)
+    {
+        std::unique_ptr<Bar> fuelBar(new Bar(mBoostFuel, FUEL_MAX, sf::Vector2f(barSize.x, barSize.y - 1.f)));
+        fuelBar->setPosition(0.f, mSprite.getLocalBounds().height * offset + barSize.y);
+        fuelBar->setColorRange(sf::Color(224, 188, 6), sf::Color(224, 188, 6));
+        mBoostFuelBar = fuelBar.get();
+        attachChild(std::move(fuelBar));
+    }
 
     // Add attacks to manager
     const auto& attacks = aircraftInfo[typeID].attacks;
@@ -56,10 +72,16 @@ void Aircraft::updateCurrent(sf::Time dt, CommandQueue& commands)
     updateMovementPatterns(dt);
     updateRollAnimation(dt);
     Entity::updateCurrent(dt, commands);
-    mHealthBar->updateValue(getHitpoints());
+
     mAttackManager.updatePosition(getWorldPosition());
     mAttackManager.update(dt, commands);
-    updateBoostFuel();
+
+    if(mBoostFuelBar)
+    {
+        updateBoostFuel();
+        mBoostFuelBar->updateValue(mBoostFuel);
+    }
+    mHealthBar->updateValue(getHitpoints());
 }
 
 void Aircraft::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
@@ -120,7 +142,7 @@ void Aircraft::fire()
 
 void Aircraft::boostSpeed()
 {
-    if(mBoostFuel >= 4.f)
+    if(!mBoostCooldown && mBoostFuel >= FUEL_BURN_RATE)
         mBoosted = true;
 }
 
@@ -308,9 +330,16 @@ void Aircraft::updateBoostFuel()
 {
     if(mBoosted)
     {
-        mBoostFuel = std::max(mBoostFuel - 4.f, 0.f);
+        mBoostFuel = std::max(mBoostFuel - FUEL_BURN_RATE, 0.f);
         mBoosted = false;
     }
     else
-        mBoostFuel = std::min(mBoostFuel + 1.f, 100.f);
+    {
+        mBoostFuel = std::min(mBoostFuel + FUEL_REFILL_RATE, FUEL_MAX);
+
+        if(mBoostFuel < FUEL_MIN)
+            mBoostCooldown = true;
+        else
+            mBoostCooldown = false;
+    }
 }
