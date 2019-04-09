@@ -32,8 +32,8 @@ struct SpaceshipTextureData
 {
     Textures::ID    texture;
     sf::IntRect     textureRect;
-    bool            hasRollAnimation;
-    int             spriteNumber;
+    bool            hasRollAnimation = false;
+    int             spriteNumber = 0;
 };
 
 struct ProjectileData

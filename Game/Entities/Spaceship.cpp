@@ -180,7 +180,7 @@ void Spaceship::updateRollAnimation(sf::Time dt)
 {
     mLastRoll += dt;
 
-    if(textureInfo[mTypeID].hasRollAnimation && mLastRoll.asSeconds() > 0.1f)
+    if(textureInfo[mTypeID].hasRollAnimation && mLastRoll.asSeconds() > 0.15f)
     {
         sf::IntRect currentRect = mSprite.getTextureRect();
         sf::IntRect defaultRect = textureInfo[mTypeID].textureRect;

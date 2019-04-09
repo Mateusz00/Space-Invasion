@@ -77,14 +77,14 @@ std::vector<SpaceshipTextureData> initializeSpaceshipTextureData()
     std::vector<SpaceshipTextureData> data(2);
 
     data[0].texture = Textures::Spaceships; // Player
-    data[0].textureRect = sf::IntRect(150, 0, 75, 42);
+    data[0].textureRect = sf::IntRect(40, 0, 40, 40);
     data[0].hasRollAnimation = true;
-    data[0].spriteNumber = 5;
+    data[0].spriteNumber = 3;
 
     data[1].texture = Textures::Spaceships; // Enemy
-    data[1].textureRect = sf::IntRect(0, 43, 60, 42);
-    data[1].hasRollAnimation = false;
-    data[1].spriteNumber = 0;
+    data[1].textureRect = sf::IntRect(0, 40, 40, 40);
+    //data[1].hasRollAnimation = false;
+    //data[1].spriteNumber = 0;
 
     return data;
 }
