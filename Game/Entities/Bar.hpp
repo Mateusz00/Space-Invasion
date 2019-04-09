@@ -3,7 +3,7 @@
 
 #include "../SceneNode.hpp"
 #include "Entity.hpp"
-#include "Aircraft.hpp"
+#include "Spaceship.hpp"
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/Color.hpp>
 #include <array>

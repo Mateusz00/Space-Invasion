@@ -10,14 +10,14 @@
 #include <SFML/System/Time.hpp>
 #include <vector>
 class CommandQueue;
-class Aircraft;
+class Spaceship;
 class World;
 
 class Attack : public Entity
 {
     public:
                                 Attack(int id, const TextureHolder&, sf::Vector2f pos, World&, int shooterID,
-                                        bool isAllied, const std::vector<Aircraft*>& targets);
+                                        bool isAllied, const std::vector<Spaceship*>& targets);
         void                    updateCurrent(sf::Time, CommandQueue&);
         bool                    isActive() const;
         virtual Category::Type  getCategory() const override;
@@ -41,7 +41,7 @@ class Attack : public Entity
 
         std::vector<std::unique_ptr<Projectile>>    mProjectiles;
         std::unordered_map<int, GravityCenter>      mGravityCenters;
-        const std::vector<Aircraft*>&               mTargets;
+        const std::vector<Spaceship*>&               mTargets;
         int                                         mAttackID;
         const TextureHolder&                        mTextures;
         bool                                        mIsActive;

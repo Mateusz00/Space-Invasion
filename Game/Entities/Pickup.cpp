@@ -1,5 +1,5 @@
 #include "Pickup.hpp"
-#include "Aircraft.hpp"
+#include "Spaceship.hpp"
 #include "../Utility.hpp"
 #include "../DataTable.hpp"
 
@@ -26,7 +26,7 @@ sf::FloatRect Pickup::getBoundingRect() const
     return getWorldTransform().transformRect(mSprite.getGlobalBounds());
 }
 
-void Pickup::apply(Aircraft& player) const
+void Pickup::apply(Spaceship& player) const
 {
     table[mType].action(player);
 }
@@ -40,8 +40,8 @@ void Pickup::onCollision(Entity& entity)
 {
     switch(entity.getCategory())
     {
-        case Category::PlayerAircraft:
-            apply(static_cast<Aircraft&>(entity));
+        case Category::PlayerSpaceship:
+            apply(static_cast<Spaceship&>(entity));
             destroy();
             break;
     }

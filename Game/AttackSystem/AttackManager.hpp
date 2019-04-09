@@ -7,14 +7,14 @@
 #include <SFML/System/Vector2.hpp>
 class CommandQueue;
 class Attack;
-class Aircraft;
+class Spaceship;
 class World;
 
 class AttackManager
 {
     public:
         explicit    AttackManager(const TextureHolder&, World& world, int shooterID,
-                                   bool isAllied, const std::vector<Aircraft*>& targets);
+                                   bool isAllied, const std::vector<Spaceship*>& targets);
         void        pushAttack(int id, int probability);
         void        forceAttack(int id, CommandQueue&, bool applyCooldown);
         sf::Time    getCooldown() const;
@@ -41,7 +41,7 @@ class AttackManager
         std::unordered_map<int, int>        mRepeats; // id, times
         std::unordered_map<int, sf::Time>   mRepeatCooldowns;
         std::unordered_map<int, sf::Time>   mChargingAttacks;
-        const std::vector<Aircraft*>&       mTargets;
+        const std::vector<Spaceship*>&      mTargets;
 };
 
 #endif // ATTACKMANAGER_HPP

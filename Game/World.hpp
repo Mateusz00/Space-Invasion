@@ -4,7 +4,7 @@
 #include "CommandQueue.hpp"
 #include "State.hpp"
 #include "SoundPlayer.hpp"
-#include "Entities/Aircraft.hpp"
+#include "Entities/Spaceship.hpp"
 #include "ResourcesID.hpp"
 #include "SceneNode.hpp"
 #include "Profile.hpp"
@@ -33,12 +33,12 @@ class World
         bool                            hasPlayerReachedEnd() const;
         bool                            hasAlivePlayer() const;
         std::unordered_map<int, int>&   getPlayersScoresMap();
-        Aircraft*                       addAircraft(int id);
+        Spaceship*                      addSpaceship(int id);
 
     private:
         void    buildWorld();
         void    adaptPlayersVelocity();
-        void    addSpawnPoint(float x, float y, Aircraft::Type);
+        void    addSpawnPoint(float x, float y, Spaceship::Type);
         void    sortSpawnPoints();
         void    spawnEnemies();
         void    guideHomingMissiles();
@@ -61,7 +61,7 @@ class World
         {
             float x;
             float y;
-            Aircraft::Type type; ///Change to int
+            Spaceship::Type type; ///Change to int
         };
 
         sf::RenderTarget&   mTarget;
@@ -81,8 +81,8 @@ class World
         sf::Text            mScore;
         bool                mIsDeleting;
 
-        std::vector<Aircraft*>              mPlayerAircrafts;
-        std::vector<Aircraft*>              mEnemies;
+        std::vector<Spaceship*>             mPlayerSpaceships;
+        std::vector<Spaceship*>             mEnemies;
         std::vector<SpawnPoint>             mSpawnPoints;
         std::array<SceneNode*, LayerCount>  mSceneLayers;
         std::list<Entity*>                  mCollidablesList;

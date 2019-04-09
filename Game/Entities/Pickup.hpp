@@ -6,7 +6,7 @@
 #include "../Category.hpp"
 #include "../Command.hpp"
 #include <SFML/Graphics/Sprite.hpp>
-class Aircraft;
+class Spaceship;
 
 class Pickup : public Entity
 {
@@ -23,7 +23,7 @@ class Pickup : public Entity
                                 Pickup(Type, const TextureHolder&, World&);
         virtual Category::Type  getCategory() const override;
         virtual sf::FloatRect   getBoundingRect() const override;
-        void                    apply(Aircraft&) const;
+        void                    apply(Spaceship&) const;
         virtual void            onCollision(Entity&) override;
 
     private:

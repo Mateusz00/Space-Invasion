@@ -39,8 +39,8 @@ void World::update(sf::Time dt)
 {
     mView.move(0.f, mScrollingSpeed * dt.asSeconds());
 
-    for(auto& playerAircraft : mPlayerAircrafts)
-        playerAircraft->setVelocity(0.f, 0.f);
+    for(auto& playerSpaceship : mPlayerSpaceships)
+        playerSpaceship->setVelocity(0.f, 0.f);
 
     destroyEntitiesOutsideView();
     guideHomingMissiles();
@@ -58,7 +58,7 @@ void World::update(sf::Time dt)
     updateSounds();
     mUIGraph.update(dt, mCommandQueue);
 
-    removeDanglingPointers(); // Erase pointers of destroyed players aircrafts as remove wrecks removes only entities
+    removeDanglingPointers(); // Erase pointers of destroyed players spaceships as remove wrecks removes only entities
     mSceneGraph.removeWrecks();
 }
 
@@ -105,9 +105,9 @@ void World::placeOnLayer(SceneNode::Ptr node, Category::Type layer)
 
 bool World::hasPlayerReachedEnd() const
 {
-    for(auto& playerAircraft : mPlayerAircrafts)
+    for(auto& playerSpaceship : mPlayerSpaceships)
     {
-        if(!mWorldBounds.contains(playerAircraft->getPosition()))
+        if(!mWorldBounds.contains(playerSpaceship->getPosition()))
            return true;
     }
 
@@ -116,7 +116,7 @@ bool World::hasPlayerReachedEnd() const
 
 bool World::hasAlivePlayer() const
 {
-    return mPlayerAircrafts.size() > 0;
+    return mPlayerSpaceships.size() > 0;
 }
 
 std::unordered_map<int, int>& World::getPlayersScoresMap()
@@ -124,18 +124,18 @@ std::unordered_map<int, int>& World::getPlayersScoresMap()
     return mPlayersScores;
 }
 
-Aircraft* World::addAircraft(int id)
+Spaceship* World::addSpaceship(int id)
 {
-    std::unique_ptr<Aircraft> playerAircraft(new Aircraft(Aircraft::Ally, mTextures, mFonts, *this, mEnemies, id));
-    playerAircraft->setPosition(mPlayerSpawnPosition.x - 50.f + 100.f*(id%2), mPlayerSpawnPosition.y);
-    playerAircraft->setIdentifier(id);
-    mPlayerAircrafts.emplace_back(playerAircraft.get());
+    std::unique_ptr<Spaceship> playerSpaceship(new Spaceship(Spaceship::Ally, mTextures, mFonts, *this, mEnemies, id));
+    playerSpaceship->setPosition(mPlayerSpawnPosition.x - 50.f + 100.f*(id%2), mPlayerSpawnPosition.y);
+    playerSpaceship->setIdentifier(id);
+    mPlayerSpaceships.emplace_back(playerSpaceship.get());
 
     // temp
-    std::unique_ptr<AmmoNode> ammoNode(new AmmoNode(*playerAircraft, mTextures, mFonts, mView));
+    std::unique_ptr<AmmoNode> ammoNode(new AmmoNode(*playerSpaceship, mTextures, mFonts, mView));
     mUIGraph.attachChild(std::move(ammoNode));
-    mSceneLayers[UpperAir]->attachChild(std::move(playerAircraft));
-    return mPlayerAircrafts.back();
+    mSceneLayers[UpperAir]->attachChild(std::move(playerSpaceship));
+    return mPlayerSpaceships.back();
 }
 
 void World::buildWorld()
@@ -174,15 +174,15 @@ void World::adaptPlayersVelocity()
 {
     sf::Vector2f velocity;
 
-    for(auto& playerAircraft : mPlayerAircrafts)
+    for(auto& playerSpaceship : mPlayerSpaceships)
     {
-        velocity = playerAircraft->getVelocity();
+        velocity = playerSpaceship->getVelocity();
 
         if(velocity.x != 0.f && velocity.y != 0.f)
-            playerAircraft->setVelocity(velocity / std::sqrt(2.f));
+            playerSpaceship->setVelocity(velocity / std::sqrt(2.f));
 
-        playerAircraft->trySpeedBoost();
-        playerAircraft->accelerate(0.f, mScrollingSpeed);
+        playerSpaceship->trySpeedBoost();
+        playerSpaceship->accelerate(0.f, mScrollingSpeed);
     }
 }
 
@@ -204,11 +204,11 @@ void World::loadLevelData()
         float x = spawnPoint.attribute("x").as_float();
         float y = spawnPoint.attribute("y").as_float();
         int id = spawnPoint.attribute("enemyID").as_int();
-        Aircraft::Type enemyID; ///Ch
-        if(id > Aircraft::TypeCount || id < 0)///
+        Spaceship::Type enemyID; ///Ch
+        if(id > Spaceship::TypeCount || id < 0)///
             throw std::runtime_error("Wrong enemyID in: " + filename);///
         else///
-            enemyID = static_cast<Aircraft::Type>(id);///
+            enemyID = static_cast<Spaceship::Type>(id);///
 
         addSpawnPoint(x, y, enemyID);
     }
@@ -234,7 +234,7 @@ void World::loadLevelData()
     mPlayerSpawnPosition = sf::Vector2f(mView.getSize().x / 2, mWorldBounds.height - mView.getSize().y / 2.f);
 }
 
-void World::addSpawnPoint(float x, float y, Aircraft::Type type)
+void World::addSpawnPoint(float x, float y, Spaceship::Type type)
 {
     SpawnPoint spawnPoint{x, y, type};
     mSpawnPoints.push_back(std::move(spawnPoint));
@@ -268,9 +268,9 @@ void World::spawnEnemies()
     {
         SpawnPoint spawn = mSpawnPoints.back();
 
-        std::unique_ptr<Aircraft> enemyAircraft(new Aircraft(spawn.type, mTextures, mFonts, *this, mPlayerAircrafts));
-        enemyAircraft->setPosition(spawn.x, spawn.y);
-        mSceneLayers[UpperAir]->attachChild(std::move(enemyAircraft));
+        std::unique_ptr<Spaceship> enemySpaceship(new Spaceship(spawn.type, mTextures, mFonts, *this, mPlayerSpaceships));
+        enemySpaceship->setPosition(spawn.x, spawn.y);
+        mSceneLayers[UpperAir]->attachChild(std::move(enemySpaceship));
 
         mSpawnPoints.pop_back();
     }
@@ -279,8 +279,8 @@ void World::spawnEnemies()
 void World::guideHomingMissiles()
 {
     Command mEnemyCollector;
-    mEnemyCollector.mCategories.push_back(Category::EnemyAircraft);
-    mEnemyCollector.mAction = castFunctor<Aircraft>([this](Aircraft& target, sf::Time dt)
+    mEnemyCollector.mCategories.push_back(Category::EnemySpaceship);
+    mEnemyCollector.mAction = castFunctor<Spaceship>([this](Spaceship& target, sf::Time dt)
     {
         if(!target.isMarkedForRemoval())
             mEnemies.emplace_back(&target);
@@ -296,9 +296,9 @@ void World::adaptPlayersPosition()
     const sf::Vector2f distanceFromBorder(37.5f, 26.f);
     sf::Vector2f playerPosition;
 
-    for(auto& playerAircraft : mPlayerAircrafts)
+    for(auto& playerSpaceship : mPlayerSpaceships)
     {
-        playerPosition = playerAircraft->getPosition();
+        playerPosition = playerSpaceship->getPosition();
 
         if(playerPosition.x < viewBounds.left + distanceFromBorder.x)
             playerPosition.x = viewBounds.left + distanceFromBorder.x;
@@ -310,7 +310,7 @@ void World::adaptPlayersPosition()
         else if(playerPosition.y > viewBounds.top + viewBounds.height - distanceFromBorder.y)
             playerPosition.y = viewBounds.top + viewBounds.height - distanceFromBorder.y;
 
-        playerAircraft->setPosition(playerPosition);
+        playerSpaceship->setPosition(playerPosition);
     }
 }
 
@@ -336,7 +336,7 @@ void World::destroyEntitiesOutsideView()
 {
     Command command;
     command.mCategories.push_back(Category::Attack);
-    command.mCategories.push_back(Category::EnemyAircraft);
+    command.mCategories.push_back(Category::EnemySpaceship);
     command.mAction = castFunctor<Entity>([this](Entity& object, sf::Time dt)
     {
         if(!getBattlefieldBounds().intersects(object.getBoundingRect()))
@@ -348,17 +348,17 @@ void World::destroyEntitiesOutsideView()
 void World::updateSounds()
 {
     mSoundPlayer.removeStoppedSounds();
-    mSoundPlayer.setListener(mPlayerAircrafts[0]->getWorldPosition());
+    mSoundPlayer.setListener(mPlayerSpaceships[0]->getWorldPosition());
 }
 
 void World::updateScore()
 {
     int cumulativeScore = 0;
 
-    for(const auto& playerAircraft : mPlayerAircrafts)
+    for(const auto& playerSpaceship : mPlayerSpaceships)
     {
-        cumulativeScore += playerAircraft->getScore();
-        mPlayersScores[playerAircraft->getIdentifier()] = playerAircraft->getScore();
+        cumulativeScore += playerSpaceship->getScore();
+        mPlayersScores[playerSpaceship->getIdentifier()] = playerSpaceship->getScore();
     }
 
     mScore.setString(toString(cumulativeScore));
@@ -367,6 +367,6 @@ void World::updateScore()
 
 void World::removeDanglingPointers()
 {
-    auto firstToRemove = std::remove_if(mPlayerAircrafts.begin(), mPlayerAircrafts.end(), std::mem_fn(&Aircraft::isMarkedForRemoval));
-    mPlayerAircrafts.erase(firstToRemove, mPlayerAircrafts.end());
+    auto firstToRemove = std::remove_if(mPlayerSpaceships.begin(), mPlayerSpaceships.end(), std::mem_fn(&Spaceship::isMarkedForRemoval));
+    mPlayerSpaceships.erase(firstToRemove, mPlayerSpaceships.end());
 }

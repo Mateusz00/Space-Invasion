@@ -1,4 +1,4 @@
-#include "Aircraft.hpp"
+#include "Spaceship.hpp"
 #include "Pickup.hpp"
 #include "Bar.hpp"
 #include "../Utility.hpp"
@@ -9,17 +9,17 @@
 #include <memory>
 namespace
 {
-    const std::vector<AircraftData> aircraftInfo = initializeAircraftData();
-    const std::vector<AircraftTextureData> textureInfo = initializeAircraftTextureData();
+    const std::vector<SpaceshipData> spaceshipInfo = initializeSpaceshipData();
+    const std::vector<SpaceshipTextureData> textureInfo = initializeSpaceshipTextureData();
     constexpr float FUEL_MAX = 100.f;
     constexpr float FUEL_MIN = 25.f;
     constexpr float FUEL_BURN_RATE = 4.4f;
     constexpr float FUEL_REFILL_RATE = 0.3f;
 }
 
-Aircraft::Aircraft(int typeID, const TextureHolder& textures, const FontHolder& fonts,
-                    World& world, const std::vector<Aircraft*>& targets, int id)
-    : Entity(aircraftInfo[typeID].hitpoints, true, world),
+Spaceship::Spaceship(int typeID, const TextureHolder& textures, const FontHolder& fonts,
+                    World& world, const std::vector<Spaceship*>& targets, int id)
+    : Entity(spaceshipInfo[typeID].hitpoints, true, world),
       mTypeID(typeID),
       mSprite(textures.get(textureInfo[typeID].texture), textureInfo[typeID].textureRect),
       mFireRateLevel(3),
@@ -41,11 +41,11 @@ Aircraft::Aircraft(int typeID, const TextureHolder& textures, const FontHolder& 
 {
     centerOrigin(mSprite);
 
-    // Create HealthBar for aircraft
+    // Create HealthBar for spaceship
     float offset = (mIsEnemy) ? -0.7f : 0.7f;
     sf::Vector2f barSize(getLocalBounds().width * 0.7f, 4.f);
 
-    std::unique_ptr<Bar> healthBar(new Bar(getHitpoints(), aircraftInfo[mTypeID].hitpoints, barSize));
+    std::unique_ptr<Bar> healthBar(new Bar(getHitpoints(), spaceshipInfo[mTypeID].hitpoints, barSize));
     healthBar->setPosition(0.f, mSprite.getLocalBounds().height * offset);
     healthBar->setColorRange(sf::Color(33, 196, 1), sf::Color(206, 12, 12));
     mHealthBar = healthBar.get();
@@ -62,12 +62,12 @@ Aircraft::Aircraft(int typeID, const TextureHolder& textures, const FontHolder& 
     }
 
     // Add attacks to manager
-    const auto& attacks = aircraftInfo[typeID].attacks;
+    const auto& attacks = spaceshipInfo[typeID].attacks;
     for(const auto& attackPair : attacks)
         mAttackManager.pushAttack(attackPair.first, attackPair.second);
 }
 
-void Aircraft::updateCurrent(sf::Time dt, CommandQueue& commands)
+void Spaceship::updateCurrent(sf::Time dt, CommandQueue& commands)
 {
     updateMovementPatterns(dt);
     updateRollAnimation(dt);
@@ -84,75 +84,75 @@ void Aircraft::updateCurrent(sf::Time dt, CommandQueue& commands)
     mHealthBar->updateValue(getHitpoints());
 }
 
-void Aircraft::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
+void Spaceship::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
     target.draw(mSprite, states);
 }
 
-Category::Type Aircraft::getCategory() const
+Category::Type Spaceship::getCategory() const
 {
     if(!mIsEnemy)
-        return Category::PlayerAircraft;
+        return Category::PlayerSpaceship;
     else
-        return Category::EnemyAircraft;
+        return Category::EnemySpaceship;
 }
 
-void Aircraft::increaseFireRate()
+void Spaceship::increaseFireRate()
 {
     if(mFireRateLevel < 6)
         ++mFireRateLevel;
 }
 
-void Aircraft::increaseSpread()
+void Spaceship::increaseSpread()
 {
     if(mSpreadLevel < 3)
         ++mSpreadLevel;
 }
 
-int Aircraft::getMissileAmmo() const
+int Spaceship::getMissileAmmo() const
 {
     return mMissileAmmo;
 }
 
-void Aircraft::setMissileAmmo(int missiles)
+void Spaceship::setMissileAmmo(int missiles)
 {
     mMissileAmmo = missiles;
 }
 
-void Aircraft::changeMissileAmmo(int amount)
+void Spaceship::changeMissileAmmo(int amount)
 {
     mMissileAmmo += amount;
 }
 
-int Aircraft::getIdentifier() const
+int Spaceship::getIdentifier() const
 {
     return mIdentifier;
 }
 
-void Aircraft::setIdentifier(int id)
+void Spaceship::setIdentifier(int id)
 {
     mIdentifier = id;
 }
 
-void Aircraft::fire()
+void Spaceship::fire()
 {
     if(mAttackManager.tryAttack(mSpreadLevel+1, getWorld().getCommandQueue()))
         mAttackManager.forceCooldown(mAttackManager.getCooldown() / static_cast<float>(mFireRateLevel));
 }
 
-void Aircraft::boostSpeed()
+void Spaceship::boostSpeed()
 {
     if(!mBoostCooldown && mBoostFuel >= FUEL_BURN_RATE)
         mBoosted = true;
 }
 
-void Aircraft::trySpeedBoost()
+void Spaceship::trySpeedBoost()
 {
     if(mBoosted)
         setVelocity(getVelocity() * 2.f);
 }
 
-void Aircraft::launchMissile()
+void Spaceship::launchMissile()
 {
     if(mMissileAmmo > 0)
     {
@@ -161,22 +161,22 @@ void Aircraft::launchMissile()
     }
 }
 
-float Aircraft::getMaxSpeed() const
+float Spaceship::getMaxSpeed() const
 {
-    return aircraftInfo[mTypeID].speed;
+    return spaceshipInfo[mTypeID].speed;
 }
 
-sf::FloatRect Aircraft::getLocalBounds() const
+sf::FloatRect Spaceship::getLocalBounds() const
 {
     return mSprite.getLocalBounds();
 }
 
-sf::FloatRect Aircraft::getBoundingRect() const
+sf::FloatRect Spaceship::getBoundingRect() const
 {
     return getWorldTransform().transformRect(mSprite.getGlobalBounds());
 }
 
-void Aircraft::updateRollAnimation(sf::Time dt)
+void Spaceship::updateRollAnimation(sf::Time dt)
 {
     mLastRoll += dt;
 
@@ -206,9 +206,9 @@ void Aircraft::updateRollAnimation(sf::Time dt)
     }
 }
 
-void Aircraft::updateMovementPatterns(sf::Time dt)
+void Spaceship::updateMovementPatterns(sf::Time dt)
 {
-    const std::vector<AircraftData::Direction>& directions = aircraftInfo[mTypeID].directions;
+    const std::vector<SpaceshipData::Direction>& directions = spaceshipInfo[mTypeID].directions;
     if(!directions.empty())
     {
         if(mTravelledDistance > directions[mDirectionIndex].distance)
@@ -227,43 +227,43 @@ void Aircraft::updateMovementPatterns(sf::Time dt)
     }
 }
 
-void Aircraft::onCollision(Entity& entity)
+void Spaceship::onCollision(Entity& entity)
 {
     if(mIsEnemy)
     {
         switch(entity.getCategory())
         {
-            case Category::PlayerAircraft:
+            case Category::PlayerSpaceship:
                 entity.damage(getHitpoints());
                 destroy();
-                mAttackerID = static_cast<Aircraft&>(entity).getIdentifier(); // Sets id of aircraft that will have score increased
+                mAttackerID = static_cast<Spaceship&>(entity).getIdentifier(); // Sets id of spaceship that will have score increased
                 break;
         }
     }
 }
 
-void Aircraft::removeEntity()
+void Spaceship::removeEntity()
 {
     Entity::removeEntity();
     mShowExplosion = false;
 }
 
-void Aircraft::increaseScore(int value)
+void Spaceship::increaseScore(int value)
 {
     mScore += value;
 }
 
-int Aircraft::getScore() const
+int Spaceship::getScore() const
 {
     return mScore;
 }
 
-void Aircraft::setAttackerID(int id)
+void Spaceship::setAttackerID(int id)
 {
     mAttackerID = id;
 }
 
-void Aircraft::createPickup() const
+void Spaceship::createPickup() const
 {
     if(mIsEnemy && (randomInt(1, 4) == 2)) // 25% chance for spawning pickup for enemies
     {
@@ -274,7 +274,7 @@ void Aircraft::createPickup() const
     }
 }
 
-void Aircraft::createExplosion() const
+void Spaceship::createExplosion() const
 {
     if(mShowExplosion)
     {
@@ -285,7 +285,7 @@ void Aircraft::createExplosion() const
     }
 }
 
-void Aircraft::changeScore()
+void Spaceship::changeScore()
 {
     if(mShowExplosion)
         increaseScoreRequest(100);
@@ -293,32 +293,32 @@ void Aircraft::changeScore()
         decreaseScoreRequest(50);
 }
 
-void Aircraft::increaseScoreRequest(int value) const
+void Spaceship::increaseScoreRequest(int value) const
 {
     Command increaseScoreCommand;
-    increaseScoreCommand.mCategories.push_back(Category::PlayerAircraft);
-    increaseScoreCommand.mAction = castFunctor<Aircraft>([this, value](Aircraft& aircraft, sf::Time dt)
+    increaseScoreCommand.mCategories.push_back(Category::PlayerSpaceship);
+    increaseScoreCommand.mAction = castFunctor<Spaceship>([this, value](Spaceship& spaceship, sf::Time dt)
     {
-        if(aircraft.getIdentifier() == mAttackerID)
-            aircraft.increaseScore(value);
+        if(spaceship.getIdentifier() == mAttackerID)
+            spaceship.increaseScore(value);
     });
 
     getWorld().getCommandQueue().push(increaseScoreCommand);
 }
 
-void Aircraft::decreaseScoreRequest(int value) const
+void Spaceship::decreaseScoreRequest(int value) const
 {
     Command decreaseScoreCommand;
-    decreaseScoreCommand.mCategories.push_back(Category::PlayerAircraft);
-    decreaseScoreCommand.mAction = castFunctor<Aircraft>([this, value](Aircraft& aircraft, sf::Time dt)
+    decreaseScoreCommand.mCategories.push_back(Category::PlayerSpaceship);
+    decreaseScoreCommand.mAction = castFunctor<Spaceship>([this, value](Spaceship& spaceship, sf::Time dt)
     {
-        aircraft.increaseScore(-value);
+        spaceship.increaseScore(-value);
     });
 
     getWorld().getCommandQueue().push(decreaseScoreCommand);
 }
 
-void Aircraft::onRemoval()
+void Spaceship::onRemoval()
 {
     createPickup();
     createExplosion();
@@ -326,7 +326,7 @@ void Aircraft::onRemoval()
     mAttackManager.onRemoval();
 }
 
-void Aircraft::updateBoostFuel()
+void Spaceship::updateBoostFuel()
 {
     if(mBoosted)
     {

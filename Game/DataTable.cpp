@@ -1,7 +1,7 @@
 #include "DataTable.hpp"
 #include "AnimationNode.hpp"
 #include "Utility.hpp"
-#include "Entities/Aircraft.hpp"
+#include "Entities/Spaceship.hpp"
 #include "Entities/Projectile.hpp"
 #include "Entities/Pickup.hpp"
 #include "ParticleSystem/Particle.hpp"
@@ -11,77 +11,77 @@
 #include <sstream>
 using namespace pugi;
 
-std::vector<AircraftData> initializeAircraftData()
+std::vector<SpaceshipData> initializeSpaceshipData()
 {
-    std::vector<AircraftData> data;
+    std::vector<SpaceshipData> data;
     std::map<int, std::string> pathsMap;
 
-    // Get paths for aircraft xml files
+    // Get paths for spaceship xml files
     xml_document pathsDoc;
-    xml_parse_result result = pathsDoc.load_file("Aircrafts/aircrafts.xml");
+    xml_parse_result result = pathsDoc.load_file("Spaceships/spaceships.xml");
     if(!result)
-        throw XMLParseException(result, "aircrafts.xml");
+        throw XMLParseException(result, "spaceships.xml");
 
-    xml_node paths = pathsDoc.child("aircrafts");
+    xml_node paths = pathsDoc.child("spaceships");
     for(xml_node path : paths.children())
-        pathsMap.emplace(path.attribute("id").as_int(), (std::string("Aircrafts/") + path.attribute("file").as_string()));
+        pathsMap.emplace(path.attribute("id").as_int(), (std::string("Spaceships/") + path.attribute("file").as_string()));
 
     for(const auto& path : pathsMap)
     {
         // Load file
-        xml_document aircraftDoc;
-        xml_parse_result result = aircraftDoc.load_file(path.second.c_str());
+        xml_document spaceshipDoc;
+        xml_parse_result result = spaceshipDoc.load_file(path.second.c_str());
         if(!result)
             throw XMLParseException(result, path.second);
 
         // Load all values
-        AircraftData aircraftData;
+        SpaceshipData spaceshipData;
 
-        xml_node mainNode           = aircraftDoc.child("aircraft");
+        xml_node mainNode           = spaceshipDoc.child("spaceship");
         xml_node directionsNode     = mainNode.child("directions");
         xml_node attacksNode        = mainNode.child("attacks");
 
-        aircraftData.hitpoints      = std::stoi(mainNode.child("hitpoints").text().get());
-        aircraftData.speed          = std::stof(mainNode.child("speed").text().get());
-        aircraftData.textureID      = std::stoi(mainNode.child("textureID").text().get());
+        spaceshipData.hitpoints      = std::stoi(mainNode.child("hitpoints").text().get());
+        spaceshipData.speed          = std::stof(mainNode.child("speed").text().get());
+        spaceshipData.textureID      = std::stoi(mainNode.child("textureID").text().get());
 
         // Load movement pattern of enemy
         for(xml_node direction : directionsNode.children())
         {
-            AircraftData::Direction directionData;
+            SpaceshipData::Direction directionData;
 
             directionData.angle             = direction.attribute("angle").as_float();
             directionData.distance          = direction.attribute("distance").as_float();
             directionData.speedPercentage   = direction.attribute("speedPercentage").as_float();
 
-            aircraftData.directions.emplace_back(std::move(directionData));
+            spaceshipData.directions.emplace_back(std::move(directionData));
         }
 
-        // Load attacks of that aircraft
+        // Load attacks of that spaceship
         for(xml_node attack : attacksNode.children())
         {
             int attackID        = attack.attribute("attackID").as_int();
             int probability     = attack.attribute("probability").as_int();
 
-            aircraftData.attacks.emplace(attackID, probability);
+            spaceshipData.attacks.emplace(attackID, probability);
         }
 
-        data.emplace_back(std::move(aircraftData));
+        data.emplace_back(std::move(spaceshipData));
     }
 
     return data;
 }
 
-std::vector<AircraftTextureData> initializeAircraftTextureData()
+std::vector<SpaceshipTextureData> initializeSpaceshipTextureData()
 {
-    std::vector<AircraftTextureData> data(2);
+    std::vector<SpaceshipTextureData> data(2);
 
-    data[0].texture = Textures::Aircrafts; // Player
+    data[0].texture = Textures::Spaceships; // Player
     data[0].textureRect = sf::IntRect(150, 0, 75, 42);
     data[0].hasRollAnimation = true;
     data[0].spriteNumber = 5;
 
-    data[1].texture = Textures::Aircrafts; // Enemy
+    data[1].texture = Textures::Spaceships; // Enemy
     data[1].textureRect = sf::IntRect(0, 43, 60, 42);
     data[1].hasRollAnimation = false;
     data[1].spriteNumber = 0;
@@ -114,19 +114,19 @@ std::vector<PickupData> initializePickupData()
 
     std::vector<PickupData> data(Pickup::TypeCount);
 
-    data[Pickup::FireSpread].action = std::bind(&Aircraft::increaseSpread, _1);
+    data[Pickup::FireSpread].action = std::bind(&Spaceship::increaseSpread, _1);
     data[Pickup::FireSpread].texture = Textures::Pickups;
     data[Pickup::FireSpread].textureRect = sf::IntRect(80, 0, 40, 40);
 
-    data[Pickup::FireRate].action = std::bind(&Aircraft::increaseFireRate, _1);
+    data[Pickup::FireRate].action = std::bind(&Spaceship::increaseFireRate, _1);
     data[Pickup::FireRate].texture = Textures::Pickups;
     data[Pickup::FireRate].textureRect = sf::IntRect(120, 0, 40, 40);
 
-    data[Pickup::HealthRefill].action = std::bind(&Aircraft::repair, _1, 30);
+    data[Pickup::HealthRefill].action = std::bind(&Spaceship::repair, _1, 30);
     data[Pickup::HealthRefill].texture = Textures::Pickups;
     data[Pickup::HealthRefill].textureRect = sf::IntRect(0, 0, 40, 40);
 
-    data[Pickup::MissileRefill].action = std::bind(&Aircraft::changeMissileAmmo, _1, 1);
+    data[Pickup::MissileRefill].action = std::bind(&Spaceship::changeMissileAmmo, _1, 1);
     data[Pickup::MissileRefill].texture = Textures::Pickups;
     data[Pickup::MissileRefill].textureRect = sf::IntRect(40, 0, 40, 40);
 

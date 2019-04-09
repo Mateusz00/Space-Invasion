@@ -98,7 +98,7 @@ void Application::loadResources()
     mFonts.loadFromFile(Fonts::BPmonoItalics,     "Resources/BPmonoItalics.ttf");
     mFonts.loadFromFile(Fonts::Goodfish,          "Resources/Goodfish.ttf");
     mTextures.loadFromFile(Textures::Background,     "Resources/Background.png");
-    mTextures.loadFromFile(Textures::Aircrafts,      "Resources/Airplane1.png");
+    mTextures.loadFromFile(Textures::Spaceships,     "Resources/Spaceships.png");
     mTextures.loadFromFile(Textures::Projectiles,    "Resources/Projectiles.png");
     mTextures.loadFromFile(Textures::Pickups,        "Resources/Pickups.png");
     mTextures.loadFromFile(Textures::Particle,       "Resources/Particle.png");

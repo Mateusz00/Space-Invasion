@@ -1,5 +1,5 @@
-#ifndef AIRCRAFT_HPP
-#define AIRCRAFT_HPP
+#ifndef SPACESHIP_HPP
+#define SPACESHIP_HPP
 
 #include "Projectile.hpp"
 #include "../Category.hpp"
@@ -12,13 +12,13 @@
 class Entity;
 class Bar;
 
-class Aircraft : public Entity
+class Spaceship : public Entity
 {
     public:
         enum Type{Ally, Enemy, TypeCount};
 
-                                Aircraft(int, const TextureHolder&, const FontHolder&, World&,
-                                          const std::vector<Aircraft*>& targets, int id = 99999);
+                                Spaceship(int, const TextureHolder&, const FontHolder&, World&,
+                                          const std::vector<Spaceship*>& targets, int id = 99999);
         Category::Type          getCategory() const override;
         void                    increaseFireRate();
         void                    increaseSpread();
@@ -77,4 +77,4 @@ class Aircraft : public Entity
         Bar*                    mBoostFuelBar;
 };
 
-#endif // AIRCRAFT_HPP
+#endif // SPACESHIP_HPP

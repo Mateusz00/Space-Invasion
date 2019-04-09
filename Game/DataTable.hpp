@@ -10,9 +10,9 @@
 #include <SFML/Graphics/Color.hpp>
 #include <vector>
 #include <unordered_map>
-class Aircraft;
+class Spaceship;
 
-struct AircraftData
+struct SpaceshipData
 {
     struct Direction
     {
@@ -28,7 +28,7 @@ struct AircraftData
     std::unordered_map<int, int>    attacks; // attackID, probability
 };
 
-struct AircraftTextureData
+struct SpaceshipTextureData
 {
     Textures::ID    texture;
     sf::IntRect     textureRect;
@@ -45,7 +45,7 @@ struct ProjectileData
 
 struct PickupData
 {
-    std::function<void(Aircraft&)>  action;
+    std::function<void(Spaceship&)> action;
     Textures::ID                    texture;
     sf::IntRect                     textureRect;
 };
@@ -115,8 +115,8 @@ struct AttackData
     std::vector<GravityCenterInfo>      gravityCenters;
 };
 
-std::vector<AircraftData>               initializeAircraftData();
-std::vector<AircraftTextureData>        initializeAircraftTextureData();
+std::vector<SpaceshipData>              initializeSpaceshipData();
+std::vector<SpaceshipTextureData>       initializeSpaceshipTextureData();
 std::vector<ProjectileData>             initializeProjectileData();
 std::vector<PickupData>                 initializePickupData();
 std::vector<ParticleData>               initializeParticleData();

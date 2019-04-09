@@ -1,60 +1,60 @@
 #include "Player.hpp"
-#include "Entities/Aircraft.hpp"
+#include "Entities/Spaceship.hpp"
 
-struct AircraftSpeedBoost // Command
+struct SpaceshipSpeedBoost // Command
 {
-    AircraftSpeedBoost(int id) : identifier(id)
+    SpaceshipSpeedBoost(int id) : identifier(id)
     {
     }
 
-    void operator() (Aircraft& aircraft, sf::Time dt) const
+    void operator() (Spaceship& spaceship, sf::Time dt) const
     {
-        if(aircraft.getIdentifier() == identifier)
-            aircraft.boostSpeed();
+        if(spaceship.getIdentifier() == identifier)
+            spaceship.boostSpeed();
     }
     int identifier;
 };
 
-struct AircraftMover // Command
+struct SpaceshipMover // Command
 {
-    AircraftMover(float x, float y, int id)
+    SpaceshipMover(float x, float y, int id)
         : velocity(x, y), identifier(id)
     {
     }
 
-    void operator() (Aircraft& aircraft, sf::Time dt) const
+    void operator() (Spaceship& spaceship, sf::Time dt) const
     {
-        if(aircraft.getIdentifier() == identifier)
-            aircraft.accelerate(velocity * aircraft.getMaxSpeed());
+        if(spaceship.getIdentifier() == identifier)
+            spaceship.accelerate(velocity * spaceship.getMaxSpeed());
     }
     sf::Vector2f velocity;
     int identifier;
 };
 
-struct AircraftFireTrigger // Command
+struct SpaceshipFireTrigger // Command
 {
-    AircraftFireTrigger(int id) : identifier(id)
+    SpaceshipFireTrigger(int id) : identifier(id)
     {
     }
 
-    void operator() (Aircraft& aircraft, sf::Time dt) const
+    void operator() (Spaceship& spaceship, sf::Time dt) const
     {
-        if(aircraft.getIdentifier() == identifier)
-            aircraft.fire();
+        if(spaceship.getIdentifier() == identifier)
+            spaceship.fire();
     }
     int identifier;
 };
 
-struct AircraftMissileTrigger // Command
+struct SpaceshipMissileTrigger // Command
 {
-    AircraftMissileTrigger(int id) : identifier(id)
+    SpaceshipMissileTrigger(int id) : identifier(id)
     {
     }
 
-    void operator() (Aircraft& aircraft, sf::Time dt) const
+    void operator() (Spaceship& spaceship, sf::Time dt) const
     {
-        if(aircraft.getIdentifier() == identifier)
-             aircraft.launchMissile();
+        if(spaceship.getIdentifier() == identifier)
+             spaceship.launchMissile();
     }
     int identifier;
 };
@@ -69,7 +69,7 @@ Player::Player(KeyBinding* keys, int id, std::string& name)
     initializeActions();
 
     for(auto& actionBind : mActionBinding)
-        actionBind.mCategories.push_back(Category::PlayerAircraft);
+        actionBind.mCategories.push_back(Category::PlayerSpaceship);
 }
 
 void Player::handleRealTimeInput(CommandQueue& commands)
@@ -118,11 +118,11 @@ const std::string& Player::getName() const
 
 void Player::initializeActions()
 {
-    mActionBinding[Action::MoveUp].mAction        = castFunctor<Aircraft>(AircraftMover(0, -1, mIdentifier));
-    mActionBinding[Action::MoveDown].mAction      = castFunctor<Aircraft>(AircraftMover(0,  1, mIdentifier));
-    mActionBinding[Action::MoveLeft].mAction      = castFunctor<Aircraft>(AircraftMover(-1, 0, mIdentifier));
-    mActionBinding[Action::MoveRight].mAction     = castFunctor<Aircraft>(AircraftMover(1,  0, mIdentifier));
-    mActionBinding[Action::Fire].mAction          = castFunctor<Aircraft>(AircraftFireTrigger(mIdentifier));
-    mActionBinding[Action::LaunchMissile].mAction = castFunctor<Aircraft>(AircraftMissileTrigger(mIdentifier));
-    mActionBinding[Action::SpeedBoost].mAction    = castFunctor<Aircraft>(AircraftSpeedBoost(mIdentifier));
+    mActionBinding[Action::MoveUp].mAction        = castFunctor<Spaceship>(SpaceshipMover(0, -1, mIdentifier));
+    mActionBinding[Action::MoveDown].mAction      = castFunctor<Spaceship>(SpaceshipMover(0,  1, mIdentifier));
+    mActionBinding[Action::MoveLeft].mAction      = castFunctor<Spaceship>(SpaceshipMover(-1, 0, mIdentifier));
+    mActionBinding[Action::MoveRight].mAction     = castFunctor<Spaceship>(SpaceshipMover(1,  0, mIdentifier));
+    mActionBinding[Action::Fire].mAction          = castFunctor<Spaceship>(SpaceshipFireTrigger(mIdentifier));
+    mActionBinding[Action::LaunchMissile].mAction = castFunctor<Spaceship>(SpaceshipMissileTrigger(mIdentifier));
+    mActionBinding[Action::SpeedBoost].mAction    = castFunctor<Spaceship>(SpaceshipSpeedBoost(mIdentifier));
 }

@@ -17,7 +17,7 @@ namespace Textures
     enum ID
     {
         Background,
-        Aircrafts,
+        Spaceships,
         Projectiles,
         Pickups,
         Particle,

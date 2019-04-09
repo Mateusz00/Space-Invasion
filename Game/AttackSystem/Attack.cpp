@@ -2,7 +2,7 @@
 #include "AttackPattern.hpp"
 #include "Attacks.hpp"
 #include "../Category.hpp"
-#include "../Entities/Aircraft.hpp"
+#include "../Entities/Spaceship.hpp"
 #include "../DataTable.hpp"
 #include "../CommandQueue.hpp"
 #include "../Utility.hpp"
@@ -11,7 +11,7 @@
 using Attacks::attackData;
 
 Attack::Attack(int id, const TextureHolder& textures, sf::Vector2f pos, World& world, int shooterID,
-                bool isAllied, const std::vector<Aircraft*>& targets)
+                bool isAllied, const std::vector<Spaceship*>& targets)
     : Entity(1, false, world),
       mTargets(targets),
       mAttackID(id),
@@ -410,7 +410,7 @@ sf::Vector2f Attack::getClosestTarget(const sf::Transformable* object) const
 /// Returns normalized direction vector
 {
     float smallestDistance = std::numeric_limits<float>::max();
-    Aircraft* closestTarget = nullptr;
+    Spaceship* closestTarget = nullptr;
 
     for(const auto& target : mTargets)
     {

@@ -5,9 +5,9 @@ namespace Category
 {
     enum Type
     {
-        PlayerAircraft,
+        PlayerSpaceship,
         AirLayer,
-        EnemyAircraft,
+        EnemySpaceship,
         EnemyProjectile,
         AlliedProjectile,
         Pickup,

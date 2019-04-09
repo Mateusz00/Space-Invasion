@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<aircraft>
+<spaceship>
     <hitpoints>50</hitpoints>
     <speed>140</speed>
     <textureID>1</textureID>
@@ -16,4 +16,4 @@
     <attacks>
         <attack attackID="0" probability="100"></attack>
     </attacks>
-</aircraft>
+</spaceship>

@@ -1,7 +1,7 @@
 #include "AmmoNode.hpp"
 #include "../Utility.hpp"
 
-AmmoNode::AmmoNode(const Aircraft& object, const TextureHolder& textures, const FontHolder& fonts, const sf::View& view)
+AmmoNode::AmmoNode(const Spaceship& object, const TextureHolder& textures, const FontHolder& fonts, const sf::View& view)
     : mObject(object),
       mView(view),
       mSprite(textures.get(Textures::Projectiles), Textures::MissileRect)

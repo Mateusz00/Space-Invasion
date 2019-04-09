@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<aircraft>
+<spaceship>
     <hitpoints>100</hitpoints>
     <speed>150</speed>
     <textureID>0</textureID>
-</aircraft>
+</spaceship>

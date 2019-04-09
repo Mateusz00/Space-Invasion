@@ -19,7 +19,7 @@ GameState::GameState(Context context, StateStack& stateStack)
     context.music.playNow(Music::BattleTheme, true);
 
     for(const Player& player : mPlayers)
-        mWorld.addAircraft(player.getID());
+        mWorld.addSpaceship(player.getID());
 }
 
 bool GameState::draw()

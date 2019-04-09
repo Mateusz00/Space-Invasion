@@ -98,7 +98,7 @@ void Projectile::onCollision(Entity& entity)
     {
         switch(entity.getCategory())
         {
-            case Category::PlayerAircraft:
+            case Category::PlayerSpaceship:
                 entity.damage(table[mType].damage);
                 destroy();
                 break;
@@ -108,10 +108,10 @@ void Projectile::onCollision(Entity& entity)
     {
         switch(entity.getCategory())
         {
-            case Category::EnemyAircraft:
+            case Category::EnemySpaceship:
                 entity.damage(table[mType].damage);
                 destroy();
-                static_cast<Aircraft&>(entity).setAttackerID(mShooterID); // Sets id of aircraft that will have score increased if enemy dies
+                static_cast<Spaceship&>(entity).setAttackerID(mShooterID); // Sets id of spaceship that will have score increased if enemy dies
                 break;
         }
     }
