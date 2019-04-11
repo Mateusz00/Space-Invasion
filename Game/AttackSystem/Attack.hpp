@@ -41,7 +41,7 @@ class Attack : public Entity
 
         std::vector<std::unique_ptr<Projectile>>    mProjectiles;
         std::unordered_map<int, GravityCenter>      mGravityCenters;
-        const std::vector<Spaceship*>&               mTargets;
+        const std::vector<Spaceship*>&              mTargets;
         int                                         mAttackID;
         const TextureHolder&                        mTextures;
         bool                                        mIsActive;

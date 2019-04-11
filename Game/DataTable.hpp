@@ -62,6 +62,7 @@ struct AnimationData
     int             framesPerRow;
     int             frames;
     sf::Vector2i    frameSize;
+    sf::Vector2i    beginning = sf::Vector2i(0, 0);
     Textures::ID    spriteSheet;
 };
 

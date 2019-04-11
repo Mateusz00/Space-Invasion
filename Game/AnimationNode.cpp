@@ -8,27 +8,44 @@ namespace
 
 AnimationNode::AnimationNode(Type type, sf::Time interval, const TextureHolder& textures)
     : mType(type),
+      mAnimation(Animation::Forward),
       mInterval(interval),
       mSpriteSheet(textures.get(table[mType].spriteSheet)),
-      mSprite(mSpriteSheet, sf::IntRect(0, 0, table[mType].frameSize.x, table[mType].frameSize.y)),
+      mSprite(mSpriteSheet, sf::IntRect(table[mType].beginning, table[mType].frameSize)),
       mCurrentFrame(0),
+      mIncrement(1),
       mIsRepeating(false),
       mNeedsUpdate(false)
 {
     centerOrigin(mSprite);
 }
 
-void AnimationNode::setRepeating()
+void AnimationNode::setRepeating(bool flag)
 {
-    mIsRepeating = true;
+    mIsRepeating = flag;
+}
+
+void AnimationNode::setAnimationType(Animation animation)
+{
+    mAnimation = animation;
 }
 
 bool AnimationNode::isMarkedForRemoval() const
 {
-    if(!mIsRepeating && mCurrentFrame > table[mType].frames-1)
-        return true;
+    switch(mAnimation)
+    {
+        case Animation::Forward:
+            if(!mIsRepeating && mCurrentFrame >= table[mType].frames)
+                return true;
+            else
+                return false;
 
-    return false;
+        case Animation::ForwardAndBackward:
+            if(!mIsRepeating && mCurrentFrame < 0)
+                return true;
+            else
+                return false;
+    }
 }
 
 void AnimationNode::updateCurrent(sf::Time dt, CommandQueue& commandQueue)
@@ -38,9 +55,17 @@ void AnimationNode::updateCurrent(sf::Time dt, CommandQueue& commandQueue)
     if(mAccumulatedTime >= mInterval)
     {
         if(!mIsRepeating)
-            ++mCurrentFrame;
+            mCurrentFrame += mIncrement;
         else
-            mCurrentFrame = mCurrentFrame % table[mType].frames;
+            mCurrentFrame = (mCurrentFrame + mIncrement) % table[mType].frames;
+
+        if(mAnimation == Animation::ForwardAndBackward)
+        {
+            if(mIsRepeating && (mCurrentFrame >= table[mType].frames-1 || mCurrentFrame <= 0))
+                mIncrement = -mIncrement;
+            else if(!mIsRepeating && mCurrentFrame >= table[mType].frames-1)
+                mIncrement = -mIncrement;
+        }
 
         mNeedsUpdate = true;
         mAccumulatedTime -= mInterval;
@@ -54,8 +79,8 @@ void AnimationNode::drawCurrent(sf::RenderTarget& target, sf::RenderStates state
         int width  = table[mType].frameSize.x;
         int height = table[mType].frameSize.y;
 
-        int left = (mCurrentFrame % table[mType].framesPerRow) * width;
-        int top  = ((mCurrentFrame / table[mType].framesPerRow) % table[mType].rows) * height;
+        int left = ((mCurrentFrame % table[mType].framesPerRow) * width)  + table[mType].beginning.x;
+        int top  = ((mCurrentFrame / table[mType].framesPerRow) * height) + table[mType].beginning.y;
         mSprite.setTextureRect(sf::IntRect(left, top, width, height));
         mNeedsUpdate = false;
     }
