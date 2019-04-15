@@ -40,6 +40,8 @@ Spaceship::Spaceship(int typeID, const TextureHolder& textures, const FontHolder
       mBoostFuelBar(nullptr)
 {
     centerOrigin(mSprite);
+    if(mIsEnemy)
+        mSprite.rotate(180.f);
 
     // Create HealthBar for spaceship
     float offset = (mIsEnemy) ? -0.7f : 0.7f;

@@ -74,17 +74,120 @@ std::vector<SpaceshipData> initializeSpaceshipData()
 
 std::vector<SpaceshipTextureData> initializeSpaceshipTextureData()
 {
-    std::vector<SpaceshipTextureData> data(2);
+    std::vector<SpaceshipTextureData> data(37);
 
     data[0].texture = Textures::Spaceships; // Player
     data[0].textureRect = sf::IntRect(40, 0, 40, 40);
     data[0].hasRollAnimation = true;
     data[0].spriteNumber = 3;
 
-    data[1].texture = Textures::Spaceships; // Enemy
+    data[1].texture = Textures::Spaceships; // HumanShipGreen1
     data[1].textureRect = sf::IntRect(0, 40, 40, 40);
-    //data[1].hasRollAnimation = false;
-    //data[1].spriteNumber = 0;
+
+    data[2].texture = Textures::Spaceships; // HumanShipGreen2
+    data[2].textureRect = sf::IntRect(40, 40, 40, 40);
+
+    data[3].texture = Textures::Spaceships; // HumanShipGreen3
+    data[3].textureRect = sf::IntRect(0, 80, 40, 60);
+
+    data[4].texture = Textures::Spaceships; // HumanShipBlue1
+    data[4].textureRect = sf::IntRect(80, 40, 40, 40);
+
+    data[5].texture = Textures::Spaceships; // HumanShipBlue2
+    data[5].textureRect = sf::IntRect(120, 40, 40, 40);
+
+    data[6].texture = Textures::Spaceships; // HumanShipBlue3
+    data[6].textureRect = sf::IntRect(40, 80, 80, 40);
+
+    data[7].texture = Textures::Spaceships; // BiomechLight1
+    data[7].textureRect = sf::IntRect(80, 120, 40, 40);
+
+    data[8].texture = Textures::Spaceships; // BiomechLight2
+    data[8].textureRect = sf::IntRect(40, 160, 40, 70);
+
+    data[9].texture = Textures::Spaceships; // BiomechLight3
+    data[9].textureRect = sf::IntRect(120, 160, 80, 80);
+
+    data[10].texture = Textures::Spaceships; // BiomechRed1
+    data[10].textureRect = sf::IntRect(40, 120, 40, 40);
+
+    data[11].texture = Textures::Spaceships; // BiomechRed2
+    data[11].textureRect = sf::IntRect(80, 160, 40, 70);
+
+    data[12].texture = Textures::Spaceships; // BiomechRed3
+    data[12].textureRect = sf::IntRect(200, 160, 80, 80);
+
+    data[13].texture = Textures::Spaceships; // BiomechDark1
+    data[13].textureRect = sf::IntRect(200, 120, 40, 40);
+
+    data[14].texture = Textures::Spaceships; // BiomechDark2
+    data[14].textureRect = sf::IntRect(0, 160, 40, 70);
+
+    data[15].texture = Textures::Spaceships; // BiomechDark3
+    data[15].textureRect = sf::IntRect(0, 240, 80, 80);
+
+    data[16].texture = Textures::Spaceships; // SaucerSmall
+    data[16].textureRect = sf::IntRect(80, 240, 40, 40);
+
+    data[17].texture = Textures::Spaceships; // SaucerMedium
+    data[17].textureRect = sf::IntRect(0, 320, 80, 80);
+
+    data[18].texture = Textures::Spaceships; // SaucerBig
+    data[18].textureRect = sf::IntRect(200, 240, 80, 80);
+
+    data[19].texture = Textures::Spaceships; // Mech1
+    data[19].textureRect = sf::IntRect(120, 0, 40, 40);
+
+    data[20].texture = Textures::Spaceships; // Mech2
+    data[20].textureRect = sf::IntRect(240, 0, 40, 40);
+
+    data[21].texture = Textures::Spaceships; // Mech3
+    data[21].textureRect = sf::IntRect(240, 40, 40, 40);
+
+    data[22].texture = Textures::Spaceships; // Mech4
+    data[22].textureRect = sf::IntRect(120, 80, 80, 80);
+
+    data[23].texture = Textures::Spaceships; // Mech5
+    data[23].textureRect = sf::IntRect(160, 0, 80, 80);
+
+    data[25].texture = Textures::Spaceships; // VoidRed1
+    data[25].textureRect = sf::IntRect(80, 280, 25, 40);
+
+    data[26].texture = Textures::Spaceships; // VoidRed2
+    data[26].textureRect = sf::IntRect(280, 0, 40, 60);
+
+    data[27].texture = Textures::Spaceships; // VoidRed3
+    data[27].textureRect = sf::IntRect(280, 70, 40, 52);
+
+    data[28].texture = Textures::Spaceships; // VoidRed4
+    data[28].textureRect = sf::IntRect(280, 120, 48, 80);
+
+    data[29].texture = Textures::Spaceships; // VoidPurple
+    data[29].textureRect = sf::IntRect(280, 202, 80, 29);
+
+    data[30].texture = Textures::Spaceships; // VoidBlue1
+    data[30].textureRect = sf::IntRect(372, 200, 32, 62);
+
+    data[31].texture = Textures::Spaceships; // VoidBlue2
+    data[31].textureRect = sf::IntRect(372, 263, 32, 54);
+
+    data[32].texture = Textures::Spaceships; // PurpleShipFast
+    data[32].textureRect = sf::IntRect(440, 0, 80, 80);
+
+    data[33].texture = Textures::Spaceships; // PurpleShipOval
+    data[33].textureRect = sf::IntRect(440, 80, 40, 40);
+
+    data[34].texture = Textures::Spaceships; // PurpleShipLong
+    data[34].textureRect = sf::IntRect(320, 320, 40, 80);
+
+    data[35].texture = Textures::Spaceships; // PurpleShipWide
+    data[35].textureRect = sf::IntRect(360, 320, 120, 40);
+
+    data[36].texture = Textures::Spaceships; // PurpleShipOval
+    data[36].textureRect = sf::IntRect(240, 120, 40, 40);
+
+    data[37].texture = Textures::Spaceships; // Boss
+    data[37].textureRect = sf::IntRect(520, 0, 360, 360);
 
     return data;
 }
