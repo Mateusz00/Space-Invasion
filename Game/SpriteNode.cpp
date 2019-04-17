@@ -1,4 +1,5 @@
 #include "SpriteNode.hpp"
+#include "Utility.hpp"
 
 SpriteNode::SpriteNode(const sf::Texture& texture)
     : mSprite(texture)
@@ -13,4 +14,14 @@ SpriteNode::SpriteNode(const sf::Texture& texture, const sf::IntRect& rect)
 void SpriteNode::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
     target.draw(mSprite, states);
+}
+
+void SpriteNode::center()
+{
+    centerOrigin(mSprite);
+}
+
+sf::FloatRect SpriteNode::getBoundingRect() const
+{
+    return getWorldTransform().transformRect(mSprite.getGlobalBounds());
 }

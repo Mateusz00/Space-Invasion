@@ -6,9 +6,10 @@
 #include "../Command.hpp"
 #include "../CommandQueue.hpp"
 #include "../ResourcesID.hpp"
+#include "../SpriteNode.hpp"
 #include "../AttackSystem/AttackManager.hpp"
-#include <SFML/Graphics/Sprite.hpp>
 #include <SFML/System/Time.hpp>
+#include <memory>
 class Entity;
 class Bar;
 
@@ -56,7 +57,6 @@ class Spaceship : public Entity
         void            updateBoostFuel();
 
         int                     mTypeID;
-        sf::Sprite              mSprite;
         int                     mFireRateLevel;
         int                     mSpreadLevel;
         int                     mMissileAmmo;
@@ -75,6 +75,7 @@ class Spaceship : public Entity
         float                   mBoostFuel;
         Bar*                    mHealthBar;
         Bar*                    mBoostFuelBar;
+        std::unique_ptr<SpriteNode> mSprite;
 };
 
 #endif // SPACESHIP_HPP

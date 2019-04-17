@@ -43,7 +43,11 @@ std::vector<SpaceshipData> initializeSpaceshipData()
 
         spaceshipData.hitpoints      = std::stoi(mainNode.child("hitpoints").text().get());
         spaceshipData.speed          = std::stof(mainNode.child("speed").text().get());
-        spaceshipData.textureID      = std::stoi(mainNode.child("textureID").text().get());
+        spaceshipData.textureID      = mainNode.child("textureID").text().as_int(-1);
+        spaceshipData.animationID    = mainNode.child("animationID").text().as_int(-1);
+
+        if(spaceshipData.textureID < 0 && spaceshipData.animationID < 0)
+            throw std::runtime_error("XMLError: Couldn't find textureID/animationID or value is negative! " + path.second);
 
         // Load movement pattern of enemy
         for(xml_node direction : directionsNode.children())
@@ -74,11 +78,10 @@ std::vector<SpaceshipData> initializeSpaceshipData()
 
 std::vector<SpaceshipTextureData> initializeSpaceshipTextureData()
 {
-    std::vector<SpaceshipTextureData> data(37);
+    std::vector<SpaceshipTextureData> data(28);
 
     data[0].texture = Textures::Spaceships; // Player
     data[0].textureRect = sf::IntRect(40, 0, 40, 40);
-    data[0].hasRollAnimation = true;
     data[0].spriteNumber = 3;
 
     data[1].texture = Textures::Spaceships; // HumanShipGreen1
@@ -126,68 +129,41 @@ std::vector<SpaceshipTextureData> initializeSpaceshipTextureData()
     data[15].texture = Textures::Spaceships; // BiomechDark3
     data[15].textureRect = sf::IntRect(0, 240, 80, 80);
 
-    data[16].texture = Textures::Spaceships; // SaucerSmall
-    data[16].textureRect = sf::IntRect(80, 240, 40, 40);
+    data[16].texture = Textures::Spaceships; // SaucerBig
+    data[16].textureRect = sf::IntRect(200, 240, 80, 80);
 
-    data[17].texture = Textures::Spaceships; // SaucerMedium
-    data[17].textureRect = sf::IntRect(0, 320, 80, 80);
+    data[17].texture = Textures::Spaceships; // Mech1
+    data[17].textureRect = sf::IntRect(120, 0, 40, 40);
 
-    data[18].texture = Textures::Spaceships; // SaucerBig
-    data[18].textureRect = sf::IntRect(200, 240, 80, 80);
+    data[18].texture = Textures::Spaceships; // Mech2
+    data[18].textureRect = sf::IntRect(240, 0, 40, 40);
 
-    data[19].texture = Textures::Spaceships; // Mech1
-    data[19].textureRect = sf::IntRect(120, 0, 40, 40);
+    data[19].texture = Textures::Spaceships; // Mech3
+    data[19].textureRect = sf::IntRect(240, 40, 40, 40);
 
-    data[20].texture = Textures::Spaceships; // Mech2
-    data[20].textureRect = sf::IntRect(240, 0, 40, 40);
+    data[20].texture = Textures::Spaceships; // Mech4
+    data[20].textureRect = sf::IntRect(120, 80, 80, 80);
 
-    data[21].texture = Textures::Spaceships; // Mech3
-    data[21].textureRect = sf::IntRect(240, 40, 40, 40);
+    data[21].texture = Textures::Spaceships; // Mech5
+    data[21].textureRect = sf::IntRect(160, 0, 80, 80);
 
-    data[22].texture = Textures::Spaceships; // Mech4
-    data[22].textureRect = sf::IntRect(120, 80, 80, 80);
+    data[22].texture = Textures::Spaceships; // PurpleShipFast
+    data[22].textureRect = sf::IntRect(440, 0, 80, 80);
 
-    data[23].texture = Textures::Spaceships; // Mech5
-    data[23].textureRect = sf::IntRect(160, 0, 80, 80);
+    data[23].texture = Textures::Spaceships; // PurpleShipOval
+    data[23].textureRect = sf::IntRect(440, 80, 40, 40);
 
-    data[25].texture = Textures::Spaceships; // VoidRed1
-    data[25].textureRect = sf::IntRect(80, 280, 25, 40);
+    data[24].texture = Textures::Spaceships; // PurpleShipLong
+    data[24].textureRect = sf::IntRect(320, 320, 40, 80);
 
-    data[26].texture = Textures::Spaceships; // VoidRed2
-    data[26].textureRect = sf::IntRect(280, 0, 40, 60);
+    data[25].texture = Textures::Spaceships; // PurpleShipWide
+    data[25].textureRect = sf::IntRect(360, 320, 120, 40);
 
-    data[27].texture = Textures::Spaceships; // VoidRed3
-    data[27].textureRect = sf::IntRect(280, 70, 40, 52);
+    data[26].texture = Textures::Spaceships; // PurpleShipOval
+    data[26].textureRect = sf::IntRect(240, 120, 40, 40);
 
-    data[28].texture = Textures::Spaceships; // VoidRed4
-    data[28].textureRect = sf::IntRect(280, 120, 48, 80);
-
-    data[29].texture = Textures::Spaceships; // VoidPurple
-    data[29].textureRect = sf::IntRect(280, 202, 80, 29);
-
-    data[30].texture = Textures::Spaceships; // VoidBlue1
-    data[30].textureRect = sf::IntRect(372, 200, 32, 62);
-
-    data[31].texture = Textures::Spaceships; // VoidBlue2
-    data[31].textureRect = sf::IntRect(372, 263, 32, 54);
-
-    data[32].texture = Textures::Spaceships; // PurpleShipFast
-    data[32].textureRect = sf::IntRect(440, 0, 80, 80);
-
-    data[33].texture = Textures::Spaceships; // PurpleShipOval
-    data[33].textureRect = sf::IntRect(440, 80, 40, 40);
-
-    data[34].texture = Textures::Spaceships; // PurpleShipLong
-    data[34].textureRect = sf::IntRect(320, 320, 40, 80);
-
-    data[35].texture = Textures::Spaceships; // PurpleShipWide
-    data[35].textureRect = sf::IntRect(360, 320, 120, 40);
-
-    data[36].texture = Textures::Spaceships; // PurpleShipOval
-    data[36].textureRect = sf::IntRect(240, 120, 40, 40);
-
-    data[37].texture = Textures::Spaceships; // Boss
-    data[37].textureRect = sf::IntRect(520, 0, 360, 360);
+    data[27].texture = Textures::Spaceships; // Boss
+    data[27].textureRect = sf::IntRect(520, 0, 360, 360);
 
     return data;
 }
@@ -251,13 +227,76 @@ std::vector<ParticleData> initializeParticleData()
 
 std::vector<AnimationData> initializeAnimationData()
 {
-    std::vector<AnimationData> data(AnimationNode::Count);
+    std::vector<AnimationData> data(Animation::Count);
 
-    data[AnimationNode::Explosion].rows = 4;
-    data[AnimationNode::Explosion].framesPerRow = 6;
-    data[AnimationNode::Explosion].frames = 24;
-    data[AnimationNode::Explosion].frameSize = sf::Vector2i(100, 100);
-    data[AnimationNode::Explosion].spriteSheet = Textures::Explosion;
+    data[Animation::Explosion].rows = 4;
+    data[Animation::Explosion].framesPerRow = 6;
+    data[Animation::Explosion].frames = 24;
+    data[Animation::Explosion].frameSize = sf::Vector2i(100, 100);
+    data[Animation::Explosion].spriteSheet = Textures::Explosion;
+
+    data[Animation::VoidPurpleSpaceship].beginning = sf::Vector2i(280, 202);
+    data[Animation::VoidPurpleSpaceship].rows = 4;
+    data[Animation::VoidPurpleSpaceship].framesPerRow = 1;
+    data[Animation::VoidPurpleSpaceship].frames = 4;
+    data[Animation::VoidPurpleSpaceship].frameSize = sf::Vector2i(80, 29);
+    data[Animation::VoidPurpleSpaceship].spriteSheet = Textures::Spaceships;
+
+    data[Animation::VoidBlueSpaceship1].beginning = sf::Vector2i(372, 200);
+    data[Animation::VoidBlueSpaceship1].rows = 1;
+    data[Animation::VoidBlueSpaceship1].framesPerRow = 4;
+    data[Animation::VoidBlueSpaceship1].frames = 4;
+    data[Animation::VoidBlueSpaceship1].frameSize = sf::Vector2i(32, 62);
+    data[Animation::VoidBlueSpaceship1].spriteSheet = Textures::Spaceships;
+
+    data[Animation::VoidBlueSpaceship2].beginning = sf::Vector2i(372, 263);
+    data[Animation::VoidBlueSpaceship2].rows = 1;
+    data[Animation::VoidBlueSpaceship2].framesPerRow = 4;
+    data[Animation::VoidBlueSpaceship2].frames = 4;
+    data[Animation::VoidBlueSpaceship2].frameSize = sf::Vector2i(32, 54);
+    data[Animation::VoidBlueSpaceship2].spriteSheet = Textures::Spaceships;
+
+    data[Animation::VoidRedSpaceship1].beginning = sf::Vector2i(80, 280);
+    data[Animation::VoidRedSpaceship1].rows = 1;
+    data[Animation::VoidRedSpaceship1].framesPerRow = 4;
+    data[Animation::VoidRedSpaceship1].frames = 4;
+    data[Animation::VoidRedSpaceship1].frameSize = sf::Vector2i(25, 40);
+    data[Animation::VoidRedSpaceship1].spriteSheet = Textures::Spaceships;
+
+    data[Animation::VoidRedSpaceship2].beginning = sf::Vector2i(280, 0);
+    data[Animation::VoidRedSpaceship2].rows = 1;
+    data[Animation::VoidRedSpaceship2].framesPerRow = 4;
+    data[Animation::VoidRedSpaceship2].frames = 4;
+    data[Animation::VoidRedSpaceship2].frameSize = sf::Vector2i(40, 60);
+    data[Animation::VoidRedSpaceship2].spriteSheet = Textures::Spaceships;
+
+    data[Animation::VoidRedSpaceship3].beginning = sf::Vector2i(280, 70);
+    data[Animation::VoidRedSpaceship3].rows = 1;
+    data[Animation::VoidRedSpaceship3].framesPerRow = 4;
+    data[Animation::VoidRedSpaceship3].frames = 4;
+    data[Animation::VoidRedSpaceship3].frameSize = sf::Vector2i(40, 52);
+    data[Animation::VoidRedSpaceship3].spriteSheet = Textures::Spaceships;
+
+    data[Animation::VoidRedSpaceship4].beginning = sf::Vector2i(280, 120);
+    data[Animation::VoidRedSpaceship4].rows = 1;
+    data[Animation::VoidRedSpaceship4].framesPerRow = 4;
+    data[Animation::VoidRedSpaceship4].frames = 4;
+    data[Animation::VoidRedSpaceship4].frameSize = sf::Vector2i(48, 80);
+    data[Animation::VoidRedSpaceship4].spriteSheet = Textures::Spaceships;
+
+    data[Animation::SaucerSmallSpaceship].beginning = sf::Vector2i(80, 240);
+    data[Animation::SaucerSmallSpaceship].rows = 1;
+    data[Animation::SaucerSmallSpaceship].framesPerRow = 3;
+    data[Animation::SaucerSmallSpaceship].frames = 3;
+    data[Animation::SaucerSmallSpaceship].frameSize = sf::Vector2i(40, 40);
+    data[Animation::SaucerSmallSpaceship].spriteSheet = Textures::Spaceships;
+
+    data[Animation::SaucerMediumSpaceship].beginning = sf::Vector2i(0, 320);
+    data[Animation::SaucerMediumSpaceship].rows = 1;
+    data[Animation::SaucerMediumSpaceship].framesPerRow = 4;
+    data[Animation::SaucerMediumSpaceship].frames = 4;
+    data[Animation::SaucerMediumSpaceship].frameSize = sf::Vector2i(80, 80);
+    data[Animation::SaucerMediumSpaceship].spriteSheet = Textures::Spaceships;
 
     return data;
 }
@@ -377,12 +416,12 @@ std::unordered_map<int, AttackData> initializeAttackData()
             projectileInfo.speed         = projectile.attribute("speed").as_float();
             projectileInfo.type          = static_cast<Projectile::Type>(projectile.attribute("id").as_int());
             projectileInfo.pattern       = static_cast<AttackPattern::ID>(projectile.attribute("patternID").as_int());
-            projectileInfo.isAimed       = projectile.attribute("aimed").as_bool(); ///Returns def value if null handle check if it's possible to omit unnecessary attributes
+            projectileInfo.isAimed       = projectile.attribute("aimed").as_bool();
 
             switch(projectileInfo.pattern)
             {
                 case AttackPattern::ID::Orbiting:
-                    projectileInfo.patternData.gravityCenterID = projectile.attribute("gravityCenterID").as_int(); ///TEST
+                    projectileInfo.patternData.gravityCenterID = projectile.attribute("gravityCenterID").as_int();
                     break;
 
                 case AttackPattern::ID::Wave:
@@ -419,7 +458,7 @@ std::unordered_map<int, AttackData> initializeAttackData()
             gravityCenterInfo.speed         = gravityCenter.attribute("speed").as_float();
             gravityCenterInfo.id            = gravityCenter.attribute("id").as_int();
             gravityCenterInfo.pattern       = static_cast<AttackPattern::ID>(gravityCenter.attribute("patternID").as_int());
-            gravityCenterInfo.isAimed       = gravityCenter.attribute("aimed").as_bool(); ///Returns def value if null handle check if it's possible to omit unnecessary attributes
+            gravityCenterInfo.isAimed       = gravityCenter.attribute("aimed").as_bool();
 
             switch(gravityCenterInfo.pattern)
             {

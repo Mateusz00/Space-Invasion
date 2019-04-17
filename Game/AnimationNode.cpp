@@ -6,12 +6,11 @@ namespace
     const std::vector<AnimationData> table = initializeAnimationData();
 }
 
-AnimationNode::AnimationNode(Type type, sf::Time interval, const TextureHolder& textures)
-    : mType(type),
-      mAnimation(Animation::Forward),
+AnimationNode::AnimationNode(Animation::ID type, sf::Time interval, const TextureHolder& textures)
+    : SpriteNode(textures.get(table[type].spriteSheet), sf::IntRect(table[type].beginning, table[type].frameSize)),
+      mType(type),
+      mAnimation(AnimationType::Forward),
       mInterval(interval),
-      mSpriteSheet(textures.get(table[mType].spriteSheet)),
-      mSprite(mSpriteSheet, sf::IntRect(table[mType].beginning, table[mType].frameSize)),
       mCurrentFrame(0),
       mIncrement(1),
       mIsRepeating(false),
@@ -25,7 +24,7 @@ void AnimationNode::setRepeating(bool flag)
     mIsRepeating = flag;
 }
 
-void AnimationNode::setAnimationType(Animation animation)
+void AnimationNode::setAnimationType(AnimationType animation)
 {
     mAnimation = animation;
 }
@@ -34,13 +33,13 @@ bool AnimationNode::isMarkedForRemoval() const
 {
     switch(mAnimation)
     {
-        case Animation::Forward:
+        case AnimationType::Forward:
             if(!mIsRepeating && mCurrentFrame >= table[mType].frames)
                 return true;
             else
                 return false;
 
-        case Animation::ForwardAndBackward:
+        case AnimationType::ForwardAndBackward:
             if(!mIsRepeating && mCurrentFrame < 0)
                 return true;
             else
@@ -59,7 +58,7 @@ void AnimationNode::updateCurrent(sf::Time dt, CommandQueue& commandQueue)
         else
             mCurrentFrame = (mCurrentFrame + mIncrement) % table[mType].frames;
 
-        if(mAnimation == Animation::ForwardAndBackward)
+        if(mAnimation == AnimationType::ForwardAndBackward)
         {
             if(mIsRepeating && (mCurrentFrame >= table[mType].frames-1 || mCurrentFrame <= 0))
                 mIncrement = -mIncrement;
@@ -85,5 +84,5 @@ void AnimationNode::drawCurrent(sf::RenderTarget& target, sf::RenderStates state
         mNeedsUpdate = false;
     }
 
-    target.draw(mSprite, states);
+    SpriteNode::drawCurrent(target, states);
 }

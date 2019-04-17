@@ -2,6 +2,7 @@
 #include "Pickup.hpp"
 #include "Bar.hpp"
 #include "../Utility.hpp"
+#include "../SpriteNode.hpp"
 #include "../World.hpp"
 #include "../DataTable.hpp"
 #include "../AnimationNode.hpp"
@@ -21,7 +22,6 @@ Spaceship::Spaceship(int typeID, const TextureHolder& textures, const FontHolder
                     World& world, const std::vector<Spaceship*>& targets, int id)
     : Entity(spaceshipInfo[typeID].hitpoints, true, world),
       mTypeID(typeID),
-      mSprite(textures.get(textureInfo[typeID].texture), textureInfo[typeID].textureRect),
       mFireRateLevel(3),
       mSpreadLevel(1),
       mMissileAmmo(2),
@@ -39,16 +39,32 @@ Spaceship::Spaceship(int typeID, const TextureHolder& textures, const FontHolder
       mBoostFuel(FUEL_MAX),
       mBoostFuelBar(nullptr)
 {
-    centerOrigin(mSprite);
+    // Initialize sprite
+    int textureID = spaceshipInfo[typeID].textureID;
+    int animationID = spaceshipInfo[typeID].animationID;
+    if(textureID >= 0)
+    {
+        mSprite.reset(new SpriteNode(textures.get(textureInfo[textureID].texture), textureInfo[textureID].textureRect));
+    }
+    else
+    {
+        auto id = static_cast<Animation::ID>(animationID);
+        std::unique_ptr<AnimationNode> sprite(new AnimationNode(id, sf::seconds(0.1f), mTextures));
+        sprite->setAnimationType(AnimationNode::AnimationType::ForwardAndBackward);
+        sprite->setRepeating(true);
+        mSprite = std::move(sprite);
+    }
+
+    mSprite->center();
     if(mIsEnemy)
-        mSprite.rotate(180.f);
+        mSprite->rotate(180.f);
 
     // Create HealthBar for spaceship
     float offset = (mIsEnemy) ? -0.7f : 0.7f;
     sf::Vector2f barSize(getLocalBounds().width * 0.7f, 4.f);
 
     std::unique_ptr<Bar> healthBar(new Bar(getHitpoints(), spaceshipInfo[mTypeID].hitpoints, barSize));
-    healthBar->setPosition(0.f, mSprite.getLocalBounds().height * offset);
+    healthBar->setPosition(0.f, getLocalBounds().height * offset);
     healthBar->setColorRange(sf::Color(33, 196, 1), sf::Color(206, 12, 12));
     mHealthBar = healthBar.get();
     attachChild(std::move(healthBar));
@@ -57,7 +73,7 @@ Spaceship::Spaceship(int typeID, const TextureHolder& textures, const FontHolder
     if(!mIsEnemy)
     {
         std::unique_ptr<Bar> fuelBar(new Bar(mBoostFuel, FUEL_MAX, sf::Vector2f(barSize.x, barSize.y - 1.f)));
-        fuelBar->setPosition(0.f, mSprite.getLocalBounds().height * offset + barSize.y);
+        fuelBar->setPosition(0.f, getLocalBounds().height * offset + barSize.y);
         fuelBar->setColorRange(sf::Color(224, 188, 6), sf::Color(224, 188, 6));
         mBoostFuelBar = fuelBar.get();
         attachChild(std::move(fuelBar));
@@ -71,6 +87,7 @@ Spaceship::Spaceship(int typeID, const TextureHolder& textures, const FontHolder
 
 void Spaceship::updateCurrent(sf::Time dt, CommandQueue& commands)
 {
+    mSprite->update(dt, commands);
     updateMovementPatterns(dt);
     updateRollAnimation(dt);
     Entity::updateCurrent(dt, commands);
@@ -88,7 +105,7 @@ void Spaceship::updateCurrent(sf::Time dt, CommandQueue& commands)
 
 void Spaceship::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    target.draw(mSprite, states);
+    target.draw(*mSprite, states);
 }
 
 Category::Type Spaceship::getCategory() const
@@ -170,24 +187,25 @@ float Spaceship::getMaxSpeed() const
 
 sf::FloatRect Spaceship::getLocalBounds() const
 {
-    return mSprite.getLocalBounds();
+    return mSprite->getBoundingRect();
 }
 
 sf::FloatRect Spaceship::getBoundingRect() const
 {
-    return getWorldTransform().transformRect(mSprite.getGlobalBounds());
+    return getWorldTransform().transformRect(mSprite->getBoundingRect());
 }
 
 void Spaceship::updateRollAnimation(sf::Time dt)
 {
+    int textureID = spaceshipInfo[mTypeID].textureID;
     mLastRoll += dt;
 
-    if(textureInfo[mTypeID].hasRollAnimation && mLastRoll.asSeconds() > 0.15f)
+    if(!mIsEnemy && mLastRoll.asSeconds() > 0.15f && textureID >= 0)
     {
-        sf::IntRect currentRect = mSprite.getTextureRect();
-        sf::IntRect defaultRect = textureInfo[mTypeID].textureRect;
+        /*sf::IntRect currentRect = mSprite.getTextureRect();
+        sf::IntRect defaultRect = textureInfo[textureID].textureRect;
 
-        if(getVelocity().x > 0.f && currentRect.left < defaultRect.width * (textureInfo[mTypeID].spriteNumber-1))
+        if(getVelocity().x > 0.f && currentRect.left < defaultRect.width * (textureInfo[textureID].spriteNumber-1))
         {
             currentRect.left += currentRect.width;
             mLastRoll = sf::Time::Zero;
@@ -204,7 +222,7 @@ void Spaceship::updateRollAnimation(sf::Time dt)
             mLastRoll = sf::Time::Zero;
         }
 
-        mSprite.setTextureRect(currentRect);
+        mSprite.setTextureRect(currentRect);*/
     }
 }
 
@@ -280,7 +298,7 @@ void Spaceship::createExplosion() const
 {
     if(mShowExplosion)
     {
-        std::unique_ptr<AnimationNode> explosion(new AnimationNode(AnimationNode::Explosion, sf::seconds(0.06f), mTextures));
+        std::unique_ptr<AnimationNode> explosion(new AnimationNode(Animation::Explosion, sf::seconds(0.06f), mTextures));
         explosion->setPosition(getWorldPosition());
         getWorld().placeOnLayer(std::move(explosion), Category::AirLayer);
         getWorld().getSoundPlayer().play(Sound::Explosion, getWorldPosition());

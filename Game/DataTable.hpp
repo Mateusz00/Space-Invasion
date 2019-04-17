@@ -24,6 +24,7 @@ struct SpaceshipData
     int                             hitpoints;
     float                           speed;
     int                             textureID;
+    int                             animationID;
     std::vector<Direction>          directions;
     std::unordered_map<int, int>    attacks; // attackID, probability
 };
@@ -32,7 +33,6 @@ struct SpaceshipTextureData
 {
     Textures::ID    texture;
     sf::IntRect     textureRect;
-    bool            hasRollAnimation = false;
     int             spriteNumber = 0;
 };
 

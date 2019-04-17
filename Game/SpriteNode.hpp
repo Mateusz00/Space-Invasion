@@ -9,11 +9,13 @@ class SpriteNode : public SceneNode
     public:
         explicit        SpriteNode(const sf::Texture& texture);
                         SpriteNode(const sf::Texture& texture, const sf::IntRect& rect);
+        void            center();
+        sf::FloatRect   getBoundingRect() const override;
 
-    private:
-        virtual void    drawCurrent(sf::RenderTarget&, sf::RenderStates) const override;
+    protected:
+        void            drawCurrent(sf::RenderTarget&, sf::RenderStates) const override;
 
-        sf::Sprite mSprite;
+        mutable sf::Sprite  mSprite;
 };
 
 #endif // SPRITENODE_HPP

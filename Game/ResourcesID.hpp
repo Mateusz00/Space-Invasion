@@ -33,6 +33,24 @@ namespace Textures
     };
 }
 
+namespace Animation
+{
+    enum ID
+    {
+        Explosion,
+        VoidPurpleSpaceship,
+        VoidBlueSpaceship1,
+        VoidBlueSpaceship2,
+        VoidRedSpaceship1,
+        VoidRedSpaceship2,
+        VoidRedSpaceship3,
+        VoidRedSpaceship4,
+        SaucerSmallSpaceship,
+        SaucerMediumSpaceship,
+        Count,
+    };
+}
+
 namespace Fonts
 {
     enum ID
