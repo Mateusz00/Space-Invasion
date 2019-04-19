@@ -84,6 +84,48 @@ namespace Music
     };
 }
 
+namespace Projectiles
+{
+    enum ID
+    {
+        GreenOval1,
+        OrangeOval1,
+        GreenBullet,
+        BlueOval1,
+        RedCircleSmall,
+        RedCircleBig,
+        BlueCircleBig,
+        BlueStarSmall,
+        BlueLaserHead,
+        BlueLaserBody,
+        BlueLaserTail,
+        VioletLaserHead,
+        VioletLaserBody,
+        VioletLaserTail,
+        BigLaserHead,
+        BigLaserBody,
+        BigLaserTail,
+        RedSpin,
+        OrangeSpin,
+        GreenOrb,
+        PinkStar,
+        BlueBullet,
+        OrangeOval2,
+        RedOval,
+        BlueStarBig,
+        EnergyBallSmall,
+        Missile,
+        RedLaserHead,
+        RedLaserBody,
+        RedLaserTail,
+        BlueOval2,
+        GreenOval2,
+        RedBullet,
+        EneryBallBig,
+        Count
+    };
+}
+
 using TextureHolder     = ResourceHolder<sf::Texture, Textures::ID>;
 using FontHolder        = ResourceHolder<sf::Font, Fonts::ID>;
 using SoundBufferHolder = ResourceHolder<sf::SoundBuffer, Sound::ID>;

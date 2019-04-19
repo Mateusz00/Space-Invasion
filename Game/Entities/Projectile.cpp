@@ -10,16 +10,17 @@ namespace
     const std::vector<ProjectileData> table = initializeProjectileData();
 }
 
-Projectile::Projectile(Type type, const TextureHolder& textures, World& world, int shooterID, float speed)
+Projectile::Projectile(Projectiles::ID type, const TextureHolder& textures, World& world, int shooterID, float speed)
     : Entity(1, true, world),
       mType(type),
       mSprite(textures.get(table[type].texture), table[type].textureRect),
       mShooterID(shooterID),
-      mSpeed(speed)
+      mSpeed(speed),
+      mIsEnemy(true)
 {
     centerOrigin(mSprite);
 
-    if(mType == Type::Missile) // Adds emitters for missiles
+    if(mType == Projectiles::Missile) // Adds emitters for missiles
     {
         std::unique_ptr<EmitterNode> smoke(new EmitterNode(Particle::Smoke, getWorld().getParticleNode(), 30.f));
         smoke->setPosition(0.f, mSprite.getLocalBounds().height / 2.f);
@@ -41,9 +42,14 @@ int Projectile::getDamage() const
     return table[mType].damage;
 }
 
+void Projectile::setEnemyFlag(bool flag)
+{
+    mIsEnemy = flag;
+}
+
 Category::Type Projectile::getCategory() const
 {
-    if(mType == EnemyBullet)
+    if(mIsEnemy)
         return Category::EnemyProjectile;
     else
         return Category::AlliedProjectile;

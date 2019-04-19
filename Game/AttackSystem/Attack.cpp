@@ -193,7 +193,7 @@ void Attack::createProjectiles()
 void Attack::createProjectile(int num)
 {
     const auto& projectileInfo = attackData.at(mAttackID).projectiles[num];
-    Projectile::Type type = projectileInfo.type;
+    Projectiles::ID type = projectileInfo.type;
     float speed = projectileInfo.speed;
     std::unique_ptr<Projectile> projectile(new Projectile(type, mTextures, getWorld(), mShooterID, speed));
 
@@ -236,11 +236,13 @@ void Attack::createProjectile(int num)
         }
     }
 
-
     sf::Vector2f velocity(direction * speed);
     projectile->setVelocity(velocity);
     projectile->setDirection(direction);
     projectile->setStartPos(projectile->getPosition());
+
+    if(mIsAllied)
+        projectile->setEnemyFlag(false);
 
     mProjectiles.emplace_back(std::move(projectile));
 }

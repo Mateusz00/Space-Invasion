@@ -89,7 +89,7 @@ struct AttackData
     struct ProjectileInfo
     {
         float                           speed;
-        Projectile::Type                type;
+        Projectiles::ID                 type;
         sf::Vector2f                    offset;
         sf::Vector2f                    direction;
         AttackPattern::ID               pattern;

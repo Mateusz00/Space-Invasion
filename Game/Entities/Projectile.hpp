@@ -9,15 +9,7 @@
 class Projectile : public Entity
 {
     public:
-        enum Type
-        {
-            AlliedBullet,
-            EnemyBullet,
-            Missile,
-            TypeCount
-        };
-
-                                        Projectile(Type, const TextureHolder&, World&, int shooterID, float speed);
+                                        Projectile(Projectiles::ID, const TextureHolder&, World&, int shooterID, float speed);
         float                           getMaxSpeed() const;
         int                             getDamage() const;
         virtual Category::Type          getCategory() const override;
@@ -34,12 +26,13 @@ class Projectile : public Entity
         sf::Vector2f                    getStartPos() const;
         float                           activeTime() const;
         void                            updateTime(sf::Time dt);
+        void                            setEnemyFlag(bool);
 
     private:
         virtual void            updateCurrent(sf::Time, CommandQueue&) override;
         virtual void            drawCurrent(sf::RenderTarget&, sf::RenderStates) const override;
 
-        Type                            mType;
+        Projectiles::ID                 mType;
         sf::Sprite                      mSprite;
         int                             mShooterID;
         AttackPattern::ID               mPattern;
@@ -48,6 +41,7 @@ class Projectile : public Entity
         sf::Vector2f                    mDirection;
         sf::Vector2f                    mStartPos;
         sf::Time                        mTimeActive;
+        bool                            mIsEnemy;
 };
 
 #endif // PROJECTILE_HPP
