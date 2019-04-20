@@ -109,7 +109,8 @@ int Profile::getCurrentLevel() const
     return mCurrentLevel;
 }
 
-int Profile::getLevelScore(int levelID, int playerID) const /// Returns 0 if player didn't complete requested level
+///@return 0 if player didn't complete requested level
+int Profile::getLevelScore(int levelID, int playerID) const
 {
     const auto scoresMap = mCompletedLevelsInfo.find(levelID);
 
@@ -123,8 +124,8 @@ int Profile::getLevelScore(int levelID, int playerID) const /// Returns 0 if pla
 
     return 0;
 }
-
-int Profile::getCumulativeLevelScore(int levelID) const /// Returns 0 if player didn't complete requested level
+///@return 0 if player didn't complete requested level
+int Profile::getCumulativeLevelScore(int levelID) const
 {
     const auto scoresMap = mCompletedLevelsInfo.find(levelID);
     int score = 0;

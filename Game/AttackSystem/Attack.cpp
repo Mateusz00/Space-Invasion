@@ -195,13 +195,20 @@ void Attack::createProjectile(int num)
     const auto& projectileInfo = attackData.at(mAttackID).projectiles[num];
     Projectiles::ID type = projectileInfo.type;
     float speed = projectileInfo.speed;
+    int sign = 1;
     std::unique_ptr<Projectile> projectile(new Projectile(type, mTextures, getWorld(), mShooterID, speed));
+
+    if(isAllied())
+    {
+        projectile->setEnemyFlag(false);
+        sign = -sign;
+    }
 
     projectile->setPattern(projectileInfo.pattern);
     projectile->setPatternData(projectileInfo.patternData);
 
     sf::Vector2f direction;
-    sf::Vector2f offset(projectileInfo.offset);
+    sf::Vector2f offset(projectileInfo.offset.x , projectileInfo.offset.y * sign);
 
     if(projectile->getPattern() == AttackPattern::Orbiting)
     {
@@ -226,7 +233,7 @@ void Attack::createProjectile(int num)
     {
         try
         {
-            direction = unitVector(projectileInfo.direction);
+            direction = unitVector(projectileInfo.direction.x, projectileInfo.direction.y * sign);
         }
         catch(const std::logic_error& err)
         {
@@ -240,9 +247,6 @@ void Attack::createProjectile(int num)
     projectile->setVelocity(velocity);
     projectile->setDirection(direction);
     projectile->setStartPos(projectile->getPosition());
-
-    if(mIsAllied)
-        projectile->setEnemyFlag(false);
 
     mProjectiles.emplace_back(std::move(projectile));
 }
@@ -259,9 +263,10 @@ void Attack::createGravityCenter(int num)
 {
     const auto& gravityCenterData = attackData.at(mAttackID).gravityCenters[num];
     GravityCenter gravityCenter(gravityCenterData.speed, gravityCenterData.pattern, gravityCenterData.patternData);
+    int sign = (isAllied()) ? -1 : 1;
 
     sf::Vector2f direction;
-    sf::Vector2f offset(gravityCenterData.offset);
+    sf::Vector2f offset(gravityCenterData.offset.x, gravityCenterData.offset.y * sign);
 
     if(gravityCenter.getPatternID() == AttackPattern::Orbiting)
         gravityCenter.setPosition(mGravityCenters.at(gravityCenter.getPatternData().gravityCenterID).getPosition() + offset);
@@ -275,7 +280,7 @@ void Attack::createGravityCenter(int num)
     {
         try
         {
-            direction = unitVector(gravityCenterData.direction);
+            direction = unitVector(gravityCenterData.direction.x, gravityCenterData.direction.y * sign);
         }
         catch(const std::logic_error& err)
         {
@@ -290,7 +295,7 @@ void Attack::createGravityCenter(int num)
     gravityCenter.setDirection(direction);
     gravityCenter.setStartPos(gravityCenter.getPosition());
 
-    mGravityCenters.emplace(gravityCenterData.id, std::move(gravityCenter));///
+    mGravityCenters.emplace(gravityCenterData.id, std::move(gravityCenter));
 }
 
 void Attack::activate()
@@ -408,8 +413,8 @@ void Attack::applyDisplacement(int gravityCenterID, sf::Vector2f displacement)
         applyDisplacement(id, displacement);
 }
 
+///@return normalized direction vector
 sf::Vector2f Attack::getClosestTarget(const sf::Transformable* object) const
-/// Returns normalized direction vector
 {
     float smallestDistance = std::numeric_limits<float>::max();
     Spaceship* closestTarget = nullptr;
@@ -417,7 +422,7 @@ sf::Vector2f Attack::getClosestTarget(const sf::Transformable* object) const
     for(const auto& target : mTargets)
     {
         bool isTargetBehind;
-        if(mIsAllied)
+        if(isAllied())
             isTargetBehind = target->getWorldPosition().y < object->getPosition().y; // Avoids projectile/gravityCenter turning back
         else
             isTargetBehind = target->getWorldPosition().y > object->getPosition().y; // Avoids projectile/gravityCenter turning back

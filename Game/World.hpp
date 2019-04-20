@@ -38,7 +38,7 @@ class World
     private:
         void    buildWorld();
         void    adaptPlayersVelocity();
-        void    addSpawnPoint(float x, float y, Spaceship::Type);
+        void    addSpawnPoint(float x, float y, int spaceshipID);
         void    sortSpawnPoints();
         void    spawnEnemies();
         void    guideHomingMissiles();
@@ -61,7 +61,7 @@ class World
         {
             float x;
             float y;
-            Spaceship::Type type; ///Change to int
+            int spaceshipID;
         };
 
         sf::RenderTarget&   mTarget;

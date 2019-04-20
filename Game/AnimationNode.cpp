@@ -16,7 +16,7 @@ AnimationNode::AnimationNode(Animation::ID type, sf::Time interval, const Textur
       mIsRepeating(false),
       mNeedsUpdate(false)
 {
-    centerOrigin(mSprite);
+    SpriteNode::center();
 }
 
 void AnimationNode::setRepeating(bool flag)
@@ -80,7 +80,7 @@ void AnimationNode::drawCurrent(sf::RenderTarget& target, sf::RenderStates state
 
         int left = ((mCurrentFrame % table[mType].framesPerRow) * width)  + table[mType].beginning.x;
         int top  = ((mCurrentFrame / table[mType].framesPerRow) * height) + table[mType].beginning.y;
-        mSprite.setTextureRect(sf::IntRect(left, top, width, height));
+        SpriteNode::setTextureRect(sf::IntRect(left, top, width, height));
         mNeedsUpdate = false;
     }
 

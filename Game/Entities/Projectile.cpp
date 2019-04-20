@@ -143,8 +143,8 @@ sf::Vector2f Projectile::getStartPos() const
     return mStartPos;
 }
 
+///@return seconds that elapsed since creation of this projectile
 float Projectile::activeTime() const
-/// Returns seconds that elapsed since creation of this projectile
 {
     return mTimeActive.asSeconds();
 }

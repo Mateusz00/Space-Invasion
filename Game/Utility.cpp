@@ -28,6 +28,11 @@ sf::Vector2f unitVector(sf::Vector2f distance)
     return distance / vectorLength(distance); // Returns vector of length 1
 }
 
+sf::Vector2f unitVector(float x, float y)
+{
+    unitVector(sf::Vector2f(x, y));
+}
+
 float toRadian(float degree)
 {
     return 3.1415f / 180.f * degree;

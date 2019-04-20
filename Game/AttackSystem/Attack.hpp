@@ -25,7 +25,7 @@ class Attack : public Entity
         virtual void            removeEntity() override;
         virtual bool            isMarkedForRemoval() const override; // AttackManager checks it
         void                    markForRemoval();
-        void                    updateBarrierPosition(sf::Vector2f displacement);///
+        void                    updateBarrierPosition(sf::Vector2f displacement);
         bool                    isAllied() const;
 
     private:

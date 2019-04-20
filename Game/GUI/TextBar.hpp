@@ -17,8 +17,8 @@ class TextBar : public sf::Drawable, public sf::Transformable
                         TextBar(const sf::Font&, const std::string&, unsigned int charSize, bool fadeOverTime=true);
         bool            isActive() const;
         void            setActive(bool);
-        void            setFadeTime(sf::Time); /// Throws logic_error if time is negative
-        void            setFadeCooldown(sf::Time); /// Throws logic_error if time is negative
+        void            setFadeTime(sf::Time);
+        void            setFadeCooldown(sf::Time);
         void            setTextFillColor(sf::Color);
         void            setTextOutlineColor(sf::Color);
         void            setBarFillColor(sf::Color);

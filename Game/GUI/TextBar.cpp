@@ -26,6 +26,7 @@ void TextBar::setActive(bool active)
     mIsActive = active;
 }
 
+///@throw std::logic_error if time is negative.
 void TextBar::setFadeTime(sf::Time time)
 {
     if(time >= sf::Time::Zero)
@@ -34,6 +35,7 @@ void TextBar::setFadeTime(sf::Time time)
         throw std::logic_error("Time can't be negative! (TextBar)");
 }
 
+///@throw std::logic_error if time is negative.
 void TextBar::setFadeCooldown(sf::Time time)
 {
     if(time >= sf::Time::Zero)

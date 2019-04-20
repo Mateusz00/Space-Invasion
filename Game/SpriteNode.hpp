@@ -11,10 +11,13 @@ class SpriteNode : public SceneNode
                         SpriteNode(const sf::Texture& texture, const sf::IntRect& rect);
         void            center();
         sf::FloatRect   getBoundingRect() const override;
+        sf::IntRect     getTextureRect() const;
+        void            setTextureRect(const sf::IntRect&) const;
 
     protected:
         void            drawCurrent(sf::RenderTarget&, sf::RenderStates) const override;
 
+    private:
         mutable sf::Sprite  mSprite;
 };
 

@@ -155,7 +155,7 @@ void Spaceship::setIdentifier(int id)
 
 void Spaceship::fire()
 {
-    if(mAttackManager.tryAttack(mSpreadLevel+1, getWorld().getCommandQueue()))
+    if(mAttackManager.tryAttack(mSpreadLevel-1, getWorld().getCommandQueue()))
         mAttackManager.forceCooldown(mAttackManager.getCooldown() / static_cast<float>(mFireRateLevel));
 }
 
@@ -202,7 +202,7 @@ void Spaceship::updateRollAnimation(sf::Time dt)
 
     if(!mIsEnemy && mLastRoll.asSeconds() > 0.15f && textureID >= 0)
     {
-        /*sf::IntRect currentRect = mSprite.getTextureRect();
+        sf::IntRect currentRect = mSprite->getTextureRect();
         sf::IntRect defaultRect = textureInfo[textureID].textureRect;
 
         if(getVelocity().x > 0.f && currentRect.left < defaultRect.width * (textureInfo[textureID].spriteNumber-1))
@@ -222,7 +222,7 @@ void Spaceship::updateRollAnimation(sf::Time dt)
             mLastRoll = sf::Time::Zero;
         }
 
-        mSprite.setTextureRect(currentRect);*/
+        mSprite->setTextureRect(currentRect);
     }
 }
 

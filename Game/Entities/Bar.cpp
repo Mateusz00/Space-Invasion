@@ -52,8 +52,8 @@ void Bar::updateValue(float val)
     mCurrentValue = val;
 }
 
-///\param minColor - color of bar when current value is minimum
-///\param maxColor - color of bar when current value is maximum
+///@param minColor - color of bar when current value is minimum
+///@param maxColor - color of bar when current value is maximum
 void Bar::setColorRange(sf::Color maxColor, sf::Color minColor)
 {
     mColorRange[0] = static_cast<int>(maxColor.r) - static_cast<int>(minColor.r);

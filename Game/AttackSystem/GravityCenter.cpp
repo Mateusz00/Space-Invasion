@@ -52,8 +52,8 @@ void GravityCenter::setDirection(sf::Vector2f dir)
     mDirection = dir;
 }
 
+///@return initial direction of projectile
 sf::Vector2f GravityCenter::getDirection() const
-/// Returns initial direction of projectile
 {
     return mDirection;
 }
@@ -68,8 +68,8 @@ sf::Vector2f GravityCenter::getStartPos() const
     return mStartPos;
 }
 
+///@return seconds that elapsed since creation of this gravityCenter
 float GravityCenter::activeTime() const
-/// Returns seconds that elapsed since creation of this gravityCenter
 {
     return mTimeActive.asSeconds();
 }

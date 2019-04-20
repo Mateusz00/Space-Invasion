@@ -16,7 +16,7 @@ class Bar;
 class Spaceship : public Entity
 {
     public:
-        enum Type{Ally, Enemy, TypeCount};
+        using SpriteNodePtr = std::unique_ptr<SpriteNode>;
 
                                 Spaceship(int, const TextureHolder&, const FontHolder&, World&,
                                           const std::vector<Spaceship*>& targets, int id = 99999);
@@ -75,7 +75,7 @@ class Spaceship : public Entity
         float                   mBoostFuel;
         Bar*                    mHealthBar;
         Bar*                    mBoostFuelBar;
-        std::unique_ptr<SpriteNode> mSprite;
+        SpriteNodePtr           mSprite;
 };
 
 #endif // SPACESHIP_HPP

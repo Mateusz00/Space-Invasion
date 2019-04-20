@@ -126,7 +126,7 @@ std::unordered_map<int, int>& World::getPlayersScoresMap()
 
 Spaceship* World::addSpaceship(int id)
 {
-    std::unique_ptr<Spaceship> playerSpaceship(new Spaceship(Spaceship::Ally, mTextures, mFonts, *this, mEnemies, id));
+    std::unique_ptr<Spaceship> playerSpaceship(new Spaceship(0, mTextures, mFonts, *this, mEnemies, id));
     playerSpaceship->setPosition(mPlayerSpawnPosition.x - 50.f + 100.f*(id%2), mPlayerSpawnPosition.y);
     playerSpaceship->setIdentifier(id);
     mPlayerSpaceships.emplace_back(playerSpaceship.get());
@@ -203,16 +203,10 @@ void World::loadLevelData()
     {
         float x = spawnPoint.attribute("x").as_float();
         float y = spawnPoint.attribute("y").as_float();
-        int id = spawnPoint.attribute("enemyID").as_int();
-        Spaceship::Type enemyID; ///Ch
-        if(id > Spaceship::TypeCount || id < 0)///
-            throw std::runtime_error("Wrong enemyID in: " + filename);///
-        else///
-            enemyID = static_cast<Spaceship::Type>(id);///
+        int id = spawnPoint.attribute("enemyID").as_int(1);
 
-        addSpawnPoint(x, y, enemyID);
+        addSpawnPoint(x, y, id);
     }
-
     sortSpawnPoints();
 
     // Load data about level length etc.
@@ -234,9 +228,9 @@ void World::loadLevelData()
     mPlayerSpawnPosition = sf::Vector2f(mView.getSize().x / 2, mWorldBounds.height - mView.getSize().y / 2.f);
 }
 
-void World::addSpawnPoint(float x, float y, Spaceship::Type type)
+void World::addSpawnPoint(float x, float y, int spaceshipID)
 {
-    SpawnPoint spawnPoint{x, y, type};
+    SpawnPoint spawnPoint{x, y, spaceshipID};
     mSpawnPoints.push_back(std::move(spawnPoint));
 }
 
@@ -268,7 +262,7 @@ void World::spawnEnemies()
     {
         SpawnPoint spawn = mSpawnPoints.back();
 
-        std::unique_ptr<Spaceship> enemySpaceship(new Spaceship(spawn.type, mTextures, mFonts, *this, mPlayerSpaceships));
+        std::unique_ptr<Spaceship> enemySpaceship(new Spaceship(spawn.spaceshipID, mTextures, mFonts, *this, mPlayerSpaceships));
         enemySpaceship->setPosition(spawn.x, spawn.y);
         mSceneLayers[UpperAir]->attachChild(std::move(enemySpaceship));
 

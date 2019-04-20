@@ -30,6 +30,7 @@ sf::Keyboard::Key   toKey(const std::string&);
 int                 randomInt(int minNumber, int maxNumberIncluded);
 float               vectorLength(sf::Vector2f position);
 sf::Vector2f        unitVector(sf::Vector2f distance);
+sf::Vector2f        unitVector(float x, float y);
 float               toRadian(float degree);
 float               toDegree(float rad);
 

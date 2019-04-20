@@ -25,3 +25,13 @@ sf::FloatRect SpriteNode::getBoundingRect() const
 {
     return getWorldTransform().transformRect(mSprite.getGlobalBounds());
 }
+
+sf::IntRect SpriteNode::getTextureRect() const
+{
+    return mSprite.getTextureRect();
+}
+
+void SpriteNode::setTextureRect(const sf::IntRect& rect) const
+{
+    mSprite.setTextureRect(rect);
+}

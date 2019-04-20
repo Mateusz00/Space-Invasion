@@ -41,13 +41,13 @@ std::vector<SpaceshipData> initializeSpaceshipData()
         xml_node directionsNode     = mainNode.child("directions");
         xml_node attacksNode        = mainNode.child("attacks");
 
-        spaceshipData.hitpoints      = std::stoi(mainNode.child("hitpoints").text().get());
-        spaceshipData.speed          = std::stof(mainNode.child("speed").text().get());
+        spaceshipData.hitpoints      = mainNode.child("hitpoints").text().as_int();
+        spaceshipData.speed          = mainNode.child("speed").text().as_float();
         spaceshipData.textureID      = mainNode.child("textureID").text().as_int(-1);
         spaceshipData.animationID    = mainNode.child("animationID").text().as_int(-1);
 
         if(spaceshipData.textureID < 0 && spaceshipData.animationID < 0)
-            throw std::runtime_error("XMLError: Couldn't find textureID/animationID or value is negative! " + path.second);
+            throw std::runtime_error("XMLError: Couldn't find textureID/animationID or values are negative! " + path.second);
 
         // Load movement pattern of enemy
         for(xml_node direction : directionsNode.children())
@@ -514,8 +514,8 @@ std::unordered_map<int, AttackData> initializeAttackData()
         xml_node projectiles        = mainNode.child("projectiles");
         xml_node gravityCenters     = mainNode.child("gravityCenters");
 
-        attackData.chargingTime     = sf::seconds(std::stof(mainNode.child("chargetime").text().get()));
-        attackData.cooldown         = sf::seconds(std::stof(mainNode.child("cooldown").text().get()));
+        attackData.chargingTime     = sf::seconds(mainNode.child("chargetime").text().as_float());
+        attackData.cooldown         = sf::seconds(mainNode.child("cooldown").text().as_float());
         attackData.repeatCooldown   = sf::seconds(repeatNode.attribute("cooldown").as_float());
         attackData.repeats          = repeatNode.attribute("times").as_int();
 
