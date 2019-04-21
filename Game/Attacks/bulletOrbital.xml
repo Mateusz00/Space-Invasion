@@ -4,17 +4,19 @@
     <repeat cooldown="0" times="0"></repeat>
     <cooldown>4</cooldown>
 
-    <projectiles>
-        <projectile id="2" speed="100" aimed="no" offsets="0 30" patternID="0" direction="0 30"></projectile>
-        <projectile id="2" speed="20" aimed="no" offsets="0 30" patternID="3" direction="0 30" gravityCenterID="1"></projectile>
-        <projectile id="2" speed="20" aimed="no" offsets="0 30" patternID="3" direction="0 30" gravityCenterID="1"></projectile>
-        <projectile id="2" speed="20" aimed="no" offsets="0 30" patternID="3" direction="0 30" gravityCenterID="1"></projectile>
-        <projectile id="2" speed="20" aimed="no" offsets="0 30" patternID="3" direction="0 30" gravityCenterID="1"></projectile>
-        <projectile id="2" speed="20" aimed="no" offsets="0 30" patternID="3" direction="0 30" gravityCenterID="1"></projectile>
-    </projectiles>
+    <attackPhase>
+        <projectiles>
+            <projectile id="2" speed="100" aimed="no" offsets="0 30" patternID="0" direction="0 30"></projectile>
+            <projectile id="2" speed="20" aimed="no" offsets="0 30" patternID="3" direction="0 30" gravityCenterID="1"></projectile>
+            <projectile id="2" speed="20" aimed="no" offsets="0 30" patternID="3" direction="0 30" gravityCenterID="1"></projectile>
+            <projectile id="2" speed="20" aimed="no" offsets="0 30" patternID="3" direction="0 30" gravityCenterID="1"></projectile>
+            <projectile id="2" speed="20" aimed="no" offsets="0 30" patternID="3" direction="0 30" gravityCenterID="1"></projectile>
+            <projectile id="2" speed="20" aimed="no" offsets="0 30" patternID="3" direction="0 30" gravityCenterID="1"></projectile>
+        </projectiles>
 
-    <gravityCenters>
-        <center id="0" speed="70" aimed="no" offsets="0 30" patternID="0" direction="10 30"></center>
-        <center id="1" speed="20" aimed="no" offsets="0 30" patternID="3" direction="0 30" gravityCenterID="0"></center>
-    </gravityCenters>
+        <gravityCenters>
+            <center id="0" speed="70" aimed="no" offsets="0 30" patternID="0" direction="10 30"></center>
+            <center id="1" speed="20" aimed="no" offsets="0 30" patternID="3" direction="0 30" gravityCenterID="0"></center>
+        </gravityCenters>
+    </attackPhase>
 </attack>

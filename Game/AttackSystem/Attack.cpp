@@ -11,7 +11,7 @@
 using Attacks::attackData;
 
 Attack::Attack(int id, const TextureHolder& textures, sf::Vector2f pos, World& world, int shooterID,
-                bool isAllied, const std::vector<Spaceship*>& targets)
+                bool isAllied, const std::vector<Spaceship*>& targets, int phase)
     : Entity(1, false, world),
       mTargets(targets),
       mAttackID(id),
@@ -19,12 +19,11 @@ Attack::Attack(int id, const TextureHolder& textures, sf::Vector2f pos, World& w
       mIsActive(true),
       mIsReadyToDelete(false),
       mIsAllied(isAllied),
-      mWasCreated(false),
       mPosition(pos),
       mShooterID(shooterID)
 {
-    createGravityCenters();
-    createProjectiles();
+    createGravityCenters(phase);
+    createProjectiles(phase);
 }
 
 void Attack::updateCurrent(sf::Time dt, CommandQueue& commandQueue)
@@ -182,17 +181,17 @@ void Attack::updateCurrent(sf::Time dt, CommandQueue& commandQueue)
         projectile->update(dt, commandQueue);
 }
 
-void Attack::createProjectiles()
+void Attack::createProjectiles(int phase)
 {
-    const auto projectileNumber = attackData.at(mAttackID).projectiles.size();
+    const auto projectileNumber = attackData.at(mAttackID).phases[phase].projectiles.size();
 
     for(int i=0; i < projectileNumber; ++i)
-        createProjectile(i);
+        createProjectile(phase, i);
 }
 
-void Attack::createProjectile(int num)
+void Attack::createProjectile(int phase, int projectileNum)
 {
-    const auto& projectileInfo = attackData.at(mAttackID).projectiles[num];
+    const auto& projectileInfo = attackData.at(mAttackID).phases[phase].projectiles[projectileNum];
     Projectiles::ID type = projectileInfo.type;
     float speed = projectileInfo.speed;
     int sign = 1;
@@ -219,7 +218,7 @@ void Attack::createProjectile(int num)
         catch(const std::out_of_range& oor)
         {
             std::cout << "Could not find gravityCenter(id=" << projectileInfo.patternData.gravityCenterID
-                      << ") in (AttackID=" << mAttackID << ", projectileNumber=" << num << ")" << std::endl;
+                      << ") in (AttackID=" << mAttackID << ", projectileNumber=" << projectileNum << ")" << std::endl;
             throw oor;
         }
     }
@@ -238,7 +237,7 @@ void Attack::createProjectile(int num)
         catch(const std::logic_error& err)
         {
             std::cout << "Error: Length of direction vector is 0!(AttackID=" << mAttackID
-                      << ", projectile=" << num << ")" << std::endl;
+                      << ", projectile=" << projectileNum << ")" << std::endl;
             throw err;
         }
     }
@@ -251,17 +250,17 @@ void Attack::createProjectile(int num)
     mProjectiles.emplace_back(std::move(projectile));
 }
 
-void Attack::createGravityCenters()
+void Attack::createGravityCenters(int phase)
 {
-    const auto gravityCentersNumber = attackData.at(mAttackID).gravityCenters.size();
+    const auto gravityCentersNumber = attackData.at(mAttackID).phases[phase].gravityCenters.size();
 
     for(int i=0; i < gravityCentersNumber; ++i)
-        createGravityCenter(i);
+        createGravityCenter(phase, i);
 }
 
-void Attack::createGravityCenter(int num)
+void Attack::createGravityCenter(int phase, int centerNum)
 {
-    const auto& gravityCenterData = attackData.at(mAttackID).gravityCenters[num];
+    const auto& gravityCenterData = attackData.at(mAttackID).phases[phase].gravityCenters[centerNum];
     GravityCenter gravityCenter(gravityCenterData.speed, gravityCenterData.pattern, gravityCenterData.patternData);
     int sign = (isAllied()) ? -1 : 1;
 
@@ -285,7 +284,7 @@ void Attack::createGravityCenter(int num)
         catch(const std::logic_error& err)
         {
             std::cout << "Error: Length of direction vector is 0!(AttackID=" << mAttackID
-                      << ", projectile=" << num << ")" << std::endl;
+                      << ", projectile=" << centerNum << ")" << std::endl;
             throw err;
         }
     }

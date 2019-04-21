@@ -3,8 +3,11 @@
     <chargetime>0</chargetime>
     <repeat cooldown="0" times="0"></repeat>
     <cooldown>1.8</cooldown>
-    <projectiles>
-        <projectile id="2" speed="120" aimed="no" offsets="2 2" patternID="2" direction="2 2" amplitude="50" waveLength="100"></projectile>
-        <projectile id="2" speed="120" aimed="no" offsets="0 30" patternID="2" direction="0 30" amplitude="50" waveLength="100"></projectile>
-    </projectiles>
+
+    <attackPhase>
+        <projectiles>
+            <projectile id="2" speed="120" aimed="no" offsets="2 2" patternID="2" direction="2 2" amplitude="50" waveLength="100"></projectile>
+            <projectile id="2" speed="120" aimed="no" offsets="0 30" patternID="2" direction="0 30" amplitude="50" waveLength="100"></projectile>
+        </projectiles>
+    </attackPhase>
 </attack>

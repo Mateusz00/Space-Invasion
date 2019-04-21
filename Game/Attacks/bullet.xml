@@ -3,7 +3,11 @@
     <chargetime>0</chargetime>
     <repeat cooldown="0" times="0"></repeat>
     <cooldown>2</cooldown>
-    <projectiles>
-        <projectile id="1" speed="140" aimed="no" offsets="0 30" patternID="0" direction="0 30"></projectile>
-    </projectiles>
+
+    <attackPhase>
+        <projectiles>
+            <projectile id="1" speed="140" aimed="no" offsets="0 30" patternID="0" direction="0 30"></projectile>
+        </projectiles>
+    </attackPhase>
+
 </attack>

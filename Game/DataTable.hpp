@@ -106,14 +106,19 @@ struct AttackData
         AttackPattern::PatternData      patternData;
         bool                            isAimed;
     };
+    struct AttackPhase
+    {
+        std::vector<ProjectileInfo>         projectiles;
+        std::vector<GravityCenterInfo>      gravityCenters;
+        sf::Time                            phaseCooldown;
+        int                                 linkedAttackID;
+    };
 
     sf::Time                            chargingTime;
-    bool                                attackInPlayerDirection;
     int                                 repeats;
     sf::Time                            repeatCooldown;
     sf::Time                            cooldown;
-    std::vector<ProjectileInfo>         projectiles;
-    std::vector<GravityCenterInfo>      gravityCenters;
+    std::vector<AttackPhase>            phases;
 };
 
 std::vector<SpaceshipData>              initializeSpaceshipData();

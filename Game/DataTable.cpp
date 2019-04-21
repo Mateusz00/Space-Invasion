@@ -511,102 +511,114 @@ std::unordered_map<int, AttackData> initializeAttackData()
 
         xml_node mainNode           = attackDoc.child("attack");
         xml_node repeatNode         = mainNode.child("repeat");
-        xml_node projectiles        = mainNode.child("projectiles");
-        xml_node gravityCenters     = mainNode.child("gravityCenters");
 
         attackData.chargingTime     = sf::seconds(mainNode.child("chargetime").text().as_float());
         attackData.cooldown         = sf::seconds(mainNode.child("cooldown").text().as_float());
         attackData.repeatCooldown   = sf::seconds(repeatNode.attribute("cooldown").as_float());
         attackData.repeats          = repeatNode.attribute("times").as_int();
 
-        // Load info about each projectile of an attack
-        for(xml_node projectile : projectiles.children())
+        for(xml_node phase = mainNode.child("attackPhase"); phase; phase = phase.next_sibling("attackPhase"))
         {
-            AttackData::ProjectileInfo projectileInfo;
+            AttackData::AttackPhase attackPhaseData;
 
-            std::string offsetStr(projectile.attribute("offsets").as_string("0 0"));
-            std::string directionStr(projectile.attribute("direction").as_string("0 0"));
-            std::string::size_type index;
+            attackPhaseData.phaseCooldown = sf::seconds(phase.attribute("phaseCooldown").as_float());
+            attackPhaseData.linkedAttackID = phase.attribute("phaseCooldown").as_int(-1);
 
-            if(offsetStr.empty())
-                offsetStr = "0 0";
-            if(directionStr.empty())
-                directionStr = "0 0";
-
-            projectileInfo.offset.x      = std::stof(offsetStr, &index);
-            projectileInfo.offset.y      = std::stof(offsetStr.substr(index));
-            projectileInfo.direction.x   = std::stof(directionStr, &index);
-            projectileInfo.direction.y   = std::stof(directionStr.substr(index));
-            projectileInfo.speed         = projectile.attribute("speed").as_float();
-            projectileInfo.type          = static_cast<Projectiles::ID>(projectile.attribute("id").as_int());
-            projectileInfo.pattern       = static_cast<AttackPattern::ID>(projectile.attribute("patternID").as_int());
-            projectileInfo.isAimed       = projectile.attribute("aimed").as_bool();
-
-            switch(projectileInfo.pattern)
+            // If attack phase is linked to already existing attack then ignore other attack phase data
+            if(attackPhaseData.linkedAttackID < 0)
             {
-                case AttackPattern::ID::Orbiting:
-                    projectileInfo.patternData.gravityCenterID = projectile.attribute("gravityCenterID").as_int();
-                    break;
+                xml_node projectiles        = phase.child("projectiles");
+                xml_node gravityCenters     = phase.child("gravityCenters");
 
-                case AttackPattern::ID::Wave:
-                    projectileInfo.patternData.waveData[0] = projectile.attribute("amplitude").as_float();
-                    projectileInfo.patternData.waveData[1] = projectile.attribute("waveLength").as_float();
+                // Load info about each projectile of an attack
+                for(xml_node projectile : projectiles.children())
+                {
+                    AttackData::ProjectileInfo projectileInfo;
 
-                    if(projectileInfo.offset.x > projectileInfo.patternData.waveData[0])
-                        throw std::logic_error("Error(attackID=" + toString(path.first) +
-                                               "): Offset.x is higher than amplitude!");
-                    break;
+                    std::string offsetStr(projectile.attribute("offsets").as_string("0 0"));
+                    std::string directionStr(projectile.attribute("direction").as_string("0 0"));
+                    std::string::size_type index;
+
+                    if(offsetStr.empty())
+                        offsetStr = "0 0";
+                    if(directionStr.empty())
+                        directionStr = "0 0";
+
+                    projectileInfo.offset.x      = std::stof(offsetStr, &index);
+                    projectileInfo.offset.y      = std::stof(offsetStr.substr(index));
+                    projectileInfo.direction.x   = std::stof(directionStr, &index);
+                    projectileInfo.direction.y   = std::stof(directionStr.substr(index));
+                    projectileInfo.speed         = projectile.attribute("speed").as_float();
+                    projectileInfo.type          = static_cast<Projectiles::ID>(projectile.attribute("id").as_int());
+                    projectileInfo.pattern       = static_cast<AttackPattern::ID>(projectile.attribute("patternID").as_int());
+                    projectileInfo.isAimed       = projectile.attribute("aimed").as_bool();
+
+                    switch(projectileInfo.pattern)
+                    {
+                        case AttackPattern::ID::Orbiting:
+                            projectileInfo.patternData.gravityCenterID = projectile.attribute("gravityCenterID").as_int();
+                            break;
+
+                        case AttackPattern::ID::Wave:
+                            projectileInfo.patternData.waveData[0] = projectile.attribute("amplitude").as_float();
+                            projectileInfo.patternData.waveData[1] = projectile.attribute("waveLength").as_float();
+
+                            if(projectileInfo.offset.x > projectileInfo.patternData.waveData[0])
+                                throw std::logic_error("Error(attackID=" + toString(path.first) +
+                                                       "): Offset.x is higher than amplitude!");
+                            break;
+                    }
+
+                    attackPhaseData.projectiles.push_back(std::move(projectileInfo));
+                }
+
+                // Load gravityCenters
+                for(xml_node gravityCenter : gravityCenters.children())
+                {
+                    AttackData::GravityCenterInfo gravityCenterInfo;
+
+                    std::string offsetStr(gravityCenter.attribute("offsets").as_string("0 0"));
+                    std::string directionStr(gravityCenter.attribute("direction").as_string("0 0"));
+                    std::string::size_type index;
+
+                    if(offsetStr.empty())
+                        offsetStr = "0 0";
+                    if(directionStr.empty())
+                        directionStr = "0 0";
+
+                    gravityCenterInfo.offset.x      = std::stof(offsetStr, &index);
+                    gravityCenterInfo.offset.y      = std::stof(offsetStr.substr(index));
+                    gravityCenterInfo.direction.x   = std::stof(directionStr, &index);
+                    gravityCenterInfo.direction.y   = std::stof(directionStr.substr(index));
+                    gravityCenterInfo.speed         = gravityCenter.attribute("speed").as_float();
+                    gravityCenterInfo.id            = gravityCenter.attribute("id").as_int();
+                    gravityCenterInfo.pattern       = static_cast<AttackPattern::ID>(gravityCenter.attribute("patternID").as_int());
+                    gravityCenterInfo.isAimed       = gravityCenter.attribute("aimed").as_bool();
+
+                    switch(gravityCenterInfo.pattern)
+                    {
+                        case AttackPattern::Orbiting:
+                            gravityCenterInfo.patternData.gravityCenterID = gravityCenter.attribute("gravityCenterID").as_int();
+
+                            if(gravityCenterInfo.id <= gravityCenterInfo.patternData.gravityCenterID)
+                                throw std::logic_error("Wrong gravityCenter id(" + toString(gravityCenterInfo.id) +
+                                                       ")in XML file (attackID=" + toString(path.first) + ")");
+                            break;
+
+                        case AttackPattern::Wave:
+                            gravityCenterInfo.patternData.waveData[0] = gravityCenter.attribute("amplitude").as_float();
+                            gravityCenterInfo.patternData.waveData[1] = gravityCenter.attribute("waveLength").as_float();
+
+                            if(gravityCenterInfo.offset.x > gravityCenterInfo.patternData.waveData[0])
+                                throw std::logic_error("Error(gravityID=" + toString(gravityCenterInfo.id) + ", attackID="
+                                                        + toString(path.first) + "): Offset.x is higher than amplitude!");
+                            break;
+                    }
+                    attackPhaseData.gravityCenters.push_back(std::move(gravityCenterInfo));
+                }
             }
-
-            attackData.projectiles.push_back(std::move(projectileInfo));
+            attackData.phases.push_back(attackPhaseData);
         }
-
-        // Load gravityCenters
-        for(xml_node gravityCenter : gravityCenters.children())
-        {
-            AttackData::GravityCenterInfo gravityCenterInfo;
-
-            std::string offsetStr(gravityCenter.attribute("offsets").as_string("0 0"));
-            std::string directionStr(gravityCenter.attribute("direction").as_string("0 0"));
-            std::string::size_type index;
-
-            if(offsetStr.empty())
-                offsetStr = "0 0";
-            if(directionStr.empty())
-                directionStr = "0 0";
-
-            gravityCenterInfo.offset.x      = std::stof(offsetStr, &index);
-            gravityCenterInfo.offset.y      = std::stof(offsetStr.substr(index));
-            gravityCenterInfo.direction.x   = std::stof(directionStr, &index);
-            gravityCenterInfo.direction.y   = std::stof(directionStr.substr(index));
-            gravityCenterInfo.speed         = gravityCenter.attribute("speed").as_float();
-            gravityCenterInfo.id            = gravityCenter.attribute("id").as_int();
-            gravityCenterInfo.pattern       = static_cast<AttackPattern::ID>(gravityCenter.attribute("patternID").as_int());
-            gravityCenterInfo.isAimed       = gravityCenter.attribute("aimed").as_bool();
-
-            switch(gravityCenterInfo.pattern)
-            {
-                case AttackPattern::Orbiting:
-                    gravityCenterInfo.patternData.gravityCenterID = gravityCenter.attribute("gravityCenterID").as_int();
-
-                    if(gravityCenterInfo.id <= gravityCenterInfo.patternData.gravityCenterID)
-                        throw std::logic_error("Wrong gravityCenter id(" + toString(gravityCenterInfo.id) +
-                                               ")in XML file (attackID=" + toString(path.first) + ")");
-                    break;
-
-                case AttackPattern::Wave:
-                    gravityCenterInfo.patternData.waveData[0] = gravityCenter.attribute("amplitude").as_float();
-                    gravityCenterInfo.patternData.waveData[1] = gravityCenter.attribute("waveLength").as_float();
-
-                    if(gravityCenterInfo.offset.x > gravityCenterInfo.patternData.waveData[0])
-                        throw std::logic_error("Error(gravityID=" + toString(gravityCenterInfo.id) + ", attackID="
-                                                + toString(path.first) + "): Offset.x is higher than amplitude!");
-                    break;
-            }
-
-            attackData.gravityCenters.push_back(std::move(gravityCenterInfo));
-        }
-
         data.emplace(path.first, std::move(attackData));
     }
 

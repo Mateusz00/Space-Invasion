@@ -17,7 +17,7 @@ class Attack : public Entity
 {
     public:
                                 Attack(int id, const TextureHolder&, sf::Vector2f pos, World&, int shooterID,
-                                        bool isAllied, const std::vector<Spaceship*>& targets);
+                                        bool isAllied, const std::vector<Spaceship*>& targets, int phase = 0);
         void                    updateCurrent(sf::Time, CommandQueue&);
         bool                    isActive() const;
         virtual Category::Type  getCategory() const override;
@@ -32,10 +32,10 @@ class Attack : public Entity
         virtual void            drawCurrent(sf::RenderTarget&, sf::RenderStates) const override;
         void                    activate();
         void                    deactivate();
-        void                    createProjectiles();
-        void                    createProjectile(int num);
-        void                    createGravityCenters();
-        void                    createGravityCenter(int num);
+        void                    createProjectiles(int phase);
+        void                    createProjectile(int phase, int projectileNum);
+        void                    createGravityCenters(int phase);
+        void                    createGravityCenter(int phase, int centerNum);
         void                    applyDisplacement(int gravityCenterID, sf::Vector2f);
         sf::Vector2f            getClosestTarget(const sf::Transformable*) const;
 
@@ -47,7 +47,6 @@ class Attack : public Entity
         bool                                        mIsActive;
         bool                                        mIsReadyToDelete;
         bool                                        mIsAllied;
-        bool                                        mWasCreated;
         sf::Vector2f                                mPosition;
         int                                         mShooterID;
 };
