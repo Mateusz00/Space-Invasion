@@ -23,24 +23,34 @@ void AttackManager::pushAttack(int id, int probability)
     mAttacks.emplace_back(id, probability);
 }
 
-void AttackManager::useAttack(int id, CommandQueue& commands, bool applyCooldown)
+void AttackManager::useAttack(int id, CommandQueue& commands, int phase, bool applyCooldown)
 {
     if(id == -1)
         return;
 
+    auto& attack = Attacks::attackData.at(id);
+
+    if(attack.phaseQueue.size() > 1)
+        mPhaseManagers.emplace_back(PhaseManager{attack.phases[0].phaseCooldown, &attack.phaseQueue, 1});
+
+    launchAttack(id, commands, phase);
+
+    if(applyCooldown)
+        mCooldown += attack.cooldown;
+}
+
+void AttackManager::launchAttack(int id, CommandQueue& commands, int phase)
+{
     Command launchAttack;
     launchAttack.mCategories.push_back(Category::AirLayer);
-    launchAttack.mAction = [this, id](SceneNode& layer, sf::Time)
+    launchAttack.mAction = [this, id, phase](SceneNode& layer, sf::Time)
     {
-        std::unique_ptr<Attack> attack(new Attack(id, mTextures, mPosition, mWorld, mShooterID, mIsAllied, mTargets));
+        std::unique_ptr<Attack> attack(new Attack(id, mTextures, mPosition, mWorld, mShooterID, mIsAllied, mTargets, phase));
         mCurrentAttacks.emplace_back(attack.get());
         layer.attachChild(std::move(attack));
     };
 
     commands.push(launchAttack);
-
-    if(applyCooldown)
-        mCooldown += Attacks::attackData.at(id).cooldown;
 }
 
 void AttackManager::forceAttack(int id, CommandQueue& commands, bool applyCooldown)
@@ -80,6 +90,9 @@ void AttackManager::update(sf::Time dt, CommandQueue& commandQueue)
     for(std::pair<const int, sf::Time>& attack : mChargingAttacks)
         attack.second = std::max(attack.second - dt, sf::Time::Zero);
 
+    for(PhaseManager& manager : mPhaseManagers)
+        manager.cooldown = std::max(manager.cooldown - dt, sf::Time::Zero);
+
     // Get new attack if possible
     if(mCooldown <= sf::Time::Zero && !mIsAllied)
     {
@@ -107,6 +120,20 @@ void AttackManager::update(sf::Time dt, CommandQueue& commandQueue)
             useAttack(repeatPair.first, commandQueue, false);
             mRepeatCooldowns[repeatPair.first] += Attacks::attackData.at(repeatPair.first).repeatCooldown;
             --repeatPair.second;
+        }
+    }
+
+    // Manage attack phases
+    for(PhaseManager& manager : mPhaseManagers)
+    {
+        if(manager.cooldown <= sf::Time::Zero)
+        {
+            int attackID = (*manager.phaseQueue)[manager.currentPhase].first;
+            int phase = (*manager.phaseQueue)[manager.currentPhase].second;
+
+            launchAttack(attackID, commandQueue, phase);
+            manager.cooldown += Attacks::attackData.at(attackID).phases[phase].phaseCooldown;
+            manager.currentPhase++;
         }
     }
 
@@ -188,7 +215,16 @@ void AttackManager::clearFinishedAttacks()
             ++it;
     }
 
+    auto newBeg2 = std::remove_if(mPhaseManagers.begin(), mPhaseManagers.end(), [](PhaseManager& manager)
+    {
+        if(manager.currentPhase >= manager.phaseQueue->size())
+            return true;
+
+        return false;
+    });
+
     mCurrentAttacks.erase(newBeg, mCurrentAttacks.end());
+    mPhaseManagers.erase(newBeg2, mPhaseManagers.end());
 }
 
 void AttackManager::onRemoval()

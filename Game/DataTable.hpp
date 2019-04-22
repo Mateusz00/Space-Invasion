@@ -119,6 +119,7 @@ struct AttackData
     sf::Time                            repeatCooldown;
     sf::Time                            cooldown;
     std::vector<AttackPhase>            phases;
+    std::vector<std::pair<int, int>>    phaseQueue;
 };
 
 std::vector<SpaceshipData>              initializeSpaceshipData();

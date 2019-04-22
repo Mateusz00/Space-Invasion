@@ -10,6 +10,7 @@
 #include <pugixml.hpp>
 #include <sstream>
 using namespace pugi;
+void resolvePhaseLinking(int attackID, std::unordered_map<int, AttackData>& data);
 
 std::vector<SpaceshipData> initializeSpaceshipData()
 {
@@ -522,7 +523,7 @@ std::unordered_map<int, AttackData> initializeAttackData()
             AttackData::AttackPhase attackPhaseData;
 
             attackPhaseData.phaseCooldown = sf::seconds(phase.attribute("phaseCooldown").as_float());
-            attackPhaseData.linkedAttackID = phase.attribute("phaseCooldown").as_int(-1);
+            attackPhaseData.linkedAttackID = phase.attribute("linkedAttackID").as_int(-1);
 
             // If attack phase is linked to already existing attack then ignore other attack phase data
             if(attackPhaseData.linkedAttackID < 0)
@@ -622,5 +623,33 @@ std::unordered_map<int, AttackData> initializeAttackData()
         data.emplace(path.first, std::move(attackData));
     }
 
+    // Resolve phase linking
+    for(const std::pair<int, AttackData>& attack : data)
+        resolvePhaseLinking(attack.first, data);
+
     return data;
+}
+
+void resolvePhaseLinking(int attackID, std::unordered_map<int, AttackData>& data)
+{
+    std::vector<std::pair<int, int>>& phaseQueue = data[attackID].phaseQueue;
+
+    // If phaseQueue has elements then that means links in this attack are resolved
+    if(phaseQueue.size() > 0)
+        return;
+
+    for(int phase=0; phase < data[attackID].phases.size(); ++phase)
+    {
+        int linkedID = data[attackID].phases[phase].linkedAttackID;
+
+        if(linkedID < 0)
+        {
+            phaseQueue.emplace_back(attackID, phase);
+        }
+        else
+        {
+            resolvePhaseLinking(linkedID, data);
+            phaseQueue.insert(phaseQueue.end(), data[linkedID].phaseQueue.begin(), data[linkedID].phaseQueue.end());
+        }
+    }
 }

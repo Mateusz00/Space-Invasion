@@ -25,9 +25,18 @@ class AttackManager
         void        onRemoval();
 
     private:
+        using Phases = const std::vector<std::pair<int, int>>;
+        struct PhaseManager
+        {
+            sf::Time    cooldown;
+            Phases*     phaseQueue; // attackID, phase
+            int         currentPhase;
+        };
+
         void        clearFinishedAttacks();
         int         getNewAttack();
-        void        useAttack(int id, CommandQueue&, bool applyCooldown = true);
+        void        useAttack(int id, CommandQueue&, int phase = 0, bool applyCooldown = true);
+        void        launchAttack(int id, CommandQueue&, int phase = 0);
         void        initiateRepeatedAttack(int id);
 
         std::vector<std::pair<int, int>>    mAttacks; // id, probability
@@ -42,6 +51,7 @@ class AttackManager
         std::unordered_map<int, sf::Time>   mRepeatCooldowns;
         std::unordered_map<int, sf::Time>   mChargingAttacks;
         const std::vector<Spaceship*>&      mTargets;
+        std::vector<PhaseManager>           mPhaseManagers;
 };
 
 #endif // ATTACKMANAGER_HPP
