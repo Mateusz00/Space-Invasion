@@ -35,9 +35,10 @@ class AttackManager
 
         void        clearFinishedAttacks();
         int         getNewAttack();
-        void        useAttack(int id, CommandQueue&, int phase = 0, bool applyCooldown = true);
+        int         analyzeAttack(int id);
+        void        useAttack(int id, CommandQueue&, bool applyCooldown = true, int phase = 0);
         void        launchAttack(int id, CommandQueue&, int phase = 0);
-        void        initiateRepeatedAttack(int id);
+        void        initiateRepeatedAttack(int id, bool applyCooldown = true);
 
         std::vector<std::pair<int, int>>    mAttacks; // id, probability
         std::vector<Attack*>                mCurrentAttacks;

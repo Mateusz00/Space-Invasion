@@ -23,17 +23,15 @@ void AttackManager::pushAttack(int id, int probability)
     mAttacks.emplace_back(id, probability);
 }
 
-void AttackManager::useAttack(int id, CommandQueue& commands, int phase, bool applyCooldown)
+void AttackManager::useAttack(int id, CommandQueue& commands, bool applyCooldown, int phase)
 {
     if(id == -1)
         return;
 
     auto& attack = Attacks::attackData.at(id);
 
-    if(attack.phaseQueue.size() > 1)
-        mPhaseManagers.emplace_back(PhaseManager{attack.phases[0].phaseCooldown, &attack.phaseQueue, 1});
-
-    launchAttack(id, commands, phase);
+    if(attack.phaseQueue.size() > 0)
+        mPhaseManagers.emplace_back(PhaseManager{sf::Time::Zero, &attack.phaseQueue, 0});
 
     if(applyCooldown)
         mCooldown += attack.cooldown;
@@ -55,7 +53,8 @@ void AttackManager::launchAttack(int id, CommandQueue& commands, int phase)
 
 void AttackManager::forceAttack(int id, CommandQueue& commands, bool applyCooldown)
 {
-    useAttack(id, commands, applyCooldown);
+    if(analyzeAttack(id) > -1)
+        useAttack(id, commands, applyCooldown);
 }
 
 sf::Time AttackManager::getCooldown() const
@@ -70,7 +69,7 @@ void AttackManager::forceCooldown(sf::Time cooldown)
 
 bool AttackManager::tryAttack(int id, CommandQueue& commands) // For players attacks
 {
-    if(mCooldown <= sf::Time::Zero)
+    if(mCooldown <= sf::Time::Zero && analyzeAttack(id) > -1)
     {
         useAttack(id, commands);
         return true;
@@ -106,7 +105,7 @@ void AttackManager::update(sf::Time dt, CommandQueue& commandQueue)
         if(attack.second <= sf::Time::Zero)
         {
             if(Attacks::attackData.at(attack.first).repeats > 0)
-                initiateRepeatedAttack(attack.first);
+                initiateRepeatedAttack(attack.first, false);
             else
                 useAttack(attack.first, commandQueue, false);
         }
@@ -149,29 +148,34 @@ int AttackManager::getNewAttack()
         range2 += attack.second; // probability
 
         if(num > range1 && num <= range2)
-        {
-            if(Attacks::attackData.at(attack.first).chargingTime == sf::Time::Zero)
-            {
-                if(Attacks::attackData.at(attack.first).repeats > 0)
-                {
-                    initiateRepeatedAttack(attack.first);
-                    return -1;
-                }
-
-                return attack.first; // id
-            }
-            else
-            {
-                mCooldown += Attacks::attackData.at(attack.first).cooldown;
-                mChargingAttacks.emplace(attack.first, Attacks::attackData.at(attack.first).chargingTime);
-                return -1;
-            }
-        }
+            return analyzeAttack(attack.first);
 
         range1 += attack.second;
     }
 
     return -1;
+}
+
+/// Checks if attack should be repeated n times or if it's charged. Puts attack on corresponding attack list if needed.
+///@return -1 if attack should be used in non-standard way(has repeats or is charged attack)
+int AttackManager::analyzeAttack(int id)
+{
+    if(Attacks::attackData.at(id).chargingTime == sf::Time::Zero)
+    {
+        if(Attacks::attackData.at(id).repeats > 0)
+        {
+            initiateRepeatedAttack(id);
+            return -1;
+        }
+    }
+    else
+    {
+        mCooldown += Attacks::attackData.at(id).cooldown;
+        mChargingAttacks.emplace(id, Attacks::attackData.at(id).chargingTime);
+        return -1;
+    }
+
+    return id;
 }
 
 void AttackManager::updatePosition(sf::Vector2f position)
@@ -233,8 +237,11 @@ void AttackManager::onRemoval()
         attack->markForRemoval();
 }
 
-void AttackManager::initiateRepeatedAttack(int id)
+void AttackManager::initiateRepeatedAttack(int id, bool applyCooldown)
 {
+    if(applyCooldown)
+        mCooldown += Attacks::attackData.at(id).cooldown;
+
     mRepeats[id] = Attacks::attackData.at(id).repeats;
     mRepeatCooldowns.emplace(id, sf::Time::Zero);
 }
