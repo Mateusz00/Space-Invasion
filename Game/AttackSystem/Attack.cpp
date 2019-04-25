@@ -230,16 +230,8 @@ void Attack::createProjectile(int phase, int projectileNum)
         direction = unitVector(targetVector);
     else
     {
-        try
-        {
-            direction = unitVector(projectileInfo.direction.x, projectileInfo.direction.y * sign);
-        }
-        catch(const std::logic_error& err)
-        {
-            std::cout << "Error: Length of direction vector is 0!(AttackID=" << mAttackID
-                      << ", projectile=" << projectileNum << ")" << std::endl;
-            throw err;
-        }
+        float radians = toRadian(projectileInfo.direction);
+        direction = sf::Vector2f(1 * std::sin(radians), 1 * std::cos(radians) * sign);
     }
 
     sf::Vector2f velocity(direction * speed);
@@ -277,16 +269,8 @@ void Attack::createGravityCenter(int phase, int centerNum)
         direction = unitVector(targetVector);
     else
     {
-        try
-        {
-            direction = unitVector(gravityCenterData.direction.x, gravityCenterData.direction.y * sign);
-        }
-        catch(const std::logic_error& err)
-        {
-            std::cout << "Error: Length of direction vector is 0!(AttackID=" << mAttackID
-                      << ", projectile=" << centerNum << ")" << std::endl;
-            throw err;
-        }
+        float radians = toRadian(gravityCenterData.direction);
+        direction = sf::Vector2f(1 * std::sin(radians), 1 * std::cos(radians) * sign);
     }
 
     sf::Vector2f velocity(direction * gravityCenterData.speed);

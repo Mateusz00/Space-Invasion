@@ -537,18 +537,14 @@ std::unordered_map<int, AttackData> initializeAttackData()
                     AttackData::ProjectileInfo projectileInfo;
 
                     std::string offsetStr(projectile.attribute("offsets").as_string("0 0"));
-                    std::string directionStr(projectile.attribute("direction").as_string("0 0"));
                     std::string::size_type index;
 
                     if(offsetStr.empty())
                         offsetStr = "0 0";
-                    if(directionStr.empty())
-                        directionStr = "0 0";
 
                     projectileInfo.offset.x      = std::stof(offsetStr, &index);
                     projectileInfo.offset.y      = std::stof(offsetStr.substr(index));
-                    projectileInfo.direction.x   = std::stof(directionStr, &index);
-                    projectileInfo.direction.y   = std::stof(directionStr.substr(index));
+                    projectileInfo.direction     = projectile.attribute("direction").as_float();
                     projectileInfo.speed         = projectile.attribute("speed").as_float();
                     projectileInfo.type          = static_cast<Projectiles::ID>(projectile.attribute("id").as_int());
                     projectileInfo.pattern       = static_cast<AttackPattern::ID>(projectile.attribute("patternID").as_int());
@@ -579,18 +575,14 @@ std::unordered_map<int, AttackData> initializeAttackData()
                     AttackData::GravityCenterInfo gravityCenterInfo;
 
                     std::string offsetStr(gravityCenter.attribute("offsets").as_string("0 0"));
-                    std::string directionStr(gravityCenter.attribute("direction").as_string("0 0"));
                     std::string::size_type index;
 
                     if(offsetStr.empty())
                         offsetStr = "0 0";
-                    if(directionStr.empty())
-                        directionStr = "0 0";
 
                     gravityCenterInfo.offset.x      = std::stof(offsetStr, &index);
                     gravityCenterInfo.offset.y      = std::stof(offsetStr.substr(index));
-                    gravityCenterInfo.direction.x   = std::stof(directionStr, &index);
-                    gravityCenterInfo.direction.y   = std::stof(directionStr.substr(index));
+                    gravityCenterInfo.direction     = gravityCenter.attribute("direction").as_float();
                     gravityCenterInfo.speed         = gravityCenter.attribute("speed").as_float();
                     gravityCenterInfo.id            = gravityCenter.attribute("id").as_int();
                     gravityCenterInfo.pattern       = static_cast<AttackPattern::ID>(gravityCenter.attribute("patternID").as_int());

@@ -91,7 +91,7 @@ struct AttackData
         float                           speed;
         Projectiles::ID                 type;
         sf::Vector2f                    offset;
-        sf::Vector2f                    direction;
+        float                           direction;
         AttackPattern::ID               pattern;
         AttackPattern::PatternData      patternData;
         bool                            isAimed;
@@ -101,7 +101,7 @@ struct AttackData
         float                           speed;
         int                             id;
         sf::Vector2f                    offset;
-        sf::Vector2f                    direction;
+        float                           direction;
         AttackPattern::ID               pattern;
         AttackPattern::PatternData      patternData;
         bool                            isAimed;
