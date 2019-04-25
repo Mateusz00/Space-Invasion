@@ -515,15 +515,15 @@ std::unordered_map<int, AttackData> initializeAttackData()
 
         attackData.chargingTime     = sf::seconds(mainNode.child("chargetime").text().as_float());
         attackData.cooldown         = sf::seconds(mainNode.child("cooldown").text().as_float());
-        attackData.repeatCooldown   = sf::seconds(repeatNode.attribute("cooldown").as_float());
-        attackData.repeats          = repeatNode.attribute("times").as_int();
 
         for(xml_node phase = mainNode.child("attackPhase"); phase; phase = phase.next_sibling("attackPhase"))
         {
             AttackData::AttackPhase attackPhaseData;
 
-            attackPhaseData.phaseCooldown = sf::seconds(phase.attribute("phaseCooldown").as_float());
-            attackPhaseData.linkedAttackID = phase.attribute("linkedAttackID").as_int(-1);
+            attackPhaseData.repeats         = phase.attribute("repeats").as_int(1);
+            attackPhaseData.repeatCooldown  = sf::seconds(phase.attribute("repeatCooldown").as_float());
+            attackPhaseData.phaseCooldown   = sf::seconds(phase.attribute("phaseCooldown").as_float());
+            attackPhaseData.linkedAttackID  = phase.attribute("linkedAttackID").as_int(-1);
 
             // If attack phase is linked to already existing attack then ignore other attack phase data
             if(attackPhaseData.linkedAttackID < 0)
@@ -632,7 +632,7 @@ std::unordered_map<int, AttackData> initializeAttackData()
 
 void resolvePhaseLinking(int attackID, std::unordered_map<int, AttackData>& data)
 {
-    std::vector<std::pair<int, int>>& phaseQueue = data[attackID].phaseQueue;
+    std::vector<AttackData::PhaseInfo>& phaseQueue = data[attackID].phaseQueue;
 
     // If phaseQueue has elements then that means links in this attack are resolved
     if(phaseQueue.size() > 0)
@@ -644,12 +644,18 @@ void resolvePhaseLinking(int attackID, std::unordered_map<int, AttackData>& data
 
         if(linkedID < 0)
         {
-            phaseQueue.emplace_back(attackID, phase);
+            phaseQueue.emplace_back(AttackData::PhaseInfo{attackID, phase, data[attackID].phases[phase].phaseCooldown});
         }
         else
         {
             resolvePhaseLinking(linkedID, data);
-            phaseQueue.insert(phaseQueue.end(), data[linkedID].phaseQueue.begin(), data[linkedID].phaseQueue.end());
+            for(int i=0; i < data[attackID].phases[phase].repeats; ++i)
+            {
+                phaseQueue.insert(phaseQueue.end(), data[linkedID].phaseQueue.begin(), data[linkedID].phaseQueue.end());
+                phaseQueue.back().phaseCooldown = data[attackID].phases[phase].repeatCooldown; // Extra cool-down between each repeat of a linked attack
+            }
+
+            phaseQueue.back().phaseCooldown = data[attackID].phases[phase].phaseCooldown; // Overwrite last phase's phaseCooldown
         }
     }
 }

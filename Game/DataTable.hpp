@@ -112,14 +112,20 @@ struct AttackData
         std::vector<GravityCenterInfo>      gravityCenters;
         sf::Time                            phaseCooldown;
         int                                 linkedAttackID;
+        int                                 repeats;
+        sf::Time                            repeatCooldown;
+    };
+    struct PhaseInfo
+    {
+        int         attackID;
+        int         phaseID;
+        sf::Time    phaseCooldown;
     };
 
     sf::Time                            chargingTime;
-    int                                 repeats;
-    sf::Time                            repeatCooldown;
     sf::Time                            cooldown;
     std::vector<AttackPhase>            phases;
-    std::vector<std::pair<int, int>>    phaseQueue;
+    std::vector<PhaseInfo>              phaseQueue;
 };
 
 std::vector<SpaceshipData>              initializeSpaceshipData();

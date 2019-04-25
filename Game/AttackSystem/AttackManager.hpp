@@ -3,6 +3,7 @@
 
 #include "../ResourcesID.hpp"
 #include "../Command.hpp"
+#include "../DataTable.hpp"
 #include <SFML/System/Time.hpp>
 #include <SFML/System/Vector2.hpp>
 class CommandQueue;
@@ -25,12 +26,13 @@ class AttackManager
         void        onRemoval();
 
     private:
-        using Phases = const std::vector<std::pair<int, int>>;
+        using Phases = const std::vector<AttackData::PhaseInfo>;
         struct PhaseManager
         {
             sf::Time    cooldown;
             Phases*     phaseQueue; // attackID, phase
             int         currentPhase;
+            int         currentRepeat;
         };
 
         void        clearFinishedAttacks();
@@ -38,7 +40,6 @@ class AttackManager
         int         analyzeAttack(int id);
         void        useAttack(int id, CommandQueue&, bool applyCooldown = true, int phase = 0);
         void        launchAttack(int id, CommandQueue&, int phase = 0);
-        void        initiateRepeatedAttack(int id, bool applyCooldown = true);
 
         std::vector<std::pair<int, int>>    mAttacks; // id, probability
         std::vector<Attack*>                mCurrentAttacks;
@@ -48,8 +49,6 @@ class AttackManager
         World&                              mWorld;
         int                                 mShooterID;
         bool                                mIsAllied;
-        std::unordered_map<int, int>        mRepeats; // id, times
-        std::unordered_map<int, sf::Time>   mRepeatCooldowns;
         std::unordered_map<int, sf::Time>   mChargingAttacks;
         const std::vector<Spaceship*>&      mTargets;
         std::vector<PhaseManager>           mPhaseManagers;

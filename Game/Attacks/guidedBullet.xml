@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <attack>
     <chargetime>0</chargetime>
-    <repeat cooldown="0" times="0"></repeat>
     <cooldown>3</cooldown>
 
     <attackPhase>
