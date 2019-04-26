@@ -55,7 +55,6 @@ void Attack::updateCurrent(sf::Time dt, CommandQueue& commandQueue)
             case AttackPattern::Wave:
             {
                 float angle = std::atan2(-gravityCenter.getDirection().y, gravityCenter.getDirection().x) + toRadian(90.f);
-                sf::Vector2f perpendicular(-gravityCenter.getDirection().y, gravityCenter.getDirection().x);
                 sf::Vector2f startPos(gravityCenter.getStartPos());
                 sf::Vector2f oldPos = gravityCenter.getPosition();
 
@@ -65,8 +64,8 @@ void Attack::updateCurrent(sf::Time dt, CommandQueue& commandQueue)
                 float times = vectorLength(startPos - newPos1) / gravityCenter.getPatternData().waveData[1];
                 float perpendicularLength = (std::sin(times * 3.1415f) * gravityCenter.getPatternData().waveData[0]);
 
-                sf::Vector2f newPos2(perpendicular.x + perpendicularLength * std::sin(angle + toRadian(90.f)),
-                                     perpendicular.y + perpendicularLength * std::cos(angle + toRadian(90.f)));
+                sf::Vector2f newPos2(perpendicularLength * std::sin(angle + toRadian(90.f)),
+                                     perpendicularLength * std::cos(angle + toRadian(90.f)));
 
                 // getTimePerFrame nullifies effect of multiplying by time_per_frame in entity's update func
                 gravityCenter.setVelocity((newPos1 + newPos2 - oldPos) / Application::getTimePerFrame().asSeconds());
@@ -126,7 +125,6 @@ void Attack::updateCurrent(sf::Time dt, CommandQueue& commandQueue)
             case AttackPattern::Wave:
             {
                 float angle = std::atan2(-projectile->getDirection().y, projectile->getDirection().x) + toRadian(90.f);
-                sf::Vector2f perpendicular(-projectile->getDirection().y, projectile->getDirection().x);
                 sf::Vector2f startPos(projectile->getStartPos());
 
                 sf::Vector2f newPos1(startPos.x + projectile->getMaxSpeed() * std::sin(angle) * projectile->activeTime(),
@@ -135,8 +133,8 @@ void Attack::updateCurrent(sf::Time dt, CommandQueue& commandQueue)
                 float times = vectorLength(startPos - newPos1) / projectile->getPatternData().waveData[1];
                 float perpendicularLength = (std::sin(times * 3.1415f) * projectile->getPatternData().waveData[0]);
 
-                sf::Vector2f newPos2(perpendicular.x + perpendicularLength * std::sin(angle + toRadian(90.f)),
-                                     perpendicular.y + perpendicularLength * std::cos(angle + toRadian(90.f)));
+                sf::Vector2f newPos2(perpendicularLength * std::sin(angle + toRadian(90.f)),
+                                     perpendicularLength * std::cos(angle + toRadian(90.f)));
 
                 // getTimePerFrame nullifies effect of multiplying by time_per_frame in entity's update func
                 float seconds = Application::getTimePerFrame().asSeconds();

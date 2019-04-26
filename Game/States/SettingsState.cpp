@@ -65,14 +65,9 @@ bool SettingsState::handleEvent(const sf::Event& event)
         int index = mToggledButton.second;
         if(event.type == sf::Event::KeyReleased)
         {
-            for(int i=1; i <= getContext().keys.size(); ++i) // Deduce which KeyBinding should be modified
-            {
-                if(index < KeyBinding::Count * i)
-                {
-                    getContext().keys[i-1]->assignKey(static_cast<KeyBinding::Action>(index % KeyBinding::Count), event.key.code);
-                    break;
-                }
-            }
+            int i = static_cast<int>(index / KeyBinding::Count); // Deduce which KeyBinding should be modified
+            if(i < getContext().keys.size())
+                getContext().keys[i]->assignKey(static_cast<KeyBinding::Action>(index % KeyBinding::Count), event.key.code);
 
             mBindingButtons[index]->deactivate();
             updateLabels();

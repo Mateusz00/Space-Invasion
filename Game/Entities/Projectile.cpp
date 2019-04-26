@@ -11,7 +11,7 @@ namespace
 }
 
 Projectile::Projectile(Projectiles::ID type, const TextureHolder& textures, World& world, int shooterID, float speed)
-    : Entity(1, true, world),
+    : Entity(table[type].hitpoints, true, world),
       mType(type),
       mSprite(textures.get(table[type].texture), table[type].textureRect),
       mShooterID(shooterID),
@@ -106,7 +106,7 @@ void Projectile::onCollision(Entity& entity)
         {
             case Category::PlayerSpaceship:
                 entity.damage(table[mType].damage);
-                destroy();
+                damage(table[mType].damage);
                 break;
         }
     }
@@ -116,7 +116,7 @@ void Projectile::onCollision(Entity& entity)
         {
             case Category::EnemySpaceship:
                 entity.damage(table[mType].damage);
-                destroy();
+                damage(table[mType].damage);
                 static_cast<Spaceship&>(entity).setAttackerID(mShooterID); // Sets id of spaceship that will have score increased if enemy dies
                 break;
         }

@@ -254,8 +254,9 @@ void Spaceship::onCollision(Entity& entity)
         switch(entity.getCategory())
         {
             case Category::PlayerSpaceship:
+                int entityHitpoints = entity.getHitpoints();
                 entity.damage(getHitpoints());
-                destroy();
+                damage(entityHitpoints);
                 mAttackerID = static_cast<Spaceship&>(entity).getIdentifier(); // Sets id of spaceship that will have score increased
                 break;
         }
