@@ -8,3 +8,6 @@
 <leveldata>
 	<levelwidth>7000</levelwidth>
 </leveldata>
+<events>
+	<event id="0" x="100" y="5500" enemyID="2"/>
+</events>

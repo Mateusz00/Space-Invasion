@@ -10,6 +10,7 @@ class AnimationNode : public SpriteNode
     public:
         enum class AnimationType{Forward, ForwardAndBackward};
 
+                        AnimationNode(Animation::ID, sf::Time interval, const TextureHolder&, sf::Vector2f);
                         AnimationNode(Animation::ID, sf::Time interval, const TextureHolder&);
         void            setRepeating(bool);
         void            setAnimationType(AnimationType);

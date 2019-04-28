@@ -6,6 +6,12 @@ namespace
     const std::vector<AnimationData> table = initializeAnimationData();
 }
 
+AnimationNode::AnimationNode(Animation::ID type, sf::Time interval, const TextureHolder& textures, sf::Vector2f pos)
+    : AnimationNode(type, interval, textures)
+{
+    setPosition(pos);
+}
+
 AnimationNode::AnimationNode(Animation::ID type, sf::Time interval, const TextureHolder& textures)
     : SpriteNode(textures.get(table[type].spriteSheet), sf::IntRect(table[type].beginning, table[type].frameSize)),
       mType(type),

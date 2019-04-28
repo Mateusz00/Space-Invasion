@@ -16,6 +16,7 @@ class Bar;
 class Spaceship : public Entity
 {
     public:
+        enum class EnemyType{Normal, Boss};
         using SpriteNodePtr = std::unique_ptr<SpriteNode>;
 
                                 Spaceship(int, const TextureHolder&, const FontHolder&, World&,
@@ -40,6 +41,7 @@ class Spaceship : public Entity
         void                    increaseScore(int);
         int                     getScore() const;
         void                    setAttackerID(int);
+        void                    setEnemyType(EnemyType);
 
     protected:
         virtual void            updateCurrent(sf::Time, CommandQueue&) override;
@@ -55,6 +57,7 @@ class Spaceship : public Entity
         void            decreaseScoreRequest(int) const;
         virtual void    onRemoval() override;
         void            updateBoostFuel();
+        void            sendExplosion(sf::Vector2f pos) const;
 
         int                     mTypeID;
         int                     mFireRateLevel;
@@ -76,6 +79,7 @@ class Spaceship : public Entity
         Bar*                    mHealthBar;
         Bar*                    mBoostFuelBar;
         SpriteNodePtr           mSprite;
+        EnemyType               mEnemyType;
 };
 
 #endif // SPACESHIP_HPP

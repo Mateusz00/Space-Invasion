@@ -39,7 +39,7 @@ struct SpaceshipTextureData
 struct ProjectileData
 {
     int             damage;
-    int             hitpoints = 60;
+    int             hitpoints = 1;
     Textures::ID    texture;
     sf::IntRect     textureRect;
 };

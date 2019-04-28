@@ -37,7 +37,8 @@ Spaceship::Spaceship(int typeID, const TextureHolder& textures, const FontHolder
       mBoosted(false),
       mBoostCooldown(false),
       mBoostFuel(FUEL_MAX),
-      mBoostFuelBar(nullptr)
+      mBoostFuelBar(nullptr),
+      mEnemyType(EnemyType::Normal)
 {
     // Initialize sprite
     int textureID = spaceshipInfo[typeID].textureID;
@@ -284,6 +285,11 @@ void Spaceship::setAttackerID(int id)
     mAttackerID = id;
 }
 
+void Spaceship::setEnemyType(EnemyType type)
+{
+    mEnemyType = type;
+}
+
 void Spaceship::createPickup() const
 {
     if(mIsEnemy && (randomInt(1, 4) == 2)) // 25% chance for spawning pickup for enemies
@@ -299,9 +305,7 @@ void Spaceship::createExplosion() const
 {
     if(mShowExplosion)
     {
-        std::unique_ptr<AnimationNode> explosion(new AnimationNode(Animation::Explosion, sf::seconds(0.06f), mTextures));
-        explosion->setPosition(getWorldPosition());
-        getWorld().placeOnLayer(std::move(explosion), Category::AirLayer);
+        sendExplosion(getWorldPosition());
         getWorld().getSoundPlayer().play(Sound::Explosion, getWorldPosition());
     }
 }
@@ -341,10 +345,36 @@ void Spaceship::decreaseScoreRequest(int value) const
 
 void Spaceship::onRemoval()
 {
+    switch(mEnemyType)
+    {
+        case EnemyType::Boss:
+        {
+            sf::Vector2f currentPos = getWorldPosition();
+            sendExplosion(currentPos + sf::Vector2f(100.f, 40.f));
+            sendExplosion(currentPos + sf::Vector2f(-20.f, -30.f));
+            break;
+        }
+    }
+
     createPickup();
     createExplosion();
     changeScore();
     mAttackManager.onRemoval();
+}
+
+void Spaceship::sendExplosion(sf::Vector2f pos) const
+{
+    const TextureHolder& t = mTextures;
+    Command explosionCommand;
+
+    explosionCommand.mCategories.emplace_back(Category::AirLayer);
+    explosionCommand.mAction = [pos, &t](SceneNode& layer, sf::Time)
+    {
+        std::unique_ptr<AnimationNode> node(new AnimationNode(Animation::Explosion, sf::seconds(0.06f), t, pos));
+        layer.attachChild(std::move(node));
+    };
+
+    getWorld().getCommandQueue().push(explosionCommand);
 }
 
 void Spaceship::updateBoostFuel()

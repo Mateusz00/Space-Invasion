@@ -2,6 +2,7 @@
 #define WORLD_HPP
 
 #include "CommandQueue.hpp"
+#include "LocationEvent.hpp"
 #include "State.hpp"
 #include "SoundPlayer.hpp"
 #include "Entities/Spaceship.hpp"
@@ -34,6 +35,7 @@ class World
         bool                            hasAlivePlayer() const;
         std::unordered_map<int, int>&   getPlayersScoresMap();
         Spaceship*                      addSpaceship(int id);
+        void                            setScrollingSpeed(float);
 
     private:
         void    buildWorld();
@@ -47,6 +49,7 @@ class World
         void    destroyEntitiesOutsideView();
         void    updateSounds();
         void    updateScore();
+        void    updateEvents();
         void    removeDanglingPointers();
         void    loadLevelData();
 
@@ -87,6 +90,7 @@ class World
         std::array<SceneNode*, LayerCount>  mSceneLayers;
         std::list<Entity*>                  mCollidablesList;
         std::unordered_map<int, int>        mPlayersScores;
+        std::vector<LocationEvent>          mEvents;
 };
 
 #endif // WORLD_HPP

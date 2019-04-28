@@ -56,6 +56,7 @@ void World::update(sf::Time dt)
     mSceneGraph.update(dt, mCommandQueue);
     adaptPlayersPosition();
     updateSounds();
+    updateEvents();
     mUIGraph.update(dt, mCommandQueue);
 
     removeDanglingPointers(); // Erase pointers of destroyed players spaceships as remove wrecks removes only entities
@@ -136,6 +137,11 @@ Spaceship* World::addSpaceship(int id)
     mUIGraph.attachChild(std::move(ammoNode));
     mSceneLayers[UpperAir]->attachChild(std::move(playerSpaceship));
     return mPlayerSpaceships.back();
+}
+
+void World::setScrollingSpeed(float speed)
+{
+    mScrollingSpeed = speed;
 }
 
 void World::buildWorld()
@@ -226,6 +232,29 @@ void World::loadLevelData()
 
     mWorldBounds = sf::FloatRect(0.f, 0.f, mView.getSize().x, length);
     mPlayerSpawnPosition = sf::Vector2f(mView.getSize().x / 2, mWorldBounds.height - mView.getSize().y / 2.f);
+
+    // Load events
+    xml_node eventData = doc.child("events");
+    for(xml_node event : eventData.children())
+    {
+        int id = event.attribute("id").as_int(-1);
+        float x = event.attribute("x").as_float(-1);
+        float y = event.attribute("y").as_float(-1);
+        LocationEvent newEvent(sf::Vector2f(x, y), static_cast<LocationEvent::Event>(id));
+
+        event.remove_attribute("id");
+        event.remove_attribute("x");
+        event.remove_attribute("y");
+
+        if(id < 0)
+            throw std::runtime_error("Event ID not found or less than zero!(Level" +
+                                      toString(mProfile.getCurrentLevel()+1) + ".xml)");
+
+        for(xml_attribute eventAttribute : event.attributes())
+            newEvent.addParameter(eventAttribute.name(), eventAttribute.value());
+
+        mEvents.push_back(std::move(newEvent));
+    }
 }
 
 void World::addSpawnPoint(float x, float y, int spaceshipID)
@@ -260,7 +289,7 @@ void World::spawnEnemies()
 {
     while(!mSpawnPoints.empty() && mSpawnPoints.back().y > getBattlefieldBounds().top)
     {
-        SpawnPoint spawn = mSpawnPoints.back();
+        SpawnPoint& spawn = mSpawnPoints.back();
 
         std::unique_ptr<Spaceship> enemySpaceship(new Spaceship(spawn.spaceshipID, mTextures, mFonts, *this, mPlayerSpaceships));
         enemySpaceship->setPosition(spawn.x, spawn.y);
@@ -357,6 +386,15 @@ void World::updateScore()
 
     mScore.setString(toString(cumulativeScore));
     centerOrigin(mScore);
+}
+
+void World::updateEvents()
+{
+    while(!mEvents.empty() && getBattlefieldBounds().contains(mEvents.back().getTriggerLocation()))
+    {
+        mEvents.back().handle(*this);
+        mEvents.pop_back();
+    }
 }
 
 void World::removeDanglingPointers()
