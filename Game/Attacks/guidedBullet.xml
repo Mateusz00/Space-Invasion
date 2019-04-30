@@ -5,7 +5,7 @@
 
     <attackPhase>
         <projectiles>
-            <projectile id="2" speed="130" aimed="yes" offsets="0 30" patternID="1" direction="0"></projectile>
+            <projectile id="30" speed="100" aimed="yes" offsets="0 20" patternID="1" direction="0"></projectile>
         </projectiles>
     </attackPhase>
 </attack>

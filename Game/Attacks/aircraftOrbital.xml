@@ -5,11 +5,11 @@
 
     <attackPhase>
         <projectiles>
-            <projectile id="1" speed="120" aimed="no" offsets="0 -30" patternID="4" direction="0"></projectile>
-            <projectile id="1" speed="120" aimed="no" offsets="28.5 -9.2" patternID="4" direction="0"></projectile>
-            <projectile id="1" speed="120" aimed="no" offsets="17.6 24.2" patternID="4" direction="0"></projectile>
-            <projectile id="1" speed="120" aimed="no" offsets="-17.6 24.2" patternID="4" direction="0"></projectile>
-            <projectile id="1" speed="120" aimed="no" offsets="-28.5 -9.2" patternID="4" direction="0"></projectile>
+            <projectile id="0" speed="110" aimed="no" offsets="0 -30" patternID="4" direction="0"></projectile>
+            <projectile id="0" speed="110" aimed="no" offsets="28.5 -9.2" patternID="4" direction="0"></projectile>
+            <projectile id="0" speed="110" aimed="no" offsets="17.6 24.2" patternID="4" direction="0"></projectile>
+            <projectile id="0" speed="110" aimed="no" offsets="-17.6 24.2" patternID="4" direction="0"></projectile>
+            <projectile id="0" speed="110" aimed="no" offsets="-28.5 -9.2" patternID="4" direction="0"></projectile>
         </projectiles>
     </attackPhase>
 </attack>
