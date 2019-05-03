@@ -160,7 +160,7 @@ std::vector<SpaceshipTextureData> initializeSpaceshipTextureData()
     data[25].texture = Textures::Spaceships; // PurpleShipWide
     data[25].textureRect = sf::IntRect(360, 320, 120, 40);
 
-    data[26].texture = Textures::Spaceships; // PurpleShipOval
+    data[26].texture = Textures::Spaceships; // PurpleShipSmall
     data[26].textureRect = sf::IntRect(240, 120, 40, 40);
 
     data[27].texture = Textures::Spaceships; // Boss
@@ -173,7 +173,7 @@ std::vector<ProjectileData> initializeProjectileData()
 {
     std::vector<ProjectileData> data(Projectiles::Count);
 
-    data[Projectiles::GreenOval1].damage = 20.f;
+    data[Projectiles::GreenOval1].damage = 10.f;
     data[Projectiles::GreenOval1].texture = Textures::Projectiles;
     data[Projectiles::GreenOval1].textureRect = sf::IntRect(0, 0, 12, 20);
 
@@ -181,7 +181,7 @@ std::vector<ProjectileData> initializeProjectileData()
     data[Projectiles::OrangeOval1].texture = Textures::Projectiles;
     data[Projectiles::OrangeOval1].textureRect = sf::IntRect(12, 0, 12, 20);
 
-    data[Projectiles::GreenBullet].damage = 20.f;
+    data[Projectiles::GreenBullet].damage = 10.f;
     data[Projectiles::GreenBullet].texture = Textures::Projectiles;
     data[Projectiles::GreenBullet].textureRect = sf::IntRect(24, 0, 10, 22);
 
