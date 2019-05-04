@@ -4,7 +4,14 @@
     <attack id="1" file="DoubleGreenStraight.xml"/>
     <attack id="2" file="GreenMachineGun.xml"/>
     <attack id="3" file="GreenAimed.xml"/>
-    <attack id="4" file="doubleSpiral.xml"/>
-    <attack id="5" file="guidedBullet.xml"/>
-    <attack id="6" file="chargedMachineGun.xml"/>
+    <attack id="4" file="TripleBlue.xml"/>
+    <attack id="5" file="SpreadBlue.xml"/>
+    <attack id="6" file="MonsterGreenAimed.xml"/>
+    <attack id="7" file="SingleGreenOval1.xml"/>
+    <attack id="8" file="SingleGreenOval2.xml"/>
+    <attack id="9" file="SingleGreenOval3.xml"/>
+    <attack id="10" file="SingleGreenOval4.xml"/>
+    <attack id="11" file="LightMonsterGuns.xml"/>
+    <attack id="12" file="LightMonsterGunsSpread.xml"/>
+    <attack id="13" file="LightMonsterOrb.xml"/>
 </attacks>

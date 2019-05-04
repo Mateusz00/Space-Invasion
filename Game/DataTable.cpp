@@ -249,9 +249,9 @@ std::vector<ProjectileData> initializeProjectileData()
     data[Projectiles::OrangeSpin].texture = Textures::Projectiles;
     data[Projectiles::OrangeSpin].textureRect = sf::IntRect(16, 23, 17, 13);
 
-    data[Projectiles::GreenOrb].damage = 20.f;
+    data[Projectiles::GreenOrb].damage = 50.f;
     data[Projectiles::GreenOrb].texture = Textures::Projectiles;
-    data[Projectiles::GreenOrb].textureRect = sf::IntRect(20, 34, 20, 20);
+    data[Projectiles::GreenOrb].textureRect = sf::IntRect(34, 20, 20, 20);
 
     data[Projectiles::PinkStar].damage = 20.f;
     data[Projectiles::PinkStar].texture = Textures::Projectiles;
