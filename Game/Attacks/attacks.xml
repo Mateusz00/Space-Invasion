@@ -14,4 +14,15 @@
     <attack id="11" file="LightMonsterGuns.xml"/>
     <attack id="12" file="LightMonsterGunsSpread.xml"/>
     <attack id="13" file="LightMonsterOrb.xml"/>
+    <attack id="14" file="BiomechDarkSpread.xml"/>
+    <attack id="15" file="BlueLaser.xml"/>
+    <attack id="16" file="BlueStarsCircleBurst.xml"/>
+    <attack id="17" file="BlueStarMine.xml"/>
+    <attack id="18" file="TripleRed.xml"/>
+    <attack id="19" file="RedDouble.xml"/>
+    <attack id="20" file="RedSpiral.xml"/>
+    <attack id="21" file="RepeatedTripleRed.xml"/>
+    <attack id="22" file="BigRed.xml"/>
+    <attack id="23" file="RedLaser.xml"/>
+    <attack id="24" file="RedBigSpiral.xml"/>
 </attacks>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<attack>
+    <chargetime>1.5</chargetime>
+    <cooldown>3.75</cooldown>
+
+    <attackPhase phaseCooldown="0.7">
+        <projectiles>
+            <projectile id="24" speed="160" aimed="no" offsets="0 20" patternID="0" direction="0"></projectile>
+            <projectile id="24" speed="160" aimed="no" offsets="17.32 -10" patternID="0" direction="60"></projectile>
+            <projectile id="24" speed="160" aimed="no" offsets="17.32 10" patternID="0" direction="120"></projectile>
+            <projectile id="24" speed="160" aimed="no" offsets="0 -20" patternID="0" direction="180"></projectile>
+            <projectile id="24" speed="160" aimed="no" offsets="-17.32 -10" patternID="0" direction="240"></projectile>
+            <projectile id="24" speed="160" aimed="no" offsets="-17.32 10" patternID="0" direction="300"></projectile>
+        </projectiles>
+    </attackPhase>
+    <attackPhase>
+        <projectiles>
+            <projectile id="24" speed="160" aimed="no" offsets="10 -17.32" patternID="0" direction="30"></projectile>
+            <projectile id="24" speed="160" aimed="no" offsets="20 0" patternID="0" direction="90"></projectile>
+            <projectile id="24" speed="160" aimed="no" offsets="10 17.32" patternID="0" direction="150"></projectile>
+            <projectile id="24" speed="160" aimed="no" offsets="-10 17.32" patternID="0" direction="210"></projectile>
+            <projectile id="24" speed="160" aimed="no" offsets="-20 0" patternID="0" direction="270"></projectile>
+            <projectile id="24" speed="160" aimed="no" offsets="-10 -17.32" patternID="0" direction="330"></projectile>
+        </projectiles>
+    </attackPhase>
+</attack>
+

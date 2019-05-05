@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<attack>
+    <chargetime>0</chargetime>
+    <cooldown>3</cooldown>
+
+    <attackPhase phaseCooldown="1">
+        <projectiles>
+            <projectile id="4" speed="150" aimed="no" offsets="0 20" patternID="2" direction="10" amplitude="100" waveLength="100"></projectile>
+            <projectile id="4" speed="150" aimed="no" offsets="0 20" patternID="2" direction="10" amplitude="-100" waveLength="100"></projectile>
+        </projectiles>
+    </attackPhase>
+    <attackPhase>
+        <projectiles>
+            <projectile id="4" speed="150" aimed="no" offsets="0 20" patternID="2" direction="350" amplitude="100" waveLength="100"></projectile>
+            <projectile id="4" speed="150" aimed="no" offsets="0 20" patternID="2" direction="350" amplitude="-100" waveLength="100"></projectile>
+        </projectiles>
+    </attackPhase>
+</attack>
+

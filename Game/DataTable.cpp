@@ -119,7 +119,7 @@ std::vector<SpaceshipTextureData> initializeSpaceshipTextureData()
     data[11].textureRect = sf::IntRect(80, 160, 40, 70);
 
     data[12].texture = Textures::Spaceships; // BiomechRed3
-    data[12].textureRect = sf::IntRect(200, 160, 80, 80);
+    data[12].textureRect = sf::IntRect(204, 170, 68, 56);
 
     data[13].texture = Textures::Spaceships; // BiomechDark1
     data[13].textureRect = sf::IntRect(200, 120, 40, 40);
@@ -185,15 +185,16 @@ std::vector<ProjectileData> initializeProjectileData()
     data[Projectiles::GreenBullet].texture = Textures::Projectiles;
     data[Projectiles::GreenBullet].textureRect = sf::IntRect(24, 0, 10, 22);
 
-    data[Projectiles::BlueOval1].damage = 20.f;
+    data[Projectiles::BlueOval1].damage = 15.f;
     data[Projectiles::BlueOval1].texture = Textures::Projectiles;
     data[Projectiles::BlueOval1].textureRect = sf::IntRect(33, 0, 12, 20);
 
-    data[Projectiles::RedCircleSmall].damage = 20.f;
+    data[Projectiles::RedCircleSmall].damage = 30.f;
     data[Projectiles::RedCircleSmall].texture = Textures::Projectiles;
     data[Projectiles::RedCircleSmall].textureRect = sf::IntRect(46, 0, 19, 19);
 
-    data[Projectiles::RedCircleBig].damage = 20.f;
+    data[Projectiles::RedCircleBig].hitpoints = 50.f;
+    data[Projectiles::RedCircleBig].damage = 1.f;
     data[Projectiles::RedCircleBig].texture = Textures::Projectiles;
     data[Projectiles::RedCircleBig].textureRect = sf::IntRect(66, 0, 34, 33);
 
@@ -205,39 +206,42 @@ std::vector<ProjectileData> initializeProjectileData()
     data[Projectiles::BlueStarSmall].texture = Textures::Projectiles;
     data[Projectiles::BlueStarSmall].textureRect = sf::IntRect(129, 0, 25, 27);
 
-    data[Projectiles::BlueLaserHead].damage = 20.f;
+    data[Projectiles::BlueLaserHead].damage = 10.f;
     data[Projectiles::BlueLaserHead].texture = Textures::Projectiles;
     data[Projectiles::BlueLaserHead].textureRect = sf::IntRect(157, 0, 11, 12);
 
-    data[Projectiles::BlueLaserBody].damage = 20.f;
+    data[Projectiles::BlueLaserBody].damage = 7.f;
     data[Projectiles::BlueLaserBody].texture = Textures::Projectiles;
     data[Projectiles::BlueLaserBody].textureRect = sf::IntRect(157, 14, 11, 12);
 
-    data[Projectiles::BlueLaserTail].damage = 20.f;
+    data[Projectiles::BlueLaserTail].damage = 7.f;
     data[Projectiles::BlueLaserTail].texture = Textures::Projectiles;
     data[Projectiles::BlueLaserTail].textureRect = sf::IntRect(157, 28, 11, 10);
 
-    data[Projectiles::VioletLaserHead].damage = 20.f;
+    data[Projectiles::VioletLaserHead].damage = 10.f;
     data[Projectiles::VioletLaserHead].texture = Textures::Projectiles;
     data[Projectiles::VioletLaserHead].textureRect = sf::IntRect(176, 4, 8, 7);
 
-    data[Projectiles::VioletLaserBody].damage = 20.f;
+    data[Projectiles::VioletLaserBody].damage = 7.f;
     data[Projectiles::VioletLaserBody].texture = Textures::Projectiles;
     data[Projectiles::VioletLaserBody].textureRect = sf::IntRect(176, 13, 8, 8);
 
-    data[Projectiles::VioletLaserTail].damage = 20.f;
+    data[Projectiles::VioletLaserTail].damage = 7.f;
     data[Projectiles::VioletLaserTail].texture = Textures::Projectiles;
     data[Projectiles::VioletLaserTail].textureRect = sf::IntRect(176, 23, 8, 8);
 
-    data[Projectiles::BigLaserHead].damage = 20.f;
+    data[Projectiles::BigLaserHead].hitpoints = 9999.f;
+    data[Projectiles::BigLaserHead].damage = 1.5f;
     data[Projectiles::BigLaserHead].texture = Textures::Projectiles;
     data[Projectiles::BigLaserHead].textureRect = sf::IntRect(200, 0, 40, 40);
 
-    data[Projectiles::BigLaserBody].damage = 20.f;
+    data[Projectiles::BigLaserBody].hitpoints = 9999.f;
+    data[Projectiles::BigLaserBody].damage = 1.f;
     data[Projectiles::BigLaserBody].texture = Textures::Projectiles;
     data[Projectiles::BigLaserBody].textureRect = sf::IntRect(200, 40, 40, 40);
 
-    data[Projectiles::BigLaserTail].damage = 20.f;
+    data[Projectiles::BigLaserTail].hitpoints = 9999.f;
+    data[Projectiles::BigLaserTail].damage = 0.5f;
     data[Projectiles::BigLaserTail].texture = Textures::Projectiles;
     data[Projectiles::BigLaserTail].textureRect = sf::IntRect(160, 40, 40, 40);
 
@@ -269,7 +273,7 @@ std::vector<ProjectileData> initializeProjectileData()
     data[Projectiles::RedOval].texture = Textures::Projectiles;
     data[Projectiles::RedOval].textureRect = sf::IntRect(27, 40, 13, 19);
 
-    data[Projectiles::BlueStarBig].damage = 20.f;
+    data[Projectiles::BlueStarBig].damage = 25.f;
     data[Projectiles::BlueStarBig].texture = Textures::Projectiles;
     data[Projectiles::BlueStarBig].textureRect = sf::IntRect(40, 40, 40, 40);
 
@@ -281,15 +285,15 @@ std::vector<ProjectileData> initializeProjectileData()
     data[Projectiles::Missile].texture = Textures::Projectiles;
     data[Projectiles::Missile].textureRect = sf::IntRect(128, 50, 13, 30);
 
-    data[Projectiles::RedLaserHead].damage = 20.f;
+    data[Projectiles::RedLaserHead].damage = 15.f;
     data[Projectiles::RedLaserHead].texture = Textures::Projectiles;
     data[Projectiles::RedLaserHead].textureRect = sf::IntRect(148, 40, 11, 11);
 
-    data[Projectiles::RedLaserBody].damage = 20.f;
+    data[Projectiles::RedLaserBody].damage = 7.f;
     data[Projectiles::RedLaserBody].texture = Textures::Projectiles;
     data[Projectiles::RedLaserBody].textureRect = sf::IntRect(148, 53, 11, 12);
 
-    data[Projectiles::RedLaserTail].damage = 20.f;
+    data[Projectiles::RedLaserTail].damage = 1.f;
     data[Projectiles::RedLaserTail].texture = Textures::Projectiles;
     data[Projectiles::RedLaserTail].textureRect = sf::IntRect(148, 67, 11, 10);
 
@@ -305,7 +309,8 @@ std::vector<ProjectileData> initializeProjectileData()
     data[Projectiles::RedBullet].texture = Textures::Projectiles;
     data[Projectiles::RedBullet].textureRect = sf::IntRect(29, 61, 8, 17);
 
-    data[Projectiles::EneryBallBig].damage = 20.f;
+    data[Projectiles::EneryBallBig].hitpoints = 9999.f;
+    data[Projectiles::EneryBallBig].damage = 0.5f;
     data[Projectiles::EneryBallBig].texture = Textures::Projectiles;
     data[Projectiles::EneryBallBig].textureRect = sf::IntRect(0, 80, 240, 220);
 
