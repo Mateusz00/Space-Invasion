@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<attack>
+    <chargetime>0</chargetime>
+    <cooldown>3</cooldown>
+
+    <attackPhase>
+        <projectiles>
+            <projectile id="20" speed="100" aimed="yes" offsets="0 20" patternID="1" direction="0"></projectile>
+        </projectiles>
+    </attackPhase>
+</attack>
+

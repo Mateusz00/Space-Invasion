@@ -149,7 +149,7 @@ std::vector<SpaceshipTextureData> initializeSpaceshipTextureData()
     data[21].textureRect = sf::IntRect(160, 0, 80, 80);
 
     data[22].texture = Textures::Spaceships; // PurpleShipFast
-    data[22].textureRect = sf::IntRect(440, 0, 80, 80);
+    data[22].textureRect = sf::IntRect(452, 13, 52, 56);
 
     data[23].texture = Textures::Spaceships; // PurpleShipOval
     data[23].textureRect = sf::IntRect(440, 80, 40, 40);
@@ -222,7 +222,7 @@ std::vector<ProjectileData> initializeProjectileData()
     data[Projectiles::VioletLaserHead].texture = Textures::Projectiles;
     data[Projectiles::VioletLaserHead].textureRect = sf::IntRect(176, 4, 8, 7);
 
-    data[Projectiles::VioletLaserBody].damage = 7.f;
+    data[Projectiles::VioletLaserBody].damage = 8.f;
     data[Projectiles::VioletLaserBody].texture = Textures::Projectiles;
     data[Projectiles::VioletLaserBody].textureRect = sf::IntRect(176, 13, 8, 8);
 
@@ -277,7 +277,8 @@ std::vector<ProjectileData> initializeProjectileData()
     data[Projectiles::BlueStarBig].texture = Textures::Projectiles;
     data[Projectiles::BlueStarBig].textureRect = sf::IntRect(40, 40, 40, 40);
 
-    data[Projectiles::EnergyBallSmall].damage = 20.f;
+    data[Projectiles::EnergyBallSmall].hitpoints = 40.f;
+    data[Projectiles::EnergyBallSmall].damage = 0.8f;
     data[Projectiles::EnergyBallSmall].texture = Textures::Projectiles;
     data[Projectiles::EnergyBallSmall].textureRect = sf::IntRect(80, 40, 40, 40);
 

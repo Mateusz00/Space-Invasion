@@ -25,4 +25,13 @@
     <attack id="22" file="BigRed.xml"/>
     <attack id="23" file="RedLaser.xml"/>
     <attack id="24" file="RedBigSpiral.xml"/>
+    <attack id="25" file="PurpleLaser.xml"/>
+    <attack id="26" file="PurpleOrbitalShield.xml"/>
+    <attack id="27" file="HomingPinkStar.xml"/>
+    <attack id="28" file="PinkSpirals.xml"/>
+    <attack id="29" file="PinkTargetedSpiral.xml"/>
+    <attack id="30" file="PinkBurst.xml"/>
+    <attack id="31" file="PinkSides.xml"/>
+    <attack id="32" file="TripleGreenRound.xml"/>
+    <attack id="33" file="GreenCircleSpread.xml"/>
 </attacks>

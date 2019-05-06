@@ -50,7 +50,7 @@ Spaceship::Spaceship(int typeID, const TextureHolder& textures, const FontHolder
     else
     {
         auto id = static_cast<Animation::ID>(animationID);
-        std::unique_ptr<AnimationNode> sprite(new AnimationNode(id, sf::seconds(0.1f), mTextures));
+        std::unique_ptr<AnimationNode> sprite(new AnimationNode(id, sf::seconds(0.25f), mTextures));
         sprite->setAnimationType(AnimationNode::AnimationType::ForwardAndBackward);
         sprite->setRepeating(true);
         mSprite = std::move(sprite);

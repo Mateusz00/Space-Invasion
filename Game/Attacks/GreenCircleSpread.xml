@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<attack>
+    <chargetime>0</chargetime>
+    <cooldown>4</cooldown>
+
+    <attackPhase phaseCooldown="0.2">
+        <projectiles>
+            <projectile id="31" speed="130" aimed="no" offsets="0 0" patternID="0" direction="180"></projectile>
+        </projectiles>
+    </attackPhase>
+    <attackPhase phaseCooldown="0.2">
+        <projectiles>
+            <projectile id="31" speed="130" aimed="no" offsets="0 0" patternID="0" direction="155"></projectile>
+        </projectiles>
+    </attackPhase>
+    <attackPhase phaseCooldown="0.2">
+        <projectiles>
+            <projectile id="31" speed="130" aimed="no" offsets="0 0" patternID="0" direction="130"></projectile>
+        </projectiles>
+    </attackPhase>
+    <attackPhase phaseCooldown="0.2">
+        <projectiles>
+            <projectile id="31" speed="130" aimed="no" offsets="0 0" patternID="0" direction="105"></projectile>
+        </projectiles>
+    </attackPhase>
+    <attackPhase phaseCooldown="0.2">
+        <projectiles>
+            <projectile id="31" speed="130" aimed="no" offsets="0 0" patternID="0" direction="80"></projectile>
+        </projectiles>
+    </attackPhase>
+    <attackPhase phaseCooldown="0.2">
+        <projectiles>
+            <projectile id="31" speed="130" aimed="no" offsets="0 0" patternID="0" direction="55"></projectile>
+        </projectiles>
+    </attackPhase>
+    <attackPhase phaseCooldown="0.2">
+        <projectiles>
+            <projectile id="31" speed="130" aimed="no" offsets="0 0" patternID="0" direction="30"></projectile>
+        </projectiles>
+    </attackPhase>
+    <attackPhase phaseCooldown="0.2">
+        <projectiles>
+            <projectile id="31" speed="130" aimed="no" offsets="0 0" patternID="0" direction="5"></projectile>
+        </projectiles>
+    </attackPhase>
+    <attackPhase phaseCooldown="0.2">
+        <projectiles>
+            <projectile id="31" speed="130" aimed="no" offsets="0 0" patternID="0" direction="340"></projectile>
+        </projectiles>
+    </attackPhase>
+    <attackPhase phaseCooldown="0.2">
+        <projectiles>
+            <projectile id="31" speed="130" aimed="no" offsets="0 0" patternID="0" direction="315"></projectile>
+        </projectiles>
+    </attackPhase>
+    <attackPhase phaseCooldown="0.2">
+        <projectiles>
+            <projectile id="31" speed="130" aimed="no" offsets="0 0" patternID="0" direction="290"></projectile>
+        </projectiles>
+    </attackPhase>
+    <attackPhase phaseCooldown="0.2">
+        <projectiles>
+            <projectile id="31" speed="130" aimed="no" offsets="0 0" patternID="0" direction="265"></projectile>
+        </projectiles>
+    </attackPhase>
+    <attackPhase phaseCooldown="0.2">
+        <projectiles>
+            <projectile id="31" speed="130" aimed="no" offsets="0 0" patternID="0" direction="240"></projectile>
+        </projectiles>
+    </attackPhase>
+    <attackPhase phaseCooldown="0.2">
+        <projectiles>
+            <projectile id="31" speed="130" aimed="no" offsets="0 0" patternID="0" direction="215"></projectile>
+        </projectiles>
+    </attackPhase>
+        <attackPhase>
+        <projectiles>
+            <projectile id="31" speed="130" aimed="no" offsets="0 0" patternID="0" direction="180"></projectile>
+        </projectiles>
+    </attackPhase>
+</attack>
