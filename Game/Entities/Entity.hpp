@@ -12,18 +12,18 @@ class Entity : public SceneNode
     public:
         using ListIterator = std::list<Entity*>::iterator;
 
-        explicit                Entity(int hitpoints, bool isCollidable, World&);
+        explicit                Entity(float hitpoints, bool isCollidable, World&);
         virtual                 ~Entity();
         Entity&                 operator=(const Entity& other);
-        int                     getHitpoints() const;
-        void                    setHitpoints(int hitpoints);
+        float                   getHitpoints() const;
+        void                    setHitpoints(float hitpoints);
         sf::Vector2f            getVelocity() const;
         void                    setVelocity(sf::Vector2f);
         void                    setVelocity(float x, float y);
         void                    accelerate(sf::Vector2f);
         void                    accelerate(float x, float y);
-        void                    damage(int hitpoints);
-        void                    repair(int hitpoints);
+        void                    damage(float hitpoints);
+        void                    repair(float hitpoints);
         void                    destroy();
         World&                  getWorld() const;
         virtual sf::FloatRect   getLocalBounds() const;
@@ -36,7 +36,7 @@ class Entity : public SceneNode
 
     private:
         sf::Vector2f            mVelocity;
-        int                     mHitpoints;
+        float                   mHitpoints;
         World&                  mWorld;
         bool                    mIsCollidable;
 };

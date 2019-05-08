@@ -92,40 +92,40 @@ std::vector<SpaceshipTextureData> initializeSpaceshipTextureData()
     data[2].textureRect = sf::IntRect(40, 40, 40, 40);
 
     data[3].texture = Textures::Spaceships; // HumanShipGreen3
-    data[3].textureRect = sf::IntRect(0, 80, 40, 60);
+    data[3].textureRect = sf::IntRect(0, 80, 40, 55);
 
     data[4].texture = Textures::Spaceships; // HumanShipBlue1
-    data[4].textureRect = sf::IntRect(80, 40, 40, 40);
+    data[4].textureRect = sf::IntRect(88, 49, 24, 25);
 
     data[5].texture = Textures::Spaceships; // HumanShipBlue2
     data[5].textureRect = sf::IntRect(120, 40, 40, 40);
 
     data[6].texture = Textures::Spaceships; // HumanShipBlue3
-    data[6].textureRect = sf::IntRect(40, 80, 80, 40);
+    data[6].textureRect = sf::IntRect(56, 80, 47, 40);
 
     data[7].texture = Textures::Spaceships; // BiomechLight1
-    data[7].textureRect = sf::IntRect(80, 120, 40, 40);
+    data[7].textureRect = sf::IntRect(80, 125, 40, 29);
 
     data[8].texture = Textures::Spaceships; // BiomechLight2
-    data[8].textureRect = sf::IntRect(40, 160, 40, 70);
+    data[8].textureRect = sf::IntRect(40, 166, 40, 60);
 
     data[9].texture = Textures::Spaceships; // BiomechLight3
-    data[9].textureRect = sf::IntRect(120, 160, 80, 80);
+    data[9].textureRect = sf::IntRect(130, 160, 60, 80);
 
     data[10].texture = Textures::Spaceships; // BiomechRed1
-    data[10].textureRect = sf::IntRect(40, 120, 40, 40);
+    data[10].textureRect = sf::IntRect(40, 125, 40, 32);
 
     data[11].texture = Textures::Spaceships; // BiomechRed2
-    data[11].textureRect = sf::IntRect(80, 160, 40, 70);
+    data[11].textureRect = sf::IntRect(80, 170, 40, 51);
 
     data[12].texture = Textures::Spaceships; // BiomechRed3
     data[12].textureRect = sf::IntRect(204, 170, 68, 56);
 
     data[13].texture = Textures::Spaceships; // BiomechDark1
-    data[13].textureRect = sf::IntRect(200, 120, 40, 40);
+    data[13].textureRect = sf::IntRect(200, 124, 40, 31);
 
     data[14].texture = Textures::Spaceships; // BiomechDark2
-    data[14].textureRect = sf::IntRect(0, 160, 40, 70);
+    data[14].textureRect = sf::IntRect(0, 170, 40, 48);
 
     data[15].texture = Textures::Spaceships; // BiomechDark3
     data[15].textureRect = sf::IntRect(0, 240, 80, 80);
@@ -158,13 +158,13 @@ std::vector<SpaceshipTextureData> initializeSpaceshipTextureData()
     data[24].textureRect = sf::IntRect(320, 320, 40, 80);
 
     data[25].texture = Textures::Spaceships; // PurpleShipWide
-    data[25].textureRect = sf::IntRect(360, 320, 120, 40);
+    data[25].textureRect = sf::IntRect(372, 320, 94, 40);
 
     data[26].texture = Textures::Spaceships; // PurpleShipSmall
     data[26].textureRect = sf::IntRect(240, 120, 40, 40);
 
     data[27].texture = Textures::Spaceships; // Boss
-    data[27].textureRect = sf::IntRect(520, 0, 360, 360);
+    data[27].textureRect = sf::IntRect(530, 0, 350, 360);
 
     return data;
 }
@@ -391,7 +391,7 @@ std::vector<AnimationData> initializeAnimationData()
     data[Animation::VoidRedSpaceship1].rows = 1;
     data[Animation::VoidRedSpaceship1].framesPerRow = 4;
     data[Animation::VoidRedSpaceship1].frames = 4;
-    data[Animation::VoidRedSpaceship1].frameSize = sf::Vector2i(25, 40);
+    data[Animation::VoidRedSpaceship1].frameSize = sf::Vector2i(16, 40);
     data[Animation::VoidRedSpaceship1].spriteSheet = Textures::Spaceships;
 
     data[Animation::VoidRedSpaceship2].beginning = sf::Vector2i(280, 0);
@@ -419,14 +419,14 @@ std::vector<AnimationData> initializeAnimationData()
     data[Animation::SaucerSmallSpaceship].rows = 1;
     data[Animation::SaucerSmallSpaceship].framesPerRow = 3;
     data[Animation::SaucerSmallSpaceship].frames = 3;
-    data[Animation::SaucerSmallSpaceship].frameSize = sf::Vector2i(40, 40);
+    data[Animation::SaucerSmallSpaceship].frameSize = sf::Vector2i(32, 31);
     data[Animation::SaucerSmallSpaceship].spriteSheet = Textures::Spaceships;
 
     data[Animation::SaucerMediumSpaceship].beginning = sf::Vector2i(0, 320);
     data[Animation::SaucerMediumSpaceship].rows = 1;
     data[Animation::SaucerMediumSpaceship].framesPerRow = 4;
     data[Animation::SaucerMediumSpaceship].frames = 4;
-    data[Animation::SaucerMediumSpaceship].frameSize = sf::Vector2i(80, 80);
+    data[Animation::SaucerMediumSpaceship].frameSize = sf::Vector2i(60, 60);
     data[Animation::SaucerMediumSpaceship].spriteSheet = Textures::Spaceships;
 
     return data;

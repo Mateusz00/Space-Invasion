@@ -1,7 +1,7 @@
 #include "Entity.hpp"
 #include "../World.hpp"
 
-Entity::Entity(int hitpoints, bool isCollidable, World& world)
+Entity::Entity(float hitpoints, bool isCollidable, World& world)
     : mHitpoints(hitpoints),
       mWorld(world),
       mIsCollidable(isCollidable)
@@ -23,12 +23,12 @@ Entity& Entity::operator=(const Entity& other)
     return *this;
 }
 
-int Entity::getHitpoints() const
+float Entity::getHitpoints() const
 {
     return mHitpoints;
 }
 
-void Entity::setHitpoints(int hitpoints)
+void Entity::setHitpoints(float hitpoints)
 {
     mHitpoints = hitpoints;
 }
@@ -64,12 +64,12 @@ void Entity::updateCurrent(sf::Time dt, CommandQueue& commands)
     move(mVelocity * dt.asSeconds());
 }
 
-void Entity::damage(int hitpoints)
+void Entity::damage(float hitpoints)
 {
     mHitpoints -= hitpoints;
 }
 
-void Entity::repair(int hitpoints)
+void Entity::repair(float hitpoints)
 {
     mHitpoints += hitpoints;
 }
