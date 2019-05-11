@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<attack>
+    <chargetime>0</chargetime>
+    <cooldown>3.5</cooldown>
+
+    <attackPhase>
+        <projectiles>
+            <projectile id="4" speed="95" aimed="yes" offsets="0 20" patternID="0" direction="0"></projectile>
+            <projectile id="23" speed="90" aimed="no" offsets="19 11" patternID="3" direction="0" gravityCenterID="0"></projectile>
+            <projectile id="23" speed="90" aimed="no" offsets="-19 11" patternID="3" direction="0" gravityCenterID="0"></projectile>
+            <projectile id="23" speed="90" aimed="no" offsets="0 -22" patternID="3" direction="0" gravityCenterID="0"></projectile>
+        </projectiles>
+
+        <gravityCenters>
+            <center id="0" speed="95" aimed="yes" offsets="0 20" patternID="0" direction="0"></center>
+        </gravityCenters>
+    </attackPhase>
+</attack>
+

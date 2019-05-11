@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <attack>
-    <chargetime>4</chargetime>
-    <cooldown>3</cooldown>
+    <chargetime>2.6</chargetime>
+    <cooldown>3.5</cooldown>
 
     <attackPhase phaseCooldown="0.06">
         <projectiles>

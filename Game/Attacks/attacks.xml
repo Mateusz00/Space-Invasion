@@ -34,4 +34,14 @@
     <attack id="31" file="PinkSides.xml"/>
     <attack id="32" file="TripleGreenRound.xml"/>
     <attack id="33" file="GreenCircleSpread.xml"/>
+    <attack id="34" file="TripleBlueStar.xml"/>
+    <attack id="35" file="BlueBallAimed.xml"/>
+    <attack id="36" file="NarrowBlueSprial.xml"/>
+    <attack id="37" file="SingleRed.xml"/>
+    <attack id="38" file="DoubleSidesRed.xml"/>
+    <attack id="39" file="NarrowRedSpiral.xml"/>
+    <attack id="40" file="SmallFireball.xml"/>
+    <attack id="41" file="BigFireball.xml"/>
+    <attack id="42" file="GreenSmallConeSpread.xml"/>
+    <attack id="43" file="HomingBlueOval.xml"/>
 </attacks>

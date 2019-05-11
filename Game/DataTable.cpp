@@ -198,7 +198,7 @@ std::vector<ProjectileData> initializeProjectileData()
     data[Projectiles::RedCircleBig].texture = Textures::Projectiles;
     data[Projectiles::RedCircleBig].textureRect = sf::IntRect(66, 0, 34, 33);
 
-    data[Projectiles::BlueCircleBig].damage = 20.f;
+    data[Projectiles::BlueCircleBig].damage = 35.f;
     data[Projectiles::BlueCircleBig].texture = Textures::Projectiles;
     data[Projectiles::BlueCircleBig].textureRect = sf::IntRect(101, 0, 27, 29);
 
@@ -282,7 +282,7 @@ std::vector<ProjectileData> initializeProjectileData()
     data[Projectiles::EnergyBallSmall].texture = Textures::Projectiles;
     data[Projectiles::EnergyBallSmall].textureRect = sf::IntRect(80, 40, 40, 40);
 
-    data[Projectiles::Missile].damage = 20.f;
+    data[Projectiles::Missile].damage = 100.f;
     data[Projectiles::Missile].texture = Textures::Projectiles;
     data[Projectiles::Missile].textureRect = sf::IntRect(128, 50, 13, 30);
 
@@ -405,7 +405,7 @@ std::vector<AnimationData> initializeAnimationData()
     data[Animation::VoidRedSpaceship3].rows = 1;
     data[Animation::VoidRedSpaceship3].framesPerRow = 4;
     data[Animation::VoidRedSpaceship3].frames = 4;
-    data[Animation::VoidRedSpaceship3].frameSize = sf::Vector2i(40, 52);
+    data[Animation::VoidRedSpaceship3].frameSize = sf::Vector2i(40, 51);
     data[Animation::VoidRedSpaceship3].spriteSheet = Textures::Spaceships;
 
     data[Animation::VoidRedSpaceship4].beginning = sf::Vector2i(280, 120);
