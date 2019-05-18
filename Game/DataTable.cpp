@@ -236,7 +236,7 @@ std::vector<ProjectileData> initializeProjectileData()
     data[Projectiles::BigLaserHead].textureRect = sf::IntRect(200, 0, 40, 40);
 
     data[Projectiles::BigLaserBody].hitpoints = 9999.f;
-    data[Projectiles::BigLaserBody].damage = 1.f;
+    data[Projectiles::BigLaserBody].damage = 0.5f;
     data[Projectiles::BigLaserBody].texture = Textures::Projectiles;
     data[Projectiles::BigLaserBody].textureRect = sf::IntRect(200, 40, 40, 40);
 
@@ -311,7 +311,7 @@ std::vector<ProjectileData> initializeProjectileData()
     data[Projectiles::RedBullet].textureRect = sf::IntRect(29, 61, 8, 17);
 
     data[Projectiles::EneryBallBig].hitpoints = 9999.f;
-    data[Projectiles::EneryBallBig].damage = 0.5f;
+    data[Projectiles::EneryBallBig].damage = 0.42f;
     data[Projectiles::EneryBallBig].texture = Textures::Projectiles;
     data[Projectiles::EneryBallBig].textureRect = sf::IntRect(0, 80, 240, 220);
 
