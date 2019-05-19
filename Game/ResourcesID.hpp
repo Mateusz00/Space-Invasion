@@ -122,6 +122,8 @@ namespace Projectiles
         GreenOval2,
         RedBullet,
         EneryBallBig,
+        OrangeOvalWeak1,
+        OrangeOvalWeak2,
         Count
     };
 }

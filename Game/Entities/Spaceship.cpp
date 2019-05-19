@@ -22,8 +22,8 @@ Spaceship::Spaceship(int typeID, const TextureHolder& textures, const FontHolder
                     World& world, const std::vector<Spaceship*>& targets, int id)
     : Entity(spaceshipInfo[typeID].hitpoints, true, world),
       mTypeID(typeID),
-      mFireRateLevel(3),
-      mSpreadLevel(1),
+      mFireRateLevel(6),
+      mSpreadLevel(0),
       mMissileAmmo(2),
       mIdentifier(id),
       mIsEnemy(typeID != 0),
@@ -119,13 +119,13 @@ Category::Type Spaceship::getCategory() const
 
 void Spaceship::increaseFireRate()
 {
-    if(mFireRateLevel < 6)
+    if(mFireRateLevel < 9)
         ++mFireRateLevel;
 }
 
 void Spaceship::increaseSpread()
 {
-    if(mSpreadLevel < 3)
+    if(mSpreadLevel < 2)
         ++mSpreadLevel;
 }
 
@@ -156,7 +156,7 @@ void Spaceship::setIdentifier(int id)
 
 void Spaceship::fire()
 {
-    if(mAttackManager.tryAttack(mSpreadLevel-1, getWorld().getCommandQueue()))
+    if(mAttackManager.tryAttack(mSpreadLevel+200, getWorld().getCommandQueue()))
         mAttackManager.forceCooldown(mAttackManager.getCooldown() / static_cast<float>(mFireRateLevel));
 }
 

@@ -315,6 +315,14 @@ std::vector<ProjectileData> initializeProjectileData()
     data[Projectiles::EneryBallBig].texture = Textures::Projectiles;
     data[Projectiles::EneryBallBig].textureRect = sf::IntRect(0, 80, 240, 220);
 
+    data[Projectiles::OrangeOvalWeak1].damage = 10.f;
+    data[Projectiles::OrangeOvalWeak1].texture = Textures::Projectiles;
+    data[Projectiles::OrangeOvalWeak1].textureRect = sf::IntRect(12, 0, 12, 20);
+
+    data[Projectiles::OrangeOvalWeak2].damage = 6.f;
+    data[Projectiles::OrangeOvalWeak2].texture = Textures::Projectiles;
+    data[Projectiles::OrangeOvalWeak2].textureRect = sf::IntRect(12, 0, 12, 20);
+
     return data;
 }
 
