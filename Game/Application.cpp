@@ -41,8 +41,8 @@ void Application::run()
             handleEvents();
             update(TIME_PER_FRAME);
 
-                if(mStateStack.isEmpty())
-            mWindow.close();
+            if(mStateStack.isEmpty())
+                mWindow.close();
         }
 
         updateFPSCounter(deltaTime);
