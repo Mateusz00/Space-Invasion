@@ -46,6 +46,9 @@
     <attack id="43" file="HomingBlueOval.xml"/>
     <attack id="44" file="BossEnergyBall.xml"/>
     <attack id="45" file="BossLaser.xml"/>
+    <attack id="46" file="BossSides.xml"/>
+    <attack id="47" file="BossSpiral.xml"/>
+    <attack id="48" file="BossSideCircles.xml"/>
     <attack id="200" file="PlayerAttack1.xml"/>
     <attack id="201" file="PlayerAttack2.xml"/>
     <attack id="202" file="PlayerAttack3.xml"/>

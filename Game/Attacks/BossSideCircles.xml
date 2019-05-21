@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<attack>
+    <chargetime>0</chargetime>
+    <cooldown>5</cooldown>
+
+    <attackPhase phaseCooldown="0.1">
+        <projectiles>
+            <projectile id="4" speed="80" aimed="no" offsets="30 0" patternID="3" direction="0" gravityCenterID="0"></projectile>
+            <projectile id="4" speed="80" aimed="no" offsets="-30 0" patternID="3" direction="0" gravityCenterID="0"></projectile>
+            <projectile id="4" speed="80" aimed="no" offsets="0 -30" patternID="3" direction="0" gravityCenterID="0"></projectile>
+            <projectile id="4" speed="80" aimed="no" offsets="0 30" patternID="3" direction="0" gravityCenterID="0"></projectile>
+        </projectiles>
+
+        <gravityCenters>
+            <center id="0" speed="100" aimed="no" offsets="-360 0" patternID="2" direction="0" amplitude="12" waveLength="100"></center>
+        </gravityCenters>
+    </attackPhase>
+
+    <attackPhase phaseCooldown="1">
+        <projectiles>
+            <projectile id="4" speed="80" aimed="no" offsets="30 0" patternID="3" direction="0" gravityCenterID="0"></projectile>
+            <projectile id="4" speed="80" aimed="no" offsets="-30 0" patternID="3" direction="0" gravityCenterID="0"></projectile>
+            <projectile id="4" speed="80" aimed="no" offsets="0 -30" patternID="3" direction="0" gravityCenterID="0"></projectile>
+            <projectile id="4" speed="80" aimed="no" offsets="0 30" patternID="3" direction="0" gravityCenterID="0"></projectile>
+        </projectiles>
+
+        <gravityCenters>
+            <center id="0" speed="100" aimed="no" offsets="360 0" patternID="2" direction="0" amplitude="12" waveLength="100"></center>
+        </gravityCenters>
+    </attackPhase>
+
+    <attackPhase phaseCooldown="0.1">
+        <projectiles>
+            <projectile id="4" speed="80" aimed="no" offsets="30 0" patternID="3" direction="0" gravityCenterID="0"></projectile>
+            <projectile id="4" speed="80" aimed="no" offsets="-30 0" patternID="3" direction="0" gravityCenterID="0"></projectile>
+            <projectile id="4" speed="80" aimed="no" offsets="0 -30" patternID="3" direction="0" gravityCenterID="0"></projectile>
+            <projectile id="4" speed="80" aimed="no" offsets="0 30" patternID="3" direction="0" gravityCenterID="0"></projectile>
+        </projectiles>
+
+        <gravityCenters>
+            <center id="0" speed="100" aimed="no" offsets="270 0" patternID="2" direction="0" amplitude="12" waveLength="100"></center>
+        </gravityCenters>
+    </attackPhase>
+
+    <attackPhase phaseCooldown="1">
+        <projectiles>
+            <projectile id="4" speed="80" aimed="no" offsets="30 0" patternID="3" direction="0" gravityCenterID="0"></projectile>
+            <projectile id="4" speed="80" aimed="no" offsets="-30 0" patternID="3" direction="0" gravityCenterID="0"></projectile>
+            <projectile id="4" speed="80" aimed="no" offsets="0 -30" patternID="3" direction="0" gravityCenterID="0"></projectile>
+            <projectile id="4" speed="80" aimed="no" offsets="0 30" patternID="3" direction="0" gravityCenterID="0"></projectile>
+        </projectiles>
+
+        <gravityCenters>
+            <center id="0" speed="100" aimed="no" offsets="-270 0" patternID="2" direction="0" amplitude="12" waveLength="100"></center>
+        </gravityCenters>
+    </attackPhase>
+</attack>
+
+
