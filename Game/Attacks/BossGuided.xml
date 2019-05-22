@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<attack>
+    <chargetime>0</chargetime>
+    <cooldown>3</cooldown>
+
+    <attackPhase phaseCooldown="0.4">
+        <projectiles>
+            <projectile id="5" speed="0" aimed="no" offsets="0 0" patternID="3" direction="0" gravityCenterID="0"></projectile>
+            <projectile id="4" speed="65" aimed="no" offsets="38 -12.4" patternID="3" direction="0" gravityCenterID="0"></projectile>
+            <projectile id="4" speed="65" aimed="no" offsets="23.5 32.4" patternID="3" direction="0" gravityCenterID="0"></projectile>
+            <projectile id="4" speed="65" aimed="no" offsets="-23.5 32.4" patternID="3" direction="0" gravityCenterID="0"></projectile>
+            <projectile id="4" speed="65" aimed="no" offsets="-38 -12.4" patternID="3" direction="0" gravityCenterID="0"></projectile>
+            <projectile id="4" speed="65" aimed="no" offsets="0 -40" patternID="3" direction="0" gravityCenterID="0"></projectile>
+        </projectiles>
+
+        <gravityCenters>
+            <center id="0" speed="80" aimed="yes" offsets="-50 10" patternID="1" direction="0"></center>
+        </gravityCenters>
+    </attackPhase>
+
+    <attackPhase>
+        <projectiles>
+            <projectile id="5" speed="0" aimed="no" offsets="0 0" patternID="3" direction="0" gravityCenterID="0"></projectile>
+            <projectile id="4" speed="65" aimed="no" offsets="38 -12.4" patternID="3" direction="0" gravityCenterID="0"></projectile>
+            <projectile id="4" speed="65" aimed="no" offsets="23.5 32.4" patternID="3" direction="0" gravityCenterID="0"></projectile>
+            <projectile id="4" speed="65" aimed="no" offsets="-23.5 32.4" patternID="3" direction="0" gravityCenterID="0"></projectile>
+            <projectile id="4" speed="65" aimed="no" offsets="-38 -12.4" patternID="3" direction="0" gravityCenterID="0"></projectile>
+            <projectile id="4" speed="65" aimed="no" offsets="0 -40" patternID="3" direction="0" gravityCenterID="0"></projectile>
+        </projectiles>
+
+        <gravityCenters>
+            <center id="0" speed="80" aimed="yes" offsets="50 10" patternID="1" direction="0"></center>
+        </gravityCenters>
+    </attackPhase>
+</attack>

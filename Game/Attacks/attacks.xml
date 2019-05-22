@@ -49,6 +49,9 @@
     <attack id="46" file="BossSides.xml"/>
     <attack id="47" file="BossSpiral.xml"/>
     <attack id="48" file="BossSideCircles.xml"/>
+    <attack id="49" file="BossCircleBurst.xml"/>
+    <attack id="50" file="BossGuided.xml"/>
+    <attack id="51" file="BossWave.xml"/>
     <attack id="200" file="PlayerAttack1.xml"/>
     <attack id="201" file="PlayerAttack2.xml"/>
     <attack id="202" file="PlayerAttack3.xml"/>
