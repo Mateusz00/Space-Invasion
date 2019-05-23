@@ -13,18 +13,18 @@
     </attackPhase>
     <attackPhase phaseCooldown="0.3">
         <projectiles>
-            <projectile id="5" speed="200" aimed="no" offsets="54 190" patternID="2" direction="13" amplitude="-100" waveLength="150"></projectile>
-            <projectile id="5" speed="200" aimed="no" offsets="54 190" patternID="2" direction="13" amplitude="100" waveLength="150"></projectile>
-            <projectile id="5" speed="200" aimed="no" offsets="-51 190" patternID="2" direction="347" amplitude="-100" waveLength="150"></projectile>
-            <projectile id="5" speed="200" aimed="no" offsets="-51 190" patternID="2" direction="347" amplitude="100" waveLength="150"></projectile>
+            <projectile id="5" speed="200" aimed="no" offsets="54 190" patternID="2" direction="13" amplitude="-100" waveLength="160"></projectile>
+            <projectile id="5" speed="200" aimed="no" offsets="54 190" patternID="2" direction="13" amplitude="100" waveLength="160"></projectile>
+            <projectile id="5" speed="200" aimed="no" offsets="-51 190" patternID="2" direction="347" amplitude="-100" waveLength="160"></projectile>
+            <projectile id="5" speed="200" aimed="no" offsets="-51 190" patternID="2" direction="347" amplitude="100" waveLength="160"></projectile>
         </projectiles>
     </attackPhase>
     <attackPhase repeats="20" repeatCooldown="0.13">
         <projectiles>
-            <projectile id="5" speed="200" aimed="no" offsets="54 190" patternID="2" direction="13" amplitude="-100" waveLength="150"></projectile>
-            <projectile id="5" speed="200" aimed="no" offsets="54 190" patternID="2" direction="13" amplitude="100" waveLength="150"></projectile>
-            <projectile id="5" speed="200" aimed="no" offsets="-51 190" patternID="2" direction="347" amplitude="-100" waveLength="150"></projectile>
-            <projectile id="5" speed="200" aimed="no" offsets="-51 190" patternID="2" direction="347" amplitude="100" waveLength="150"></projectile>
+            <projectile id="5" speed="200" aimed="no" offsets="54 190" patternID="2" direction="13" amplitude="-100" waveLength="160"></projectile>
+            <projectile id="5" speed="200" aimed="no" offsets="54 190" patternID="2" direction="13" amplitude="100" waveLength="160"></projectile>
+            <projectile id="5" speed="200" aimed="no" offsets="-51 190" patternID="2" direction="347" amplitude="-100" waveLength="160"></projectile>
+            <projectile id="5" speed="200" aimed="no" offsets="-51 190" patternID="2" direction="347" amplitude="100" waveLength="160"></projectile>
         </projectiles>
     </attackPhase>
 </attack>

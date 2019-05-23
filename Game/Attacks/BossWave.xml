@@ -23,12 +23,6 @@
     </attackPhase>
     <attackPhase phaseCooldown="0.15">
         <projectiles>
-            <projectile id="5" speed="150" aimed="no" offsets="54 190" patternID="0" direction="45"></projectile>
-            <projectile id="5" speed="150" aimed="no" offsets="-51 190" patternID="0" direction="45"></projectile>
-        </projectiles>
-    </attackPhase>
-    <attackPhase phaseCooldown="0.15">
-        <projectiles>
             <projectile id="5" speed="150" aimed="no" offsets="54 190" patternID="0" direction="35"></projectile>
             <projectile id="5" speed="150" aimed="no" offsets="-51 190" patternID="0" direction="35"></projectile>
         </projectiles>

@@ -52,6 +52,7 @@
     <attack id="49" file="BossCircleBurst.xml"/>
     <attack id="50" file="BossGuided.xml"/>
     <attack id="51" file="BossWave.xml"/>
+    <attack id="52" file="BossWave2.xml"/>
     <attack id="200" file="PlayerAttack1.xml"/>
     <attack id="201" file="PlayerAttack2.xml"/>
     <attack id="202" file="PlayerAttack3.xml"/>

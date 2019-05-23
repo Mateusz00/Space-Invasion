@@ -3,15 +3,15 @@
     <chargetime>1</chargetime>
     <cooldown>8</cooldown>
 
-    <attackPhase phaseCooldown="2">
+    <attackPhase phaseCooldown="1.5">
         <projectiles>
             <projectile id="33" speed="100" aimed="no" offsets="0 80" patternID="0" direction="0"></projectile>
         </projectiles>
     </attackPhase>
     <attackPhase>
         <projectiles>
-            <projectile id="33" speed="90" aimed="no" offsets="25 62" patternID="0" direction="12"></projectile>
-            <projectile id="33" speed="90" aimed="no" offsets="-25 62" patternID="0" direction="348"></projectile>
+            <projectile id="33" speed="90" aimed="no" offsets="55 62" patternID="0" direction="9"></projectile>
+            <projectile id="33" speed="90" aimed="no" offsets="-55 62" patternID="0" direction="351"></projectile>
         </projectiles>
     </attackPhase>
 </attack>

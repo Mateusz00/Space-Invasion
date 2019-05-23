@@ -10,12 +10,14 @@
             <projectile id="25" speed="160" aimed="no" offsets="-20 50" patternID="0" direction="320"></projectile>
             <projectile id="25" speed="160" aimed="no" offsets="-20 50" patternID="0" direction="305"></projectile>
             <projectile id="25" speed="160" aimed="no" offsets="-20 50" patternID="0" direction="290"></projectile>
+            <projectile id="25" speed="160" aimed="no" offsets="-20 50" patternID="0" direction="270"></projectile>
 
             <projectile id="25" speed="160" aimed="no" offsets="20 50" patternID="0" direction="10"></projectile>
             <projectile id="25" speed="160" aimed="no" offsets="20 50" patternID="0" direction="25"></projectile>
             <projectile id="25" speed="160" aimed="no" offsets="20 50" patternID="0" direction="40"></projectile>
             <projectile id="25" speed="160" aimed="no" offsets="20 50" patternID="0" direction="55"></projectile>
             <projectile id="25" speed="160" aimed="no" offsets="20 50" patternID="0" direction="70"></projectile>
+            <projectile id="25" speed="160" aimed="no" offsets="20 50" patternID="0" direction="90"></projectile>
         </projectiles>
     </attackPhase>
     <attackPhase>
