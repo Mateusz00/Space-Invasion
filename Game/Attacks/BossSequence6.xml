@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<attack>
+    <chargetime>0</chargetime>
+    <cooldown>12.5</cooldown>
+
+    <attackPhase linkedAttackID="50" phaseCooldown="0.4"></attackPhase>
+    <attackPhase linkedAttackID="0" phaseCooldown="0.4"></attackPhase>
+    <attackPhase linkedAttackID="50" phaseCooldown="0.4"></attackPhase>
+    <attackPhase linkedAttackID="0" phaseCooldown="0.4"></attackPhase>
+</attack>

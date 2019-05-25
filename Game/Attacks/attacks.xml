@@ -56,6 +56,14 @@
     <attack id="53" file="BossSpreadRedOval.xml"/>
     <attack id="54" file="BossAimed.xml"/>
     <attack id="55" file="BossSpreadRedOval2.xml"/>
+    <attack id="56" file="BossSequence1.xml"/>
+    <attack id="57" file="BossSequence2.xml"/>
+    <attack id="58" file="BossSequence3.xml"/>
+    <attack id="59" file="BossSequence4.xml"/>
+    <attack id="60" file="BossSequence5.xml"/>
+    <attack id="61" file="BossSequence6.xml"/>
+    <attack id="62" file="BossSingleEnergyBall.xml"/>
+    <attack id="63" file="BossSequence7.xml"/>
     <attack id="200" file="PlayerAttack1.xml"/>
     <attack id="201" file="PlayerAttack2.xml"/>
     <attack id="202" file="PlayerAttack3.xml"/>

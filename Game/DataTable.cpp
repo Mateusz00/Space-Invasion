@@ -231,17 +231,17 @@ std::vector<ProjectileData> initializeProjectileData()
     data[Projectiles::VioletLaserTail].textureRect = sf::IntRect(176, 23, 8, 8);
 
     data[Projectiles::BigLaserHead].hitpoints = 9999.f;
-    data[Projectiles::BigLaserHead].damage = 1.5f;
+    data[Projectiles::BigLaserHead].damage = 2.f;
     data[Projectiles::BigLaserHead].texture = Textures::Projectiles;
     data[Projectiles::BigLaserHead].textureRect = sf::IntRect(200, 0, 40, 40);
 
     data[Projectiles::BigLaserBody].hitpoints = 9999.f;
-    data[Projectiles::BigLaserBody].damage = 0.5f;
+    data[Projectiles::BigLaserBody].damage = 0.65f;
     data[Projectiles::BigLaserBody].texture = Textures::Projectiles;
     data[Projectiles::BigLaserBody].textureRect = sf::IntRect(200, 40, 40, 40);
 
     data[Projectiles::BigLaserTail].hitpoints = 9999.f;
-    data[Projectiles::BigLaserTail].damage = 0.5f;
+    data[Projectiles::BigLaserTail].damage = 0.65f;
     data[Projectiles::BigLaserTail].texture = Textures::Projectiles;
     data[Projectiles::BigLaserTail].textureRect = sf::IntRect(160, 40, 40, 40);
 
