@@ -5,12 +5,12 @@
 
 struct AABB
 {
-	sf::FloatRect aabb;
+	sf::FloatRect rect;
 	int entityID;
 };
 
 template <typename Rect>
-Rect mergeRects(const Rect& first, const Rect& second) const
+Rect mergeRects(const Rect& first, const Rect& second)
 {
     return Rect(std::min(first.left, second.left),
                 std::min(first.top, second.top),
@@ -19,7 +19,7 @@ Rect mergeRects(const Rect& first, const Rect& second) const
 }
 
 template <typename Rect>
-float getSurfaceArea(const Rect& rect) const
+float getSurfaceArea(const Rect& rect)
 {
     return ((rect.left + rect.width) * (rect.top + rect.height));
 }
