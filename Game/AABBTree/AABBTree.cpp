@@ -55,13 +55,13 @@ void AABBTree::insertEntity(const AABB& entity)
 			costLeft = getSurfaceArea(mergeRects(newLeafNode.aabb.rect, leftNode.aabb.rect)) + minimumPushDownCost;
 		else
 			costLeft = getSurfaceArea(mergeRects(newLeafNode.aabb.rect, leftNode.aabb.rect))
-                         - getSurfaceArea(leftNode.aabb.rect) + minimumPushDownCost;
+                       - getSurfaceArea(leftNode.aabb.rect) + minimumPushDownCost;
 
 		if(rightNode.isLeaf())
 			costRight = getSurfaceArea(mergeRects(newLeafNode.aabb.rect, rightNode.aabb.rect)) + minimumPushDownCost;
 		else
 			costRight = getSurfaceArea(mergeRects(newLeafNode.aabb.rect, rightNode.aabb.rect))
-                         - getSurfaceArea(rightNode.aabb.rect) + minimumPushDownCost;
+                        - getSurfaceArea(rightNode.aabb.rect) + minimumPushDownCost;
 
 		if(newParentNodeCost < costLeft && newParentNodeCost < costRight)
 			break;
@@ -105,9 +105,47 @@ void AABBTree::insertEntity(const AABB& entity)
 
 std::vector<int> AABBTree::queryOverlaps(const AABB& entity) const
 {
+	std::vector<int> collisions;
+	std::stack<int> traversalStack;
+	sf::FloatRect testAABB = entity.rect;
+
+	traversalStack.push(mRootNodeIndex);
+	while(!traversalStack.empty())
+	{
+		int currentNodeIndex = traversalStack.top();
+		traversalStack.pop();
+
+		if(currentNodeIndex == NULL_NODE)
+		    continue;
+
+		const AABBNode& node = mNodes[currentNodeIndex];
+		if(node.aabb.rect.intersects(testAABB))
+		{
+			if(node.isLeaf() && node.aabb.entityID != entity.entityID)
+			{
+				collisions.emplace_back(node.aabb.entityID);
+			}
+			else
+			{
+				traversalStack.push(node.leftNodeIndex);
+				traversalStack.push(node.rightNodeIndex);
+			}
+		}
+	}
+
+	return collisions;
 }
 
 /// Updates all parent's rects of currentNodeIndex
 void AABBTree::fixUpwardsTree(int currentNodeIndex)
 {
+	while(currentNodeIndex != NULL_NODE)
+	{
+		AABBNode& currentNode     = mNodes[currentNodeIndex];
+		const AABBNode& leftNode  = mNodes[currentNode.leftNodeIndex];
+		const AABBNode& rightNode = mNodes[currentNode.rightNodeIndex];
+
+		currentNode.aabb.rect = mergeRects(leftNode.aabb.rect, rightNode.aabb.rect);
+		currentNodeIndex = currentNode.parentNodeIndex;
+	}
 }
