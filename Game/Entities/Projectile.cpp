@@ -10,8 +10,8 @@ namespace
     const std::vector<ProjectileData> table = initializeProjectileData();
 }
 
-Projectile::Projectile(Projectiles::ID type, const TextureHolder& textures, World& world, int shooterID, float speed)
-    : Entity(table[type].hitpoints, true, world),
+Projectile::Projectile(Projectiles::ID type, const TextureHolder& textures, ObjectContext context, int shooterID, float speed)
+    : Entity(table[type].hitpoints, true, context),
       mType(type),
       mSprite(textures.get(table[type].texture), table[type].textureRect),
       mShooterID(shooterID),
@@ -22,11 +22,11 @@ Projectile::Projectile(Projectiles::ID type, const TextureHolder& textures, Worl
 
     if(mType == Projectiles::Missile) // Adds emitters for missiles
     {
-        std::unique_ptr<EmitterNode> smoke(new EmitterNode(Particle::Smoke, getWorld().getParticleNode(), 30.f));
+        std::unique_ptr<EmitterNode> smoke(new EmitterNode(Particle::Smoke, getObjectContext().particleNode, 30.f));
         smoke->setPosition(0.f, mSprite.getLocalBounds().height / 2.f);
         attachChild(std::move(smoke));
 
-        std::unique_ptr<EmitterNode> propellant(new EmitterNode(Particle::Propellant, getWorld().getParticleNode(), 30.f));
+        std::unique_ptr<EmitterNode> propellant(new EmitterNode(Particle::Propellant, getObjectContext().particleNode, 30.f));
         propellant->setPosition(0.f, mSprite.getLocalBounds().height / 2.f);
         attachChild(std::move(propellant));
     }

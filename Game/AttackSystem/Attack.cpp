@@ -10,9 +10,9 @@
 #include <iostream>
 using Attacks::attackData;
 
-Attack::Attack(int id, const TextureHolder& textures, sf::Vector2f pos, World& world, int shooterID,
+Attack::Attack(int id, const TextureHolder& textures, sf::Vector2f pos, ObjectContext context, int shooterID,
                 bool isAllied, const std::vector<Spaceship*>& targets, int phase)
-    : Entity(1, false, world),
+    : Entity(1, false, context),
       mTargets(targets),
       mAttackID(id),
       mTextures(textures),
@@ -193,7 +193,7 @@ void Attack::createProjectile(int phase, int projectileNum)
     Projectiles::ID type = projectileInfo.type;
     float speed = projectileInfo.speed;
     int sign = 1;
-    std::unique_ptr<Projectile> projectile(new Projectile(type, mTextures, getWorld(), mShooterID, speed));
+    std::unique_ptr<Projectile> projectile(new Projectile(type, mTextures, getObjectContext(), mShooterID, speed));
 
     if(isAllied())
     {

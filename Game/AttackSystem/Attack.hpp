@@ -16,7 +16,7 @@ class World;
 class Attack : public Entity
 {
     public:
-                                Attack(int id, const TextureHolder&, sf::Vector2f pos, World&, int shooterID,
+                                Attack(int id, const TextureHolder&, sf::Vector2f pos, ObjectContext, int shooterID,
                                         bool isAllied, const std::vector<Spaceship*>& targets, int phase = 0);
         void                    updateCurrent(sf::Time, CommandQueue&);
         bool                    isActive() const;

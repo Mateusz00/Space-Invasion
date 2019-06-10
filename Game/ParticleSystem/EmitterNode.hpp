@@ -10,12 +10,12 @@
 class EmitterNode : public SceneNode
 {
     public:
-                        EmitterNode(Particle::Type, ParticleNode&, float rate);
+                        EmitterNode(Particle::Type, ParticleNode*, float rate);
 
     private:
         virtual void    updateCurrent(sf::Time, CommandQueue&) override;
 
-        ParticleNode&   mParticleNode;
+        ParticleNode*   mParticleNode;
         Particle::Type  mType;
         const float     mEmissionRate;
         sf::Time        mTimePassed;

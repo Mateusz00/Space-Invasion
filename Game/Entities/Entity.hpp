@@ -2,6 +2,7 @@
 #define ENTITY_HPP
 
 #include "../SceneNode.hpp"
+#include "../ObjectContext.hpp"
 #include <SFML/System/Vector2.hpp>
 #include <SFML/System/Time.hpp>
 #include <list>
@@ -10,11 +11,8 @@ class World;
 class Entity : public SceneNode
 {
     public:
-        using ListIterator = std::list<Entity*>::iterator;
-
-        explicit                Entity(float hitpoints, bool isCollidable, World&);
+        explicit                Entity(float hitpoints, bool isCollidable, ObjectContext);
         virtual                 ~Entity();
-        Entity&                 operator=(const Entity& other);
         float                   getHitpoints() const;
         void                    setHitpoints(float hitpoints);
         sf::Vector2f            getVelocity() const;
@@ -25,11 +23,12 @@ class Entity : public SceneNode
         void                    damage(float hitpoints);
         void                    repair(float hitpoints);
         void                    destroy();
-        World&                  getWorld() const;
+        const ObjectContext&    getObjectContext() const;
         virtual sf::FloatRect   getLocalBounds() const;
         virtual void            onCollision(Entity&);
         virtual void            removeEntity();
         virtual bool            isMarkedForRemoval() const override;
+        bool                    isCollidable() const;
 
     protected:
         virtual void            updateCurrent(sf::Time dt, CommandQueue&) override;
@@ -37,7 +36,7 @@ class Entity : public SceneNode
     private:
         sf::Vector2f            mVelocity;
         float                   mHitpoints;
-        World&                  mWorld;
+        ObjectContext           mContext;
         bool                    mIsCollidable;
 };
 

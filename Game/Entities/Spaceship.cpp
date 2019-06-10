@@ -19,8 +19,8 @@ namespace
 }
 
 Spaceship::Spaceship(int typeID, const TextureHolder& textures, const FontHolder& fonts,
-                    World& world, const std::vector<Spaceship*>& targets, int id)
-    : Entity(spaceshipInfo[typeID].hitpoints, true, world),
+                    ObjectContext context, const std::vector<Spaceship*>& targets, int id)
+    : Entity(spaceshipInfo[typeID].hitpoints, true, context),
       mTypeID(typeID),
       mFireRateLevel(6),
       mSpreadLevel(0),
@@ -33,7 +33,7 @@ Spaceship::Spaceship(int typeID, const TextureHolder& textures, const FontHolder
       mTextures(textures),
       mAttackerID(0),
       mScore(0),
-      mAttackManager(textures, world, id, !mIsEnemy, targets),
+      mAttackManager(textures, context, id, !mIsEnemy, targets),
       mBoosted(false),
       mBoostCooldown(false),
       mBoostFuel(FUEL_MAX),
@@ -156,7 +156,7 @@ void Spaceship::setIdentifier(int id)
 
 void Spaceship::fire()
 {
-    if(mAttackManager.tryAttack(mSpreadLevel+200, getWorld().getCommandQueue()))
+    if(mAttackManager.tryAttack(mSpreadLevel+200, *(getObjectContext().commandQueue)))
         mAttackManager.forceCooldown(mAttackManager.getCooldown() / static_cast<float>(mFireRateLevel));
 }
 
@@ -176,7 +176,7 @@ void Spaceship::launchMissile()
 {
     if(mMissileAmmo > 0)
     {
-        mAttackManager.forceAttack(0, getWorld().getCommandQueue(), false);
+        mAttackManager.forceAttack(0, *(getObjectContext().commandQueue), false);
         --mMissileAmmo;
     }
 }
@@ -294,10 +294,19 @@ void Spaceship::createPickup() const
 {
     if(mIsEnemy && (randomInt(1, 4) == 2)) // 25% chance for spawning pickup for enemies
     {
-        auto type = static_cast<Pickup::Type>(randomInt(0, Pickup::TypeCount-1));
-        std::unique_ptr<Pickup> pickup (new Pickup(type, mTextures, getWorld()));
-        pickup->setPosition(getWorldPosition());
-        getWorld().placeOnLayer(std::move(pickup), Category::AirLayer);
+        const TextureHolder& t = mTextures;
+        Command createPickupCommand;
+
+        createPickupCommand.mCategories.emplace_back(Category::AirLayer);
+        createPickupCommand.mAction = [pos = getWorldPosition(), context = getObjectContext(), &t](SceneNode& layer, sf::Time)
+        {
+            auto type = static_cast<Pickup::Type>(randomInt(0, Pickup::TypeCount-1));
+            std::unique_ptr<Pickup> pickup(new Pickup(type, t, context));
+            pickup->setPosition(pos);
+            layer.attachChild(std::move(pickup));
+        };
+
+        getObjectContext().commandQueue->push(createPickupCommand);
     }
 }
 
@@ -306,7 +315,7 @@ void Spaceship::createExplosion() const
     if(mShowExplosion)
     {
         sendExplosion(getWorldPosition());
-        getWorld().getSoundPlayer().play(Sound::Explosion, getWorldPosition());
+        getObjectContext().soundPlayer->play(Sound::Explosion, getWorldPosition());
     }
 }
 
@@ -328,7 +337,7 @@ void Spaceship::increaseScoreRequest(int value) const
             spaceship.increaseScore(value);
     });
 
-    getWorld().getCommandQueue().push(increaseScoreCommand);
+    getObjectContext().commandQueue->push(increaseScoreCommand);
 }
 
 void Spaceship::decreaseScoreRequest(int value) const
@@ -340,7 +349,7 @@ void Spaceship::decreaseScoreRequest(int value) const
         spaceship.increaseScore(-value);
     });
 
-    getWorld().getCommandQueue().push(decreaseScoreCommand);
+    getObjectContext().commandQueue->push(decreaseScoreCommand);
 }
 
 void Spaceship::onRemoval()
@@ -374,7 +383,7 @@ void Spaceship::sendExplosion(sf::Vector2f pos) const
         layer.attachChild(std::move(node));
     };
 
-    getWorld().getCommandQueue().push(explosionCommand);
+    getObjectContext().commandQueue->push(explosionCommand);
 }
 
 void Spaceship::updateBoostFuel()

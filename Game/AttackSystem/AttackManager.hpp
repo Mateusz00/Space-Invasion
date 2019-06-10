@@ -4,6 +4,7 @@
 #include "../ResourcesID.hpp"
 #include "../Command.hpp"
 #include "../DataTable.hpp"
+#include "../ObjectContext.hpp"
 #include <SFML/System/Time.hpp>
 #include <SFML/System/Vector2.hpp>
 class CommandQueue;
@@ -14,7 +15,7 @@ class World;
 class AttackManager
 {
     public:
-        explicit    AttackManager(const TextureHolder&, World& world, int shooterID,
+        explicit    AttackManager(const TextureHolder&, ObjectContext, int shooterID,
                                    bool isAllied, const std::vector<Spaceship*>& targets);
         void        pushAttack(int id, int probability);
         void        forceAttack(int id, CommandQueue&, bool applyCooldown);
@@ -46,7 +47,7 @@ class AttackManager
         sf::Time                            mCooldown;
         const TextureHolder&                mTextures;
         sf::Vector2f                        mPosition;
-        World&                              mWorld;
+        ObjectContext                       mContext;
         int                                 mShooterID;
         bool                                mIsAllied;
         std::unordered_map<int, sf::Time>   mChargingAttacks;

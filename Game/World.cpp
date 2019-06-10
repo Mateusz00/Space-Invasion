@@ -21,12 +21,17 @@ World::World(State::Context context)
       mView(mTarget.getDefaultView()),
       mScrollingSpeed(-40.f),
       mScore("0", context.fonts.get(Fonts::BPmonoItalics), 32u),
-      mIsDeleting(false)
+      mIsDeleting(false),
+      mCollisionTree(0)
 {
     loadLevelData();
     buildWorld();
     mScore.setPosition(mTarget.getSize().x * 0.5f, 18.f);
     mView.setCenter(mPlayerSpawnPosition);
+
+    mObjectContext.commandQueue = &mCommandQueue;
+    mObjectContext.events = &mEvents;
+    mObjectContext.soundPlayer = &mSoundPlayer;
 }
 
 World::~World()
@@ -44,6 +49,7 @@ void World::update(sf::Time dt)
 
     destroyEntitiesOutsideView();
     guideHomingMissiles();
+    createAABBTree();
 
     while(!mCommandQueue.isEmpty())
         mSceneGraph.executeCommand(mCommandQueue.pop(), dt);
@@ -127,7 +133,7 @@ std::unordered_map<int, int>& World::getPlayersScoresMap()
 
 Spaceship* World::addSpaceship(int id)
 {
-    std::unique_ptr<Spaceship> playerSpaceship(new Spaceship(0, mTextures, mFonts, *this, mEnemies, id));
+    std::unique_ptr<Spaceship> playerSpaceship(new Spaceship(0, mTextures, mFonts, mObjectContext, mEnemies, id));
     playerSpaceship->setPosition(mPlayerSpawnPosition.x - 50.f + 100.f*(id%2), mPlayerSpawnPosition.y);
     playerSpaceship->setIdentifier(id);
     mPlayerSpaceships.emplace_back(playerSpaceship.get());
@@ -172,7 +178,7 @@ void World::buildWorld()
     mSceneLayers[Background]->attachChild(std::move(finishLine));
 
     std::unique_ptr<ParticleNode> particleNode(new ParticleNode(mTextures));
-    mParticleNode = particleNode.get();
+    mObjectContext.particleNode = particleNode.get();
     mSceneLayers[LowerAir]->attachChild(std::move(particleNode));
 }
 
@@ -291,7 +297,7 @@ void World::spawnEnemies()
     {
         SpawnPoint& spawn = mSpawnPoints.back();
 
-        std::unique_ptr<Spaceship> enemySpaceship(new Spaceship(spawn.spaceshipID, mTextures, mFonts, *this, mPlayerSpaceships));
+        std::unique_ptr<Spaceship> enemySpaceship(new Spaceship(spawn.spaceshipID, mTextures, mFonts, mObjectContext, mPlayerSpaceships));
         enemySpaceship->setPosition(spawn.x, spawn.y);
         mSceneLayers[UpperAir]->attachChild(std::move(enemySpaceship));
 
@@ -401,4 +407,10 @@ void World::removeDanglingPointers()
 {
     auto firstToRemove = std::remove_if(mPlayerSpaceships.begin(), mPlayerSpaceships.end(), std::mem_fn(&Spaceship::isMarkedForRemoval));
     mPlayerSpaceships.erase(firstToRemove, mPlayerSpaceships.end());
+}
+
+void World::createAABBTree()
+{
+
+   // mCollisionTree.insertEntity()
 }

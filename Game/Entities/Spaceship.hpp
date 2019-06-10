@@ -19,7 +19,7 @@ class Spaceship : public Entity
         enum class EnemyType{Normal, Boss};
         using SpriteNodePtr = std::unique_ptr<SpriteNode>;
 
-                                Spaceship(int, const TextureHolder&, const FontHolder&, World&,
+                                Spaceship(int, const TextureHolder&, const FontHolder&, ObjectContext,
                                           const std::vector<Spaceship*>& targets, int id = 99999);
         Category::Type          getCategory() const override;
         void                    increaseFireRate();

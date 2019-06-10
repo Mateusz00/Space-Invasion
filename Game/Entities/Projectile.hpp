@@ -9,7 +9,8 @@
 class Projectile : public Entity
 {
     public:
-                                        Projectile(Projectiles::ID, const TextureHolder&, World&, int shooterID, float speed);
+                                        Projectile(Projectiles::ID, const TextureHolder&,
+                                                   ObjectContext, int shooterID, float speed);
         float                           getMaxSpeed() const;
         int                             getDamage() const;
         virtual Category::Type          getCategory() const override;

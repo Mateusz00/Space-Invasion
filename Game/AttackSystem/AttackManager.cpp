@@ -7,11 +7,11 @@
 #include "../World.hpp"
 #include "Attacks.hpp"
 
-AttackManager::AttackManager(const TextureHolder& textures, World& world, int shooterID,
+AttackManager::AttackManager(const TextureHolder& textures, ObjectContext context, int shooterID,
                               bool isAllied, const std::vector<Spaceship*>& targets)
     : mTextures(textures),
       mCooldown(sf::seconds(0.1f)),
-      mWorld(world),
+      mContext(context),
       mShooterID(shooterID),
       mIsAllied(isAllied),
       mTargets(targets)
@@ -43,7 +43,7 @@ void AttackManager::launchAttack(int id, CommandQueue& commands, int phase)
     launchAttack.mCategories.push_back(Category::AirLayer);
     launchAttack.mAction = [this, id, phase](SceneNode& layer, sf::Time)
     {
-        std::unique_ptr<Attack> attack(new Attack(id, mTextures, mPosition, mWorld, mShooterID, mIsAllied, mTargets, phase));
+        std::unique_ptr<Attack> attack(new Attack(id, mTextures, mPosition, mContext, mShooterID, mIsAllied, mTargets, phase));
         mCurrentAttacks.emplace_back(attack.get());
         layer.attachChild(std::move(attack));
     };

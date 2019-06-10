@@ -2,6 +2,7 @@
 #define WORLD_HPP
 
 #include "CommandQueue.hpp"
+#include "ObjectContext.hpp"
 #include "LocationEvent.hpp"
 #include "State.hpp"
 #include "SoundPlayer.hpp"
@@ -9,6 +10,7 @@
 #include "ResourcesID.hpp"
 #include "SceneNode.hpp"
 #include "Profile.hpp"
+#include "AABBTree/AABBTree.hpp"
 #include "ParticleSystem/ParticleNode.hpp"
 #include <SFML/Graphics.hpp>
 #include <SFML/System/Time.hpp>
@@ -52,6 +54,7 @@ class World
         void    updateEvents();
         void    removeDanglingPointers();
         void    loadLevelData();
+        void    createAABBTree();
 
         enum Layer
         {
@@ -83,12 +86,14 @@ class World
         ParticleNode*       mParticleNode;
         sf::Text            mScore;
         bool                mIsDeleting;
+        ObjectContext       mObjectContext;
 
         std::vector<Spaceship*>             mPlayerSpaceships;
         std::vector<Spaceship*>             mEnemies;
         std::vector<SpawnPoint>             mSpawnPoints;
         std::array<SceneNode*, LayerCount>  mSceneLayers;
-        std::list<Entity*>                  mCollidablesList;
+        std::list<Entity*>                  mCollidablesList;///
+        AABBTree                            mCollisionTree;
         std::unordered_map<int, int>        mPlayersScores;
         std::vector<LocationEvent>          mEvents;
 };

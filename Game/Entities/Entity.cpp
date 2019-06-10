@@ -1,9 +1,9 @@
 #include "Entity.hpp"
 #include "../World.hpp"
 
-Entity::Entity(float hitpoints, bool isCollidable, World& world)
+Entity::Entity(float hitpoints, bool isCollidable, ObjectContext context)
     : mHitpoints(hitpoints),
-      mWorld(world),
+      mContext(context),
       mIsCollidable(isCollidable)
 {
     if(isCollidable)
@@ -14,13 +14,6 @@ Entity::~Entity()
 {
     if(mIsCollidable)
         mWorld.removeCollidable(this);
-}
-
-Entity& Entity::operator=(const Entity& other)
-{
-    setVelocity(other.getVelocity());
-    setHitpoints(other.getHitpoints());
-    return *this;
 }
 
 float Entity::getHitpoints() const
@@ -79,9 +72,9 @@ void Entity::destroy()
     mHitpoints = 0;
 }
 
-World& Entity::getWorld() const
+const ObjectContext& Entity::getObjectContext() const
 {
-    return mWorld;
+    return mContext;
 }
 
 sf::FloatRect Entity::getLocalBounds() const
@@ -104,6 +97,11 @@ bool Entity::isMarkedForRemoval() const
         return true;
 
     return false;
+}
+
+bool Entity::isCollidable() const
+{
+    return mIsCollidable;
 }
 
 bool collision(const Entity& lhs, const Entity& rhs)
