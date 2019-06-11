@@ -28,10 +28,6 @@ class World
         void                            draw();
         sf::FloatRect                   getViewBounds() const;
         sf::FloatRect                   getBattlefieldBounds() const;
-        void                            addCollidable(Entity*);
-        void                            removeCollidable(Entity*);
-        ParticleNode&                   getParticleNode() const;
-        SoundPlayer&                    getSoundPlayer() const;
         void                            placeOnLayer(SceneNode::Ptr, Category::Type layer);
         bool                            hasPlayerReachedEnd() const;
         bool                            hasAlivePlayer() const;
@@ -92,7 +88,7 @@ class World
         std::vector<Spaceship*>             mEnemies;
         std::vector<SpawnPoint>             mSpawnPoints;
         std::array<SceneNode*, LayerCount>  mSceneLayers;
-        std::list<Entity*>                  mCollidablesList;///
+        std::unordered_map<int, Entity*>    mCollidables;
         AABBTree                            mCollisionTree;
         std::unordered_map<int, int>        mPlayersScores;
         std::vector<LocationEvent>          mEvents;

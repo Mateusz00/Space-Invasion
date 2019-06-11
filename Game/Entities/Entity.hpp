@@ -12,7 +12,6 @@ class Entity : public SceneNode
 {
     public:
         explicit                Entity(float hitpoints, bool isCollidable, ObjectContext);
-        virtual                 ~Entity();
         float                   getHitpoints() const;
         void                    setHitpoints(float hitpoints);
         sf::Vector2f            getVelocity() const;

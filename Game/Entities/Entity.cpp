@@ -6,14 +6,6 @@ Entity::Entity(float hitpoints, bool isCollidable, ObjectContext context)
       mContext(context),
       mIsCollidable(isCollidable)
 {
-    if(isCollidable)
-        mWorld.addCollidable(this);
-}
-
-Entity::~Entity()
-{
-    if(mIsCollidable)
-        mWorld.removeCollidable(this);
 }
 
 float Entity::getHitpoints() const

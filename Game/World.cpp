@@ -84,27 +84,6 @@ CommandQueue& World::getCommandQueue()
     return mCommandQueue;
 }
 
-void World::addCollidable(Entity* entity)
-{
-    mCollidablesList.emplace_back(entity);
-}
-
-void World::removeCollidable(Entity* entity)
-{
-    if(!mIsDeleting)
-        mCollidablesList.remove(entity);
-}
-
-ParticleNode& World::getParticleNode() const
-{
-    return *mParticleNode;
-}
-
-SoundPlayer& World::getSoundPlayer() const
-{
-    return mSoundPlayer;
-}
-
 void World::placeOnLayer(SceneNode::Ptr node, Category::Type layer)
 {
     mSceneLayers[layer]->attachChild(std::move(node));
@@ -345,7 +324,7 @@ void World::adaptPlayersPosition()
 
 void World::checkCollisions()
 {
-    for(auto nodeA = mCollidablesList.begin(); nodeA != (--mCollidablesList.end()); ++nodeA) // Don't check last node
+    /**for(auto nodeA = mCollidablesList.begin(); nodeA != (--mCollidablesList.end()); ++nodeA) // Don't check last node
     {
         auto nodePastA = nodeA;
         ++nodePastA; // Don't check two same nodes
@@ -358,7 +337,7 @@ void World::checkCollisions()
                 (**nodePastA).onCollision(**nodeA);
             }
         }
-    }
+    }*/
 }
 
 void World::destroyEntitiesOutsideView()
