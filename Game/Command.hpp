@@ -11,7 +11,7 @@ class SceneNode;
 struct Command
 {
     std::function<void(SceneNode&, sf::Time)>   mAction;
-    std::vector<Category::Type>                 mCategories;
+    Category::Type                              mCategories;
 };
 
 template <typename Object, typename Function>

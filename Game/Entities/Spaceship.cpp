@@ -297,7 +297,7 @@ void Spaceship::createPickup() const
         const TextureHolder& t = mTextures;
         Command createPickupCommand;
 
-        createPickupCommand.mCategories.emplace_back(Category::AirLayer);
+        createPickupCommand.mCategories = Category::AirLayer;
         createPickupCommand.mAction = [pos = getWorldPosition(), context = getObjectContext(), &t](SceneNode& layer, sf::Time)
         {
             auto type = static_cast<Pickup::Type>(randomInt(0, Pickup::TypeCount-1));
@@ -330,7 +330,7 @@ void Spaceship::changeScore()
 void Spaceship::increaseScoreRequest(int value) const
 {
     Command increaseScoreCommand;
-    increaseScoreCommand.mCategories.push_back(Category::PlayerSpaceship);
+    increaseScoreCommand.mCategories = Category::PlayerSpaceship;
     increaseScoreCommand.mAction = castFunctor<Spaceship>([this, value](Spaceship& spaceship, sf::Time dt)
     {
         if(spaceship.getIdentifier() == mAttackerID)
@@ -343,7 +343,7 @@ void Spaceship::increaseScoreRequest(int value) const
 void Spaceship::decreaseScoreRequest(int value) const
 {
     Command decreaseScoreCommand;
-    decreaseScoreCommand.mCategories.push_back(Category::PlayerSpaceship);
+    decreaseScoreCommand.mCategories = Category::PlayerSpaceship;
     decreaseScoreCommand.mAction = castFunctor<Spaceship>([this, value](Spaceship& spaceship, sf::Time dt)
     {
         spaceship.increaseScore(-value);
@@ -376,7 +376,7 @@ void Spaceship::sendExplosion(sf::Vector2f pos) const
     const TextureHolder& t = mTextures;
     Command explosionCommand;
 
-    explosionCommand.mCategories.emplace_back(Category::AirLayer);
+    explosionCommand.mCategories = Category::AirLayer;
     explosionCommand.mAction = [pos, &t](SceneNode& layer, sf::Time)
     {
         std::unique_ptr<AnimationNode> node(new AnimationNode(Animation::Explosion, sf::seconds(0.06f), t, pos));

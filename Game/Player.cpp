@@ -69,7 +69,7 @@ Player::Player(KeyBinding* keys, int id, std::string& name)
     initializeActions();
 
     for(auto& actionBind : mActionBinding)
-        actionBind.mCategories.push_back(Category::PlayerSpaceship);
+        actionBind.mCategories = Category::PlayerSpaceship;
 }
 
 void Player::handleRealTimeInput(CommandQueue& commands)

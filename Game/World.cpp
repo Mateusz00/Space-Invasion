@@ -287,7 +287,7 @@ void World::spawnEnemies()
 void World::guideHomingMissiles()
 {
     Command mEnemyCollector;
-    mEnemyCollector.mCategories.push_back(Category::EnemySpaceship);
+    mEnemyCollector.mCategories = Category::EnemySpaceship;
     mEnemyCollector.mAction = castFunctor<Spaceship>([this](Spaceship& target, sf::Time dt)
     {
         if(!target.isMarkedForRemoval())
@@ -343,8 +343,7 @@ void World::checkCollisions()
 void World::destroyEntitiesOutsideView()
 {
     Command command;
-    command.mCategories.push_back(Category::Attack);
-    command.mCategories.push_back(Category::EnemySpaceship);
+    command.mCategories = static_cast<Category::Type>(Category::Attack + Category::EnemySpaceship);
     command.mAction = castFunctor<Entity>([this](Entity& object, sf::Time dt)
     {
         if(!getBattlefieldBounds().intersects(object.getBoundingRect()))

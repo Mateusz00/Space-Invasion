@@ -40,7 +40,7 @@ void AttackManager::useAttack(int id, CommandQueue& commands, bool applyCooldown
 void AttackManager::launchAttack(int id, CommandQueue& commands, int phase)
 {
     Command launchAttack;
-    launchAttack.mCategories.push_back(Category::AirLayer);
+    launchAttack.mCategories = Category::AirLayer;
     launchAttack.mAction = [this, id, phase](SceneNode& layer, sf::Time)
     {
         std::unique_ptr<Attack> attack(new Attack(id, mTextures, mPosition, mContext, mShooterID, mIsAllied, mTargets, phase));

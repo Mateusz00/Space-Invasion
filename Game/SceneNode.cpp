@@ -44,14 +44,8 @@ void SceneNode::update(sf::Time dt, CommandQueue& commands)
 
 void SceneNode::executeCommand(const Command& command, sf::Time dt)
 {
-    for(const auto& category : command.mCategories)
-    {
-        if(getCategory() == category)
-        {
-            command.mAction(*this, dt);
-            break;
-        }
-    }
+    if(getCategory() & command.mCategories) // Every bit represents some category
+        command.mAction(*this, dt);
 
     for(auto& child : mChildren)
         child->executeCommand(command, dt);
