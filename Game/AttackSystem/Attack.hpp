@@ -20,7 +20,6 @@ class Attack : public Entity
                                         bool isAllied, const std::vector<Spaceship*>& targets, int phase = 0);
         void                    updateCurrent(sf::Time, CommandQueue&);
         bool                    isActive() const;
-        virtual Category::Type  getCategory() const override;
         virtual sf::FloatRect   getBoundingRect() const override; // AttackManager checks if attack isn't visible and deletes it
         virtual void            removeEntity() override;
         virtual bool            isMarkedForRemoval() const override; // AttackManager checks it

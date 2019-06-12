@@ -13,12 +13,8 @@ Pickup::Pickup(Type type, const TextureHolder& textures, ObjectContext context)
       mType(type),
       mSprite(textures.get(table[type].texture), table[type].textureRect)
 {
+    addCategories(Category::Pickup);
     centerOrigin(mSprite);
-}
-
-Category::Type Pickup::getCategory() const
-{
-    return Category::Pickup;
 }
 
 sf::FloatRect Pickup::getBoundingRect() const
@@ -38,11 +34,11 @@ void Pickup::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) cons
 
 void Pickup::onCollision(Entity& entity)
 {
-    switch(entity.getCategory())
+    auto categories = entity.getCategories();
+
+    if(categories & Category::PlayerSpaceship)
     {
-        case Category::PlayerSpaceship:
-            apply(static_cast<Spaceship&>(entity));
-            destroy();
-            break;
+        apply(static_cast<Spaceship&>(entity));
+        destroy();
     }
 }

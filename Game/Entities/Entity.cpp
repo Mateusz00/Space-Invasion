@@ -6,6 +6,8 @@ Entity::Entity(float hitpoints, bool isCollidable, ObjectContext context)
       mContext(context),
       mIsCollidable(isCollidable)
 {
+    if(isCollidable)
+        addCategories(Category::Collidable);
 }
 
 float Entity::getHitpoints() const

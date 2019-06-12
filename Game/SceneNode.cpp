@@ -44,7 +44,7 @@ void SceneNode::update(sf::Time dt, CommandQueue& commands)
 
 void SceneNode::executeCommand(const Command& command, sf::Time dt)
 {
-    if(getCategory() & command.mCategories) // Every bit represents some category
+    if(getCategories() & command.mCategories) // Every bit represents some category
         command.mAction(*this, dt);
 
     for(auto& child : mChildren)
@@ -83,9 +83,14 @@ void SceneNode::updateChildren(sf::Time dt, CommandQueue& commands)
         child->update(dt, commands);
 }
 
-Category::Type SceneNode::getCategory() const
+Category::Type SceneNode::getCategories() const
 {
     return mCategory;
+}
+
+void SceneNode::addCategories(Category::Type categories)
+{
+    mCategory = static_cast<Category::Type>(mCategory | categories);
 }
 
 bool SceneNode::isMarkedForRemoval() const

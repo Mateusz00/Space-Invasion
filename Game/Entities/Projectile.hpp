@@ -10,10 +10,9 @@ class Projectile : public Entity
 {
     public:
                                         Projectile(Projectiles::ID, const TextureHolder&,
-                                                   ObjectContext, int shooterID, float speed);
+                                                   ObjectContext, int shooterID, float speed, bool isEnemy);
         float                           getMaxSpeed() const;
         int                             getDamage() const;
-        virtual Category::Type          getCategory() const override;
         virtual sf::FloatRect           getBoundingRect() const override;
         virtual void                    onCollision(Entity&) override;
         int                             getShootersID() const;
@@ -27,7 +26,6 @@ class Projectile : public Entity
         sf::Vector2f                    getStartPos() const;
         float                           activeTime() const;
         void                            updateTime(sf::Time dt);
-        void                            setEnemyFlag(bool);
 
     private:
         virtual void            updateCurrent(sf::Time, CommandQueue&) override;

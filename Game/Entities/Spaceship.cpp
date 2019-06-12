@@ -40,6 +40,11 @@ Spaceship::Spaceship(int typeID, const TextureHolder& textures, const FontHolder
       mBoostFuelBar(nullptr),
       mEnemyType(EnemyType::Normal)
 {
+    if(mIsEnemy)
+        addCategories(Category::EnemySpaceship);
+    else
+        addCategories(Category::PlayerSpaceship);
+
     // Initialize sprite
     int textureID = spaceshipInfo[typeID].textureID;
     int animationID = spaceshipInfo[typeID].animationID;
@@ -107,14 +112,6 @@ void Spaceship::updateCurrent(sf::Time dt, CommandQueue& commands)
 void Spaceship::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
     target.draw(*mSprite, states);
-}
-
-Category::Type Spaceship::getCategory() const
-{
-    if(!mIsEnemy)
-        return Category::PlayerSpaceship;
-    else
-        return Category::EnemySpaceship;
 }
 
 void Spaceship::increaseFireRate()
@@ -250,16 +247,16 @@ void Spaceship::updateMovementPatterns(sf::Time dt)
 
 void Spaceship::onCollision(Entity& entity)
 {
+    auto categories = entity.getCategories();
+
     if(mIsEnemy)
     {
-        switch(entity.getCategory())
+        if(categories & Category::PlayerSpaceship)
         {
-            case Category::PlayerSpaceship:
-                int entityHitpoints = entity.getHitpoints();
-                entity.damage(getHitpoints());
-                damage(entityHitpoints);
-                mAttackerID = static_cast<Spaceship&>(entity).getIdentifier(); // Sets id of spaceship that will have score increased
-                break;
+            int entityHitpoints = entity.getHitpoints();
+            entity.damage(getHitpoints());
+            damage(entityHitpoints);
+            mAttackerID = static_cast<Spaceship&>(entity).getIdentifier(); // Sets id of spaceship that will have score increased
         }
     }
 }

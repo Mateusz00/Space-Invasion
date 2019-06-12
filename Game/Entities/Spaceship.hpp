@@ -21,7 +21,6 @@ class Spaceship : public Entity
 
                                 Spaceship(int, const TextureHolder&, const FontHolder&, ObjectContext,
                                           const std::vector<Spaceship*>& targets, int id = 99999);
-        Category::Type          getCategory() const override;
         void                    increaseFireRate();
         void                    increaseSpread();
         int                     getMissileAmmo() const;

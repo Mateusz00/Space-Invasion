@@ -10,14 +10,20 @@ namespace
     const std::vector<ProjectileData> table = initializeProjectileData();
 }
 
-Projectile::Projectile(Projectiles::ID type, const TextureHolder& textures, ObjectContext context, int shooterID, float speed)
+Projectile::Projectile(Projectiles::ID type, const TextureHolder& textures,
+                        ObjectContext context, int shooterID, float speed, bool isEnemy)
     : Entity(table[type].hitpoints, true, context),
       mType(type),
       mSprite(textures.get(table[type].texture), table[type].textureRect),
       mShooterID(shooterID),
       mSpeed(speed),
-      mIsEnemy(true)
+      mIsEnemy(isEnemy)
 {
+    if(isEnemy)
+        addCategories(Category::EnemyProjectile);
+    else
+        addCategories(Category::AlliedProjectile);
+
     centerOrigin(mSprite);
 
     if(mType == Projectiles::Missile) // Adds emitters for missiles
@@ -40,19 +46,6 @@ float Projectile::getMaxSpeed() const
 int Projectile::getDamage() const
 {
     return table[mType].damage;
-}
-
-void Projectile::setEnemyFlag(bool flag)
-{
-    mIsEnemy = flag;
-}
-
-Category::Type Projectile::getCategory() const
-{
-    if(mIsEnemy)
-        return Category::EnemyProjectile;
-    else
-        return Category::AlliedProjectile;
 }
 
 sf::FloatRect Projectile::getBoundingRect() const
@@ -100,25 +93,23 @@ void Projectile::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) 
 
 void Projectile::onCollision(Entity& entity)
 {
-    if(getCategory() == Category::EnemyProjectile)
+    auto categories = entity.getCategories();
+
+    if(mIsEnemy)
     {
-        switch(entity.getCategory())
+        if(categories & Category::PlayerSpaceship)
         {
-            case Category::PlayerSpaceship:
-                entity.damage(table[mType].damage);
-                damage(table[mType].damage);
-                break;
+            entity.damage(table[mType].damage);
+            damage(table[mType].damage);
         }
     }
     else // Player's projectile
     {
-        switch(entity.getCategory())
+        if(categories & Category::EnemySpaceship)
         {
-            case Category::EnemySpaceship:
-                entity.damage(table[mType].damage);
-                damage(table[mType].damage);
-                static_cast<Spaceship&>(entity).setAttackerID(mShooterID); // Sets id of spaceship that will have score increased if enemy dies
-                break;
+            entity.damage(table[mType].damage);
+            damage(table[mType].damage);
+            static_cast<Spaceship&>(entity).setAttackerID(mShooterID); // Sets id of spaceship that will have score increased if enemy dies
         }
     }
 }

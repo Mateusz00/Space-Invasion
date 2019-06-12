@@ -27,10 +27,13 @@ class SceneNode : public sf::Drawable, public sf::Transformable
         void                    eraseChild(Ptr child);
         void                    update(sf::Time, CommandQueue&);
         void                    executeCommand(const Command&, sf::Time);
-        virtual Category::Type  getCategory() const;
+        Category::Type          getCategories() const;
         virtual sf::FloatRect   getBoundingRect() const;
         void                    removeWrecks();
         virtual bool            isMarkedForRemoval() const;
+
+    protected:
+        void            addCategories(Category::Type);
 
     private:
         virtual void    draw(sf::RenderTarget&, sf::RenderStates) const override final;

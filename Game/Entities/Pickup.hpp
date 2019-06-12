@@ -21,7 +21,6 @@ class Pickup : public Entity
         };
 
                                 Pickup(Type, const TextureHolder&, ObjectContext);
-        virtual Category::Type  getCategory() const override;
         virtual sf::FloatRect   getBoundingRect() const override;
         void                    apply(Spaceship&) const;
         virtual void            onCollision(Entity&) override;

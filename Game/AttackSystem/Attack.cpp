@@ -22,6 +22,7 @@ Attack::Attack(int id, const TextureHolder& textures, sf::Vector2f pos, ObjectCo
       mPosition(pos),
       mShooterID(shooterID)
 {
+    addCategories(Category::Attack);
     createGravityCenters(phase);
     createProjectiles(phase);
 }
@@ -192,15 +193,9 @@ void Attack::createProjectile(int phase, int projectileNum)
     const auto& projectileInfo = attackData.at(mAttackID).phases[phase].projectiles[projectileNum];
     Projectiles::ID type = projectileInfo.type;
     float speed = projectileInfo.speed;
-    int sign = 1;
-    std::unique_ptr<Projectile> projectile(new Projectile(type, mTextures, getObjectContext(), mShooterID, speed));
+    int sign = (isAllied()) ? -1 : 1;
 
-    if(isAllied())
-    {
-        projectile->setEnemyFlag(false);
-        sign = -sign;
-    }
-
+    std::unique_ptr<Projectile> projectile(new Projectile(type, mTextures, getObjectContext(), mShooterID, speed, !isAllied()));
     projectile->setPattern(projectileInfo.pattern);
     projectile->setPatternData(projectileInfo.patternData);
 
@@ -292,11 +287,6 @@ void Attack::deactivate()
 bool Attack::isActive() const
 {
     return mIsActive;
-}
-
-Category::Type Attack::getCategory() const
-{
-    return Category::Attack;
 }
 
 sf::FloatRect Attack::getBoundingRect() const
