@@ -22,7 +22,7 @@ World::World(State::Context context)
       mScrollingSpeed(-40.f),
       mScore("0", context.fonts.get(Fonts::BPmonoItalics), 32u),
       mIsDeleting(false),
-      mCollisionTree(0)
+      mCollisionTree(4)
 {
     loadLevelData();
     buildWorld();
@@ -365,7 +365,7 @@ void World::updateScore()
     for(const auto& playerSpaceship : mPlayerSpaceships)
     {
         cumulativeScore += playerSpaceship->getScore();
-        mPlayersScores[playerSpaceship->getIdentifier()] = playerSpaceship->getScore();
+        mPlayersScores[playerSpaceship->getPlayerID()] = playerSpaceship->getScore();
     }
 
     mScore.setString(toString(cumulativeScore));
@@ -389,6 +389,17 @@ void World::removeDanglingPointers()
 
 void World::createAABBTree()
 {
+    // Get list and create AABB Tree of entities that can collide
+    Command CollidablesCollector;
+    CollidablesCollector.mCategories = Category::Collidable;
+    CollidablesCollector.mAction = castFunctor<Entity>([this](Entity& entity, sf::Time)
+    {
+        int id = entity.getEntityID();
+        mCollidables.emplace(id, &entity);
+        mCollisionTree.insertEntity(AABB{sf::FloatRect(entity.getBoundingRect()), id});
+    });
 
-   // mCollisionTree.insertEntity()
+    mCollidables.clear();
+    mCollisionTree.clear();
+    mCommandQueue.push(CollidablesCollector);
 }

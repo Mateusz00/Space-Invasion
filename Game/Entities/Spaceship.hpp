@@ -20,13 +20,13 @@ class Spaceship : public Entity
         using SpriteNodePtr = std::unique_ptr<SpriteNode>;
 
                                 Spaceship(int, const TextureHolder&, const FontHolder&, ObjectContext,
-                                          const std::vector<Spaceship*>& targets, int id = 99999);
+                                          const std::vector<Spaceship*>& targets, int id = -1);
         void                    increaseFireRate();
         void                    increaseSpread();
         int                     getMissileAmmo() const;
         void                    setMissileAmmo(int);
         void                    changeMissileAmmo(int);
-        int                     getIdentifier() const;
+        int                     getPlayerID() const;
         void                    setIdentifier(int);
         void                    fire();
         void                    boostSpeed();
@@ -62,7 +62,7 @@ class Spaceship : public Entity
         int                     mFireRateLevel;
         int                     mSpreadLevel;
         int                     mMissileAmmo;
-        int                     mIdentifier;
+        int                     mPlayerID;
         bool                    mIsEnemy;
         bool                    mShowExplosion;
         float                   mTravelledDistance;

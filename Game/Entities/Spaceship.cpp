@@ -25,7 +25,7 @@ Spaceship::Spaceship(int typeID, const TextureHolder& textures, const FontHolder
       mFireRateLevel(6),
       mSpreadLevel(0),
       mMissileAmmo(2),
-      mIdentifier(id),
+      mPlayerID(id),
       mIsEnemy(typeID != 0),
       mShowExplosion(true),
       mTravelledDistance(0.f),
@@ -141,14 +141,14 @@ void Spaceship::changeMissileAmmo(int amount)
     mMissileAmmo += amount;
 }
 
-int Spaceship::getIdentifier() const
+int Spaceship::getPlayerID() const
 {
-    return mIdentifier;
+    return mPlayerID;
 }
 
 void Spaceship::setIdentifier(int id)
 {
-    mIdentifier = id;
+    mPlayerID = id;
 }
 
 void Spaceship::fire()
@@ -256,7 +256,7 @@ void Spaceship::onCollision(Entity& entity)
             int entityHitpoints = entity.getHitpoints();
             entity.damage(getHitpoints());
             damage(entityHitpoints);
-            mAttackerID = static_cast<Spaceship&>(entity).getIdentifier(); // Sets id of spaceship that will have score increased
+            mAttackerID = entity.getEntityID(); // Sets id of spaceship that will have score increased
         }
     }
 }
@@ -330,7 +330,7 @@ void Spaceship::increaseScoreRequest(int value) const
     increaseScoreCommand.mCategories = Category::PlayerSpaceship;
     increaseScoreCommand.mAction = castFunctor<Spaceship>([this, value](Spaceship& spaceship, sf::Time dt)
     {
-        if(spaceship.getIdentifier() == mAttackerID)
+        if(spaceship.getPlayerID() == mAttackerID)
             spaceship.increaseScore(value);
     });
 

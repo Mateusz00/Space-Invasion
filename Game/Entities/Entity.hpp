@@ -28,6 +28,7 @@ class Entity : public SceneNode
         virtual void            removeEntity();
         virtual bool            isMarkedForRemoval() const override;
         bool                    isCollidable() const;
+        int                     getEntityID() const;
 
     protected:
         virtual void            updateCurrent(sf::Time dt, CommandQueue&) override;
@@ -37,6 +38,8 @@ class Entity : public SceneNode
         float                   mHitpoints;
         ObjectContext           mContext;
         bool                    mIsCollidable;
+        int                     mID;
+        static int              mNextFreeID;
 };
 
 bool collision(const Entity& lhs, const Entity& rhs);

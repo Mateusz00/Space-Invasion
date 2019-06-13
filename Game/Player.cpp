@@ -9,7 +9,7 @@ struct SpaceshipSpeedBoost // Command
 
     void operator() (Spaceship& spaceship, sf::Time dt) const
     {
-        if(spaceship.getIdentifier() == identifier)
+        if(spaceship.getPlayerID() == identifier)
             spaceship.boostSpeed();
     }
     int identifier;
@@ -24,7 +24,7 @@ struct SpaceshipMover // Command
 
     void operator() (Spaceship& spaceship, sf::Time dt) const
     {
-        if(spaceship.getIdentifier() == identifier)
+        if(spaceship.getPlayerID() == identifier)
             spaceship.accelerate(velocity * spaceship.getMaxSpeed());
     }
     sf::Vector2f velocity;
@@ -39,7 +39,7 @@ struct SpaceshipFireTrigger // Command
 
     void operator() (Spaceship& spaceship, sf::Time dt) const
     {
-        if(spaceship.getIdentifier() == identifier)
+        if(spaceship.getPlayerID() == identifier)
             spaceship.fire();
     }
     int identifier;
@@ -53,7 +53,7 @@ struct SpaceshipMissileTrigger // Command
 
     void operator() (Spaceship& spaceship, sf::Time dt) const
     {
-        if(spaceship.getIdentifier() == identifier)
+        if(spaceship.getPlayerID() == identifier)
              spaceship.launchMissile();
     }
     int identifier;

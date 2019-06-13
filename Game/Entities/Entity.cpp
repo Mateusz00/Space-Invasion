@@ -1,10 +1,13 @@
 #include "Entity.hpp"
 #include "../World.hpp"
 
+int Entity::mNextFreeID = 0;
+
 Entity::Entity(float hitpoints, bool isCollidable, ObjectContext context)
     : mHitpoints(hitpoints),
       mContext(context),
-      mIsCollidable(isCollidable)
+      mIsCollidable(isCollidable),
+      mID(mNextFreeID++)
 {
     if(isCollidable)
         addCategories(Category::Collidable);
@@ -101,4 +104,9 @@ bool Entity::isCollidable() const
 bool collision(const Entity& lhs, const Entity& rhs)
 {
     return lhs.getBoundingRect().intersects(rhs.getBoundingRect());
+}
+
+int Entity::getEntityID() const
+{
+    return mID;
 }

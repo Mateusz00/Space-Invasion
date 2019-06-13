@@ -1,12 +1,11 @@
 #include "AABBTree.hpp"
-#include <cassert>
 #include <stack>
-#include <iostream>
 
-AABBTree::AABBTree(int initialSize)
+AABBTree::AABBTree(unsigned int initialSize)
     : mRootNodeIndex(NULL_NODE),
       mAllocatedNodeCount(0),
-      mNodeCapacity(initialSize)
+      mNodeCapacity(initialSize),
+      mInitialSize(initialSize)
 {
 	mNodes.resize(initialSize);
 }
@@ -148,4 +147,12 @@ void AABBTree::fixUpwardsTree(int currentNodeIndex)
 		currentNode.aabb.rect = mergeRects(leftNode.aabb.rect, rightNode.aabb.rect);
 		currentNodeIndex = currentNode.parentNodeIndex;
 	}
+}
+
+void AABBTree::clear()
+{
+    mNodes.clear();
+    mNodes.resize(mInitialSize);
+    mAllocatedNodeCount = 0;
+    mRootNodeIndex = NULL_NODE;
 }

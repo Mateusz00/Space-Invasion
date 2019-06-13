@@ -8,9 +8,10 @@
 class AABBTree
 {
     public:
-        explicit            AABBTree(int initialSize);
+        explicit            AABBTree(unsigned int initialSize);
         void                insertEntity(const AABB& entity);
         std::vector<int>    queryOverlaps(const AABB& entity) const;
+        void                clear();
 
     private:
         int                 allocateNode();
@@ -19,6 +20,7 @@ class AABBTree
         int                     mRootNodeIndex;
         int                     mAllocatedNodeCount;
         int                     mNodeCapacity;
+        int                     mInitialSize;
         std::vector<AABBNode>   mNodes;
 };
 
