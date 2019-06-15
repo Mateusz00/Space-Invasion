@@ -65,6 +65,11 @@ class World
             float y;
             int spaceshipID;
         };
+        struct CollidableData
+        {
+            Entity*         collidable;
+            sf::FloatRect   rect;
+        };
 
         sf::RenderTarget&   mTarget;
         TextureHolder&      mTextures;
@@ -84,14 +89,14 @@ class World
         bool                mIsDeleting;
         ObjectContext       mObjectContext;
 
-        std::vector<Spaceship*>             mPlayerSpaceships;
-        std::vector<Spaceship*>             mEnemies;
-        std::vector<SpawnPoint>             mSpawnPoints;
-        std::array<SceneNode*, LayerCount>  mSceneLayers;
-        std::unordered_map<int, Entity*>    mCollidables;
-        AABBTree                            mCollisionTree;
-        std::unordered_map<int, int>        mPlayersScores;
-        std::vector<LocationEvent>          mEvents;
+        std::vector<Spaceship*>                     mPlayerSpaceships;
+        std::vector<Spaceship*>                     mEnemies;
+        std::vector<SpawnPoint>                     mSpawnPoints;
+        std::array<SceneNode*, LayerCount>          mSceneLayers;
+        std::unordered_map<int, CollidableData>     mCollidables;
+        AABBTree                                    mCollisionTree;
+        std::unordered_map<int, int>                mPlayersScores;
+        std::vector<LocationEvent>                  mEvents;
 };
 
 #endif // WORLD_HPP

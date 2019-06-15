@@ -29,6 +29,7 @@ class Entity : public SceneNode
         virtual bool            isMarkedForRemoval() const override;
         bool                    isCollidable() const;
         int                     getEntityID() const;
+        static void             resetIDs();
 
     protected:
         virtual void            updateCurrent(sf::Time dt, CommandQueue&) override;

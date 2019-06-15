@@ -33,7 +33,7 @@ Spaceship::Spaceship(int typeID, const TextureHolder& textures, const FontHolder
       mTextures(textures),
       mAttackerID(0),
       mScore(0),
-      mAttackManager(textures, context, id, !mIsEnemy, targets),
+      mAttackManager(textures, context, id, !mIsEnemy, &targets),
       mBoosted(false),
       mBoostCooldown(false),
       mBoostFuel(FUEL_MAX),
@@ -249,15 +249,12 @@ void Spaceship::onCollision(Entity& entity)
 {
     auto categories = entity.getCategories();
 
-    if(mIsEnemy)
+    if((categories & Category::EnemySpaceship) && (getCategories() & Category::PlayerSpaceship))
     {
-        if(categories & Category::PlayerSpaceship)
-        {
-            int entityHitpoints = entity.getHitpoints();
-            entity.damage(getHitpoints());
-            damage(entityHitpoints);
-            mAttackerID = entity.getEntityID(); // Sets id of spaceship that will have score increased
-        }
+        int entityHitpoints = entity.getHitpoints();
+        entity.damage(getHitpoints());
+        damage(entityHitpoints);
+        mAttackerID = entity.getEntityID(); // Sets id of spaceship that will have score increased
     }
 }
 

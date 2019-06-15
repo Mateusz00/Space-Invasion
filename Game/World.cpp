@@ -24,6 +24,7 @@ World::World(State::Context context)
       mIsDeleting(false),
       mCollisionTree(4)
 {
+    Entity::resetIDs();
     loadLevelData();
     buildWorld();
     mScore.setPosition(mTarget.getSize().x * 0.5f, 18.f);
@@ -395,8 +396,9 @@ void World::createAABBTree()
     CollidablesCollector.mAction = castFunctor<Entity>([this](Entity& entity, sf::Time)
     {
         int id = entity.getEntityID();
-        mCollidables.emplace(id, &entity);
-        mCollisionTree.insertEntity(AABB{sf::FloatRect(entity.getBoundingRect()), id});
+        AABB aabb{sf::FloatRect(entity.getBoundingRect()), id};
+        mCollidables.emplace(id, CollidableData{&entity, aabb.rect});
+        mCollisionTree.insertEntity(aabb);
     });
 
     mCollidables.clear();

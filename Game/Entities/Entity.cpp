@@ -1,6 +1,5 @@
 #include "Entity.hpp"
 #include "../World.hpp"
-
 int Entity::mNextFreeID = 0;
 
 Entity::Entity(float hitpoints, bool isCollidable, ObjectContext context)
@@ -11,6 +10,11 @@ Entity::Entity(float hitpoints, bool isCollidable, ObjectContext context)
 {
     if(isCollidable)
         addCategories(Category::Collidable);
+}
+
+void Entity::resetIDs()
+{
+    mNextFreeID = 0;
 }
 
 float Entity::getHitpoints() const

@@ -16,7 +16,7 @@ class AttackManager
 {
     public:
         explicit    AttackManager(const TextureHolder&, ObjectContext, int shooterID,
-                                   bool isAllied, const std::vector<Spaceship*>& targets);
+                                   bool isAllied, const std::vector<Spaceship*>* targets);
         void        pushAttack(int id, int probability);
         void        forceAttack(int id, CommandQueue&, bool applyCooldown);
         sf::Time    getCooldown() const;
@@ -51,8 +51,9 @@ class AttackManager
         int                                 mShooterID;
         bool                                mIsAllied;
         std::unordered_map<int, sf::Time>   mChargingAttacks;
-        const std::vector<Spaceship*>&      mTargets;
+        const std::vector<Spaceship*>*      mTargets;
         std::vector<PhaseManager>           mPhaseManagers;
+        std::shared_ptr<bool>               mIsAlife;
 };
 
 #endif // ATTACKMANAGER_HPP

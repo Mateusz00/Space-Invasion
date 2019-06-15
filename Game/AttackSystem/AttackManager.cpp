@@ -8,7 +8,7 @@
 #include "Attacks.hpp"
 
 AttackManager::AttackManager(const TextureHolder& textures, ObjectContext context, int shooterID,
-                              bool isAllied, const std::vector<Spaceship*>& targets)
+                              bool isAllied, const std::vector<Spaceship*>* targets)
     : mTextures(textures),
       mCooldown(sf::seconds(0.1f)),
       mContext(context),
@@ -16,6 +16,7 @@ AttackManager::AttackManager(const TextureHolder& textures, ObjectContext contex
       mIsAllied(isAllied),
       mTargets(targets)
 {
+    mIsAlife = std::make_shared<bool>(true);
 }
 
 void AttackManager::pushAttack(int id, int probability)
@@ -39,12 +40,23 @@ void AttackManager::useAttack(int id, CommandQueue& commands, bool applyCooldown
 
 void AttackManager::launchAttack(int id, CommandQueue& commands, int phase)
 {
+    const auto& t = mTextures;
+    auto pos = mPosition;
+    auto context = mContext;
+    auto shooterID = mShooterID;
+    auto isAlly = mIsAllied;
+    auto targets = mTargets;
+    std::weak_ptr<bool> isAlife = mIsAlife;
+
     Command launchAttack;
     launchAttack.mCategories = Category::AirLayer;
-    launchAttack.mAction = [this, id, phase](SceneNode& layer, sf::Time)
+    launchAttack.mAction = [&t, pos, context, shooterID, isAlly, targets, isAlife, id, phase, this](SceneNode& layer, sf::Time)
     {
-        std::unique_ptr<Attack> attack(new Attack(id, mTextures, mPosition, mContext, mShooterID, mIsAllied, mTargets, phase));
-        mCurrentAttacks.emplace_back(attack.get());
+        std::unique_ptr<Attack> attack(new Attack(id, t, pos, context, shooterID, isAlly, targets, phase));
+
+        if(!isAlife.expired())
+            mCurrentAttacks.emplace_back(attack.get());
+
         layer.attachChild(std::move(attack));
     };
 

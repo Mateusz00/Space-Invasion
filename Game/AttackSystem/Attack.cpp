@@ -11,7 +11,7 @@
 using Attacks::attackData;
 
 Attack::Attack(int id, const TextureHolder& textures, sf::Vector2f pos, ObjectContext context, int shooterID,
-                bool isAllied, const std::vector<Spaceship*>& targets, int phase)
+                bool isAllied, const std::vector<Spaceship*>* targets, int phase)
     : Entity(1, false, context),
       mTargets(targets),
       mAttackID(id),
@@ -390,7 +390,7 @@ sf::Vector2f Attack::getClosestTarget(const sf::Transformable* object) const
     float smallestDistance = std::numeric_limits<float>::max();
     Spaceship* closestTarget = nullptr;
 
-    for(const auto& target : mTargets)
+    for(const auto& target : *mTargets)
     {
         bool isTargetBehind;
         if(isAllied())
@@ -418,4 +418,14 @@ sf::Vector2f Attack::getClosestTarget(const sf::Transformable* object) const
 bool Attack::isAllied() const
 {
     return mIsAllied;
+}
+
+std::vector<Projectile*> Attack::getProjectiles() const
+{
+    std::vector<Projectile*> projectiles;
+
+    for(const auto& projectile : mProjectiles)
+        projectiles.emplace_back(projectile.get());
+
+    return projectiles;
 }

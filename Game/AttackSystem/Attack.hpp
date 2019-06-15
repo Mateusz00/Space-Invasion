@@ -17,7 +17,7 @@ class Attack : public Entity
 {
     public:
                                 Attack(int id, const TextureHolder&, sf::Vector2f pos, ObjectContext, int shooterID,
-                                        bool isAllied, const std::vector<Spaceship*>& targets, int phase = 0);
+                                        bool isAllied, const std::vector<Spaceship*>* targets, int phase = 0);
         void                    updateCurrent(sf::Time, CommandQueue&);
         bool                    isActive() const;
         virtual sf::FloatRect   getBoundingRect() const override; // AttackManager checks if attack isn't visible and deletes it
@@ -26,6 +26,7 @@ class Attack : public Entity
         void                    markForRemoval();
         void                    updateBarrierPosition(sf::Vector2f displacement);
         bool                    isAllied() const;
+        std::vector<Projectile*>    getProjectiles() const;
 
     private:
         virtual void            drawCurrent(sf::RenderTarget&, sf::RenderStates) const override;
@@ -40,7 +41,7 @@ class Attack : public Entity
 
         std::vector<std::unique_ptr<Projectile>>    mProjectiles;
         std::unordered_map<int, GravityCenter>      mGravityCenters;
-        const std::vector<Spaceship*>&              mTargets;
+        const std::vector<Spaceship*>*              mTargets;
         int                                         mAttackID;
         const TextureHolder&                        mTextures;
         bool                                        mIsActive;
