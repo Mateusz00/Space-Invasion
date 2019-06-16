@@ -6,7 +6,7 @@
 struct AABB
 {
 	sf::FloatRect rect;
-	int entityID;
+	int entityID = -1;
 };
 
 template <typename Rect>

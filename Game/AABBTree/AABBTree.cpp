@@ -72,14 +72,14 @@ void AABBTree::insertEntity(const AABB& entity)
 	}
 
 	// currentNodeIndex contains index of AABB that it's best to pair with new node
-	AABBNode& leafSibling = mNodes[currentNodeIndex];
 	int newParentIndex = allocateNode();
+	AABBNode& leafSibling = mNodes[currentNodeIndex];
 	AABBNode& newParent = mNodes[newParentIndex];
 
 	// Fix linking between nodes
     int oldParentIndex = leafSibling.parentNodeIndex;
 	newParent.parentNodeIndex = oldParentIndex;
-    newLeafNode.parentNodeIndex = newParentIndex;
+    mNodes[newLeafNodeIndex].parentNodeIndex = newParentIndex;
 	leafSibling.parentNodeIndex = newParentIndex;
     newParent.leftNodeIndex = currentNodeIndex;
 	newParent.rightNodeIndex = newLeafNodeIndex;
@@ -98,8 +98,8 @@ void AABBTree::insertEntity(const AABB& entity)
 			mNodes[oldParentIndex].rightNodeIndex = newParentIndex;
 	}
 
-	newParent.aabb.rect = mergeRects(newLeafNode.aabb.rect, leafSibling.aabb.rect);
-	fixUpwardsTree(newLeafNode.parentNodeIndex);
+	newParent.aabb.rect = mergeRects(mNodes[newLeafNodeIndex].aabb.rect, leafSibling.aabb.rect);
+	fixUpwardsTree(newParentIndex);
 }
 
 std::vector<int> AABBTree::queryOverlaps(const AABB& entity) const
@@ -118,11 +118,14 @@ std::vector<int> AABBTree::queryOverlaps(const AABB& entity) const
 		    continue;
 
 		const AABBNode& node = mNodes[currentNodeIndex];
-		if(node.aabb.rect.intersects(testAABB))
+		if(node.aabb.entityID == entity.entityID)
+		    continue;
+
+		if((node.aabb.rect).intersects(testAABB))
 		{
-			if(node.isLeaf() && node.aabb.entityID != entity.entityID)
+			if(node.isLeaf())
 			{
-				collisions.emplace_back(node.aabb.entityID);
+				collisions.push_back(node.aabb.entityID);
 			}
 			else
 			{
@@ -154,5 +157,6 @@ void AABBTree::clear()
     mNodes.clear();
     mNodes.resize(mInitialSize);
     mAllocatedNodeCount = 0;
+    mNodeCapacity = mInitialSize;
     mRootNodeIndex = NULL_NODE;
 }

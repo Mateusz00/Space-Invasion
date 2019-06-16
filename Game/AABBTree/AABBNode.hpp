@@ -12,7 +12,7 @@ struct AABBNode
 	int leftNodeIndex   = NULL_NODE;
 	int rightNodeIndex  = NULL_NODE;
 
-	bool isLeaf() const { return leftNodeIndex == NULL_NODE; }
+	bool isLeaf() const { return (leftNodeIndex == NULL_NODE && rightNodeIndex == NULL_NODE); }
 };
 
 #endif // AABBNODE_HPP

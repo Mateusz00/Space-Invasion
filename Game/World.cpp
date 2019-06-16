@@ -325,20 +325,20 @@ void World::adaptPlayersPosition()
 
 void World::checkCollisions()
 {
-    /**for(auto nodeA = mCollidablesList.begin(); nodeA != (--mCollidablesList.end()); ++nodeA) // Don't check last node
+    // Collision detection
+    std::set<std::pair<int, int>> collisionPairs;
+    for(const auto& collidablePair : mCollidables)
     {
-        auto nodePastA = nodeA;
-        ++nodePastA; // Don't check two same nodes
+        std::vector<int> collisions = mCollisionTree.queryOverlaps(AABB{collidablePair.second.rect, collidablePair.first});
+        for(int id : collisions)
+            collisionPairs.emplace(std::minmax(id, collidablePair.first));
+    }
 
-        for(; nodePastA != mCollidablesList.end(); ++nodePastA)
-        {
-            if(collision(**nodeA, **nodePastA))
-            {
-                (**nodeA).onCollision(**nodePastA);
-                (**nodePastA).onCollision(**nodeA);
-            }
-        }
-    }*/
+    // Collision response
+    for(const auto& collisionPair : collisionPairs)
+    {
+        (mCollidables.at(collisionPair.first).collidable)->onCollision(*(mCollidables.at(collisionPair.second).collidable));
+    }
 }
 
 void World::destroyEntitiesOutsideView()
