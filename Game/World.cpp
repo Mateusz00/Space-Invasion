@@ -391,17 +391,31 @@ void World::removeDanglingPointers()
 void World::createAABBTree()
 {
     // Get list and create AABB Tree of entities that can collide
-    Command CollidablesCollector;
-    CollidablesCollector.mCategories = Category::Collidable;
-    CollidablesCollector.mAction = castFunctor<Entity>([this](Entity& entity, sf::Time)
+    Command collidablesCollector;
+    collidablesCollector.mCategories = Category::Collidable;
+    collidablesCollector.mAction = castFunctor<Entity>([this](Entity& entity, sf::Time)
     {
         int id = entity.getEntityID();
         AABB aabb{sf::FloatRect(entity.getBoundingRect()), id};
         mCollidables.emplace(id, CollidableData{&entity, aabb.rect});
         mCollisionTree.insertEntity(aabb);
     });
+    Command projectileCollector;
+    projectileCollector.mCategories = Category::Attack;
+    projectileCollector.mAction = castFunctor<Attack>([this](Attack& attack, sf::Time)
+    {
+        std::vector<Projectile*> projectiles = attack.getProjectiles();
+        for(Projectile* projectile : projectiles)
+        {
+            int id = projectile->getEntityID();
+            AABB aabb{sf::FloatRect(projectile->getBoundingRect()), id};
+            mCollidables.insert(std::make_pair(id, CollidableData{projectile, aabb.rect}));
+            mCollisionTree.insertEntity(aabb);
+        }
+    });
 
     mCollidables.clear();
     mCollisionTree.clear();
-    mCommandQueue.push(CollidablesCollector);
+    mCommandQueue.push(collidablesCollector);
+    mCommandQueue.push(projectileCollector);
 }
