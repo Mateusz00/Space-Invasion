@@ -14,7 +14,6 @@ class Projectile : public Entity
         float                           getMaxSpeed() const;
         int                             getDamage() const;
         virtual sf::FloatRect           getBoundingRect() const override;
-        virtual void                    onCollision(Entity&) override;
         int                             getShootersID() const;
         void                            setPattern(AttackPattern::ID);
         void                            setPatternData(AttackPattern::PatternData);
@@ -28,8 +27,9 @@ class Projectile : public Entity
         void                            updateTime(sf::Time dt);
 
     private:
-        virtual void            updateCurrent(sf::Time, CommandQueue&) override;
-        virtual void            drawCurrent(sf::RenderTarget&, sf::RenderStates) const override;
+        virtual void    updateCurrent(sf::Time, CommandQueue&) override;
+        virtual void    drawCurrent(sf::RenderTarget&, sf::RenderStates) const override;
+        static void     initializeCollisionResponses();
 
         Projectiles::ID                 mType;
         sf::Sprite                      mSprite;
@@ -41,6 +41,7 @@ class Projectile : public Entity
         sf::Vector2f                    mStartPos;
         sf::Time                        mTimeActive;
         bool                            mIsEnemy;
+        static bool                     mHasInitializedResponses;
 };
 
 #endif // PROJECTILE_HPP

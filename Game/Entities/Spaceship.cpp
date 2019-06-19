@@ -6,6 +6,7 @@
 #include "../World.hpp"
 #include "../DataTable.hpp"
 #include "../AnimationNode.hpp"
+#include "../CollisionResponseMap.hpp"
 #include <vector>
 #include <memory>
 namespace
@@ -17,6 +18,7 @@ namespace
     constexpr float FUEL_BURN_RATE = 4.4f;
     constexpr float FUEL_REFILL_RATE = 0.3f;
 }
+bool Spaceship::mHasInitializedResponses = false;
 
 Spaceship::Spaceship(int typeID, const TextureHolder& textures, const FontHolder& fonts,
                     ObjectContext context, const std::vector<Spaceship*>& targets, int id)
@@ -89,6 +91,9 @@ Spaceship::Spaceship(int typeID, const TextureHolder& textures, const FontHolder
     const auto& attacks = spaceshipInfo[typeID].attacks;
     for(const auto& attackPair : attacks)
         mAttackManager.pushAttack(attackPair.first, attackPair.second);
+
+    if(!mHasInitializedResponses)
+        initializeCollisionResponses();
 }
 
 void Spaceship::updateCurrent(sf::Time dt, CommandQueue& commands)
@@ -245,17 +250,22 @@ void Spaceship::updateMovementPatterns(sf::Time dt)
     }
 }
 
-void Spaceship::onCollision(Entity& entity)
+void Spaceship::initializeCollisionResponses()
 {
-    auto categories = entity.getCategories();
+    mHasInitializedResponses = true;
 
-    if((categories & Category::EnemySpaceship) && (getCategories() & Category::PlayerSpaceship))
+    auto response1 = castResponse<Spaceship, Spaceship>([](Spaceship& player, Spaceship& enemy)
     {
-        int entityHitpoints = entity.getHitpoints();
-        entity.damage(getHitpoints());
-        damage(entityHitpoints);
-        mAttackerID = entity.getEntityID(); // Sets id of spaceship that will have score increased
-    }
+        int entityHitpoints = player.getHitpoints();
+        player.damage(enemy.getHitpoints());
+        enemy.damage(entityHitpoints);
+        enemy.setAttackerID(player.getEntityID()); // Sets id of spaceship that will have score increased
+    });
+
+    Category::Type cat1 = static_cast<Category::Type>(Category::PlayerSpaceship | Category::Collidable);
+    Category::Type cat2 = static_cast<Category::Type>(Category::EnemySpaceship  | Category::Collidable);
+
+    CollisionResponseMap::addResponse(cat1, cat2, response1);
 }
 
 void Spaceship::removeEntity()

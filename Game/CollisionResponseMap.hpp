@@ -12,11 +12,11 @@ class CollisionResponseMap
         using Response = std::function<void(Entity&, Entity&)>;
         using ResponseMap = std::unordered_map<Category::Type, Response, std::hash<int>>;
 
-        void    addResponse(Category::Type, Category::Type, Response);
-        void    useResponse(Entity*, Entity*) const;
+        static void    addResponse(Category::Type, Category::Type, Response);
+        static void    useResponse(Entity*, Entity*);
 
     private:
-        std::unordered_map<Category::Type, ResponseMap, std::hash<int>> mCollisionResponsesMap;
+        static std::unordered_map<Category::Type, ResponseMap, std::hash<int>> mCollisionResponsesMap;
 };
 
 template <typename Object, typename Function>

@@ -23,13 +23,14 @@ class Pickup : public Entity
                                 Pickup(Type, const TextureHolder&, ObjectContext);
         virtual sf::FloatRect   getBoundingRect() const override;
         void                    apply(Spaceship&) const;
-        virtual void            onCollision(Entity&) override;
 
     private:
-        virtual void            drawCurrent(sf::RenderTarget&, sf::RenderStates) const override;
+        virtual void    drawCurrent(sf::RenderTarget&, sf::RenderStates) const override;
+        static void     initializeCollisionResponses();
 
         Type             mType;
         sf::Sprite       mSprite;
+        static bool      mHasInitializedResponses;
 };
 
 #endif // PICKUP_HPP

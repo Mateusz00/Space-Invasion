@@ -3,12 +3,15 @@
 #include "../Utility.hpp"
 #include "../World.hpp"
 #include "../ParticleSystem/EmitterNode.hpp"
+#include "../CollisionResponseMap.hpp"
 #include <vector>
 #include <memory>
+
 namespace
 {
     const std::vector<ProjectileData> table = initializeProjectileData();
 }
+bool Projectile::mHasInitializedResponses = false;
 
 Projectile::Projectile(Projectiles::ID type, const TextureHolder& textures,
                         ObjectContext context, int shooterID, float speed, bool isEnemy)
@@ -36,6 +39,9 @@ Projectile::Projectile(Projectiles::ID type, const TextureHolder& textures,
         propellant->setPosition(0.f, mSprite.getLocalBounds().height / 2.f);
         attachChild(std::move(propellant));
     }
+
+    if(!mHasInitializedResponses)
+        initializeCollisionResponses();
 }
 
 float Projectile::getMaxSpeed() const
@@ -91,27 +97,31 @@ void Projectile::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) 
     target.draw(mSprite, states);
 }
 
-void Projectile::onCollision(Entity& entity)
+void Projectile::initializeCollisionResponses()
 {
-    auto categories = entity.getCategories();
+    mHasInitializedResponses = true;
 
-    if(mIsEnemy)
+    auto response1 = castResponse<Spaceship, Projectile>([](Spaceship& player, Projectile& projectile)
     {
-        if(categories & Category::PlayerSpaceship)
-        {
-            entity.damage(table[mType].damage);
-            damage(table[mType].damage);
-        }
-    }
-    else // Player's projectile
+        auto dmg = projectile.getDamage();
+        player.damage(dmg);
+        projectile.damage(dmg);
+    });
+    auto response2 = castResponse<Spaceship, Projectile>([](Spaceship& enemy, Projectile& projectile)
     {
-        if(categories & Category::EnemySpaceship)
-        {
-            entity.damage(table[mType].damage);
-            damage(table[mType].damage);
-            static_cast<Spaceship&>(entity).setAttackerID(mShooterID); // Sets id of spaceship that will have score increased if enemy dies
-        }
-    }
+        auto dmg = projectile.getDamage();
+        enemy.damage(dmg);
+        projectile.damage(dmg);
+        enemy.setAttackerID(projectile.getShootersID());
+    });
+
+    Category::Type cat1 = static_cast<Category::Type>(Category::PlayerSpaceship  | Category::Collidable);
+    Category::Type cat2 = static_cast<Category::Type>(Category::EnemyProjectile  | Category::Collidable);
+    Category::Type cat3 = static_cast<Category::Type>(Category::EnemySpaceship   | Category::Collidable);
+    Category::Type cat4 = static_cast<Category::Type>(Category::AlliedProjectile | Category::Collidable);
+
+    CollisionResponseMap::addResponse(cat1, cat2, response1);
+    CollisionResponseMap::addResponse(cat3, cat4, response2);
 }
 
 void Projectile::setDirection(sf::Vector2f dir)

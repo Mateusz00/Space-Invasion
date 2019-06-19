@@ -1,12 +1,14 @@
 #include "CollisionResponseMap.hpp"
 #include "Entities/Entity.hpp"
 
+std::unordered_map<Category::Type, CollisionResponseMap::ResponseMap, std::hash<int>> CollisionResponseMap::mCollisionResponsesMap;
+
 void CollisionResponseMap::addResponse(Category::Type type1, Category::Type type2, Response response)
 {
     (mCollisionResponsesMap[type1])[type2] = response;
 }
 
-void CollisionResponseMap::useResponse(Entity* entity1, Entity* entity2) const
+void CollisionResponseMap::useResponse(Entity* entity1, Entity* entity2)
 {
     Category::Type type1 = entity1->getCategories();
     Category::Type type2 = entity2->getCategories();

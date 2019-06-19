@@ -24,7 +24,6 @@ class Entity : public SceneNode
         void                    destroy();
         const ObjectContext&    getObjectContext() const;
         virtual sf::FloatRect   getLocalBounds() const;
-        virtual void            onCollision(Entity&);
         virtual void            removeEntity();
         virtual bool            isMarkedForRemoval() const override;
         bool                    isCollidable() const;

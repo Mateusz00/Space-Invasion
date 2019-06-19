@@ -4,6 +4,7 @@
 #include "SpriteNode.hpp"
 #include "Entities/AmmoNode.hpp"
 #include "Exceptions/XMLParseException.hpp"
+#include "CollisionResponseMap.hpp"
 #include <memory>
 #include <algorithm>
 #include <cmath>
@@ -336,9 +337,7 @@ void World::checkCollisions()
 
     // Collision response
     for(const auto& collisionPair : collisionPairs)
-    {
-        (mCollidables.at(collisionPair.first).collidable)->onCollision(*(mCollidables.at(collisionPair.second).collidable));
-    }
+        CollisionResponseMap::useResponse(mCollidables.at(collisionPair.first).collidable, mCollidables.at(collisionPair.second).collidable);
 }
 
 void World::destroyEntitiesOutsideView()

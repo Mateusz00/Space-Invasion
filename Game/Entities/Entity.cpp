@@ -83,10 +83,6 @@ sf::FloatRect Entity::getLocalBounds() const
     return sf::FloatRect();
 }
 
-void Entity::onCollision(Entity& entity)
-{
-}
-
 void Entity::removeEntity()
 {
     destroy();

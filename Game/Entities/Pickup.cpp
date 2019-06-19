@@ -2,11 +2,13 @@
 #include "Spaceship.hpp"
 #include "../Utility.hpp"
 #include "../DataTable.hpp"
+#include "../CollisionResponseMap.hpp"
 
 namespace
 {
     const std::vector<PickupData> table = initializePickupData();
 }
+bool Pickup::mHasInitializedResponses = false;
 
 Pickup::Pickup(Type type, const TextureHolder& textures, ObjectContext context)
     : Entity(1, true, context),
@@ -15,6 +17,9 @@ Pickup::Pickup(Type type, const TextureHolder& textures, ObjectContext context)
 {
     addCategories(Category::Pickup);
     centerOrigin(mSprite);
+
+    if(!mHasInitializedResponses)
+        initializeCollisionResponses();
 }
 
 sf::FloatRect Pickup::getBoundingRect() const
@@ -32,13 +37,18 @@ void Pickup::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) cons
     target.draw(mSprite, states);
 }
 
-void Pickup::onCollision(Entity& entity)
+void Pickup::initializeCollisionResponses()
 {
-    auto categories = entity.getCategories();
+    mHasInitializedResponses = true;
 
-    if(categories & Category::PlayerSpaceship)
+    auto response1 = castResponse<Spaceship, Pickup>([](Spaceship& player, Pickup& pickup)
     {
-        apply(static_cast<Spaceship&>(entity));
-        destroy();
-    }
+        pickup.apply(player);
+        pickup.destroy();
+    });
+
+    Category::Type cat1 = static_cast<Category::Type>(Category::PlayerSpaceship | Category::Collidable);
+    Category::Type cat2 = static_cast<Category::Type>(Category::Pickup          | Category::Collidable);
+
+    CollisionResponseMap::addResponse(cat1, cat2, response1);
 }

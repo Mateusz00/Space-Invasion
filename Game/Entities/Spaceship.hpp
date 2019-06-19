@@ -35,7 +35,6 @@ class Spaceship : public Entity
         float                   getMaxSpeed() const;
         virtual sf::FloatRect   getLocalBounds() const override;
         virtual sf::FloatRect   getBoundingRect() const override;
-        virtual void            onCollision(Entity&) override;
         virtual void            removeEntity() override;
         void                    increaseScore(int);
         int                     getScore() const;
@@ -57,6 +56,7 @@ class Spaceship : public Entity
         virtual void    onRemoval() override;
         void            updateBoostFuel();
         void            sendExplosion(sf::Vector2f pos) const;
+        static void     initializeCollisionResponses();
 
         int                     mTypeID;
         int                     mFireRateLevel;
@@ -79,6 +79,7 @@ class Spaceship : public Entity
         Bar*                    mBoostFuelBar;
         SpriteNodePtr           mSprite;
         EnemyType               mEnemyType;
+        static bool             mHasInitializedResponses;
 };
 
 #endif // SPACESHIP_HPP
