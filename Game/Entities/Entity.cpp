@@ -60,12 +60,14 @@ void Entity::updateCurrent(sf::Time dt, CommandQueue& commands)
 
 void Entity::damage(float hitpoints)
 {
-    mHitpoints -= hitpoints;
+    if(hitpoints > 0)
+        mHitpoints -= hitpoints;
 }
 
 void Entity::repair(float hitpoints)
 {
-    mHitpoints += hitpoints;
+    if(hitpoints > 0)
+        mHitpoints += hitpoints;
 }
 
 void Entity::destroy()
