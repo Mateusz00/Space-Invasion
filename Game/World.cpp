@@ -240,7 +240,7 @@ void World::loadLevelData()
         for(xml_attribute eventAttribute : event.attributes())
             newEvent.addParameter(eventAttribute.name(), eventAttribute.value());
 
-        mEvents.push_back(std::move(newEvent));
+        mEvents.push(std::move(newEvent));
     }
 }
 
@@ -252,7 +252,7 @@ void World::addSpawnPoint(float x, float y, int spaceshipID)
 
 void World::sortSpawnPoints()
 {
-    std::sort(mSpawnPoints.begin(), mSpawnPoints.end(), [](SpawnPoint lhs, SpawnPoint rhs)
+    std::sort(mSpawnPoints.begin(), mSpawnPoints.end(), [](SpawnPoint& lhs, SpawnPoint& rhs)
     {
         return lhs.y < rhs.y;
     });
@@ -374,11 +374,8 @@ void World::updateScore()
 
 void World::updateEvents()
 {
-    while(!mEvents.empty() && getBattlefieldBounds().contains(mEvents.back().getTriggerLocation()))
-    {
-        mEvents.back().handle(*this);
-        mEvents.pop_back();
-    }
+    while(!mEvents.isEmpty() && getBattlefieldBounds().contains(mEvents.front().getTriggerLocation()))
+        mEvents.pop().handle(*this);
 }
 
 void World::removeDanglingPointers()

@@ -9,7 +9,7 @@ class World;
 class LocationEvent
 {
     public:
-        enum Event{BossStage};
+        enum Event{SetScrolling};
 
                         LocationEvent(sf::Vector2f, Event);
         sf::Vector2f    getTriggerLocation() const;

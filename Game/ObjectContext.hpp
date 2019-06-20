@@ -1,18 +1,17 @@
 #ifndef OBJECT_CONTEXT_HPP
 #define OBJECT_CONTEXT_HPP
 
-#include <vector>
-#include "LocationEvent.hpp"
 class SoundPlayer;
 class ParticleNode;
 class CommandQueue;
+class EventQueue;
 
 struct ObjectContext
 {
-    SoundPlayer*                    soundPlayer = nullptr;
-    ParticleNode*                   particleNode = nullptr;
-    CommandQueue*                   commandQueue = nullptr;
-    std::vector<LocationEvent>*     events = nullptr;
+    SoundPlayer*    soundPlayer = nullptr;
+    ParticleNode*   particleNode = nullptr;
+    CommandQueue*   commandQueue = nullptr;
+    EventQueue*     events = nullptr;
 };
 
 #endif // OBJECT_CONTEXT_HPP

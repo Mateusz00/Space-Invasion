@@ -16,9 +16,17 @@ void LocationEvent::handle(World& world)
 {
     switch(mEventID)
     {
-        case Event::BossStage:
-            world.setScrollingSpeed(0.f);///
-        break;
+        case Event::SetScrolling:
+        {
+            auto speed = mParameters.find("scrollSpeed");
+
+            if(speed != mParameters.end())
+                world.setScrollingSpeed(std::stof(speed->second));
+            else
+                world.setScrollingSpeed(0.f);
+
+            break;
+        }
     }
 }
 

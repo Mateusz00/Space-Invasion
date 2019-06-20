@@ -3,7 +3,7 @@
 
 #include "CommandQueue.hpp"
 #include "ObjectContext.hpp"
-#include "LocationEvent.hpp"
+#include "EventQueue.hpp"
 #include "State.hpp"
 #include "SoundPlayer.hpp"
 #include "Entities/Spaceship.hpp"
@@ -96,7 +96,7 @@ class World
         std::unordered_map<int, CollidableData>     mCollidables;
         AABBTree                                    mCollisionTree;
         std::unordered_map<int, int>                mPlayersScores;
-        std::vector<LocationEvent>                  mEvents;
+        EventQueue                                  mEvents;
 };
 
 #endif // WORLD_HPP

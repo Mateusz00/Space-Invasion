@@ -373,6 +373,16 @@ void Spaceship::onRemoval()
     createExplosion();
     changeScore();
     mAttackManager.onRemoval();
+
+    if(!spaceshipInfo[mTypeID].eventScheme.parameters.empty())
+    {
+        LocationEvent event(getWorldPosition(), static_cast<LocationEvent::Event>(spaceshipInfo[mTypeID].eventScheme.eventID));
+
+        for(const auto& parameter : spaceshipInfo[mTypeID].eventScheme.parameters)
+            event.addParameter(parameter.first, parameter.second);
+
+        getObjectContext().events->push(std::move(event));
+    }
 }
 
 void Spaceship::sendExplosion(sf::Vector2f pos) const

@@ -41,6 +41,7 @@ std::vector<SpaceshipData> initializeSpaceshipData()
         xml_node mainNode           = spaceshipDoc.child("spaceship");
         xml_node directionsNode     = mainNode.child("directions");
         xml_node attacksNode        = mainNode.child("attacks");
+        xml_node onDeathNode        = mainNode.child("onDeath");
 
         spaceshipData.hitpoints      = mainNode.child("hitpoints").text().as_int();
         spaceshipData.speed          = mainNode.child("speed").text().as_float();
@@ -69,6 +70,19 @@ std::vector<SpaceshipData> initializeSpaceshipData()
             int probability     = attack.attribute("probability").as_int();
 
             spaceshipData.attacks.emplace(attackID, probability);
+        }
+
+        // Load events
+        for(xml_node event : onDeathNode.children())
+        {
+            spaceshipData.eventScheme.eventID = event.attribute("id").as_int(-1);
+            event.remove_attribute("id");
+
+            if(spaceshipData.eventScheme.eventID < 0)
+                throw std::runtime_error("Event ID not found or less than zero! (" + path.second + ")");
+
+            for(xml_attribute eventAttribute : event.attributes())
+                spaceshipData.eventScheme.parameters.emplace(eventAttribute.name(), eventAttribute.value());
         }
 
         data.emplace_back(std::move(spaceshipData));

@@ -20,6 +20,11 @@ struct SpaceshipData
         float distance;
         float speedPercentage;
     };
+    struct EventScheme
+    {
+        int eventID;
+        std::unordered_map<std::string, std::string> parameters;
+    };
 
     int                             hitpoints;
     float                           speed;
@@ -27,6 +32,7 @@ struct SpaceshipData
     int                             animationID;
     std::vector<Direction>          directions;
     std::unordered_map<int, int>    attacks; // attackID, probability
+    EventScheme                     eventScheme;
 };
 
 struct SpaceshipTextureData
