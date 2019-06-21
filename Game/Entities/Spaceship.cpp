@@ -335,9 +335,9 @@ void Spaceship::increaseScoreRequest(int value) const
 {
     Command increaseScoreCommand;
     increaseScoreCommand.mCategories = Category::PlayerSpaceship;
-    increaseScoreCommand.mAction = castFunctor<Spaceship>([this, value](Spaceship& spaceship, sf::Time dt)
+    increaseScoreCommand.mAction = castFunctor<Spaceship>([attacker = mAttackerID, value](Spaceship& spaceship, sf::Time dt)
     {
-        if(spaceship.getPlayerID() == mAttackerID)
+        if(spaceship.getPlayerID() == attacker)
             spaceship.increaseScore(value);
     });
 

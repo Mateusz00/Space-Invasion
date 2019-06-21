@@ -160,7 +160,7 @@ void LevelState::updateLevelStates()
 {
     std::vector<int> completedLevels = mProfile.getCompletedLevels();
 
-    for(int levelID : completedLevels)
+    for(const int& levelID : completedLevels)
     {
         mLevelButtons[levelID]->setCompleted();
         std::vector<int> unlock = levelInfo[levelID].levelDependencies;
