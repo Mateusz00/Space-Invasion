@@ -141,7 +141,7 @@ void Settings::loadDefaultValues()
     mKeyBinding2[sf::Keyboard::Right]       = KeyBinding::MoveRight;
     mKeyBinding2[sf::Keyboard::Comma]       = KeyBinding::Fire;
     mKeyBinding2[sf::Keyboard::Period]      = KeyBinding::LaunchMissile;
-    mKeyBinding2[sf::Keyboard::Backslash]   = KeyBinding::SpeedBoost;
+    mKeyBinding2[sf::Keyboard::Slash]       = KeyBinding::SpeedBoost;
 
     saveToFile();
 }

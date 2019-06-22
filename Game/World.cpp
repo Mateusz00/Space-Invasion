@@ -119,8 +119,9 @@ Spaceship* World::addSpaceship(int id)
     playerSpaceship->setIdentifier(id);
     mPlayerSpaceships.emplace_back(playerSpaceship.get());
 
-    // temp
     std::unique_ptr<AmmoNode> ammoNode(new AmmoNode(*playerSpaceship, mTextures, mFonts, mView));
+    ammoNode->setMargin(2.f);
+    ammoNode->align(static_cast<AmmoNode::Align>(id%2));
     mUIGraph.attachChild(std::move(ammoNode));
     mSceneLayers[UpperAir]->attachChild(std::move(playerSpaceship));
     return mPlayerSpaceships.back();

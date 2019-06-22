@@ -13,7 +13,10 @@
 class AmmoNode : public SceneNode
 {
     public:
+        enum Align{Left, Right};
                         AmmoNode(const Spaceship&, const TextureHolder&, const FontHolder&, const sf::View&);
+        void            setMargin(float percent);
+        void            align(Align);
 
     private:
         virtual void    updateCurrent(sf::Time, CommandQueue&) override;
@@ -23,6 +26,8 @@ class AmmoNode : public SceneNode
         const sf::View&     mView;
         sf::Sprite          mSprite;
         sf::Text            mAmount;
+        float               mMargin;
+        Align               mAlignment;
 };
 
 #endif // AMMONODE_HPP

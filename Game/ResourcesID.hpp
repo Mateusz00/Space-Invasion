@@ -12,7 +12,7 @@ namespace sf
 
 namespace Textures
 {
-    const sf::IntRect MissileRect = sf::IntRect(0, 0, 13, 30);
+    const sf::IntRect MissileRect = sf::IntRect(128, 50, 13, 30);
 
     enum ID
     {

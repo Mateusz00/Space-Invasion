@@ -18,13 +18,33 @@ void AmmoNode::updateCurrent(sf::Time dt, CommandQueue& commands)
         mAmount.setString(toString(ammo));
 
     auto viewSize = mView.getSize();
-    auto amountBounds = mAmount.getLocalBounds();
-    mAmount.setPosition(viewSize.x - amountBounds.width - 40.f, viewSize.y - 50.f);
-    mSprite.setPosition(viewSize.x - 30.f, viewSize.y - 45.f);
+    auto textSpriteSpace = mAmount.getLocalBounds().width + 8.f;
+
+    if(mAlignment == Align::Left)
+    {
+        mAmount.setPosition(viewSize.x * mMargin, viewSize.y - 50.f);
+        mSprite.setPosition(mAmount.getPosition().x + textSpriteSpace, viewSize.y - 45.f);
+    }
+    else
+    {
+        mAmount.setPosition(viewSize.x * (1-mMargin) - textSpriteSpace - mSprite.getLocalBounds().width, viewSize.y - 50.f);
+        mSprite.setPosition(mAmount.getPosition().x + textSpriteSpace, viewSize.y - 45.f);
+    }
 }
 
 void AmmoNode::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
     target.draw(mSprite, states);
     target.draw(mAmount, states);
+}
+
+///@param percent - distance in % from border it's aligned to
+void AmmoNode::setMargin(float percent)
+{
+    mMargin = percent / 100.f;
+}
+
+void AmmoNode::align(Align a)
+{
+    mAlignment = a;
 }
