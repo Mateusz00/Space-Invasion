@@ -74,8 +74,8 @@ bool GameState::handleEvent(const sf::Event& event)
 
 void GameState::updateScoresFile() const
 {
-    using UserScore = std::pair<int, std::string>;
-    std::vector<UserScore> scores(10, UserScore(0, "-"));
+    using PlayerScore = std::pair<int, std::string>;
+    std::vector<PlayerScore> scores(10, PlayerScore(0, "-"));
 
     // Read top 10 scores from file
     std::ifstream inputScores("Scores.txt");
@@ -90,7 +90,7 @@ void GameState::updateScoresFile() const
     for(const Player& player : mPlayers)
         scores.push_back(std::make_pair(player.getScore(), player.getName()));
 
-    std::sort(scores.begin(), scores.end(), [](const UserScore& lhs, const UserScore& rhs)
+    std::sort(scores.begin(), scores.end(), [](const PlayerScore& lhs, const PlayerScore& rhs)
     {
         return lhs.first > rhs.first;
     });

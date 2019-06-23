@@ -14,11 +14,15 @@
 class HighScoresTable : public sf::Drawable, public sf::Transformable
 {
     public:
-                        HighScoresTable(sf::RenderWindow&, FontHolder&, int characterSize = 26);
+        using PlayerScore = std::pair<int, std::string>;
+
+                        HighScoresTable(sf::RenderWindow&, FontHolder&, int characterSize = 26, int levelID = 0);
         virtual void    draw(sf::RenderTarget&, sf::RenderStates) const override;
+        void            addScore(PlayerScore);
+        void            saveScores();
 
     private:
-        void            loadScores();
+        void            loadScores(int levelID = 0);
         void            positionTexts();
 
         int                         mCharacterSize;
@@ -27,5 +31,6 @@ class HighScoresTable : public sf::Drawable, public sf::Transformable
         sf::RectangleShape          mBackground;
         std::vector<sf::Text>       mNames;
         std::vector<sf::Text>       mScores;
+        std::vector<PlayerScore>    mScoresTable;
 };
 #endif // HIGHSCORETABLE_HPP

@@ -2,14 +2,18 @@
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/Color.hpp>
 #include <sstream>
+#include <string>
+#include <iostream>
 #include <fstream>
 
-HighScoresTable::HighScoresTable(sf::RenderWindow& window, FontHolder& fonts, int characterSize)
+/// @param If levelID is 0 then it load's overall scores
+HighScoresTable::HighScoresTable(sf::RenderWindow& window, FontHolder& fonts, int characterSize, int levelID)
     : mCharacterSize(characterSize),
       mWindow(window),
-      mFonts(fonts)
+      mFonts(fonts),
+      mScoresTable(10, PlayerScore(0, "-"))
 {
-    loadScores();
+    loadScores(levelID);
     positionTexts();
 
     mBackground.setSize((sf::Vector2f(characterSize * 20, characterSize * 16)));
@@ -32,17 +36,37 @@ void HighScoresTable::draw(sf::RenderTarget &target, sf::RenderStates states) co
         mWindow.draw(drawable, states);
 }
 
-void HighScoresTable::loadScores()
+/// @param If levelID is 0 then it load's overall scores
+void HighScoresTable::loadScores(int levelID)
 {
-    using UserScore = std::pair<int, std::string>;
-    std::vector<UserScore> scores(10, UserScore(0, "-"));
+    mScoresTable.resize(10);
+    std::vector<PlayerScore> scores(10, PlayerScore(0, "-"));
 
     // Read top 10 scores from file
     std::ifstream inputScores("Scores.txt");
     if(inputScores.good())
     {
-        for(int i=0; inputScores.peek() != EOF && i < scores.size(); ++i)
-            inputScores >> scores[i].first >> scores[i].second;
+        // Load file
+        std::string fileContent;
+        inputScores.seekg(0, std::ios::end);
+        fileContent.resize(inputScores.tellg());
+        inputScores.seekg(0, std::ios::beg);
+        inputScores.read(&fileContent[0], fileContent.size());
+
+        // Find string that contains scores for requested level
+        auto levelScoresBeg = fileContent.find("#" + toString(levelID));
+        if(levelScoresBeg != std::string::npos)
+        {
+            auto levelScoresEnd = fileContent.find('#', levelScoresBeg+1);
+            if(levelScoresEnd != std::string::npos)
+            {
+                std::istringstream levelScores(fileContent.substr(levelScoresBeg+2, levelScoresEnd - (levelScoresBeg+2)));
+                for(int i=0; i < mScoresTable.size(); ++i)
+                {
+                    levelScores >> mScoresTable[i].first >> mScoresTable[i].second;
+                }
+            }
+        }
     }
     inputScores.close();
 
@@ -50,12 +74,12 @@ void HighScoresTable::loadScores()
     {
         std::ostringstream stream;
 
-        for(int i=0; i < scores.size(); ++i)
+        for(int i=0; i < mScoresTable.size(); ++i)
         {
-            mNames.emplace_back(scores[i].second, mFonts.get(Fonts::Sansation), mCharacterSize);
+            mNames.emplace_back(mScoresTable[i].second, mFonts.get(Fonts::Sansation), mCharacterSize);
 
             stream.str("");
-            stream << scores[i].first;
+            stream << mScoresTable[i].first;
             mScores.emplace_back(stream.str(), mFonts.get(Fonts::Sansation), mCharacterSize);
         }
     }
@@ -68,4 +92,14 @@ void HighScoresTable::positionTexts()
 
     for(int i=0; i < mScores.size(); ++i)
         mScores[i].setPosition(mCharacterSize * 13.f, mCharacterSize * 1.5f * i + 10.f);
+}
+
+void HighScoresTable::addScore(PlayerScore score)
+{
+    mScoresTable.emplace_back(std::move(score));
+}
+
+void HighScoresTable::saveScores()
+{
+    // TODO
 }
