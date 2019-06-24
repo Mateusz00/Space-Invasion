@@ -19,10 +19,11 @@ class HighScoresTable : public sf::Drawable, public sf::Transformable
                         HighScoresTable(sf::RenderWindow&, FontHolder&, int characterSize = 26, int levelID = 0);
         virtual void    draw(sf::RenderTarget&, sf::RenderStates) const override;
         void            addScore(PlayerScore);
-        void            saveScores();
+        void            saveScores(int levelID);
+        void            loadScores(int levelID = 0);
 
     private:
-        void            loadScores(int levelID = 0);
+        void            loadFile(std::string& str, std::string fileName);
         void            positionTexts();
 
         int                         mCharacterSize;

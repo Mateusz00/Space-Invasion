@@ -36,11 +36,22 @@ void HighScoresTable::draw(sf::RenderTarget &target, sf::RenderStates states) co
         mWindow.draw(drawable, states);
 }
 
+void HighScoresTable::loadFile(std::string& str, std::string fileName)
+{
+    std::ifstream file(fileName);
+
+    file.seekg(0, std::ios::end);
+    str.resize(file.tellg());
+    file.seekg(0, std::ios::beg);
+    file.read(&str[0], str.size());
+
+    file.close();
+}
+
 /// @param If levelID is 0 then it load's overall scores
 void HighScoresTable::loadScores(int levelID)
 {
     mScoresTable.resize(10);
-    std::vector<PlayerScore> scores(10, PlayerScore(0, "-"));
 
     // Read top 10 scores from file
     std::ifstream inputScores("Scores.txt");
@@ -48,10 +59,7 @@ void HighScoresTable::loadScores(int levelID)
     {
         // Load file
         std::string fileContent;
-        inputScores.seekg(0, std::ios::end);
-        fileContent.resize(inputScores.tellg());
-        inputScores.seekg(0, std::ios::beg);
-        inputScores.read(&fileContent[0], fileContent.size());
+        loadFile(fileContent, "Scores.txt");
 
         // Find string that contains scores for requested level
         auto levelScoresBeg = fileContent.find("#" + toString(levelID));
@@ -61,27 +69,27 @@ void HighScoresTable::loadScores(int levelID)
             if(levelScoresEnd != std::string::npos)
             {
                 std::istringstream levelScores(fileContent.substr(levelScoresBeg+2, levelScoresEnd - (levelScoresBeg+2)));
+
                 for(int i=0; i < mScoresTable.size(); ++i)
-                {
                     levelScores >> mScoresTable[i].first >> mScoresTable[i].second;
-                }
+            }
+        }
+        else
+        {
+            for(auto& playerScore : mScoresTable)
+            {
+                playerScore.first = 0;
+                playerScore.second = "-";
             }
         }
     }
     inputScores.close();
 
     // Set texts
+    for(int i=0; i < mScoresTable.size(); ++i)
     {
-        std::ostringstream stream;
-
-        for(int i=0; i < mScoresTable.size(); ++i)
-        {
-            mNames.emplace_back(mScoresTable[i].second, mFonts.get(Fonts::Sansation), mCharacterSize);
-
-            stream.str("");
-            stream << mScoresTable[i].first;
-            mScores.emplace_back(stream.str(), mFonts.get(Fonts::Sansation), mCharacterSize);
-        }
+        mNames.emplace_back(mScoresTable[i].second, mFonts.get(Fonts::Sansation), mCharacterSize);
+        mScores.emplace_back(toString(mScoresTable[i].first), mFonts.get(Fonts::Sansation), mCharacterSize);
     }
 }
 
@@ -99,7 +107,47 @@ void HighScoresTable::addScore(PlayerScore score)
     mScoresTable.emplace_back(std::move(score));
 }
 
-void HighScoresTable::saveScores()
+/// @param If levelID is 0 then it load's overall scores
+void HighScoresTable::saveScores(int levelID)
 {
-    // TODO
+    std::sort(mScoresTable.begin(), mScoresTable.end(), [](const PlayerScore& lhs, const PlayerScore& rhs)
+    {
+        return lhs.first > rhs.first;
+    });
+
+    // Create new string containing updated scores
+    std::ostringstream newScores;
+    newScores << "#" << toString(levelID);
+
+    for(int i = 0; i < 9; ++i)
+        newScores << mScoresTable[i].first << " " << mScoresTable[i].second << " ";
+
+    newScores << mScoresTable[9].first << " " << mScoresTable[9].second << "#";
+
+    // Load file contents
+    std::string newFileContents;
+    loadFile(newFileContents, "Scores.txt");
+
+    // Find string that contains scores for requested level and replace it
+    auto levelScoresBeg = newFileContents.find("#" + toString(levelID));
+    auto levelScoresEnd = std::string::npos;
+
+    if(levelScoresBeg != std::string::npos)
+    {
+        levelScoresEnd = newFileContents.find('#', levelScoresBeg+1);
+        if(levelScoresEnd != std::string::npos)
+            newFileContents.replace(levelScoresBeg, (levelScoresEnd - levelScoresBeg)+1, newScores.str());
+    }
+    else
+    {
+        newFileContents.append(newScores.str());
+    }
+
+    // If there is something wrong with data in file, then save only correct string to file
+    if(levelScoresEnd == std::string::npos)
+        newFileContents = newScores.str();
+
+    std::ofstream outputScores("Scores.txt", std::ios::out | std::ios::trunc);
+    outputScores << newFileContents;
+    outputScores.close();
 }
