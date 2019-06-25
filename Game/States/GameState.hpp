@@ -16,7 +16,7 @@ class GameState : public State
         virtual bool    handleEvent(const sf::Event&) override;
 
     private:
-        void            updateScoresFile() const;
+        void            updateScoresFile(int levelID) const;
         void            updatePlayersScore();
         int             getCurrentCumulativeScore();
 

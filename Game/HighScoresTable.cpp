@@ -6,9 +6,10 @@
 #include <iostream>
 #include <fstream>
 
-/// @param If levelID is 0 then it load's overall scores
-HighScoresTable::HighScoresTable(sf::RenderWindow& window, FontHolder& fonts, int characterSize, int levelID)
+/// @param If levelID is -1 then it load's overall scores
+HighScoresTable::HighScoresTable(sf::RenderWindow& window, FontHolder& fonts, int levelID, int characterSize)
     : mCharacterSize(characterSize),
+      mCurrentLevelID(levelID),
       mWindow(window),
       mFonts(fonts),
       mScoresTable(10, PlayerScore(0, "-"))
@@ -40,17 +41,21 @@ void HighScoresTable::loadFile(std::string& str, std::string fileName)
 {
     std::ifstream file(fileName);
 
-    file.seekg(0, std::ios::end);
-    str.resize(file.tellg());
-    file.seekg(0, std::ios::beg);
-    file.read(&str[0], str.size());
+    if(file.good())
+    {
+        file.seekg(0, std::ios::end);
+        str.resize(file.tellg());
+        file.seekg(0, std::ios::beg);
+        file.read(&str[0], str.size());
+    }
 
     file.close();
 }
 
-/// @param If levelID is 0 then it load's overall scores
+/// @param If levelID is -1 then it load's overall scores
 void HighScoresTable::loadScores(int levelID)
 {
+    mCurrentLevelID = levelID;
     mScoresTable.resize(10);
 
     // Read top 10 scores from file
@@ -107,8 +112,7 @@ void HighScoresTable::addScore(PlayerScore score)
     mScoresTable.emplace_back(std::move(score));
 }
 
-/// @param If levelID is 0 then it load's overall scores
-void HighScoresTable::saveScores(int levelID)
+void HighScoresTable::saveScores()
 {
     std::sort(mScoresTable.begin(), mScoresTable.end(), [](const PlayerScore& lhs, const PlayerScore& rhs)
     {
@@ -117,7 +121,7 @@ void HighScoresTable::saveScores(int levelID)
 
     // Create new string containing updated scores
     std::ostringstream newScores;
-    newScores << "#" << toString(levelID);
+    newScores << "#" << toString(mCurrentLevelID);
 
     for(int i = 0; i < 9; ++i)
         newScores << mScoresTable[i].first << " " << mScoresTable[i].second << " ";
@@ -129,7 +133,7 @@ void HighScoresTable::saveScores(int levelID)
     loadFile(newFileContents, "Scores.txt");
 
     // Find string that contains scores for requested level and replace it
-    auto levelScoresBeg = newFileContents.find("#" + toString(levelID));
+    auto levelScoresBeg = newFileContents.find("#" + toString(mCurrentLevelID));
     auto levelScoresEnd = std::string::npos;
 
     if(levelScoresBeg != std::string::npos)

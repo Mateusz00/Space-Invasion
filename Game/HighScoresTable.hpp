@@ -16,10 +16,10 @@ class HighScoresTable : public sf::Drawable, public sf::Transformable
     public:
         using PlayerScore = std::pair<int, std::string>;
 
-                        HighScoresTable(sf::RenderWindow&, FontHolder&, int characterSize = 26, int levelID = 0);
+                        HighScoresTable(sf::RenderWindow&, FontHolder&, int levelID = 0, int characterSize = 26);
         virtual void    draw(sf::RenderTarget&, sf::RenderStates) const override;
         void            addScore(PlayerScore);
-        void            saveScores(int levelID);
+        void            saveScores();
         void            loadScores(int levelID = 0);
 
     private:
@@ -27,6 +27,7 @@ class HighScoresTable : public sf::Drawable, public sf::Transformable
         void            positionTexts();
 
         int                         mCharacterSize;
+        int                         mCurrentLevelID;
         sf::RenderWindow&           mWindow;
         FontHolder&                 mFonts;
         sf::RectangleShape          mBackground;

@@ -2,6 +2,7 @@
 #include "../Utility.hpp"
 #include "../MusicPlayer.hpp"
 #include "../Profile.hpp"
+#include "../HighScoresTable.hpp"
 #include <SFML/Graphics/Text.hpp>
 #include <fstream>
 #include <iostream>
@@ -38,7 +39,7 @@ bool GameState::update(sf::Time dt)
         requestStackPush(States::MissionFailed);
         getContext().sounds.play(Sound::GameOver);
         getContext().music.pause();
-        updateScoresFile();
+        updateScoresFile(mProfile.getCurrentLevel());
     }
     else if(mWorld.hasPlayerReachedEnd())
     {
@@ -72,35 +73,14 @@ bool GameState::handleEvent(const sf::Event& event)
     return false;
 }
 
-void GameState::updateScoresFile() const
+void GameState::updateScoresFile(int levelID) const
 {
-    using PlayerScore = std::pair<int, std::string>;
-    std::vector<PlayerScore> scores(10, PlayerScore(0, "-"));
+    HighScoresTable scores(getContext().window, getContext().fonts, levelID);
 
-    // Read top 10 scores from file
-    std::ifstream inputScores("Scores.txt");
-    if(inputScores.good())
-    {
-        for(int i=0; inputScores.peek() != EOF && i < scores.size(); ++i)
-            inputScores >> scores[i].first >> scores[i].second;
-    }
-    inputScores.close();
-
-    // Add players scores to array of previous scores and sort them in descending order
     for(const Player& player : mPlayers)
-        scores.push_back(std::make_pair(player.getScore(), player.getName()));
+        scores.addScore(std::make_pair(player.getScore(), player.getName()));
 
-    std::sort(scores.begin(), scores.end(), [](const PlayerScore& lhs, const PlayerScore& rhs)
-    {
-        return lhs.first > rhs.first;
-    });
-
-    // Output new top 10 scores to file
-    std::ofstream outputScores("Scores.txt", std::ios::out | std::ios::trunc);
-    for(int i = 0; i < 9; ++i)
-        outputScores << scores[i].first << " " << scores[i].second << " ";
-
-    outputScores.close();
+    scores.saveScores();
 }
 
 void GameState::updatePlayersScore()
