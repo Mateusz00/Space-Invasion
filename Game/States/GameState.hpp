@@ -17,6 +17,7 @@ class GameState : public State
 
     private:
         void            updateScoresFile(int levelID) const;
+        void            updateOverallScore() const;
         void            updatePlayersScore();
         int             getCurrentCumulativeScore();
 

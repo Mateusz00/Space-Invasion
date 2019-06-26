@@ -1,14 +1,21 @@
 #include "GameState.hpp"
+#include "../Exceptions/XMLParseException.hpp"
 #include "../Utility.hpp"
 #include "../MusicPlayer.hpp"
 #include "../Profile.hpp"
 #include "../HighScoresTable.hpp"
 #include <SFML/Graphics/Text.hpp>
 #include <fstream>
-#include <iostream>
 #include <sstream>
 #include <string>
+#include <pugixml.hpp>
 #include <unordered_map>
+
+int getLastLevelID();
+namespace
+{
+    int lastLevel = getLastLevelID();
+}
 
 GameState::GameState(Context context, StateStack& stateStack)
     : State(context, stateStack),
@@ -32,26 +39,30 @@ bool GameState::draw()
 bool GameState::update(sf::Time dt)
 {
     mWorld.update(dt);
-    updatePlayersScore(); // Try to move this inside ifs
 
     if(!mWorld.hasAlivePlayer())
     {
+        updatePlayersScore();
+        updateScoresFile(mProfile.getCurrentLevel());
         requestStackPush(States::MissionFailed);
         getContext().sounds.play(Sound::GameOver);
         getContext().music.pause();
-        updateScoresFile(mProfile.getCurrentLevel());
     }
     else if(mWorld.hasPlayerReachedEnd())
     {
+        updatePlayersScore();
+        updateScoresFile(mProfile.getCurrentLevel());
         requestStackPush(States::MissionSuccess);
 
-        std::unordered_map<int, int> playersScores = mWorld.getPlayersScoresMap();
         int levelID = mProfile.getCurrentLevel();
         if(getCurrentCumulativeScore() > mProfile.getCumulativeLevelScore(levelID)) // Saves greater score
         {
             for(Player& player : mPlayers)
-                mProfile.updateData(levelID, player.getID(), playersScores.at(player.getID()));
+                mProfile.updateData(levelID, player.getID(), player.getScore());
         }
+
+        if(levelID == lastLevel)
+            updateOverallScore();
     }
 
     for(Player& player : mPlayers)
@@ -83,6 +94,19 @@ void GameState::updateScoresFile(int levelID) const
     scores.saveScores();
 }
 
+void GameState::updateOverallScore() const
+{
+    HighScoresTable scores(getContext().window, getContext().fonts, -1);
+
+    for(Player& player : mPlayers)
+    {
+        int score = mProfile.getOverallPlayerScore(player.getID());
+        scores.addScore(std::make_pair(score, player.getName()));
+    }
+
+    scores.saveScores();
+}
+
 void GameState::updatePlayersScore()
 {
     std::unordered_map<int, int> playersScores = mWorld.getPlayersScoresMap();
@@ -93,11 +117,28 @@ void GameState::updatePlayersScore()
 
 int GameState::getCurrentCumulativeScore()
 {
-    std::unordered_map<int, int> playersScores = mWorld.getPlayersScoresMap();
     int score = 0;
 
     for(const Player& player : mPlayers)
-        score += playersScores.at(player.getID());
+        score += player.getScore();
 
     return score;
+}
+
+int getLastLevelID()
+{
+    using namespace pugi;
+
+    xml_document doc;
+    xml_parse_result result = doc.load_file("Levels/levels.xml");
+    if(!result)
+        throw XMLParseException(result, "levels.xml");
+
+    xml_node levels = doc.child("levels");
+    int id = levels.last_child().attribute("id").as_int(-1);
+
+    if(id == -1)
+        throw std::runtime_error("Error: Couldn't find id attribute for final level!");
+
+    return id;
 }

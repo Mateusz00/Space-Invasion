@@ -3,7 +3,6 @@
 #include <SFML/Graphics/Color.hpp>
 #include <sstream>
 #include <string>
-#include <iostream>
 #include <fstream>
 
 /// @param If levelID is -1 then it load's overall scores
@@ -67,13 +66,16 @@ void HighScoresTable::loadScores(int levelID)
         loadFile(fileContent, "Scores.txt");
 
         // Find string that contains scores for requested level
-        auto levelScoresBeg = fileContent.find("#" + toString(levelID));
+        std::string levelTag = "#" + toString(levelID);
+        auto levelScoresBeg = fileContent.find(levelTag);
+
         if(levelScoresBeg != std::string::npos)
         {
             auto levelScoresEnd = fileContent.find('#', levelScoresBeg+1);
             if(levelScoresEnd != std::string::npos)
             {
-                std::istringstream levelScores(fileContent.substr(levelScoresBeg+2, levelScoresEnd - (levelScoresBeg+2)));
+                auto scoresBeg = levelScoresBeg + levelTag.size();
+                std::istringstream levelScores(fileContent.substr(scoresBeg, levelScoresEnd - scoresBeg));
 
                 for(int i=0; i < mScoresTable.size(); ++i)
                     levelScores >> mScoresTable[i].first >> mScoresTable[i].second;
@@ -134,13 +136,16 @@ void HighScoresTable::saveScores()
 
     // Find string that contains scores for requested level and replace it
     auto levelScoresBeg = newFileContents.find("#" + toString(mCurrentLevelID));
-    auto levelScoresEnd = std::string::npos;
+    bool isCorrupted = false;
 
     if(levelScoresBeg != std::string::npos)
     {
-        levelScoresEnd = newFileContents.find('#', levelScoresBeg+1);
+        auto levelScoresEnd = newFileContents.find('#', levelScoresBeg+1);
+
         if(levelScoresEnd != std::string::npos)
             newFileContents.replace(levelScoresBeg, (levelScoresEnd - levelScoresBeg)+1, newScores.str());
+        else
+            isCorrupted = true;
     }
     else
     {
@@ -148,7 +153,7 @@ void HighScoresTable::saveScores()
     }
 
     // If there is something wrong with data in file, then save only correct string to file
-    if(levelScoresEnd == std::string::npos)
+    if(isCorrupted)
         newFileContents = newScores.str();
 
     std::ofstream outputScores("Scores.txt", std::ios::out | std::ios::trunc);

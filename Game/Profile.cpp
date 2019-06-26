@@ -124,6 +124,7 @@ int Profile::getLevelScore(int levelID, int playerID) const
 
     return 0;
 }
+
 ///@return 0 if player didn't complete requested level
 int Profile::getCumulativeLevelScore(int levelID) const
 {
@@ -134,6 +135,21 @@ int Profile::getCumulativeLevelScore(int levelID) const
     {
         for(const auto& playerScore : scoresMap->second)
             score += playerScore.second;
+    }
+
+    return score;
+}
+
+int Profile::getOverallPlayerScore(int playerID) const
+{
+    int score = 0;
+
+    for(const auto& levelScores : mCompletedLevelsInfo)
+    {
+        auto pos = levelScores.second.find(playerID);
+
+        if(pos != levelScores.second.end())
+            score += pos->second;
     }
 
     return score;

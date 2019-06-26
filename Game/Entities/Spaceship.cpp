@@ -33,7 +33,7 @@ Spaceship::Spaceship(int typeID, const TextureHolder& textures, const FontHolder
       mTravelledDistance(0.f),
       mDirectionIndex(0),
       mTextures(textures),
-      mAttackerID(0),
+      mAttackerID(-1),
       mScore(0),
       mAttackManager(textures, context, id, !mIsEnemy, &targets),
       mBoosted(false),
