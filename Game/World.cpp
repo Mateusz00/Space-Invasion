@@ -364,10 +364,10 @@ void World::updateScore()
     int cumulativeScore = 0;
 
     for(const auto& playerSpaceship : mPlayerSpaceships)
-    {
-        cumulativeScore += playerSpaceship->getScore();
         mPlayersScores[playerSpaceship->getPlayerID()] = playerSpaceship->getScore();
-    }
+
+    for(const auto& playerScore : mPlayersScores)
+        cumulativeScore += playerScore.second;
 
     mScore.setString(toString(cumulativeScore));
     centerOrigin(mScore);

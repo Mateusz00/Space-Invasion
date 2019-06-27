@@ -95,7 +95,7 @@ class World
         std::array<SceneNode*, LayerCount>          mSceneLayers;
         std::unordered_map<int, CollidableData>     mCollidables;
         AABBTree                                    mCollisionTree;
-        std::unordered_map<int, int>                mPlayersScores;
+        std::unordered_map<int, int>                mPlayersScores; // id, score
         EventQueue                                  mEvents;
 };
 
