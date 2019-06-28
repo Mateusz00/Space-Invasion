@@ -128,8 +128,8 @@ void Application::loadSettings()
     mSounds.setVolume(mSettings.getSoundVolume());
     mMusicPlayer.setVolume(mSettings.getMusicVolume());
 
+    mKeyBindings.push_back(new KeyBinding(0, mSettings));
     mKeyBindings.push_back(new KeyBinding(1, mSettings));
-    mKeyBindings.push_back(new KeyBinding(2, mSettings));
 }
 
 sf::Time Application::getTimePerFrame()

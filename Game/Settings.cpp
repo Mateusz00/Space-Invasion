@@ -23,8 +23,9 @@ void Settings::saveToFile()
         root.add("MusicVolume", Setting::TypeFloat) = mMusicVolume;
         root.add("SoundVolume", Setting::TypeFloat) = mSoundVolume;
         root.add("FrameLimit", Setting::TypeInt) = static_cast<int>(mFramerateLimit);
-        addControlsToConfig(root, mKeyBinding1, "Player1");
-        addControlsToConfig(root, mKeyBinding2, "Player2");
+
+        for(int i=0; i < mKeyBindings.size(); ++i)
+            addControlsToConfig(root, mKeyBindings[i], "Player" + toString(i+1));
     }
     catch(const SettingTypeException& typeEx)
     {
@@ -96,27 +97,24 @@ unsigned int Settings::getFramerateLimit() const
     return mFramerateLimit;
 }
 
-void Settings::setKeyBinding(KeyBindMap keys, int player)
+/*KeyBinding::BindMap Settings::setKeyBinding(int player)
 {
-    switch(player)
-    {
-        case 1:
-            mKeyBinding1 = keys;
-            break;
+    return mKeyBindings.at(player);
+}*/
 
-        case 2:
-            mKeyBinding2 = keys;
-            break;
-    }
+const KeyBinding::BindMap& Settings::getKeyBinding(int player) const
+{
+    return mKeyBindings.at(player);
 }
 
-Settings::KeyBindMap Settings::getKeyBinding(int player) const
+void Settings::eraseBind(int player, sf::Keyboard::Key key)
 {
-    switch(player)
-    {
-        case 1: return mKeyBinding1;
-        case 2: return mKeyBinding2;
-    }
+    mKeyBindings.at(player).erase(key);
+}
+
+void Settings::addBind(int player, sf::Keyboard::Key key, KeyBinding::Action action)
+{
+    (mKeyBindings.at(player))[key] = action;
 }
 
 void Settings::loadDefaultValues()
@@ -127,21 +125,21 @@ void Settings::loadDefaultValues()
     mMusicVolume    = 80.f;
     mFramerateLimit = 0;
 
-    mKeyBinding1[sf::Keyboard::W] = KeyBinding::MoveUp;
-    mKeyBinding1[sf::Keyboard::S] = KeyBinding::MoveDown;
-    mKeyBinding1[sf::Keyboard::A] = KeyBinding::MoveLeft;
-    mKeyBinding1[sf::Keyboard::D] = KeyBinding::MoveRight;
-    mKeyBinding1[sf::Keyboard::F] = KeyBinding::Fire;
-    mKeyBinding1[sf::Keyboard::G] = KeyBinding::LaunchMissile;
-    mKeyBinding1[sf::Keyboard::H] = KeyBinding::SpeedBoost;
+    mKeyBindings[0][sf::Keyboard::W] = KeyBinding::MoveUp;
+    mKeyBindings[0][sf::Keyboard::S] = KeyBinding::MoveDown;
+    mKeyBindings[0][sf::Keyboard::A] = KeyBinding::MoveLeft;
+    mKeyBindings[0][sf::Keyboard::D] = KeyBinding::MoveRight;
+    mKeyBindings[0][sf::Keyboard::F] = KeyBinding::Fire;
+    mKeyBindings[0][sf::Keyboard::G] = KeyBinding::LaunchMissile;
+    mKeyBindings[0][sf::Keyboard::H] = KeyBinding::SpeedBoost;
 
-    mKeyBinding2[sf::Keyboard::Up]          = KeyBinding::MoveUp;
-    mKeyBinding2[sf::Keyboard::Down]        = KeyBinding::MoveDown;
-    mKeyBinding2[sf::Keyboard::Left]        = KeyBinding::MoveLeft;
-    mKeyBinding2[sf::Keyboard::Right]       = KeyBinding::MoveRight;
-    mKeyBinding2[sf::Keyboard::Comma]       = KeyBinding::Fire;
-    mKeyBinding2[sf::Keyboard::Period]      = KeyBinding::LaunchMissile;
-    mKeyBinding2[sf::Keyboard::Slash]       = KeyBinding::SpeedBoost;
+    mKeyBindings[1][sf::Keyboard::Up]       = KeyBinding::MoveUp;
+    mKeyBindings[1][sf::Keyboard::Down]     = KeyBinding::MoveDown;
+    mKeyBindings[1][sf::Keyboard::Left]     = KeyBinding::MoveLeft;
+    mKeyBindings[1][sf::Keyboard::Right]    = KeyBinding::MoveRight;
+    mKeyBindings[1][sf::Keyboard::Comma]    = KeyBinding::Fire;
+    mKeyBindings[1][sf::Keyboard::Period]   = KeyBinding::LaunchMissile;
+    mKeyBindings[1][sf::Keyboard::Slash]    = KeyBinding::SpeedBoost;
 
     saveToFile();
 }
@@ -172,41 +170,40 @@ bool Settings::loadFromFile()
         mSoundVolume    = cfg.lookup("SoundVolume");
         mFramerateLimit = cfg.lookup("FrameLimit");
 
-        mKeyBinding1[toKey(cfg.lookup("Player1_MoveUp"))]          = KeyBinding::MoveUp;
-        mKeyBinding1[toKey(cfg.lookup("Player1_MoveDown"))]        = KeyBinding::MoveDown;
-        mKeyBinding1[toKey(cfg.lookup("Player1_MoveLeft"))]        = KeyBinding::MoveLeft;
-        mKeyBinding1[toKey(cfg.lookup("Player1_MoveRight"))]       = KeyBinding::MoveRight;
-        mKeyBinding1[toKey(cfg.lookup("Player1_Fire"))]            = KeyBinding::Fire;
-        mKeyBinding1[toKey(cfg.lookup("Player1_LaunchMissile"))]   = KeyBinding::LaunchMissile;
-        mKeyBinding1[toKey(cfg.lookup("Player1_SpeedBoost"))]      = KeyBinding::SpeedBoost;
+        for(int i=0; i < mKeyBindings.size(); ++i)
+        {
+            std::string playerNumber = toString(i+1);
 
-        mKeyBinding2[toKey(cfg.lookup("Player2_MoveUp"))]          = KeyBinding::MoveUp;
-        mKeyBinding2[toKey(cfg.lookup("Player2_MoveDown"))]        = KeyBinding::MoveDown;
-        mKeyBinding2[toKey(cfg.lookup("Player2_MoveLeft"))]        = KeyBinding::MoveLeft;
-        mKeyBinding2[toKey(cfg.lookup("Player2_MoveRight"))]       = KeyBinding::MoveRight;
-        mKeyBinding2[toKey(cfg.lookup("Player2_Fire"))]            = KeyBinding::Fire;
-        mKeyBinding2[toKey(cfg.lookup("Player2_LaunchMissile"))]   = KeyBinding::LaunchMissile;
-        mKeyBinding2[toKey(cfg.lookup("Player2_SpeedBoost"))]      = KeyBinding::SpeedBoost;
+            mKeyBindings[i][toKey(cfg.lookup("Player" + playerNumber + "_MoveUp"))]          = KeyBinding::MoveUp;
+            mKeyBindings[i][toKey(cfg.lookup("Player" + playerNumber + "_MoveDown"))]        = KeyBinding::MoveDown;
+            mKeyBindings[i][toKey(cfg.lookup("Player" + playerNumber + "_MoveLeft"))]        = KeyBinding::MoveLeft;
+            mKeyBindings[i][toKey(cfg.lookup("Player" + playerNumber + "_MoveRight"))]       = KeyBinding::MoveRight;
+            mKeyBindings[i][toKey(cfg.lookup("Player" + playerNumber + "_Fire"))]            = KeyBinding::Fire;
+            mKeyBindings[i][toKey(cfg.lookup("Player" + playerNumber + "_LaunchMissile"))]   = KeyBinding::LaunchMissile;
+            mKeyBindings[i][toKey(cfg.lookup("Player" + playerNumber + "_SpeedBoost"))]      = KeyBinding::SpeedBoost;
+        }
     }
     catch(const SettingNotFoundException& settingEx)
     {
         std::cerr << "setting not found: " << settingEx.getPath() << std::endl;
-        mKeyBinding1.clear();
-        mKeyBinding2.clear();
+        for(auto& bindMap : mKeyBindings)
+            bindMap.clear();
+
         return false;
     }
     catch(const SettingTypeException& typeEx)
     {
         std::cerr << "Type of a setting’s value does not match the type requested: " << typeEx.getPath() << std::endl;
-        mKeyBinding1.clear();
-        mKeyBinding2.clear();
+        for(auto& bindMap : mKeyBindings)
+            bindMap.clear();
+
         return false;
     }
 
     return true;
 }
 
-void Settings::addControlsToConfig(libconfig::Setting& root, const KeyBindMap& keyBindings, const std::string& player)
+void Settings::addControlsToConfig(libconfig::Setting& root, const KeyBinding::BindMap& keyBindings, const std::string& player)
 {
     #define ADD_ACTION_CASE(ACTION) \
     case KeyBinding::Action::ACTION:  root.add(player + "_"#ACTION, Setting::TypeString) = toString(keyBind.first);  break;

@@ -9,7 +9,7 @@
 class Settings
 {
     public:
-        using KeyBindMap = std::map<sf::Keyboard::Key, KeyBinding::Action>;
+        using BindingsArray = std::array<KeyBinding::BindMap, 2>;
 
         void            load();
         void            saveToFile();
@@ -23,21 +23,22 @@ class Settings
         float           getMusicVolume() const;
         void            setFramerateLimit(unsigned int);
         unsigned int    getFramerateLimit() const;
-        void            setKeyBinding(KeyBindMap, int);
-        KeyBindMap      getKeyBinding(int) const;
+        ///void            setKeyBinding(KeyBindMap, int);
+        const KeyBinding::BindMap&      getKeyBinding(int) const;
+        void    eraseBind(int player, sf::Keyboard::Key);
+        void    addBind(int player, sf::Keyboard::Key, KeyBinding::Action);
 
     private:
         void            loadDefaultValues();
         bool            loadFromFile();
-        void            addControlsToConfig(libconfig::Setting&, const KeyBindMap&, const std::string& player);
+        void            addControlsToConfig(libconfig::Setting&, const KeyBinding::BindMap&, const std::string& player);
 
         bool            mVsync;
         bool            mIsMuted;
         float           mSoundVolume;
         float           mMusicVolume;
         unsigned int    mFramerateLimit;
-        KeyBindMap      mKeyBinding1; // std::array
-        KeyBindMap      mKeyBinding2;
+        BindingsArray   mKeyBindings;
 };
 
 #endif // SETTINGS_HPP

@@ -1,25 +1,29 @@
 #include "KeyBinding.hpp"
 #include "Settings.hpp"
 
-KeyBinding::KeyBinding(int player, const Settings& settings)
+KeyBinding::KeyBinding(int player, Settings& settings)
+    : mBinds(settings.getKeyBinding(player)),
+      mSettings(settings),
+      mPlayer(player)
 {
-    mBinds = settings.getKeyBinding(player);
 }
 
 void KeyBinding::assignKey(Action action, sf::Keyboard::Key key)
 {
-    for(auto& keyToActionBind : mBinds)
+    for(const auto& keyActionBind : mBinds)
     {
-        if(keyToActionBind.second == action)
-            mBinds.erase(keyToActionBind.first);
+        if(keyActionBind.second == action)
+            mSettings.eraseBind(mPlayer, keyActionBind.first);
+            ///mBinds.erase(keyActionBind.first);
     }
 
-    mBinds[key] = action; // Rebinds key to another action if necessary
+    ///mBinds[key] = action;
+    mSettings.addBind(mPlayer, key, action);  // Rebinds key to another action if necessary
 }
 
 sf::Keyboard::Key KeyBinding::getAssignedKey(Action action) const
 {
-    for(auto& keyToActionBind : mBinds)
+    for(const auto& keyToActionBind : mBinds)
     {
         if(keyToActionBind.second == action)
             return keyToActionBind.first;
@@ -46,10 +50,10 @@ std::vector<KeyBinding::Action> KeyBinding::getRealtimeActions() const // Return
 {
     std::vector<Action> actions;
 
-    for(auto& keyToActionBind : mBinds)
+    for(const auto& keyToActionBind : mBinds)
     {
         if(sf::Keyboard::isKeyPressed(keyToActionBind.first) && isRealtimeAction(keyToActionBind.second))
-            actions.push_back(keyToActionBind.second);
+            actions.emplace_back(keyToActionBind.second);
     }
     return actions;
 }

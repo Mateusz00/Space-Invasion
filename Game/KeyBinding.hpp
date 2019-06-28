@@ -20,15 +20,18 @@ class KeyBinding
             SpeedBoost,
             Count
         };
+        using BindMap = std::map<sf::Keyboard::Key, Action>;
 
-                            KeyBinding(int player, const Settings&);
+                            KeyBinding(int player, Settings&);
         void                assignKey(Action, sf::Keyboard::Key);
         sf::Keyboard::Key   getAssignedKey(Action) const; // checks what key is assigned to action(used in SettingsState)
         bool                findAction(sf::Keyboard::Key, Action& out) const; // Inserts which action pressed key invokes
         std::vector<Action> getRealtimeActions() const; // Returns all real-time actions that are currently active
 
     private:
-        std::map<sf::Keyboard::Key, Action> mBinds;
+        const BindMap&  mBinds;
+        Settings&       mSettings;
+        int             mPlayer;
 };
 
 bool isRealtimeAction(KeyBinding::Action);
