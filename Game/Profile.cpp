@@ -2,7 +2,7 @@
 #include "Player.hpp"
 #include <fstream>
 
-Profile::Profile(std::vector<Player>& players, std::vector<KeyBinding*>& keys)
+Profile::Profile(std::vector<Player>& players, std::vector<KeyBinding>& keys)
     : mIsLoaded(false),
       mCurrentLevel(-1),
       mPlayers(players),
@@ -176,6 +176,8 @@ void Profile::clearAllData()
 
 void Profile::updatePlayers()
 {
+    mPlayers.clear();
+
     for(int playerNumber=0; playerNumber < mPlayerNames.size(); ++playerNumber)
-        mPlayers.emplace_back(mKeys[playerNumber], playerNumber, mPlayerNames[playerNumber]);
+        mPlayers.emplace_back(&mKeys[playerNumber], playerNumber, mPlayerNames[playerNumber]);
 }

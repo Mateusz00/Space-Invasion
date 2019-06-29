@@ -12,7 +12,7 @@ class Profile
     public:
         using LevelScoresMap = std::unordered_map<int, std::unordered_map<int, int>>; // LevelID, playerID, score
 
-                            Profile(std::vector<Player>&, std::vector<KeyBinding*>&);
+                            Profile(std::vector<Player>&, std::vector<KeyBinding>&);
         void                saveProfile() const;
         bool                loadProfile();
         void                updateData(int levelID, int playerID, int score);
@@ -33,7 +33,7 @@ class Profile
         bool                        mIsLoaded;
         int                         mCurrentLevel;
         std::vector<Player>&        mPlayers;
-        std::vector<KeyBinding*>&   mKeys;
+        std::vector<KeyBinding>&    mKeys;
 };
 
 #endif // PROFILE_HPP

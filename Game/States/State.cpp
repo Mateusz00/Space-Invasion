@@ -4,7 +4,7 @@
 #include "../Settings.hpp"
 
 State::Context::Context(sf::RenderWindow& window, TextureHolder& textures, FontHolder& fonts, SoundPlayer& sounds,
-                          MusicPlayer& music, std::vector<KeyBinding*>& binds, std::vector<Player>& players,
+                          MusicPlayer& music, std::vector<KeyBinding>& binds, std::vector<Player>& players,
                           Settings& settings, Profile& profile)
     : window(window),
       textures(textures),

@@ -19,14 +19,14 @@ class State
         struct Context
         {
             Context(sf::RenderWindow&, TextureHolder&, FontHolder&, SoundPlayer&, MusicPlayer&,
-                    std::vector<KeyBinding*>&, std::vector<Player>&, Settings&, Profile&);
+                    std::vector<KeyBinding>&, std::vector<Player>&, Settings&, Profile&);
 
             sf::RenderWindow&           window;
             TextureHolder&              textures;
             FontHolder&                 fonts;
             SoundPlayer&                sounds;
             MusicPlayer&                music;
-            std::vector<KeyBinding*>&   keys;
+            std::vector<KeyBinding>&    keys;
             std::vector<Player>&        players;
             Settings&                   settings;
             Profile&                    profile;

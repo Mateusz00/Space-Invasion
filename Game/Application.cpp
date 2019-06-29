@@ -20,12 +20,6 @@ Application::Application()
     mStateStack.pushState(States::MenuState);
 }
 
-Application::~Application()
-{
-    for(auto& keyBind : mKeyBindings)
-        delete keyBind;
-}
-
 void Application::run()
 {
     sf::Clock clock;
@@ -128,8 +122,8 @@ void Application::loadSettings()
     mSounds.setVolume(mSettings.getSoundVolume());
     mMusicPlayer.setVolume(mSettings.getMusicVolume());
 
-    mKeyBindings.push_back(new KeyBinding(0, mSettings));
-    mKeyBindings.push_back(new KeyBinding(1, mSettings));
+    mKeyBindings.emplace_back(0, mSettings);
+    mKeyBindings.emplace_back(1, mSettings);
 }
 
 sf::Time Application::getTimePerFrame()

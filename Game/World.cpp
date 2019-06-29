@@ -116,10 +116,9 @@ Spaceship* World::addSpaceship(int id)
 {
     std::unique_ptr<Spaceship> playerSpaceship(new Spaceship(0, mTextures, mFonts, mObjectContext, mEnemies, id));
     playerSpaceship->setPosition(mPlayerSpawnPosition.x - 50.f + 100.f*(id%2), mPlayerSpawnPosition.y);
-    playerSpaceship->setIdentifier(id);
     mPlayerSpaceships.emplace_back(playerSpaceship.get());
 
-    std::unique_ptr<AmmoNode> ammoNode(new AmmoNode(*playerSpaceship, mTextures, mFonts, mView));
+    std::unique_ptr<AmmoNode> ammoNode(new AmmoNode(id, mTextures, mFonts, mView));
     ammoNode->setMargin(2.f);
     ammoNode->align(static_cast<AmmoNode::Align>(id%2));
     mUIGraph.attachChild(std::move(ammoNode));

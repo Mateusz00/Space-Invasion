@@ -16,7 +16,6 @@ class Application
 {
     public:
                             Application();
-                            ~Application();
         void                run();
         static sf::Time     getTimePerFrame();
 
@@ -34,7 +33,7 @@ class Application
         TextureHolder               mTextures;
         SoundPlayer                 mSounds;
         MusicPlayer                 mMusicPlayer;
-        std::vector<KeyBinding*>    mKeyBindings;
+        std::vector<KeyBinding>     mKeyBindings;
         sf::Text                    mFPSCounter;
         StateStack                  mStateStack;
         std::vector<Player>         mPlayers;

@@ -67,7 +67,7 @@ bool SettingsState::handleEvent(const sf::Event& event)
         {
             int i = static_cast<int>(index / KeyBinding::Count); // Deduce which KeyBinding should be modified
             if(i < getContext().keys.size())
-                getContext().keys[i]->assignKey(static_cast<KeyBinding::Action>(index % KeyBinding::Count), event.key.code);
+                (getContext().keys[i]).assignKey(static_cast<KeyBinding::Action>(index % KeyBinding::Count), event.key.code);
 
             mBindingButtons[index]->deactivate();
             updateLabels();
@@ -100,7 +100,7 @@ void SettingsState::updateLabels()
 
         for(int j=0; j < getContext().keys.size(); ++j) // For each player
         {
-            sf::Keyboard::Key key = getContext().keys[j]->getAssignedKey(action);
+            sf::Keyboard::Key key = (getContext().keys[j]).getAssignedKey(action);
             mBindingLabels[i + KeyBinding::Count*j]->setText(toString(key));
         }
     }
