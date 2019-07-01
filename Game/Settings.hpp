@@ -11,22 +11,21 @@ class Settings
     public:
         using BindingsArray = std::array<KeyBinding::BindMap, 2>;
 
-        void            load();
-        void            saveToFile();
-        bool            getVsync() const;
-        void            setVsync(bool);
-        void            setMuted(bool);
-        bool            getMuted() const;
-        void            setSoundVolume(float);
-        float           getSoundVolume() const;
-        void            setMusicVolume(float);
-        float           getMusicVolume() const;
-        void            setFramerateLimit(unsigned int);
-        unsigned int    getFramerateLimit() const;
-        ///void            setKeyBinding(KeyBindMap, int);
+        void                            load();
+        void                            saveToFile();
+        bool                            getVsync() const;
+        void                            setVsync(bool);
+        void                            setMuted(bool);
+        bool                            getMuted() const;
+        void                            setSoundVolume(float);
+        float                           getSoundVolume() const;
+        void                            setMusicVolume(float);
+        float                           getMusicVolume() const;
+        void                            setFramerateLimit(unsigned int);
+        unsigned int                    getFramerateLimit() const;
         const KeyBinding::BindMap&      getKeyBinding(int) const;
-        void    eraseBind(int player, sf::Keyboard::Key);
-        void    addBind(int player, sf::Keyboard::Key, KeyBinding::Action);
+        void                            eraseBind(int player, sf::Keyboard::Key);
+        void                            addBind(int player, sf::Keyboard::Key, KeyBinding::Action);
 
     private:
         void            loadDefaultValues();

@@ -97,11 +97,6 @@ unsigned int Settings::getFramerateLimit() const
     return mFramerateLimit;
 }
 
-/*KeyBinding::BindMap Settings::setKeyBinding(int player)
-{
-    return mKeyBindings.at(player);
-}*/
-
 const KeyBinding::BindMap& Settings::getKeyBinding(int player) const
 {
     return mKeyBindings.at(player);

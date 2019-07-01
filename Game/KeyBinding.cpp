@@ -13,11 +13,12 @@ void KeyBinding::assignKey(Action action, sf::Keyboard::Key key)
     for(const auto& keyActionBind : mBinds)
     {
         if(keyActionBind.second == action)
+        {
             mSettings.eraseBind(mPlayer, keyActionBind.first);
-            ///mBinds.erase(keyActionBind.first);
+            break;
+        }
     }
 
-    ///mBinds[key] = action;
     mSettings.addBind(mPlayer, key, action);  // Rebinds key to another action if necessary
 }
 
