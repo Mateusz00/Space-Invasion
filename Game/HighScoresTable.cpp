@@ -14,8 +14,6 @@ HighScoresTable::HighScoresTable(sf::RenderWindow& window, FontHolder& fonts, in
       mScoresTable(10, PlayerScore(0, "-"))
 {
     loadScores(levelID);
-    positionTexts();
-
     mBackground.setSize((sf::Vector2f(characterSize * 20, characterSize * 16)));
     mBackground.setFillColor(sf::Color(7, 7, 7, 160));
     mBackground.setOutlineColor(sf::Color(120, 50, 60, 160));
@@ -54,6 +52,7 @@ void HighScoresTable::loadFile(std::string& str, std::string fileName)
 /// @param If levelID is -1 then it load's overall scores
 void HighScoresTable::loadScores(int levelID)
 {
+    clear();
     mCurrentLevelID = levelID;
     mScoresTable.resize(10);
 
@@ -98,6 +97,8 @@ void HighScoresTable::loadScores(int levelID)
         mNames.emplace_back(mScoresTable[i].second, mFonts.get(Fonts::Sansation), mCharacterSize);
         mScores.emplace_back(toString(mScoresTable[i].first), mFonts.get(Fonts::Sansation), mCharacterSize);
     }
+
+    positionTexts();
 }
 
 void HighScoresTable::positionTexts()
@@ -107,6 +108,13 @@ void HighScoresTable::positionTexts()
 
     for(int i=0; i < mScores.size(); ++i)
         mScores[i].setPosition(mCharacterSize * 13.f, mCharacterSize * 1.5f * i + 10.f);
+}
+
+void HighScoresTable::clear()
+{
+    mNames.clear();
+    mScores.clear();
+    mScoresTable.clear();
 }
 
 void HighScoresTable::addScore(PlayerScore score)
@@ -159,4 +167,9 @@ void HighScoresTable::saveScores()
     std::ofstream outputScores("Scores.txt", std::ios::out | std::ios::trunc);
     outputScores << newFileContents;
     outputScores.close();
+}
+
+sf::Vector2f HighScoresTable::getSize() const
+{
+    return mBackground.getSize();
 }

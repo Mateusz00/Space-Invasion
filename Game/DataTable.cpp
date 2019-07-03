@@ -468,6 +468,10 @@ std::vector<ButtonData> initializeButtonData()
     data[GUIButton::OptionsButton].activatedColor = sf::Color::Black;
     data[GUIButton::OptionsButton].defaultColor = sf::Color(47, 47, 48);
 
+    data[GUIButton::ScoresButton].buttonType = GUIButton::SimpleRect;
+    data[GUIButton::ScoresButton].activatedColor = sf::Color(105, 17, 7);
+    data[GUIButton::ScoresButton].defaultColor = sf::Color(161, 32, 18);
+
     data[GUIButton::LevelButton].buttonType = GUIButton::Textured;
     data[GUIButton::LevelButton].textureId = Textures::LevelButtons;
     data[GUIButton::LevelButton].buttonSize = sf::Vector2i(50, 50);

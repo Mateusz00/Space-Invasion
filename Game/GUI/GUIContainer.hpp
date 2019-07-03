@@ -12,6 +12,7 @@ class GUIContainer : public GUIObject
     public:
                                 GUIContainer(bool allowKeyboardNavigation = true, bool mVerticalNavigation = true);
         void                    push(ComponentPtr);
+        void                    update(sf::Time);
         virtual bool            isSelectable() const override;
         virtual void            handleEvent(const sf::Event&) override;
         virtual sf::FloatRect   getBoundingRect() const override;

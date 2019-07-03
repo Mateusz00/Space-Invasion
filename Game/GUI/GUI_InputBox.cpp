@@ -14,14 +14,21 @@ GUI_InputBox::GUI_InputBox(std::string& output, sf::Vector2f boxSize, int maxCha
     if(mIsForced)
         activate();
 
-    mBox.setFillColor(sf::Color(61, 189, 204, 180));
+    mBox.setFillColor(sf::Color(36, 3, 1, 180));
+    mBox.setOutlineColor(sf::Color(122, 13, 9));
+    mBox.setOutlineThickness(1.f);
 
-    mInputCursor.setFillColor(sf::Color::Black);
+    mInputCursor.setFillColor(sf::Color::White);
     mInputCursor.setPosition(2.f, 2.f);
 
     mText.setFont(fonts.get(Fonts::Sansation));
     mText.setCharacterSize(static_cast<unsigned int>(boxSize.y - 10.f));
     mText.setPosition(2.f, 2.f);
+
+    mHint.setFont(fonts.get(Fonts::Sansation));
+    mHint.setCharacterSize(static_cast<unsigned int>(boxSize.y - 10.f));
+    mHint.setFillColor(sf::Color(158, 155, 152, 150));
+    mHint.setPosition(2.f, 2.f);
 }
 
 bool GUI_InputBox::isSelectable() const
@@ -43,6 +50,9 @@ void GUI_InputBox::deactivate()
 
 void GUI_InputBox::handleEvent(const sf::Event& event)
 {
+    if(!isActive())
+        return;
+
     switch(event.type)
     {
         case sf::Event::KeyReleased:
@@ -76,14 +86,7 @@ void GUI_InputBox::handleEvent(const sf::Event& event)
 
                 case sf::Keyboard::Enter:
                     if(!mIsForced || mString.size() >= 1) // If isForced then user has to enter at least 1 character
-                    {
-                        mOutput.assign(mString);
-                        mString.clear();
-                        mText.setString(mString);
-                        mInputPosition = 0;
-                        computeCursorPosition();
                         deactivate();
-                    }
                     return;
             }
             break;
@@ -95,9 +98,6 @@ void GUI_InputBox::handleEvent(const sf::Event& event)
             {
                 sf::Vector2i tempPos(event.mouseButton.x, event.mouseButton.y);
                 sf::Vector2f mousePosition = static_cast<sf::Vector2f>(tempPos);
-
-                if(!getBoundingRect().contains(mousePosition))
-                    deactivate();
             }
             break;
         }
@@ -108,6 +108,7 @@ void GUI_InputBox::handleEvent(const sf::Event& event)
             {
                 mString.insert(mInputPosition++, 1, static_cast<char>(event.text.unicode));
                 mText.setString(mString);
+                mOutput.assign(mString);
                 computeCursorPosition();
             }
             break;
@@ -124,7 +125,12 @@ void GUI_InputBox::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     states.transform *= getTransform();
     target.draw(mBox, states);
-    target.draw(mText, states);
+
+    if(mText.getString().isEmpty())
+        target.draw(mHint, states);
+    else
+        target.draw(mText, states);
+
     if(isActive() && mShowCursor)
         target.draw(mInputCursor, states);
 }
@@ -146,6 +152,11 @@ void GUI_InputBox::update(sf::Time dt)
 sf::FloatRect GUI_InputBox::getLocalBounds() const
 {
     return mBox.getLocalBounds();
+}
+
+void GUI_InputBox::setHint(std::string hint)
+{
+    mHint.setString(std::move(hint));
 }
 
 void GUI_InputBox::computeCursorPosition()

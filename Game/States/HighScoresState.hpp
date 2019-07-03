@@ -20,6 +20,7 @@ class HighScoresState : public State
         sf::Sprite          mBackground;
         sf::Text            mHeader;
         GUIContainer        mButtons;
+        std::string         mRequestedLevel;
 };
 
 #endif // HIGHSCORESSTATE_HPP

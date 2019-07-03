@@ -42,8 +42,6 @@ bool GameState::update(sf::Time dt)
 
     if(!mWorld.hasAlivePlayer())
     {
-        updatePlayersScore();
-        updateScoresFile(mProfile.getCurrentLevel());
         requestStackPush(States::MissionFailed);
         getContext().sounds.play(Sound::GameOver);
         getContext().music.pause();

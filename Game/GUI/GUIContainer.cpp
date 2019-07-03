@@ -13,6 +13,12 @@ void GUIContainer::push(ComponentPtr component)
     mComponents.push_back(std::move(component));
 }
 
+void GUIContainer::update(sf::Time dt)
+{
+    for(auto& component : mComponents)
+        component->update(dt);
+}
+
 bool GUIContainer::isSelectable() const
 {
     return false;

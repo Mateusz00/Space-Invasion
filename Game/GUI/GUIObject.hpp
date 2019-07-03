@@ -6,6 +6,7 @@
 #include <SFML/Window/Event.hpp>
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/System/Vector2.hpp>
+#include <SFML/System/Time.hpp>
 #include <memory>
 
 class GUIObject : public sf::Drawable, public sf::Transformable
@@ -16,6 +17,7 @@ class GUIObject : public sf::Drawable, public sf::Transformable
         virtual void            select();
         virtual void            deselect();
         virtual bool            isSelectable() const = 0;
+        virtual void            update(sf::Time);
         bool                    isSelected();
         virtual bool            isActive() const;
         void                    activate();

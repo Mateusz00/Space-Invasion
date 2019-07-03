@@ -21,10 +21,12 @@ class HighScoresTable : public sf::Drawable, public sf::Transformable
         void            addScore(PlayerScore);
         void            saveScores();
         void            loadScores(int levelID = 0);
+        sf::Vector2f    getSize() const;
 
     private:
         void            loadFile(std::string& str, std::string fileName);
         void            positionTexts();
+        void            clear();
 
         int                         mCharacterSize;
         int                         mCurrentLevelID;

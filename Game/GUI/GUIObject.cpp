@@ -11,6 +11,10 @@ GUIObject::~GUIObject()
 {
 }
 
+void GUIObject::update(sf::Time)
+{
+}
+
 void GUIObject::select()
 {
     mIsSelected = true;

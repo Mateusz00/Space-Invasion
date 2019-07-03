@@ -8,7 +8,6 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/System/Vector2.hpp>
-#include <SFML/System/Time.hpp>
 #include <string>
 
 class GUI_InputBox : public GUIObject
@@ -22,8 +21,9 @@ class GUI_InputBox : public GUIObject
         virtual void            handleEvent(const sf::Event&) override;
         virtual sf::FloatRect   getBoundingRect() const override;
         virtual void            draw(sf::RenderTarget&, sf::RenderStates) const override;
-        void                    update(sf::Time);
+        virtual void            update(sf::Time) override;
         sf::FloatRect           getLocalBounds() const;
+        void                    setHint(std::string hint);
 
     private:
         void                    computeCursorPosition();
@@ -34,6 +34,7 @@ class GUI_InputBox : public GUIObject
         sf::RectangleShape      mInputCursor;
         sf::Text                mText;
         std::string             mString;
+        sf::Text                mHint;
         int                     mMaxCharacters;
         int                     mInputPosition;
         bool                    mIsForced;

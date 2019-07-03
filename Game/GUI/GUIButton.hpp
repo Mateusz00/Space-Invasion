@@ -26,6 +26,7 @@ class GUIButton : public GUIObject
             TextButton,
             OptionsButton,
             LevelButton,
+            ScoresButton,
             Count
         };
         enum ButtonState
