@@ -54,7 +54,6 @@ void HighScoresTable::loadScores(int levelID)
 {
     clear();
     mCurrentLevelID = levelID;
-    mScoresTable.resize(10);
 
     // Read top 10 scores from file
     std::ifstream inputScores("Scores.txt");
@@ -78,14 +77,6 @@ void HighScoresTable::loadScores(int levelID)
 
                 for(int i=0; i < mScoresTable.size(); ++i)
                     levelScores >> mScoresTable[i].first >> mScoresTable[i].second;
-            }
-        }
-        else
-        {
-            for(auto& playerScore : mScoresTable)
-            {
-                playerScore.first = 0;
-                playerScore.second = "-";
             }
         }
     }
@@ -115,6 +106,13 @@ void HighScoresTable::clear()
     mNames.clear();
     mScores.clear();
     mScoresTable.clear();
+    mScoresTable.resize(10);
+
+    for(auto& playerScore : mScoresTable)
+    {
+        playerScore.first = 0;
+        playerScore.second = "-";
+    }
 }
 
 void HighScoresTable::addScore(PlayerScore score)
@@ -131,7 +129,7 @@ void HighScoresTable::saveScores()
 
     // Create new string containing updated scores
     std::ostringstream newScores;
-    newScores << "#" << toString(mCurrentLevelID);
+    newScores << "#" << toString(mCurrentLevelID) << " ";
 
     for(int i = 0; i < 9; ++i)
         newScores << mScoresTable[i].first << " " << mScoresTable[i].second << " ";

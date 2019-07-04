@@ -31,21 +31,31 @@ HighScoresState::HighScoresState(Context context, StateStack& stateStack)
     auto inputBox = std::make_unique<GUI_InputBox>(mRequestedLevel, bSize, 3, false, context.fonts);
 
     sf::Vector2f bSize2(70.f, inputBox->getBoundingRect().height);
-    centerOrigin(*inputBox);
-    inputBox->setPosition(-bSize2.x / 2.f, windowSize.y * -0.07f);
+    sf::Vector2f bSize3(120.f, inputBox->getBoundingRect().height);
+    float widthSum = bSize.x + bSize2.x + bSize3.x;
+
+    inputBox->setPosition(-widthSum / 2.f, windowSize.y * -0.085f);
     inputBox->setHint("Enter level ID..");
 
     auto updateButton = std::make_unique<GUIButton>(context, GUIButton::ScoresButton, "Update");
     updateButton->setRectSize(bSize2);
-    updateButton->centerButtonOrigin();
-    updateButton->setPosition(bSize.x / 2.f, windowSize.y * -0.07f - 1.f);
+    updateButton->setPosition(inputBox->getPosition().x + bSize.x, windowSize.y * -0.085f - 1.f);
     updateButton->setCallback([this]()
     {
         int level = std::atoi(mRequestedLevel.c_str());
-        if(level != 0 || mRequestedLevel[0] == '0')
+        if(level > 0 || mRequestedLevel == "0")
             mHighScores.loadScores(level);
     });
+
+    auto overallScoreButton = std::make_unique<GUIButton>(context, GUIButton::ScoresButton, "Overall Score");
+    overallScoreButton->setRectSize(bSize3);
+    overallScoreButton->setPosition(updateButton->getPosition().x + bSize2.x, windowSize.y * -0.085f - 1.f);
+    overallScoreButton->setCallback([this]()
+    {
+            mHighScores.loadScores(-1);
+    });
     mButtons.push(std::move(updateButton));
+    mButtons.push(std::move(overallScoreButton));
     mButtons.push(std::move(inputBox));
 }
 
