@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <spaceships>
-    <aircraft id="0" file="player.xml"/>
-    <aircraft id="1" file="agile.xml"/>
-    <aircraft id="2" file="turret.xml"/>
-    <aircraft id="3" file="tanky.xml"/>
-    <aircraft id="4" file="shielded.xml"/>
+    <aircraft id="0" file="Player.xml"/>
+    <aircraft id="1" file="HumanShipGreenAgile.xml"/>
+    <aircraft id="2" file="HumanShipGreenRound.xml"/>
+    <aircraft id="3" file="HumanShipGreenDmgL.xml"/>
+    <aircraft id="4" file="HumanShipGreenDmgR.xml"/>
+    <aircraft id="5" file="HumanShipBlueSmallL.xml"/>
+    <aircraft id="6" file="HumanShipBlueSmallR.xml"/>
+    <aircraft id="7" file="HumanShipBlueSpreadL.xml"/>
+    <aircraft id="8" file="HumanShipBlueSpreadR.xml"/>
+    <aircraft id="9" file="HumanShipBlueBurst.xml"/>
 </spaceships>

@@ -20,7 +20,7 @@ World::World(State::Context context)
       mMusicPlayer(context.music),
       mProfile(context.profile),
       mView(mTarget.getDefaultView()),
-      mScrollingSpeed(-40.f),
+      mScrollingSpeed(-32.f),
       mScore("0", context.fonts.get(Fonts::BPmonoItalics), 32u),
       mIsDeleting(false),
       mCollisionTree(4)
