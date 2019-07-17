@@ -261,8 +261,8 @@ void World::sortSpawnPoints()
 sf::FloatRect World::getBattlefieldBounds() const
 {
     sf::FloatRect bounds = getViewBounds();
-    bounds.height += 300.f;
-    bounds.top -= 300.f;
+    bounds.height += 200.f;
+    bounds.top -= 200.f;
     return bounds;
 }
 

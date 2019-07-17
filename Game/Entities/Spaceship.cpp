@@ -374,14 +374,17 @@ void Spaceship::onRemoval()
     changeScore();
     mAttackManager.onRemoval();
 
-    if(!spaceshipInfo[mTypeID].eventScheme.parameters.empty())
+    if(!spaceshipInfo[mTypeID].eventSchemes.empty())
     {
-        LocationEvent event(getWorldPosition(), static_cast<LocationEvent::Event>(spaceshipInfo[mTypeID].eventScheme.eventID));
+        for(const auto& eventScheme : spaceshipInfo[mTypeID].eventSchemes)
+        {
+            LocationEvent event(getWorldPosition(), static_cast<LocationEvent::Event>(eventScheme.eventID));
 
-        for(const auto& parameter : spaceshipInfo[mTypeID].eventScheme.parameters)
-            event.addParameter(parameter.first, parameter.second);
+            for(const auto& parameter : eventScheme.parameters)
+                event.addParameter(parameter.first, parameter.second);
 
-        getObjectContext().events->push(std::move(event));
+            getObjectContext().events->push(std::move(event));
+        }
     }
 }
 

@@ -75,14 +75,18 @@ std::vector<SpaceshipData> initializeSpaceshipData()
         // Load events
         for(xml_node event : onDeathNode.children())
         {
-            spaceshipData.eventScheme.eventID = event.attribute("id").as_int(-1);
+            SpaceshipData::EventScheme scheme;
+
+            scheme.eventID = event.attribute("id").as_int(-1);
             event.remove_attribute("id");
 
-            if(spaceshipData.eventScheme.eventID < 0)
+            if(scheme.eventID < 0)
                 throw std::runtime_error("Event ID not found or less than zero! (" + path.second + ")");
 
             for(xml_attribute eventAttribute : event.attributes())
-                spaceshipData.eventScheme.parameters.emplace(eventAttribute.name(), eventAttribute.value());
+                scheme.parameters.emplace(eventAttribute.name(), eventAttribute.value());
+
+            spaceshipData.eventSchemes.emplace_back(std::move(scheme));
         }
 
         data.emplace_back(std::move(spaceshipData));

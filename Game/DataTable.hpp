@@ -32,7 +32,7 @@ struct SpaceshipData
     int                             animationID;
     std::vector<Direction>          directions;
     std::unordered_map<int, int>    attacks; // attackID, probability
-    EventScheme                     eventScheme;
+    std::vector<EventScheme>        eventSchemes;
 };
 
 struct SpaceshipTextureData
