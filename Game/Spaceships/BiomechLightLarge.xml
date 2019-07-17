@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spaceship>
+    <hitpoints>100</hitpoints>
+    <speed>30</speed>
+    <textureID>9</textureID>
+
+    <directions>
+        <direction angle="0" distance="80" speedPercentage="100"></direction>
+        <direction angle="270" distance="80" speedPercentage="100"></direction>
+        <direction angle="90" distance="80" speedPercentage="100"></direction>
+    </directions>
+
+    <attacks>
+        <attack attackID="13" probability="25"></attack>
+        <attack attackID="12" probability="30"></attack>
+        <attack attackID="11" probability="45"></attack>
+    </attacks>
+</spaceship>
+

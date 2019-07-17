@@ -10,4 +10,10 @@
     <aircraft id="7" file="HumanShipBlueSpreadL.xml"/>
     <aircraft id="8" file="HumanShipBlueSpreadR.xml"/>
     <aircraft id="9" file="HumanShipBlueBurst.xml"/>
+    <aircraft id="10" file="BiomechLightSmall.xml"/>
+    <aircraft id="11" file="BiomechLightMedium.xml"/>
+    <aircraft id="12" file="BiomechLightLarge.xml"/>
+    <aircraft id="13" file="BiomechRedSmall.xml"/>
+    <aircraft id="14" file="BiomechRedMedium.xml"/>
+    <aircraft id="15" file="BiomechRedLarge.xml"/>
 </spaceships>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <attack>
     <chargetime>0</chargetime>
-    <cooldown>2.5</cooldown>
+    <cooldown>2.8</cooldown>
 
     <attackPhase linkedAttackID="7" phaseCooldown="0.18"></attackPhase>
     <attackPhase linkedAttackID="8" phaseCooldown="0.18"></attackPhase>
