@@ -16,4 +16,8 @@
     <aircraft id="13" file="BiomechRedSmall.xml"/>
     <aircraft id="14" file="BiomechRedMedium.xml"/>
     <aircraft id="15" file="BiomechRedLarge.xml"/>
+    <aircraft id="16" file="BiomechDarkSmall.xml"/>
+    <aircraft id="17" file="BiomechDarkMedium.xml"/>
+    <aircraft id="18" file="BiomechDarkLarge.xml"/>
+    <aircraft id="19" file="SaucerBig.xml"/>
 </spaceships>
