@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <attack>
-    <chargetime>3</chargetime>
+    <chargetime>0.8</chargetime>
     <cooldown>100</cooldown>
 
     <attackPhase>

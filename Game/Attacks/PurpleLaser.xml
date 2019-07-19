@@ -5,17 +5,20 @@
 
     <attackPhase phaseCooldown="0.03">
         <projectiles>
-            <projectile id="11" speed="320" aimed="no" offsets="0 20" patternID="0" direction="0"></projectile>
+            <projectile id="11" speed="320" aimed="no" offsets="-1 18" patternID="0" direction="0"></projectile>
+            <projectile id="12" speed="320" aimed="no" offsets="-1 22" patternID="0" direction="0"></projectile>
         </projectiles>
     </attackPhase>
     <attackPhase repeats="11" phaseCooldown="0.03" repeatCooldown="0.03">
         <projectiles>
-            <projectile id="12" speed="320" aimed="no" offsets="1 20" patternID="0" direction="0"></projectile>
+            <projectile id="12" speed="320" aimed="no" offsets="-1 18" patternID="0" direction="0"></projectile>
+            <projectile id="12" speed="320" aimed="no" offsets="-1 22" patternID="0" direction="0"></projectile>
         </projectiles>
     </attackPhase>
     <attackPhase>
         <projectiles>
-            <projectile id="13" speed="320" aimed="no" offsets="0 20" patternID="0" direction="0"></projectile>
+            <projectile id="12" speed="320" aimed="no" offsets="-1 22" patternID="0" direction="0"></projectile>
+            <projectile id="13" speed="320" aimed="no" offsets="-1 18" patternID="0" direction="0"></projectile>
         </projectiles>
     </attackPhase>
 </attack>

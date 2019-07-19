@@ -20,4 +20,9 @@
     <aircraft id="17" file="BiomechDarkMedium.xml"/>
     <aircraft id="18" file="BiomechDarkLarge.xml"/>
     <aircraft id="19" file="SaucerBig.xml"/>
+    <aircraft id="20" file="PurpleShipAgile.xml"/>
+    <aircraft id="21" file="PurpleShipOval.xml"/>
+    <aircraft id="22" file="PurpleShipLong.xml"/>
+    <aircraft id="23" file="PurpleShipWide.xml"/>
+    <aircraft id="24" file="PurpleShipSmall.xml"/>
 </spaceships>

@@ -5,12 +5,12 @@
 
     <attackPhase repeats="2" repeatCooldown="0.12" phaseCooldown="0.33">
         <projectiles>
-            <projectile id="20" speed="120" aimed="no" offsets="0 20" patternID="2" direction="0" amplitude="-50" waveLength="90"></projectile>
+            <projectile id="20" speed="120" aimed="no" offsets="0 20" patternID="2" direction="0" amplitude="-45" waveLength="90"></projectile>
         </projectiles>
     </attackPhase>
     <attackPhase repeats="2" repeatCooldown="0.15">
         <projectiles>
-            <projectile id="20" speed="120" aimed="no" offsets="0 20" patternID="2" direction="0" amplitude="50" waveLength="90"></projectile>
+            <projectile id="20" speed="120" aimed="no" offsets="0 20" patternID="2" direction="0" amplitude="45" waveLength="90"></projectile>
         </projectiles>
     </attackPhase>
 </attack>
