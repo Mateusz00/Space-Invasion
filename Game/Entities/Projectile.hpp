@@ -12,7 +12,7 @@ class Projectile : public Entity
                                         Projectile(Projectiles::ID, const TextureHolder&,
                                                    ObjectContext, int shooterID, float speed, bool isEnemy);
         float                           getMaxSpeed() const;
-        int                             getDamage() const;
+        float                           getDamage() const;
         virtual sf::FloatRect           getBoundingRect() const override;
         int                             getShootersID() const;
         void                            setPattern(AttackPattern::ID);

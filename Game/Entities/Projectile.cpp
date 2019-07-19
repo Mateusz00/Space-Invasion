@@ -49,7 +49,7 @@ float Projectile::getMaxSpeed() const
     return mSpeed;
 }
 
-int Projectile::getDamage() const
+float Projectile::getDamage() const
 {
     return table[mType].damage;
 }
