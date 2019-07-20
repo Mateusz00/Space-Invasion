@@ -25,4 +25,11 @@
     <aircraft id="22" file="PurpleShipLong.xml"/>
     <aircraft id="23" file="PurpleShipWide.xml"/>
     <aircraft id="24" file="PurpleShipSmall.xml"/>
+    <aircraft id="25" file="VoidPurpleSpaceship.xml"/>
+    <aircraft id="26" file="VoidBlueSpaceship1.xml"/>
+    <aircraft id="27" file="VoidBlueSpaceship2.xml"/>
+    <aircraft id="28" file="VoidRedSpaceship1R.xml"/>
+    <aircraft id="29" file="VoidRedSpaceship1L.xml"/>
+    <aircraft id="30" file="VoidRedSpaceship2.xml"/>
+    <aircraft id="31" file="VoidRedSpaceship3.xml"/>
 </spaceships>
