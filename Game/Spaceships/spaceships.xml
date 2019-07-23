@@ -32,4 +32,8 @@
     <aircraft id="29" file="VoidRedSpaceship1L.xml"/>
     <aircraft id="30" file="VoidRedSpaceship2.xml"/>
     <aircraft id="31" file="VoidRedSpaceship3.xml"/>
+    <aircraft id="32" file="VoidRedSpaceship4.xml"/>
+    <aircraft id="33" file="SaucerSmallSpaceship.xml"/>
+    <aircraft id="34" file="SaucerMediumSpaceship.xml"/>
+    <aircraft id="35" file="Boss.xml"/>
 </spaceships>
