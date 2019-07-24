@@ -3,11 +3,10 @@
 #include "Utility.hpp"
 #include <SFML/System/Clock.hpp>
 #include <SFML/Window/Event.hpp>
-
-const sf::Time Application::TIME_PER_FRAME = sf::seconds(1.f / 60.f);
+using namespace ApplicationData;
 
 Application::Application()
-    : mWindow(sf::VideoMode(1024, 700), "2D Fighter Jet Game", sf::Style::Close),
+    : mWindow(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "2D Fighter Jet Game", sf::Style::Close),
       mStateStack(State::Context(mWindow, mTextures, mFonts, mSounds, mMusicPlayer, mKeyBindings, mPlayers, mSettings, mProfile)),
       mProfile(mPlayers, mKeyBindings)
 {
@@ -29,11 +28,11 @@ void Application::run()
         sf::Time deltaTime = clock.restart();
         timeSinceUpdate += deltaTime;
 
-        while(timeSinceUpdate >= TIME_PER_FRAME)
+        while(timeSinceUpdate >= TIME_PER_UPDATE)
         {
-            timeSinceUpdate -= TIME_PER_FRAME;
+            timeSinceUpdate -= TIME_PER_UPDATE;
             handleEvents();
-            update(TIME_PER_FRAME);
+            update(TIME_PER_UPDATE);
 
             if(mStateStack.isEmpty())
                 mWindow.close();
@@ -124,9 +123,4 @@ void Application::loadSettings()
 
     mKeyBindings.emplace_back(0, mSettings);
     mKeyBindings.emplace_back(1, mSettings);
-}
-
-sf::Time Application::getTimePerFrame()
-{
-    return TIME_PER_FRAME;
 }

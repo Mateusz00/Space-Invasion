@@ -1,6 +1,7 @@
 #ifndef APPLICATION_HPP
 #define APPLICATION_HPP
 
+#include "ApplicationData.hpp"
 #include "StateStack.hpp"
 #include "ResourcesID.hpp"
 #include "SoundPlayer.hpp"
@@ -17,8 +18,6 @@ class Application
     public:
                             Application();
         void                run();
-        static sf::Time     getTimePerFrame();
-
     private:
         void draw();
         void update(sf::Time dt);
@@ -27,7 +26,6 @@ class Application
         void loadResources();
         void loadSettings();
 
-        static const sf::Time       TIME_PER_FRAME;
         sf::RenderWindow            mWindow;
         FontHolder                  mFonts;
         TextureHolder               mTextures;

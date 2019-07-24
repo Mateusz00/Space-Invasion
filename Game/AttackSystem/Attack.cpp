@@ -6,9 +6,10 @@
 #include "../DataTable.hpp"
 #include "../CommandQueue.hpp"
 #include "../Utility.hpp"
-#include "../Application.hpp"
+#include "../ApplicationData.hpp"
 #include <iostream>
 using Attacks::attackData;
+using ApplicationData::TIME_PER_UPDATE;
 
 Attack::Attack(int id, const TextureHolder& textures, sf::Vector2f pos, ObjectContext context, int shooterID,
                 bool isAllied, const std::vector<Spaceship*>* targets, int phase)
@@ -68,8 +69,8 @@ void Attack::updateCurrent(sf::Time dt, CommandQueue& commandQueue)
                 sf::Vector2f newPos2(perpendicularLength * std::sin(angle + toRadian(90.f)),
                                      perpendicularLength * std::cos(angle + toRadian(90.f)));
 
-                // getTimePerFrame nullifies effect of multiplying by time_per_frame in entity's update func
-                gravityCenter.setVelocity((newPos1 + newPos2 - oldPos) / Application::getTimePerFrame().asSeconds());
+                // TimePerUpdate nullifies effect of multiplying by time_per_frame in entity's update func
+                gravityCenter.setVelocity((newPos1 + newPos2 - oldPos) / TIME_PER_UPDATE.asSeconds());
                 break;
             }
             case AttackPattern::Orbiting:
@@ -84,7 +85,7 @@ void Attack::updateCurrent(sf::Time dt, CommandQueue& commandQueue)
                 float newAngle = toDegree(std::atan2(dir.y, dir.x)) + 90.f + gravityCenter.getSpeed() * dt.asSeconds();
                 newPosition.x = centerPos.x + std::sin(toRadian(newAngle)) * radius;
                 newPosition.y = centerPos.y - std::cos(toRadian(newAngle)) * radius;
-                gravityCenter.setVelocity((newPosition - oldPos) / Application::getTimePerFrame().asSeconds());
+                gravityCenter.setVelocity((newPosition - oldPos) / TIME_PER_UPDATE.asSeconds());
                 break;
             }
             case AttackPattern::Barrier:
@@ -98,7 +99,7 @@ void Attack::updateCurrent(sf::Time dt, CommandQueue& commandQueue)
                 float newAngle = toDegree(std::atan2(dir.y, dir.x)) + 90.f + gravityCenter.getSpeed() * dt.asSeconds();
                 newPosition.x = mPosition.x + std::sin(toRadian(newAngle)) * radius;
                 newPosition.y = mPosition.y - std::cos(toRadian(newAngle)) * radius;
-                gravityCenter.setVelocity((newPosition - oldPos) / Application::getTimePerFrame().asSeconds());
+                gravityCenter.setVelocity((newPosition - oldPos) / TIME_PER_UPDATE.asSeconds());
                 break;
             }
         }
@@ -137,8 +138,8 @@ void Attack::updateCurrent(sf::Time dt, CommandQueue& commandQueue)
                 sf::Vector2f newPos2(perpendicularLength * std::sin(angle + toRadian(90.f)),
                                      perpendicularLength * std::cos(angle + toRadian(90.f)));
 
-                // getTimePerFrame nullifies effect of multiplying by time_per_frame in entity's update func
-                float seconds = Application::getTimePerFrame().asSeconds();
+                // TimePerUpdate nullifies effect of multiplying by time_per_frame in entity's update func
+                float seconds = TIME_PER_UPDATE.asSeconds();
                 projectile->setVelocity((newPos1 + newPos2 - projectile->getPosition()) / seconds);
                 break;
             }
@@ -153,8 +154,8 @@ void Attack::updateCurrent(sf::Time dt, CommandQueue& commandQueue)
                 newPosition.x = centerPos.x + std::sin(toRadian(newAngle)) * radius;
                 newPosition.y = centerPos.y - std::cos(toRadian(newAngle)) * radius;
 
-                // getTimePerFrame nullifies effect of multiplying by time_per_frame in entity's update func
-                float seconds = Application::getTimePerFrame().asSeconds();
+                // TimePerUpdate nullifies effect of multiplying by time_per_frame in entity's update func
+                float seconds = TIME_PER_UPDATE.asSeconds();
                 projectile->setVelocity((newPosition - projectile->getPosition()) / seconds);
                 break;
             }
@@ -168,8 +169,8 @@ void Attack::updateCurrent(sf::Time dt, CommandQueue& commandQueue)
                 newPosition.x = mPosition.x + std::sin(toRadian(newAngle)) * radius;
                 newPosition.y = mPosition.y - std::cos(toRadian(newAngle)) * radius;
 
-                // getTimePerFrame nullifies effect of multiplying by time_per_frame in entity's update func
-                float seconds = Application::getTimePerFrame().asSeconds();
+                // TimePerUpdate nullifies effect of multiplying by time_per_frame in entity's update func
+                float seconds = TIME_PER_UPDATE.asSeconds();
                 projectile->setVelocity((newPosition - projectile->getPosition()) / seconds);
                 break;
             }

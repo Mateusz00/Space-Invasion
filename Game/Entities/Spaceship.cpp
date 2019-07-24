@@ -71,18 +71,20 @@ Spaceship::Spaceship(int typeID, const TextureHolder& textures, const FontHolder
     float offset = (mIsEnemy) ? -0.7f : 0.7f;
     sf::Vector2f barSize(getLocalBounds().width * 0.7f, 4.f);
 
-    std::unique_ptr<Bar> healthBar(new Bar(getHitpoints(), spaceshipInfo[mTypeID].hitpoints, barSize));
-    healthBar->setPosition(0.f, getLocalBounds().height * offset);
-    healthBar->setColorRange(sf::Color(33, 196, 1), sf::Color(206, 12, 12));
+    Bar::Type barType = (spaceshipInfo[mTypeID].tagID == SpaceshipData::Boss) ? Bar::BossHealth : Bar::Health;
+    std::unique_ptr<Bar> healthBar(new Bar(getHitpoints(), spaceshipInfo[mTypeID].hitpoints, barSize, barType));
+
+    if(!spaceshipInfo[mTypeID].tagID == SpaceshipData::Boss)
+        healthBar->setPosition(0.f, getLocalBounds().height * offset);
+
     mHealthBar = healthBar.get();
     attachChild(std::move(healthBar));
 
     // Create boost fuel bar for players
     if(!mIsEnemy)
     {
-        std::unique_ptr<Bar> fuelBar(new Bar(mBoostFuel, FUEL_MAX, sf::Vector2f(barSize.x, barSize.y - 1.f)));
+        std::unique_ptr<Bar> fuelBar(new Bar(mBoostFuel, FUEL_MAX, sf::Vector2f(barSize.x, barSize.y - 1.f), Bar::Boost));
         fuelBar->setPosition(0.f, getLocalBounds().height * offset + barSize.y);
-        fuelBar->setColorRange(sf::Color(224, 188, 6), sf::Color(224, 188, 6));
         mBoostFuelBar = fuelBar.get();
         attachChild(std::move(fuelBar));
     }

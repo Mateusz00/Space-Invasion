@@ -57,6 +57,7 @@ class Spaceship : public Entity
         void            updateBoostFuel();
         void            sendExplosion(sf::Vector2f pos) const;
         static void     initializeCollisionResponses();
+        void            createBossHealthbar();
 
         int                     mTypeID;
         int                     mFireRateLevel;

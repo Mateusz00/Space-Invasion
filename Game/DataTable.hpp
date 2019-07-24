@@ -25,8 +25,14 @@ struct SpaceshipData
         int eventID;
         std::unordered_map<std::string, std::string> parameters;
     };
+    enum SpaceshipTag
+    {
+        Boss = 1,
+        Count
+    };
 
     int                             hitpoints;
+    SpaceshipTag                    tagID;
     float                           speed;
     int                             textureID;
     int                             animationID;

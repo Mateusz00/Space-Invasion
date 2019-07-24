@@ -47,6 +47,10 @@ std::vector<SpaceshipData> initializeSpaceshipData()
         spaceshipData.speed          = mainNode.child("speed").text().as_float();
         spaceshipData.textureID      = mainNode.child("textureID").text().as_int(-1);
         spaceshipData.animationID    = mainNode.child("animationID").text().as_int(-1);
+        spaceshipData.tagID          = static_cast<SpaceshipData::SpaceshipTag>(mainNode.attribute("tagID").as_int());
+
+        if(spaceshipData.tagID < 0 || spaceshipData.tagID >= SpaceshipData::Count)
+            throw std::runtime_error("XMLError: invalid spaceship tagID! " + path.second);
 
         if(spaceshipData.textureID < 0 && spaceshipData.animationID < 0)
             throw std::runtime_error("XMLError: Couldn't find textureID/animationID or values are negative! " + path.second);
