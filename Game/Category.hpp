@@ -13,6 +13,7 @@ namespace Category
         Pickup              = 1 << 5,
         Attack              = 1 << 6,
         Collidable          = 1 << 7,
+        ScoreNode           = 1 << 8,
         None                = 0
     };
 }

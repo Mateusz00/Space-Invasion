@@ -3,6 +3,7 @@
 #include "Utility.hpp"
 #include "SpriteNode.hpp"
 #include "Entities/AmmoNode.hpp"
+#include "Entities/ScoreNode.hpp"
 #include "Exceptions/XMLParseException.hpp"
 #include "CollisionResponseMap.hpp"
 #include <memory>
@@ -21,14 +22,12 @@ World::World(State::Context context)
       mProfile(context.profile),
       mView(mTarget.getDefaultView()),
       mScrollingSpeed(-32.f),
-      mScore("0", context.fonts.get(Fonts::BPmonoItalics), 32u),
       mIsDeleting(false),
       mCollisionTree(4)
 {
     Entity::resetIDs();
     loadLevelData();
     buildWorld();
-    mScore.setPosition(mTarget.getSize().x * 0.5f, 18.f);
     mView.setCenter(mPlayerSpawnPosition);
 
     mObjectContext.commandQueue = &mCommandQueue;
@@ -58,7 +57,6 @@ void World::update(sf::Time dt)
 
     adaptPlayersVelocity();
     checkCollisions();
-    updateScore();
 
     spawnEnemies();
     mSceneGraph.update(dt, mCommandQueue);
@@ -77,7 +75,6 @@ void World::draw()
     mTarget.draw(mSceneGraph);
 
     mTarget.setView(mTarget.getDefaultView());
-    mTarget.draw(mScore);
     mTarget.draw(mUIGraph);
 }
 
@@ -107,9 +104,19 @@ bool World::hasAlivePlayer() const
     return mPlayerSpaceships.size() > 0;
 }
 
-std::unordered_map<int, int>& World::getPlayersScoresMap()
+std::unordered_map<int, int> World::getPlayersScoresMap()
 {
-    return mPlayersScores;
+    std::unordered_map<int, int> scores;
+
+    Command scoresGetter;
+    scoresGetter.mCategories = Category::ScoreNode;
+    scoresGetter.mAction = castFunctor<ScoreNode>([this, &scores](ScoreNode& scoreNode, sf::Time)
+    {
+        scores = scoreNode.getPlayersScoresMap();
+    });
+    mUIGraph.executeCommand(scoresGetter, sf::Time::Zero);
+
+    return scores;
 }
 
 Spaceship* World::addSpaceship(int id)
@@ -161,6 +168,8 @@ void World::buildWorld()
     std::unique_ptr<ParticleNode> particleNode(new ParticleNode(mTextures));
     mObjectContext.particleNode = particleNode.get();
     mSceneLayers[LowerAir]->attachChild(std::move(particleNode));
+
+    mUIGraph.attachChild(std::make_unique<ScoreNode>(mFonts));
 }
 
 void World::adaptPlayersVelocity()
@@ -356,20 +365,6 @@ void World::updateSounds()
 {
     mSoundPlayer.removeStoppedSounds();
     mSoundPlayer.setListener(mPlayerSpaceships[0]->getWorldPosition());
-}
-
-void World::updateScore()
-{
-    int cumulativeScore = 0;
-
-    for(const auto& playerSpaceship : mPlayerSpaceships)
-        mPlayersScores[playerSpaceship->getPlayerID()] = playerSpaceship->getScore();
-
-    for(const auto& playerScore : mPlayersScores)
-        cumulativeScore += playerScore.second;
-
-    mScore.setString(toString(cumulativeScore));
-    centerOrigin(mScore);
 }
 
 void World::updateEvents()

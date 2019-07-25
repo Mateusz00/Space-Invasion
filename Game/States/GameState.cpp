@@ -110,7 +110,7 @@ void GameState::updatePlayersScore()
     std::unordered_map<int, int> playersScores = mWorld.getPlayersScoresMap();
 
     for(Player& player : mPlayers)
-        player.setScore(playersScores[player.getID()]);
+        player.setScore(playersScores.at(player.getID()));
 }
 
 int GameState::getCurrentCumulativeScore()

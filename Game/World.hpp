@@ -21,19 +21,19 @@
 class World
 {
     public:
-        explicit                        World(State::Context context);
-                                        ~World();
-        CommandQueue&                   getCommandQueue();
-        void                            update(sf::Time);
-        void                            draw();
-        sf::FloatRect                   getViewBounds() const;
-        sf::FloatRect                   getBattlefieldBounds() const;
-        void                            placeOnLayer(SceneNode::Ptr, Category::Type layer);
-        bool                            hasPlayerReachedEnd() const;
-        bool                            hasAlivePlayer() const;
-        std::unordered_map<int, int>&   getPlayersScoresMap();
-        Spaceship*                      addSpaceship(int id);
-        void                            setScrollingSpeed(float);
+        explicit                         World(State::Context context);
+                                         ~World();
+        CommandQueue&                    getCommandQueue();
+        void                             update(sf::Time);
+        void                             draw();
+        sf::FloatRect                    getViewBounds() const;
+        sf::FloatRect                    getBattlefieldBounds() const;
+        void                             placeOnLayer(SceneNode::Ptr, Category::Type layer);
+        bool                             hasPlayerReachedEnd() const;
+        bool                             hasAlivePlayer() const;
+        std::unordered_map<int, int>     getPlayersScoresMap();
+        Spaceship*                       addSpaceship(int id);
+        void                             setScrollingSpeed(float);
 
     private:
         void    buildWorld();
@@ -46,7 +46,6 @@ class World
         void    checkCollisions();
         void    destroyEntitiesOutsideView();
         void    updateSounds();
-        void    updateScore();
         void    updateEvents();
         void    removeDanglingPointers();
         void    loadLevelData();
@@ -85,7 +84,6 @@ class World
         sf::Vector2f        mPlayerSpawnPosition;
         float               mScrollingSpeed;
         ParticleNode*       mParticleNode;
-        sf::Text            mScore;
         bool                mIsDeleting;
         ObjectContext       mObjectContext;
 
@@ -95,7 +93,6 @@ class World
         std::array<SceneNode*, LayerCount>          mSceneLayers;
         std::unordered_map<int, CollidableData>     mCollidables;
         AABBTree                                    mCollisionTree;
-        std::unordered_map<int, int>                mPlayersScores; // id, score
         EventQueue                                  mEvents;
 };
 
