@@ -49,6 +49,7 @@ PlayerInfoState::PlayerInfoState(Context context, StateStack& stateStack)
     centerOrigin(mInputBox);
     mText.setPosition(windowSize.x * 0.5f, windowSize.y * 0.45f);
     mInputBox.setPosition(windowSize.x * 0.5f, windowSize.y * 0.53f);
+    mInputBox.clearOnFlush(true);
 }
 
 bool PlayerInfoState::draw()

@@ -9,7 +9,8 @@ GUI_InputBox::GUI_InputBox(std::string& output, sf::Vector2f boxSize, int maxCha
       mMaxCharacters(maxCharacters),
       mInputPosition(0),
       mIsForced(isForced),
-      mShowCursor(false)
+      mShowCursor(false),
+      mClearOnFlush(false)
 {
     if(mIsForced)
         activate();
@@ -86,7 +87,17 @@ void GUI_InputBox::handleEvent(const sf::Event& event)
 
                 case sf::Keyboard::Enter:
                     if(!mIsForced || mString.size() >= 1) // If isForced then user has to enter at least 1 character
+                    {
+                        if(mClearOnFlush)
+                        {
+                            mOutput.assign(mString);
+                            mString.clear();
+                            mText.setString(mString);
+                            mInputPosition = 0;
+                            computeCursorPosition();
+                        }
                         deactivate();
+                    }
                     return;
             }
             break;
@@ -171,4 +182,9 @@ bool GUI_InputBox::isPrintable(sf::Uint32 unicode) const
         return false;
 
     return true;
+}
+
+void GUI_InputBox::clearOnFlush(bool flag)
+{
+    mClearOnFlush = flag;
 }

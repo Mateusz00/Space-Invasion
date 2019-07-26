@@ -24,6 +24,7 @@ class GUI_InputBox : public GUIObject
         virtual void            update(sf::Time) override;
         sf::FloatRect           getLocalBounds() const;
         void                    setHint(std::string hint);
+        void                    clearOnFlush(bool);
 
     private:
         void                    computeCursorPosition();
@@ -39,6 +40,7 @@ class GUI_InputBox : public GUIObject
         int                     mInputPosition;
         bool                    mIsForced;
         bool                    mShowCursor;
+        bool                    mClearOnFlush;
         sf::Time                mAccumulatedTime;
 };
 
