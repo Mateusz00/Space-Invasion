@@ -80,21 +80,19 @@ void GUI_InputBox::handleEvent(const sf::Event& event)
                     if(mInputPosition > 0)
                     {
                         mString.erase(--mInputPosition, 1);
-                        mText.setString(mString);
-                        computeCursorPosition();
+                        applyChanges();
                     }
                     return;
 
                 case sf::Keyboard::Enter:
                     if(!mIsForced || mString.size() >= 1) // If isForced then user has to enter at least 1 character
                     {
+                        mOutput.assign(mString);
+
                         if(mClearOnFlush)
                         {
-                            mOutput.assign(mString);
                             mString.clear();
                             mText.setString(mString);
-                            mInputPosition = 0;
-                            computeCursorPosition();
                         }
                         deactivate();
                     }
@@ -118,9 +116,7 @@ void GUI_InputBox::handleEvent(const sf::Event& event)
             if(event.text.unicode < 128 && isPrintable(event.text.unicode) && mString.size() < mMaxCharacters) // Don't insert backspace char
             {
                 mString.insert(mInputPosition++, 1, static_cast<char>(event.text.unicode));
-                mText.setString(mString);
-                mOutput.assign(mString);
-                computeCursorPosition();
+                applyChanges();
             }
             break;
         }
@@ -182,6 +178,13 @@ bool GUI_InputBox::isPrintable(sf::Uint32 unicode) const
         return false;
 
     return true;
+}
+
+void GUI_InputBox::applyChanges()
+{
+    mText.setString(mString);
+    mOutput.assign(mString);
+    computeCursorPosition();
 }
 
 void GUI_InputBox::clearOnFlush(bool flag)

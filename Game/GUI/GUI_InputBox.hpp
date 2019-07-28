@@ -27,6 +27,7 @@ class GUI_InputBox : public GUIObject
         void                    clearOnFlush(bool);
 
     private:
+        void                    applyChanges();
         void                    computeCursorPosition();
         bool                    isPrintable(sf::Uint32 unicode) const;
 
