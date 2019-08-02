@@ -39,7 +39,6 @@ class Spaceship : public Entity
         void                    increaseScore(int);
         int                     getScore() const;
         void                    setAttackerID(int);
-        void                    setEnemyType(EnemyType);
 
     protected:
         virtual void            updateCurrent(sf::Time, CommandQueue&) override;
@@ -55,7 +54,7 @@ class Spaceship : public Entity
         void            decreaseScoreRequest(int) const;
         virtual void    onRemoval() override;
         void            updateBoostFuel();
-        void            sendExplosion(sf::Vector2f pos) const;
+        void            sendExplosion(sf::Vector2f pos, float scale = 1, float delaySeconds = 0) const;
         static void     initializeCollisionResponses();
         void            createBossHealthbar();
 
@@ -79,7 +78,6 @@ class Spaceship : public Entity
         Bar*                    mHealthBar;
         Bar*                    mBoostFuelBar;
         SpriteNodePtr           mSprite;
-        EnemyType               mEnemyType;
         static bool             mHasInitializedResponses;
 };
 

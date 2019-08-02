@@ -30,6 +30,13 @@ void AnimationNode::setRepeating(bool flag)
     mIsRepeating = flag;
 }
 
+sf::FloatRect AnimationNode::getBoundingRect() const
+{
+    sf::IntRect rect = getTextureRect();
+
+    return getWorldTransform().transformRect(sf::FloatRect(rect.left, rect.top, rect.width, rect.height));
+}
+
 void AnimationNode::setAnimationType(AnimationType animation)
 {
     mAnimation = animation;
@@ -55,26 +62,31 @@ bool AnimationNode::isMarkedForRemoval() const
 
 void AnimationNode::updateCurrent(sf::Time dt, CommandQueue& commandQueue)
 {
-    mAccumulatedTime += dt;
-
-    if(mAccumulatedTime >= mInterval)
+    if(mDelay <= sf::Time::Zero)
     {
-        if(!mIsRepeating)
-            mCurrentFrame += mIncrement;
-        else
-            mCurrentFrame = (mCurrentFrame + mIncrement) % table[mType].frames;
+        mAccumulatedTime += dt;
 
-        if(mAnimation == AnimationType::ForwardAndBackward)
+        if(mAccumulatedTime >= mInterval)
         {
-            if(mIsRepeating && (mCurrentFrame >= table[mType].frames-1 || mCurrentFrame <= 0))
-                mIncrement = -mIncrement;
-            else if(!mIsRepeating && mCurrentFrame >= table[mType].frames-1)
-                mIncrement = -mIncrement;
-        }
+            if(!mIsRepeating)
+                mCurrentFrame += mIncrement;
+            else
+                mCurrentFrame = (mCurrentFrame + mIncrement) % table[mType].frames;
 
-        mNeedsUpdate = true;
-        mAccumulatedTime -= mInterval;
+            if(mAnimation == AnimationType::ForwardAndBackward)
+            {
+                if(mIsRepeating && (mCurrentFrame >= table[mType].frames-1 || mCurrentFrame <= 0))
+                    mIncrement = -mIncrement;
+                else if(!mIsRepeating && mCurrentFrame >= table[mType].frames-1)
+                    mIncrement = -mIncrement;
+            }
+
+            mNeedsUpdate = true;
+            mAccumulatedTime -= mInterval;
+        }
     }
+    else
+        mDelay -= dt;
 }
 
 void AnimationNode::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
@@ -90,5 +102,11 @@ void AnimationNode::drawCurrent(sf::RenderTarget& target, sf::RenderStates state
         mNeedsUpdate = false;
     }
 
-    SpriteNode::drawCurrent(target, states);
+    if(mDelay <= sf::Time::Zero)
+        SpriteNode::drawCurrent(target, states);
+}
+
+void AnimationNode::setDelay(sf::Time delay)
+{
+    mDelay = delay;
 }

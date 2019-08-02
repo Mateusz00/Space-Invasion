@@ -39,8 +39,7 @@ Spaceship::Spaceship(int typeID, const TextureHolder& textures, const FontHolder
       mBoosted(false),
       mBoostCooldown(false),
       mBoostFuel(FUEL_MAX),
-      mBoostFuelBar(nullptr),
-      mEnemyType(EnemyType::Normal)
+      mBoostFuelBar(nullptr)
 {
     if(mIsEnemy)
         addCategories(Category::EnemySpaceship);
@@ -291,11 +290,6 @@ void Spaceship::setAttackerID(int id)
     mAttackerID = id;
 }
 
-void Spaceship::setEnemyType(EnemyType type)
-{
-    mEnemyType = type;
-}
-
 void Spaceship::createPickup() const
 {
     if(mIsEnemy && (randomInt(1, 4) == 2)) // 25% chance for spawning pickup for enemies
@@ -320,8 +314,16 @@ void Spaceship::createExplosion() const
 {
     if(mShowExplosion)
     {
-        sendExplosion(getWorldPosition());
-        getObjectContext().soundPlayer->play(Sound::Explosion, getWorldPosition());
+        if(spaceshipInfo[mTypeID].tagID == SpaceshipData::Boss)
+        {
+            sf::Vector2f currentPos = getWorldPosition();
+            sendExplosion(sf::Vector2f(currentPos.x, currentPos.y));
+        }
+        else
+        {
+            sendExplosion(getWorldPosition());
+            getObjectContext().soundPlayer->play(Sound::Explosion, getWorldPosition());
+        }
     }
 }
 
@@ -360,17 +362,6 @@ void Spaceship::decreaseScoreRequest(int value) const
 
 void Spaceship::onRemoval()
 {
-    switch(mEnemyType)
-    {
-        case EnemyType::Boss:
-        {
-            sf::Vector2f currentPos = getWorldPosition();
-            sendExplosion(currentPos + sf::Vector2f(100.f, 40.f));
-            sendExplosion(currentPos + sf::Vector2f(-20.f, -30.f));
-            break;
-        }
-    }
-
     createPickup();
     createExplosion();
     changeScore();
@@ -390,15 +381,17 @@ void Spaceship::onRemoval()
     }
 }
 
-void Spaceship::sendExplosion(sf::Vector2f pos) const
+void Spaceship::sendExplosion(sf::Vector2f pos, float scale, float delaySeconds) const
 {
     const TextureHolder& t = mTextures;
     Command explosionCommand;
 
     explosionCommand.mCategories = Category::AirLayer;
-    explosionCommand.mAction = [pos, &t](SceneNode& layer, sf::Time)
+    explosionCommand.mAction = [pos, &t, scale, delaySeconds](SceneNode& layer, sf::Time)
     {
         std::unique_ptr<AnimationNode> node(new AnimationNode(Animation::Explosion, sf::seconds(0.06f), t, pos));
+        node->setScale(scale, scale);
+        node->setDelay(sf::seconds(delaySeconds));
         layer.attachChild(std::move(node));
     };
 

@@ -12,9 +12,11 @@ class AnimationNode : public SpriteNode
 
                         AnimationNode(Animation::ID, sf::Time interval, const TextureHolder&, sf::Vector2f);
                         AnimationNode(Animation::ID, sf::Time interval, const TextureHolder&);
+        void            setDelay(sf::Time);
         void            setRepeating(bool);
         void            setAnimationType(AnimationType);
         bool            isMarkedForRemoval() const override;
+        sf::FloatRect   getBoundingRect() const override;
 
     private:
         void            updateCurrent(sf::Time, CommandQueue&) override;
@@ -24,6 +26,7 @@ class AnimationNode : public SpriteNode
         AnimationType            mAnimation;
         sf::Time                 mInterval;
         sf::Time                 mAccumulatedTime;
+        sf::Time                 mDelay;
         int                      mCurrentFrame;
         int                      mIncrement;
         bool                     mIsRepeating;
