@@ -104,6 +104,7 @@ void Application::loadResources()
     mTextures.loadFromFile(Textures::LevelButtons   ,"Resources/LevelButtons.png");
     mTextures.loadFromFile(Textures::Checkmark      ,"Resources/Checkmark.png");
     mTextures.loadFromFile(Textures::Lock           ,"Resources/Lock.png");
+    mTextures.loadFromFile(Textures::BossDeath      ,"Resources/BossDeath.png");
 }
 
 void Application::loadSettings()

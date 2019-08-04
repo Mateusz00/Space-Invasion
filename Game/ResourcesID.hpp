@@ -30,6 +30,7 @@ namespace Textures
         LevelButtons,
         Checkmark,
         Lock,
+        BossDeath,
     };
 }
 
