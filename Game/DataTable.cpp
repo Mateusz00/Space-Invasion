@@ -459,6 +459,13 @@ std::vector<AnimationData> initializeAnimationData()
     data[Animation::SaucerMediumSpaceship].frameSize = sf::Vector2i(60, 60);
     data[Animation::SaucerMediumSpaceship].spriteSheet = Textures::Spaceships;
 
+    data[Animation::BossDeathAnimation].beginning = sf::Vector2i(0, 0);
+    data[Animation::BossDeathAnimation].rows = 1;
+    data[Animation::BossDeathAnimation].framesPerRow = 5;
+    data[Animation::BossDeathAnimation].frames = 5;
+    data[Animation::BossDeathAnimation].frameSize = sf::Vector2i(360, 360);
+    data[Animation::BossDeathAnimation].spriteSheet = Textures::BossDeath;
+
     return data;
 }
 

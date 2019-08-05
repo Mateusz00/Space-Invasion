@@ -292,6 +292,9 @@ void Spaceship::setAttackerID(int id)
 
 void Spaceship::createPickup() const
 {
+    if(spaceshipInfo[mTypeID].tagID == SpaceshipData::Boss)
+        return;
+
     if(mIsEnemy && (randomInt(1, 4) == 2)) // 25% chance for spawning pickup for enemies
     {
         const TextureHolder& t = mTextures;
@@ -316,8 +319,37 @@ void Spaceship::createExplosion() const
     {
         if(spaceshipInfo[mTypeID].tagID == SpaceshipData::Boss)
         {
-            sf::Vector2f currentPos = getWorldPosition();
-            sendExplosion(sf::Vector2f(currentPos.x, currentPos.y));
+            sf::Vector2f pos = getWorldPosition();
+            const TextureHolder& textures = mTextures;
+
+            Command deathAnimation;
+            deathAnimation.mCategories = Category::AirLayer;
+            deathAnimation.mAction = [pos, &textures](SceneNode& layer, sf::Time)
+            {
+                std::unique_ptr<AnimationNode> node(new AnimationNode(Animation::BossDeathAnimation, sf::seconds(0.2f), textures, pos));
+                node->setAnimationType(AnimationNode::AnimationType::ForwardAndBackward);
+                node->setRepeating(true);
+                node->setLifespan(sf::seconds(5.5f));
+                layer.attachChild(std::move(node));
+            };
+            getObjectContext().commandQueue->push(deathAnimation);
+
+            sendExplosion(sf::Vector2f(pos.x - 52.f, pos.y + 8.f));
+            sendExplosion(sf::Vector2f(pos.x + 55.f, pos.y + 8.f));
+            sendExplosion(sf::Vector2f(pos.x - 52.f, pos.y + 34.f), 0.45f, 0.45f);
+            sendExplosion(sf::Vector2f(pos.x + 55.f, pos.y + 34.f), 0.45f, 0.45f);
+            sendExplosion(sf::Vector2f(pos.x - 52.f, pos.y + 65.f), 0.45f, 0.6f);
+            sendExplosion(sf::Vector2f(pos.x + 55.f, pos.y + 65.f), 0.45f, 0.6f);
+            sendExplosion(sf::Vector2f(pos.x - 52.f, pos.y + 116.f), 0.75f, 0.7f);
+            sendExplosion(sf::Vector2f(pos.x + 55.f, pos.y + 116.f), 0.75f, 0.7f);
+
+            sendExplosion(sf::Vector2f(pos.x + 100.f,  pos.y - 30.f), 1.1f, 0.6f);
+            sendExplosion(sf::Vector2f(pos.x - 90.f,  pos.y + 25.f), 1.1f, 1.3f);
+            sendExplosion(sf::Vector2f(pos.x,  pos.y + 90.f), 1.f, 2.f);
+            sendExplosion(sf::Vector2f(pos.x + 105.f, pos.y + 55.f), 1.f, 2.8f);
+            sendExplosion(sf::Vector2f(pos.x - 90.f,  pos.y + 45.f), 1.2f, 3.4f);
+            sendExplosion(sf::Vector2f(pos.x + 88.f,  pos.y + 17.f), 1.2f, 4.3f);
+            sendExplosion(sf::Vector2f(pos.x, pos.y + 15.f), 2.f, 5.4f);
         }
         else
         {

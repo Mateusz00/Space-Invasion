@@ -17,6 +17,7 @@ class AnimationNode : public SpriteNode
         void            setAnimationType(AnimationType);
         bool            isMarkedForRemoval() const override;
         sf::FloatRect   getBoundingRect() const override;
+        void            setLifespan(sf::Time);
 
     private:
         void            updateCurrent(sf::Time, CommandQueue&) override;
@@ -27,6 +28,8 @@ class AnimationNode : public SpriteNode
         sf::Time                 mInterval;
         sf::Time                 mAccumulatedTime;
         sf::Time                 mDelay;
+        sf::Time                 mLifespan;
+        sf::Time                 mTimeAlive;
         int                      mCurrentFrame;
         int                      mIncrement;
         bool                     mIsRepeating;

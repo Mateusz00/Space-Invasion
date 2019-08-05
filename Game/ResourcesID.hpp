@@ -48,6 +48,7 @@ namespace Animation
         VoidRedSpaceship4,
         SaucerSmallSpaceship,
         SaucerMediumSpaceship,
+        BossDeathAnimation,
         Count,
     };
 }

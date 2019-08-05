@@ -44,16 +44,18 @@ void AnimationNode::setAnimationType(AnimationType animation)
 
 bool AnimationNode::isMarkedForRemoval() const
 {
+    bool hasLifespan = (mLifespan != sf::Time::Zero);
+
     switch(mAnimation)
     {
         case AnimationType::Forward:
-            if(!mIsRepeating && mCurrentFrame >= table[mType].frames)
+            if((!mIsRepeating && mCurrentFrame >= table[mType].frames) || (mTimeAlive > mLifespan && hasLifespan))
                 return true;
             else
                 return false;
 
         case AnimationType::ForwardAndBackward:
-            if(!mIsRepeating && mCurrentFrame < 0)
+            if((!mIsRepeating && mCurrentFrame < 0) || (mTimeAlive > mLifespan && hasLifespan))
                 return true;
             else
                 return false;
@@ -65,6 +67,7 @@ void AnimationNode::updateCurrent(sf::Time dt, CommandQueue& commandQueue)
     if(mDelay <= sf::Time::Zero)
     {
         mAccumulatedTime += dt;
+        mTimeAlive += dt;
 
         if(mAccumulatedTime >= mInterval)
         {
@@ -109,4 +112,10 @@ void AnimationNode::drawCurrent(sf::RenderTarget& target, sf::RenderStates state
 void AnimationNode::setDelay(sf::Time delay)
 {
     mDelay = delay;
+}
+
+/// If lifespan is set to sf::Time::Zero then animation has infinite lifespan(default)
+void AnimationNode::setLifespan(sf::Time lifespan)
+{
+    mLifespan = lifespan;
 }
