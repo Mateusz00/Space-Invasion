@@ -20,7 +20,8 @@
     </attacks>
 
     <onDeath>
-        <event id="0" scrollSpeed="-100"/>
+        <event id="0" scrollSpeed="-10"/>
+        <event id="1" showScore="true"/>
     </onDeath>
 </spaceship>
 

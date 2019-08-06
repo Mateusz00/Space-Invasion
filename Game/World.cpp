@@ -121,8 +121,8 @@ std::unordered_map<int, int> World::getPlayersScoresMap()
 
 Spaceship* World::addSpaceship(int id)
 {
-    std::unique_ptr<Spaceship> playerSpaceship(new Spaceship(0, mTextures, mFonts, mObjectContext, mEnemies, id));
-    playerSpaceship->setPosition(mPlayerSpawnPosition.x - 50.f + 100.f*(id%2), mPlayerSpawnPosition.y);
+    sf::Vector2f pos(mPlayerSpawnPosition.x - 50.f + 100.f*(id%2), mPlayerSpawnPosition.y);
+    std::unique_ptr<Spaceship> playerSpaceship(new Spaceship(0, mTextures, pos, mObjectContext, mEnemies, id));
     mPlayerSpaceships.emplace_back(playerSpaceship.get());
 
     std::unique_ptr<AmmoNode> ammoNode(new AmmoNode(id, mTextures, mFonts, mView));
@@ -286,9 +286,9 @@ void World::spawnEnemies()
     while(!mSpawnPoints.empty() && mSpawnPoints.back().y > getBattlefieldBounds().top)
     {
         SpawnPoint& spawn = mSpawnPoints.back();
+        sf::Vector2f pos(spawn.x, spawn.y);
 
-        std::unique_ptr<Spaceship> enemySpaceship(new Spaceship(spawn.spaceshipID, mTextures, mFonts, mObjectContext, mPlayerSpaceships));
-        enemySpaceship->setPosition(spawn.x, spawn.y);
+        std::unique_ptr<Spaceship> enemySpaceship(new Spaceship(spawn.spaceshipID, mTextures, pos, mObjectContext, mPlayerSpaceships));
         mSceneLayers[UpperAir]->attachChild(std::move(enemySpaceship));
 
         mSpawnPoints.pop_back();
@@ -409,4 +409,16 @@ void World::createAABBTree()
     mCollisionTree.clear();
     mCommandQueue.push(collidablesCollector);
     mCommandQueue.push(projectileCollector);
+}
+
+void World::showScore(bool isVisible)
+{
+    Command changeVisibility;
+    changeVisibility.mCategories = Category::ScoreNode;
+    changeVisibility.mAction = castFunctor<ScoreNode>([isVisible](ScoreNode& score, sf::Time)
+    {
+        score.show(isVisible);
+    });
+
+    mUIGraph.executeCommand(changeVisibility, sf::Time::Zero);
 }

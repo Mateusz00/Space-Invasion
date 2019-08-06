@@ -19,7 +19,7 @@ class Spaceship : public Entity
         enum class EnemyType{Normal, Boss};
         using SpriteNodePtr = std::unique_ptr<SpriteNode>;
 
-                                Spaceship(int, const TextureHolder&, const FontHolder&, ObjectContext,
+                                Spaceship(int, const TextureHolder&, sf::Vector2f pos, ObjectContext,
                                           const std::vector<Spaceship*>& targets, int id = -1);
         void                    increaseFireRate();
         void                    increaseSpread();
@@ -57,6 +57,7 @@ class Spaceship : public Entity
         void            sendExplosion(sf::Vector2f pos, float scale = 1, float delaySeconds = 0) const;
         static void     initializeCollisionResponses();
         void            createBossHealthbar();
+        void            hideScore();
 
         int                     mTypeID;
         int                     mFireRateLevel;

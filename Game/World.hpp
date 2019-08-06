@@ -34,6 +34,7 @@ class World
         std::unordered_map<int, int>     getPlayersScoresMap();
         Spaceship*                       addSpaceship(int id);
         void                             setScrollingSpeed(float);
+        void                             showScore(bool);
 
     private:
         void    buildWorld();

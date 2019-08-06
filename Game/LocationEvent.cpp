@@ -1,5 +1,6 @@
 #include "LocationEvent.hpp"
 #include "World.hpp"
+#include <ios>
 
 LocationEvent::LocationEvent(sf::Vector2f pos, Event id)
     : mTriggerLocation(pos),
@@ -24,6 +25,19 @@ void LocationEvent::handle(World& world)
                 world.setScrollingSpeed(std::stof(speed->second));
             else
                 world.setScrollingSpeed(0.f);
+
+            break;
+        }
+        case Event::ShowScore:
+        {
+            auto flag = mParameters.find("showScore");
+
+            if(flag != mParameters.end())
+            {
+                bool isVisible;
+                std::istringstream(flag->second) >> std::boolalpha >> isVisible;
+                world.showScore(isVisible);
+            }
 
             break;
         }

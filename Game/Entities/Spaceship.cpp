@@ -20,7 +20,7 @@ namespace
 }
 bool Spaceship::mHasInitializedResponses = false;
 
-Spaceship::Spaceship(int typeID, const TextureHolder& textures, const FontHolder& fonts,
+Spaceship::Spaceship(int typeID, const TextureHolder& textures, sf::Vector2f pos,
                     ObjectContext context, const std::vector<Spaceship*>& targets, int id)
     : Entity(spaceshipInfo[typeID].hitpoints, true, context),
       mTypeID(typeID),
@@ -41,6 +41,8 @@ Spaceship::Spaceship(int typeID, const TextureHolder& textures, const FontHolder
       mBoostFuel(FUEL_MAX),
       mBoostFuelBar(nullptr)
 {
+    setPosition(pos);
+
     if(mIsEnemy)
         addCategories(Category::EnemySpaceship);
     else
@@ -74,7 +76,10 @@ Spaceship::Spaceship(int typeID, const TextureHolder& textures, const FontHolder
     std::unique_ptr<Bar> healthBar(new Bar(getHitpoints(), spaceshipInfo[mTypeID].hitpoints, barSize, barType));
 
     if(!spaceshipInfo[mTypeID].tagID == SpaceshipData::Boss)
+    {
         healthBar->setPosition(0.f, getLocalBounds().height * offset);
+        hideScore();
+    }
 
     mHealthBar = healthBar.get();
     attachChild(std::move(healthBar));
@@ -446,4 +451,12 @@ void Spaceship::updateBoostFuel()
         else
             mBoostCooldown = false;
     }
+}
+
+void Spaceship::hideScore()
+{
+    LocationEvent hideScoreEvent(getWorldPosition(), LocationEvent::ShowScore);
+    hideScoreEvent.addParameter("showScore", "false");
+
+    getObjectContext().events->push(hideScoreEvent);
 }
