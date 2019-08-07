@@ -23,12 +23,12 @@ SoundPlayer::SoundPlayer()
     mSounds.loadFromFile(Sound::ButtonClick,    "Resources/ButtonClick.ogg");
 }
 
-void SoundPlayer::play(Sound::ID id)
+void SoundPlayer::play(Sound::ID id, float volumeMultiplier)
 {
-    play(id, sf::Vector2f(0.f, 0.f));
+    play(id, sf::Vector2f(0.f, 0.f), volumeMultiplier);
 }
 
-void SoundPlayer::play(Sound::ID id, sf::Vector2f position)
+void SoundPlayer::play(Sound::ID id, sf::Vector2f position, float volumeMultiplier)
 {
     mActiveSounds.push_front(sf::Sound());
     sf::Sound& sound = mActiveSounds.front();
@@ -41,7 +41,7 @@ void SoundPlayer::play(Sound::ID id, sf::Vector2f position)
     if(mIsMuted)
         sound.setVolume(0.f);
     else
-        sound.setVolume(mVolume);
+        sound.setVolume(mVolume * volumeMultiplier);
 
     sound.play();
 }

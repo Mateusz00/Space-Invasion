@@ -341,26 +341,23 @@ void Spaceship::createExplosion() const
 
             sendExplosion(sf::Vector2f(pos.x - 52.f, pos.y + 8.f));
             sendExplosion(sf::Vector2f(pos.x + 55.f, pos.y + 8.f));
-            sendExplosion(sf::Vector2f(pos.x - 52.f, pos.y + 34.f), 0.45f, 0.45f);
-            sendExplosion(sf::Vector2f(pos.x + 55.f, pos.y + 34.f), 0.45f, 0.45f);
-            sendExplosion(sf::Vector2f(pos.x - 52.f, pos.y + 65.f), 0.45f, 0.6f);
-            sendExplosion(sf::Vector2f(pos.x + 55.f, pos.y + 65.f), 0.45f, 0.6f);
-            sendExplosion(sf::Vector2f(pos.x - 52.f, pos.y + 116.f), 0.75f, 0.7f);
-            sendExplosion(sf::Vector2f(pos.x + 55.f, pos.y + 116.f), 0.75f, 0.7f);
+            sendExplosion(sf::Vector2f(pos.x - 52.f, pos.y + 34.f),  0.45f, 0.45f, 0.9f);
+            sendExplosion(sf::Vector2f(pos.x + 55.f, pos.y + 34.f),  0.45f, 0.45f, 0.9f);
+            sendExplosion(sf::Vector2f(pos.x - 52.f, pos.y + 65.f),  0.45f, 0.6f,  0.9f);
+            sendExplosion(sf::Vector2f(pos.x + 55.f, pos.y + 65.f),  0.45f, 0.6f,  0.9f);
+            sendExplosion(sf::Vector2f(pos.x - 52.f, pos.y + 116.f), 0.75f, 0.7f,  0.9f);
+            sendExplosion(sf::Vector2f(pos.x + 55.f, pos.y + 116.f), 0.75f, 0.7f,  0.9f);
 
             sendExplosion(sf::Vector2f(pos.x + 100.f,  pos.y - 30.f), 1.1f, 0.6f);
-            sendExplosion(sf::Vector2f(pos.x - 90.f,  pos.y + 25.f), 1.1f, 1.3f);
-            sendExplosion(sf::Vector2f(pos.x,  pos.y + 90.f), 1.f, 2.f);
-            sendExplosion(sf::Vector2f(pos.x + 105.f, pos.y + 55.f), 1.f, 2.8f);
-            sendExplosion(sf::Vector2f(pos.x - 90.f,  pos.y + 45.f), 1.2f, 3.4f);
-            sendExplosion(sf::Vector2f(pos.x + 88.f,  pos.y + 17.f), 1.2f, 4.3f);
-            sendExplosion(sf::Vector2f(pos.x, pos.y + 15.f), 2.f, 5.4f);
+            sendExplosion(sf::Vector2f(pos.x - 90.f,  pos.y + 25.f),  1.1f, 1.3f);
+            sendExplosion(sf::Vector2f(pos.x,  pos.y + 90.f),         1.f,  2.f);
+            sendExplosion(sf::Vector2f(pos.x + 105.f, pos.y + 55.f),  1.f,  2.8f);
+            sendExplosion(sf::Vector2f(pos.x - 90.f,  pos.y + 45.f),  1.2f, 3.4f);
+            sendExplosion(sf::Vector2f(pos.x + 88.f,  pos.y + 17.f),  1.2f, 4.3f);
+            sendExplosion(sf::Vector2f(pos.x, pos.y + 15.f),          2.f,  5.4f, 1.2f);
         }
         else
-        {
             sendExplosion(getWorldPosition());
-            getObjectContext().soundPlayer->play(Sound::Explosion, getWorldPosition());
-        }
     }
 }
 
@@ -418,18 +415,20 @@ void Spaceship::onRemoval()
     }
 }
 
-void Spaceship::sendExplosion(sf::Vector2f pos, float scale, float delaySeconds) const
+void Spaceship::sendExplosion(sf::Vector2f pos, float scale, float delaySeconds, float volumeMultiplier) const
 {
     const TextureHolder& t = mTextures;
-    Command explosionCommand;
+    auto soundPlayer = getObjectContext().soundPlayer;
 
+    Command explosionCommand;
     explosionCommand.mCategories = Category::AirLayer;
-    explosionCommand.mAction = [pos, &t, scale, delaySeconds](SceneNode& layer, sf::Time)
+    explosionCommand.mAction = [pos, &t, scale, delaySeconds, soundPlayer, volumeMultiplier](SceneNode& layer, sf::Time)
     {
         std::unique_ptr<AnimationNode> node(new AnimationNode(Animation::Explosion, sf::seconds(0.06f), t, pos));
         node->setScale(scale, scale);
         node->setDelay(sf::seconds(delaySeconds));
         layer.attachChild(std::move(node));
+        soundPlayer->play(Sound::Explosion, pos, volumeMultiplier);
     };
 
     getObjectContext().commandQueue->push(explosionCommand);

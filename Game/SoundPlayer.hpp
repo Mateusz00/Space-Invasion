@@ -11,8 +11,8 @@ class SoundPlayer
 {
     public:
                 SoundPlayer();
-        void    play(Sound::ID);
-        void    play(Sound::ID, sf::Vector2f);
+        void    play(Sound::ID, float volumeMultiplier = 1.f);
+        void    play(Sound::ID, sf::Vector2f, float volumeMultiplier = 1.f);
         void    removeStoppedSounds();
         void    setListener(sf::Vector2f);
         void    setListener(sf::Vector3f);
