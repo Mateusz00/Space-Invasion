@@ -87,11 +87,11 @@ void GUI_InputBox::handleEvent(const sf::Event& event)
                 case sf::Keyboard::Enter:
                     if(!mIsForced || mString.size() >= 1) // If isForced then user has to enter at least 1 character
                     {
-                        mOutput.assign(mString);
-
                         if(mClearOnFlush)
                         {
                             mString.clear();
+                            mInputPosition = 0;
+                            mInputCursor.setPosition(2.f, 2.f); // Resets to initial position
                             mText.setString(mString);
                         }
                         deactivate();
@@ -148,6 +148,7 @@ void GUI_InputBox::update(sf::Time dt)
     if(isActive())
     {
         mAccumulatedTime += dt;
+
         if(mAccumulatedTime >= sf::seconds(0.4f))
         {
             mAccumulatedTime = sf::Time::Zero;
