@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <levels>
-    <level id="0" file="level1.xml" unlocks="1" buttonText="1" x="700" y="350"/>
+    <level id="0" file="level2.xml" unlocks="1" buttonText="1" x="700" y="350"/>
     <level id="1" file="level2.xml" unlocks="" buttonText="2" x="500" y="350"/>
 </levels>
 

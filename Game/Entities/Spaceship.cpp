@@ -76,10 +76,9 @@ Spaceship::Spaceship(int typeID, const TextureHolder& textures, sf::Vector2f pos
     std::unique_ptr<Bar> healthBar(new Bar(getHitpoints(), spaceshipInfo[mTypeID].hitpoints, barSize, barType));
 
     if(!spaceshipInfo[mTypeID].tagID == SpaceshipData::Boss)
-    {
         healthBar->setPosition(0.f, getLocalBounds().height * offset);
+    else
         hideScore();
-    }
 
     mHealthBar = healthBar.get();
     attachChild(std::move(healthBar));

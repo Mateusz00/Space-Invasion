@@ -6,11 +6,11 @@
 
     <directions>
         <direction angle="0" distance="50" speedPercentage="100"></direction>
-        <direction angle="180" distance="50" speedPercentage="80"></direction>
+        <direction angle="180" distance="55" speedPercentage="80"></direction>
         <direction angle="85" distance="10" speedPercentage="60"></direction>
         <direction angle="120" distance="7" speedPercentage="50"></direction>
         <direction angle="-85" distance="20" speedPercentage="65"></direction>
-        <direction angle="-120" distance="7" speedPercentage="50"></direction>
+        <direction angle="-120" distance="8" speedPercentage="50"></direction>
         <direction angle="85" distance="10" speedPercentage="60"></direction>
     </directions>
 

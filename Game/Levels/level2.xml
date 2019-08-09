@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <spawnpoints>
-    <spawn x="400" y="5900" enemyID="1"/>
-    <spawn x="600" y="5700" enemyID="1"/>
-    <spawn x="300" y="5050" enemyID="1"/>
-    <spawn x="500" y="5050" enemyID="1"/>
+    <spawn x="270" y="4000" enemyID="10"/>
+    <spawn x="730" y="4000" enemyID="10"/>
+    <spawn x="500" y="3900" enemyID="10"/>
+    <spawn x="450" y="3700" enemyID="11"/>
+    <spawn x="550" y="3700" enemyID="11"/>
+    <spawn x="300" y="3550" enemyID="11"/>
+    <spawn x="700" y="3550" enemyID="11"/>
+    <spawn x="300" y="3300" enemyID="10"/>
+    <spawn x="600" y="3300" enemyID="12"/>
+    <spawn x="850" y="3300" enemyID="10"/>
+    <spawn x="150" y="2900" enemyID="10"/>
+    <spawn x="400" y="2900" enemyID="12"/>
+    <spawn x="720" y="2900" enemyID="10"/>
 </spawnpoints>
 <leveldata>
-	<levelwidth>7000</levelwidth>
+	<levelwidth>5000</levelwidth>
 </leveldata>
-<events>
-	<event id="0" x="100" y="5500" enemyID="2"/>
-</events>
