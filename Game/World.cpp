@@ -6,12 +6,14 @@
 #include "Entities/ScoreNode.hpp"
 #include "Exceptions/XMLParseException.hpp"
 #include "CollisionResponseMap.hpp"
+#include "LevelInfo.hpp"
 #include <memory>
 #include <algorithm>
 #include <cmath>
 #include <sstream>
 #include <limits>
 #include <pugixml.hpp>
+using LevelInfo::levelInfo;
 
 World::World(State::Context context)
     : mTarget(context.window),
@@ -193,9 +195,9 @@ void World::loadLevelData()
     using namespace pugi;
 
     // Load xml file, throw errors
-    std::string filename("level" + toString(mProfile.getCurrentLevel()+1) + ".xml"); // Level with id=0 is name level1.xml
+    std::string filename("Levels/" + levelInfo[mProfile.getCurrentLevel()].filename);
     xml_document doc;
-    xml_parse_result result = doc.load_file(("Levels/" + filename).c_str());
+    xml_parse_result result = doc.load_file(filename.c_str());
     if(!result)
         throw XMLParseException(result, filename);
 
@@ -215,7 +217,7 @@ void World::loadLevelData()
     float length;
     xml_node levelData = doc.child("leveldata");
     std::string lengthString = levelData.child_value("levelwidth");
-    std::runtime_error lengthExcepetion("In level" + toString(mProfile.getCurrentLevel()+1) + ".xml: Value can't be empty or zero");
+    std::runtime_error lengthExcepetion("In " + levelInfo[mProfile.getCurrentLevel()].filename + ": Value can't be empty or zero");
 
     if(lengthString.empty())
         throw lengthExcepetion;
@@ -243,8 +245,8 @@ void World::loadLevelData()
         event.remove_attribute("y");
 
         if(id < 0)
-            throw std::runtime_error("Event ID not found or less than zero!(Level" +
-                                      toString(mProfile.getCurrentLevel()+1) + ".xml)");
+            throw std::runtime_error("Event ID not found or less than zero!(" +
+                                     levelInfo[mProfile.getCurrentLevel()].filename + ")");
 
         for(xml_attribute eventAttribute : event.attributes())
             newEvent.addParameter(eventAttribute.name(), eventAttribute.value());

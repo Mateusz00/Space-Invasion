@@ -519,7 +519,8 @@ std::vector<LevelData> initializeLevelData()
                 levelData->levelDependencies.push_back(id);
         }
 
-        levelData->name = levelInfo.attribute("name").as_string();
+        levelData->buttonText = levelInfo.attribute("buttonText").as_string();
+        levelData->filename = levelInfo.attribute("file").as_string();
         levelData->x = levelInfo.attribute("x").as_float();
         levelData->y = levelInfo.attribute("y").as_float();
         levelData->id = levelInfo.attribute("id").as_int();

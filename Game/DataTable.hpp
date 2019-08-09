@@ -91,7 +91,8 @@ struct ButtonData
 struct LevelData
 {
     std::vector<int>   levelDependencies;
-    std::string        name;
+    std::string        buttonText;
+    std::string        filename;
     float              x;
     float              y;
     int                id;

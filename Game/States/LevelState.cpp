@@ -1,5 +1,5 @@
 #include "LevelState.hpp"
-#include "../DataTable.hpp"
+#include "../LevelInfo.hpp"
 #include "../Profile.hpp"
 #include "../Utility.hpp"
 #include "../GUI/GUIButton.hpp"
@@ -7,10 +7,7 @@
 #include <SFML/System/Vector2.hpp>
 #include <memory>
 #include <vector>
-namespace
-{
-    const std::vector<LevelData> levelInfo = initializeLevelData();
-}
+using LevelInfo::levelInfo;
 
 LevelState::LevelState(Context context, StateStack& stateStack)
     : State(context, stateStack),
@@ -98,11 +95,10 @@ bool LevelState::handleEvent(const sf::Event& event)
     return false;
 }
 
-void LevelState::createLevelButton(int i)
+void LevelState::createLevelButton(int id)
 {
-    int id = levelInfo[i].id;
-    std::unique_ptr<LevelButton> levelButton(new LevelButton(getContext(), GUIButton::LevelButton, levelInfo[i].name, id));
-    levelButton->setPosition(levelInfo[i].x, levelInfo[i].y);
+    std::unique_ptr<LevelButton> levelButton(new LevelButton(getContext(), GUIButton::LevelButton, levelInfo[id].buttonText, id));
+    levelButton->setPosition(levelInfo[id].x, levelInfo[id].y);
     levelButton->centerButtonOrigin();
     levelButton->setCallback([this, id]
     {
