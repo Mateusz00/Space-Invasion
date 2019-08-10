@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <spaceship>
     <hitpoints>110</hitpoints>
-    <speed>100</speed>
+    <speed>95</speed>
     <textureID>15</textureID>
 
     <directions>
-        <direction angle="60" distance="80" speedPercentage="30"></direction>
-        <direction angle="320" distance="80" speedPercentage="30"></direction>
+        <direction angle="76" distance="80" speedPercentage="30"></direction>
+        <direction angle="304" distance="80" speedPercentage="30"></direction>
     </directions>
 
     <attacks>
