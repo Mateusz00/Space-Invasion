@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <attack>
     <chargetime>0</chargetime>
-    <cooldown>3.7</cooldown>
+    <cooldown>3</cooldown>
 
     <attackPhase>
         <projectiles>
-            <projectile id="7" speed="15" aimed="no" offsets="0 7" patternID="3" direction="0" gravityCenterID="0"></projectile>
+            <projectile id="7" speed="35" aimed="no" offsets="0 7" patternID="3" direction="0" gravityCenterID="0"></projectile>
         </projectiles>
 
         <gravityCenters>
-            <center id="0" speed="10" aimed="yes" offsets="0 0" patternID="1" direction="180"></center>
+            <center id="0" speed="20" aimed="yes" offsets="0 0" patternID="1" direction="180"></center>
         </gravityCenters>
     </attackPhase>
 </attack>

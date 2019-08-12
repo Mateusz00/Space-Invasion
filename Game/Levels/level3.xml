@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spawnpoints>
+    <spawn x="250" y="3150" enemyID="13"/>
+    <spawn x="500" y="3150" enemyID="13"/>
+    <spawn x="750" y="3150" enemyID="13"/>
+    <spawn x="380" y="3100" enemyID="13"/>
+    <spawn x="620" y="3030" enemyID="13"/>
+    <spawn x="400" y="2960" enemyID="13"/>
+    <spawn x="600" y="2960" enemyID="13"/>
+    <spawn x="150" y="2800" enemyID="14"/>
+</spawnpoints>
+<leveldata>
+	<levelwidth>4000</levelwidth>
+</leveldata>
