@@ -3,11 +3,42 @@
     <spawn x="250" y="3150" enemyID="13"/>
     <spawn x="500" y="3150" enemyID="13"/>
     <spawn x="750" y="3150" enemyID="13"/>
-    <spawn x="380" y="3100" enemyID="13"/>
-    <spawn x="620" y="3030" enemyID="13"/>
     <spawn x="400" y="2960" enemyID="13"/>
     <spawn x="600" y="2960" enemyID="13"/>
-    <spawn x="150" y="2800" enemyID="14"/>
+    <spawn x="200" y="2570" enemyID="14"/>
+    <spawn x="400" y="2570" enemyID="14"/>
+    <spawn x="600" y="2570" enemyID="14"/>
+    <spawn x="800" y="2570" enemyID="14"/>
+    <spawn x="500" y="2400" enemyID="15"/>
+    <spawn x="300" y="2200" enemyID="10"/>
+    <spawn x="700" y="2200" enemyID="10"/>
+    <spawn x="500" y="2050" enemyID="13"/>
+    <spawn x="200" y="2000" enemyID="16"/>
+    <spawn x="800" y="2000" enemyID="16"/>
+    <spawn x="500" y="1900" enemyID="16"/>
+    <spawn x="450" y="1450" enemyID="11"/>
+    <spawn x="600" y="1450" enemyID="11"/>
+    <spawn x="120" y="1400" enemyID="17"/>
+    <spawn x="300" y="1400" enemyID="17"/>
+    <spawn x="700" y="1400" enemyID="17"/>
+    <spawn x="880" y="1400" enemyID="17"/>
+    <spawn x="60"  y="1300" enemyID="17"/>
+    <spawn x="180" y="1300" enemyID="17"/>
+    <spawn x="940" y="1300" enemyID="17"/>
+    <spawn x="820" y="1300" enemyID="17"/>
+    <spawn x="525" y="1250" enemyID="11"/>
+    <spawn x="200" y="1010" enemyID="18"/>
+    <spawn x="800" y="1010" enemyID="18"/>
+    <spawn x="400" y="750" enemyID="12"/>
+    <spawn x="600" y="750" enemyID="12"/>
+    <spawn x="720" y="450" enemyID="15"/>
+    <spawn x="280" y="450" enemyID="15"/>
+    <spawn x="450" y="300" enemyID="10"/>
+    <spawn x="550" y="300" enemyID="10"/>
+    <spawn x="200" y="150" enemyID="10"/>
+    <spawn x="800" y="150" enemyID="10"/>
+    <spawn x="300" y="120" enemyID="10"/>
+    <spawn x="700" y="120" enemyID="10"/>
 </spawnpoints>
 <leveldata>
 	<levelwidth>4000</levelwidth>
