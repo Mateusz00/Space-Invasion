@@ -4,20 +4,20 @@
 #include "../World.hpp"
 #include "../ParticleSystem/EmitterNode.hpp"
 #include "../CollisionResponseMap.hpp"
-#include <vector>
+#include <unordered_map>
 #include <memory>
 
 namespace
 {
-    const std::vector<ProjectileData> table = initializeProjectileData();
+    const std::unordered_map<int, ProjectileData> table = initializeProjectileData();
 }
 bool Projectile::mHasInitializedResponses = false;
 
 Projectile::Projectile(Projectiles::ID type, const TextureHolder& textures,
                         ObjectContext context, int shooterID, float speed, bool isEnemy)
-    : Entity(table[type].hitpoints, true, context),
+    : Entity(table.at(type).hitpoints, true, context),
       mType(type),
-      mSprite(textures.get(table[type].texture), table[type].textureRect),
+      mSprite(textures.get(table.at(type).texture), table.at(type).textureRect),
       mShooterID(shooterID),
       mSpeed(speed),
       mIsEnemy(isEnemy)
@@ -51,7 +51,7 @@ float Projectile::getMaxSpeed() const
 
 float Projectile::getDamage() const
 {
-    return table[mType].damage;
+    return table.at(mType).damage;
 }
 
 sf::FloatRect Projectile::getBoundingRect() const

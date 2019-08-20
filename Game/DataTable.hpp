@@ -144,7 +144,7 @@ struct AttackData
 
 std::vector<SpaceshipData>              initializeSpaceshipData();
 std::vector<SpaceshipTextureData>       initializeSpaceshipTextureData();
-std::vector<ProjectileData>             initializeProjectileData();
+std::unordered_map<int, ProjectileData> initializeProjectileData();
 std::vector<PickupData>                 initializePickupData();
 std::vector<ParticleData>               initializeParticleData();
 std::vector<AnimationData>              initializeAnimationData();

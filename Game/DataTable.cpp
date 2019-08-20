@@ -191,9 +191,9 @@ std::vector<SpaceshipTextureData> initializeSpaceshipTextureData()
     return data;
 }
 
-std::vector<ProjectileData> initializeProjectileData()
+std::unordered_map<int, ProjectileData> initializeProjectileData()
 {
-    std::vector<ProjectileData> data(Projectiles::Count);
+    std::unordered_map<int, ProjectileData> data;
 
     data[Projectiles::GreenOval1].damage = 10.f;
     data[Projectiles::GreenOval1].texture = Textures::Projectiles;
