@@ -9,6 +9,7 @@
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/Color.hpp>
 #include <vector>
+#include <array>
 #include <unordered_map>
 class Spaceship;
 
@@ -54,6 +55,14 @@ struct ProjectileData
     float           hitpoints = 1.f;
     Textures::ID    texture;
     sf::IntRect     textureRect;
+    bool            isLaser = false;
+};
+
+struct LaserData
+{
+    Textures::ID                    texture = Textures::Projectiles;
+    std::array<sf::IntRect, 3>      textureRects; // 0, 1, 2 - head, body, tail
+    float                           maxLength;
 };
 
 struct PickupData
@@ -151,5 +160,6 @@ std::vector<AnimationData>              initializeAnimationData();
 std::vector<ButtonData>                 initializeButtonData();
 std::vector<LevelData>                  initializeLevelData();
 std::unordered_map<int, AttackData>     initializeAttackData();
+std::unordered_map<int, LaserData>      initializeLaserData();
 
 #endif // DATATABLE_HPP

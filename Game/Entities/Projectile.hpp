@@ -26,6 +26,9 @@ class Projectile : public Entity
         float                           activeTime() const;
         void                            updateTime(sf::Time dt);
 
+    protected:
+        Projectiles::ID getType() const;
+
     private:
         virtual void    updateCurrent(sf::Time, CommandQueue&) override;
         virtual void    drawCurrent(sf::RenderTarget&, sf::RenderStates) const override;

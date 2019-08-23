@@ -154,3 +154,8 @@ void Projectile::updateTime(sf::Time dt)
 {
     mTimeActive += dt;
 }
+
+Projectiles::ID Projectile::getType() const
+{
+    return mType;
+}
