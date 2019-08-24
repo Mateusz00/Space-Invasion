@@ -1,4 +1,5 @@
 #include "Attacks.hpp"
+#include "../DataTable.hpp"
 
 namespace Attacks
 {

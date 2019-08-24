@@ -3,11 +3,14 @@
 #include "Attacks.hpp"
 #include "../Category.hpp"
 #include "../Entities/Spaceship.hpp"
+#include "../Entities/Laser.hpp"
 #include "../DataTable.hpp"
 #include "../CommandQueue.hpp"
 #include "../Utility.hpp"
 #include "../ApplicationData.hpp"
+#include "../ProjectileInfo.hpp"
 #include <iostream>
+using ProjectileInfo::table;
 using Attacks::attackData;
 using ApplicationData::TIME_PER_UPDATE;
 
@@ -196,7 +199,12 @@ void Attack::createProjectile(int phase, int projectileNum)
     float speed = projectileInfo.speed;
     int sign = (isAllied()) ? -1 : 1;
 
-    std::unique_ptr<Projectile> projectile(new Projectile(type, mTextures, getObjectContext(), mShooterID, speed, !isAllied()));
+    std::unique_ptr<Projectile> projectile;
+    if(table.at(type).isLaser)
+        projectile = std::make_unique<Laser>(type, mTextures, getObjectContext(), mShooterID, speed, !isAllied());
+    else
+        projectile = std::make_unique<Projectile>(type, mTextures, getObjectContext(), mShooterID, speed, !isAllied());
+
     projectile->setPattern(projectileInfo.pattern);
     projectile->setPatternData(projectileInfo.patternData);
 

@@ -3,19 +3,9 @@
     <chargetime>2.6</chargetime>
     <cooldown>3.5</cooldown>
 
-    <attackPhase phaseCooldown="0.06">
-        <projectiles>
-            <projectile id="8" speed="160" aimed="no" offsets="1 23" patternID="0" direction="0"></projectile>
-        </projectiles>
-    </attackPhase>
-    <attackPhase repeats="10" repeatCooldown="0.06" phaseCooldown="0.06">
-        <projectiles>
-            <projectile id="9" speed="160" aimed="no" offsets="1 23" patternID="0" direction="0"></projectile>
-        </projectiles>
-    </attackPhase>
     <attackPhase>
         <projectiles>
-            <projectile id="10" speed="160" aimed="no" offsets="1 23" patternID="0" direction="0"></projectile>
+            <projectile id="8" speed="160" aimed="no" offsets="1 23" patternID="0" direction="0"></projectile>
         </projectiles>
     </attackPhase>
 </attack>

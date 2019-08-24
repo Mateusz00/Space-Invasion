@@ -228,10 +228,12 @@ std::unordered_map<int, ProjectileData> initializeProjectileData()
     data[Projectiles::BlueStarSmall].texture = Textures::Projectiles;
     data[Projectiles::BlueStarSmall].textureRect = sf::IntRect(129, 0, 25, 27);
 
-    data[Projectiles::BlueLaser].damage = 7.f;
+    data[Projectiles::BlueLaser].damage = 1.f;
+    data[Projectiles::BlueLaser].hitpoints = 200.f;
     data[Projectiles::BlueLaser].isLaser = true;
 
-    data[Projectiles::VioletLaser].damage = 8.f;
+    data[Projectiles::VioletLaser].damage = 1.15f;
+    data[Projectiles::VioletLaser].hitpoints = 200.f;
     data[Projectiles::VioletLaser].isLaser = true;
 
     data[Projectiles::BigLaser].hitpoints = 9999.f;
@@ -279,7 +281,8 @@ std::unordered_map<int, ProjectileData> initializeProjectileData()
     data[Projectiles::Missile].texture = Textures::Projectiles;
     data[Projectiles::Missile].textureRect = sf::IntRect(128, 50, 13, 30);
 
-    data[Projectiles::RedLaser].damage = 7.f;
+    data[Projectiles::RedLaser].damage = 2.2f;
+    data[Projectiles::RedLaser].hitpoints = 200.f;
     data[Projectiles::RedLaser].isLaser = true;
 
     data[Projectiles::BlueOval2].damage = 20.f;
@@ -497,25 +500,27 @@ std::unordered_map<int, LaserData> initializeLaserData()
 {
     std::unordered_map<int, LaserData> data;
 
-    data[Projectiles::RedLaser].textureRects[0] = sf::IntRect(148, 40, 11, 11);
+    data[Projectiles::RedLaser].textureRects[0] = sf::IntRect(148, 67, 11, 10);
     data[Projectiles::RedLaser].textureRects[1] = sf::IntRect(148, 53, 11, 12);
-    data[Projectiles::RedLaser].textureRects[2] = sf::IntRect(148, 67, 11, 10);
+    data[Projectiles::RedLaser].textureRects[2] = sf::IntRect(148, 40, 11, 11);
     data[Projectiles::RedLaser].maxLength = 120.f;
 
-    data[Projectiles::BlueLaser].textureRects[0] = sf::IntRect(157, 0, 11, 12);
+    data[Projectiles::BlueLaser].textureRects[0] = sf::IntRect(157, 28, 11, 10);
     data[Projectiles::BlueLaser].textureRects[1] = sf::IntRect(157, 14, 11, 12);
-    data[Projectiles::BlueLaser].textureRects[2] = sf::IntRect(157, 28, 11, 10);
+    data[Projectiles::BlueLaser].textureRects[2] = sf::IntRect(157, 0, 11, 12);
     data[Projectiles::BlueLaser].maxLength = 170.f;
 
-    data[Projectiles::VioletLaser].textureRects[0] = sf::IntRect(176, 4, 8, 7);
+    data[Projectiles::VioletLaser].textureRects[0] = sf::IntRect(176, 23, 8, 8);
     data[Projectiles::VioletLaser].textureRects[1] = sf::IntRect(176, 13, 8, 8);
-    data[Projectiles::VioletLaser].textureRects[2] = sf::IntRect(176, 23, 8, 8);
+    data[Projectiles::VioletLaser].textureRects[2] = sf::IntRect(176, 4, 8, 7);
     data[Projectiles::VioletLaser].maxLength = 200.f;
 
-    data[Projectiles::BigLaser].textureRects[0] = sf::IntRect(200, 0, 40, 40);
+    data[Projectiles::BigLaser].textureRects[0] = sf::IntRect(160, 40, 40, 40);
     data[Projectiles::BigLaser].textureRects[1] = sf::IntRect(200, 40, 40, 40);
-    data[Projectiles::BigLaser].textureRects[2] = sf::IntRect(160, 40, 40, 40);
+    data[Projectiles::BigLaser].textureRects[2] = sf::IntRect(200, 0, 40, 40);
     data[Projectiles::BigLaser].maxLength = 900.f;
+
+    return data;
 }
 
 std::unordered_map<int, AttackData> initializeAttackData()

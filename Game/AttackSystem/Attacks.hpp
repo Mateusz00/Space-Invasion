@@ -1,7 +1,8 @@
 #ifndef ATTACKS_HPP
 #define ATTACKS_HPP
 
-#include "../DataTable.hpp"
+#include <unordered_map>
+class AttackData;
 
 namespace Attacks
 {

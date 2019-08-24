@@ -2,15 +2,12 @@
 #include "../DataTable.hpp"
 #include "../Utility.hpp"
 #include "../World.hpp"
+#include "../ProjectileInfo.hpp"
 #include "../ParticleSystem/EmitterNode.hpp"
 #include "../CollisionResponseMap.hpp"
 #include <unordered_map>
 #include <memory>
-
-namespace
-{
-    const std::unordered_map<int, ProjectileData> table = initializeProjectileData();
-}
+using ProjectileInfo::table;
 bool Projectile::mHasInitializedResponses = false;
 
 Projectile::Projectile(Projectiles::ID type, const TextureHolder& textures,
