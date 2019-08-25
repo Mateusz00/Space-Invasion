@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <attack>
     <chargetime>0</chargetime>
-    <cooldown>2.7</cooldown>
+    <cooldown>3.3</cooldown>
 
-    <attackPhase repeats="2" repeatCooldown="0.12" phaseCooldown="0.33">
+    <attackPhase repeats="2" repeatCooldown="0.12" phaseCooldown="0.9">
         <projectiles>
             <projectile id="20" speed="120" aimed="no" offsets="0 20" patternID="2" direction="0" amplitude="-45" waveLength="90"></projectile>
         </projectiles>

@@ -5,8 +5,8 @@
 
     <attackPhase>
         <projectiles>
-            <projectile id="20" speed="120" aimed="yes" offsets="0 13" patternID="2" direction="0" amplitude="-40" waveLength="60"></projectile>
-            <projectile id="20" speed="120" aimed="yes" offsets="0 13" patternID="2" direction="0" amplitude="40" waveLength="60"></projectile>
+            <projectile id="20" speed="95" aimed="yes" offsets="0 13" patternID="2" direction="0" amplitude="-35" waveLength="60"></projectile>
+            <projectile id="20" speed="95" aimed="yes" offsets="0 13" patternID="2" direction="0" amplitude="35" waveLength="60"></projectile>
         </projectiles>
     </attackPhase>
 </attack>
