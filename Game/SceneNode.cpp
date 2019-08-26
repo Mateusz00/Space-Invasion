@@ -2,6 +2,23 @@
 #include <functional>
 #include <algorithm>
 
+#ifdef DEBUG
+void drawBoundingRect(const SceneNode& node, sf::RenderTarget& target)
+{
+	sf::FloatRect rect = node.getBoundingRect();
+	sf::RectangleShape boundingRect;
+
+	boundingRect.setSize(sf::Vector2f(rect.width, rect.height));
+	boundingRect.setPosition(sf::Vector2f(rect.left, rect.top));
+
+	boundingRect.setFillColor(sf::Color::Transparent);
+	boundingRect.setOutlineColor(sf::Color::White);
+	boundingRect.setOutlineThickness(1.f);
+
+	target.draw(boundingRect);
+}
+#endif // DEBUG
+
 SceneNode::SceneNode(Category::Type category)
     : mCategory(category),
       mParent(nullptr)
@@ -61,6 +78,10 @@ void SceneNode::draw(sf::RenderTarget& target, sf::RenderStates states) const
     states.transform *= getTransform();
     drawCurrent(target, states);
     drawChildren(target, states);
+
+    #ifdef DEBUG
+    drawBoundingRect(*this, target);
+    #endif // DEBUG
 }
 
 void SceneNode::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const

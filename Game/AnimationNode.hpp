@@ -16,7 +16,6 @@ class AnimationNode : public SpriteNode
         void            setRepeating(bool);
         void            setAnimationType(AnimationType);
         bool            isMarkedForRemoval() const override;
-        sf::FloatRect   getBoundingRect() const override;
         void            setLifespan(sf::Time);
 
     private:

@@ -30,13 +30,6 @@ void AnimationNode::setRepeating(bool flag)
     mIsRepeating = flag;
 }
 
-sf::FloatRect AnimationNode::getBoundingRect() const
-{
-    sf::IntRect rect = getTextureRect();
-
-    return getWorldTransform().transformRect(sf::FloatRect(rect.left, rect.top, rect.width, rect.height));
-}
-
 void AnimationNode::setAnimationType(AnimationType animation)
 {
     mAnimation = animation;
