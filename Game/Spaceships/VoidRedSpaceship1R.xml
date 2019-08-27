@@ -5,13 +5,19 @@
     <animationID>4</animationID>
 
     <directions>
-        <direction angle="0" distance="85" speedPercentage="100"></direction>
+        <direction angle="0" distance="180" speedPercentage="150"></direction>
+    </directions>
+    <directions loop="8">
+        <direction angle="0" distance="38" speedPercentage="90"></direction>
         <direction angle="155" distance="75" speedPercentage="90"></direction>
         <direction angle="30" distance="75" speedPercentage="90"></direction>
         <direction angle="145" distance="75" speedPercentage="90"></direction>
         <direction angle="-37" distance="65" speedPercentage="88"></direction>
         <direction angle="-148" distance="65" speedPercentage="88"></direction>
         <direction angle="180" distance="40" speedPercentage="70"></direction>
+    </directions>
+    <directions>
+        <direction angle="180" distance="9999" speedPercentage="300"></direction>
     </directions>
 
     <attacks>

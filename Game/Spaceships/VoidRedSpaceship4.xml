@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <spaceship>
-    <hitpoints>60</hitpoints>
+    <hitpoints>75</hitpoints>
     <speed>82</speed>
     <animationID>7</animationID>
 
     <directions>
-        <direction angle="60" distance="20" speedPercentage="100"></direction>
-        <direction angle="300" distance="20" speedPercentage="100"></direction>
+        <direction angle="0" distance="140" speedPercentage="100"></direction>
+    </directions>
+    <directions loop="10">
+        <direction angle="70" distance="20" speedPercentage="100"></direction>
+        <direction angle="-60" distance="20" speedPercentage="100"></direction>
         <direction angle="90" distance="40" speedPercentage="100"></direction>
         <direction angle="90" distance="20" speedPercentage="40"></direction>
-        <direction angle="290" distance="40" speedPercentage="100"></direction>
-        <direction angle="290" distance="20" speedPercentage="40"></direction>
+        <direction angle="-75" distance="40" speedPercentage="100"></direction>
+        <direction angle="-75" distance="20" speedPercentage="40"></direction>
+        <direction angle="180" distance="27" speedPercentage="80"></direction>
     </directions>
 
     <attacks>

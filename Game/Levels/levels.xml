@@ -2,8 +2,9 @@
 <levels>
     <level id="0" file="level1.xml" unlocks="1" buttonText="1" x="700" y="350"/>
     <level id="1" file="level2.xml" unlocks="2" buttonText="2" x="500" y="350"/>
-    <level id="2" file="level3.xml" unlocks="3" buttonText="3" x="300" y="350"/>
-    <level id="3" file="level4.xml" unlocks=""  buttonText="4" x="150" y="450"/>
+    <level id="2" file="level3.xml" unlocks="3 4" buttonText="3" x="300" y="350"/>
+    <level id="3" file="level4.xml" unlocks="" buttonText="4" x="150" y="450"/>
+    <level id="4" file="level5.xml" unlocks="" buttonText="5" x="250" y="250"/>
 </levels>
 
 <!--

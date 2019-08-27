@@ -5,9 +5,9 @@
     <animationID>3</animationID>
 
     <directions>
-        <direction angle="0" distance="80" speedPercentage="30"></direction>
+        <direction angle="0" distance="20" speedPercentage="70"></direction>
         <direction angle="90" distance="46" speedPercentage="20"></direction>
-        <direction angle="290" distance="40" speedPercentage="20"></direction>
+        <direction angle="-70" distance="40" speedPercentage="20"></direction>
     </directions>
 
     <attacks>

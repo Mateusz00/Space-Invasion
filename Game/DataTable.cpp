@@ -39,7 +39,6 @@ std::vector<SpaceshipData> initializeSpaceshipData()
         SpaceshipData spaceshipData;
 
         xml_node mainNode           = spaceshipDoc.child("spaceship");
-        xml_node directionsNode     = mainNode.child("directions");
         xml_node attacksNode        = mainNode.child("attacks");
         xml_node onDeathNode        = mainNode.child("onDeath");
 
@@ -56,15 +55,21 @@ std::vector<SpaceshipData> initializeSpaceshipData()
             throw std::runtime_error("XMLError: Couldn't find textureID/animationID or values are negative! " + path.second);
 
         // Load movement pattern of enemy
-        for(xml_node direction : directionsNode.children())
+        for(xml_node directions = mainNode.child("directions"); directions; directions = directions.next_sibling("directions"))
         {
-            SpaceshipData::Direction directionData;
+            for(int i=0; directions.attribute("loop").as_int(1) > i; ++i)
+            {
+                for(xml_node direction : directions.children())
+                {
+                    SpaceshipData::Direction directionData;
 
-            directionData.angle             = direction.attribute("angle").as_float();
-            directionData.distance          = direction.attribute("distance").as_float();
-            directionData.speedPercentage   = direction.attribute("speedPercentage").as_float();
+                    directionData.angle             = direction.attribute("angle").as_float();
+                    directionData.distance          = direction.attribute("distance").as_float();
+                    directionData.speedPercentage   = direction.attribute("speedPercentage").as_float();
 
-            spaceshipData.directions.emplace_back(std::move(directionData));
+                    spaceshipData.directions.emplace_back(std::move(directionData));
+                }
+            }
         }
 
         // Load attacks of that spaceship
@@ -556,7 +561,7 @@ std::unordered_map<int, AttackData> initializeAttackData()
         attackData.chargingTime     = sf::seconds(mainNode.child("chargetime").text().as_float());
         attackData.cooldown         = sf::seconds(mainNode.child("cooldown").text().as_float());
 
-        for(xml_node phase = mainNode.child("attackPhase"); phase; phase = phase.next_sibling("attackPhase"))
+        for(xml_node phase = mainNode.child("attackPhase"); phase; phase = phase.next_sibling("attackPhase"))//
         {
             AttackData::AttackPhase attackPhaseData;
 

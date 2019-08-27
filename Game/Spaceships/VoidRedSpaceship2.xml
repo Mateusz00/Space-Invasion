@@ -5,9 +5,12 @@
     <animationID>5</animationID>
 
     <directions>
-        <direction angle="85" distance="135" speedPercentage="100"></direction>
-        <direction angle="-85" distance="260" speedPercentage="100"></direction>
-        <direction angle="85" distance="135" speedPercentage="100"></direction>
+        <direction angle="0" distance="135" speedPercentage="100"></direction>
+    </directions>
+    <directions loop="7">
+        <direction angle="90" distance="135" speedPercentage="100"></direction>
+        <direction angle="-90" distance="260" speedPercentage="100"></direction>
+        <direction angle="90" distance="135" speedPercentage="100"></direction>
     </directions>
 
     <attacks>
