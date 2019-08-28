@@ -6,7 +6,8 @@
 
     <directions>
         <direction angle="0" distance="130" speedPercentage="100"></direction>
-        <direction angle="180" distance="999" speedPercentage="10"></direction>
+        <direction angle="180" distance="300" speedPercentage="18"></direction>
+        <direction angle="180" distance="999" speedPercentage="300"></direction>
     </directions>
 
     <attacks>
