@@ -33,7 +33,7 @@ sf::Vector2f        unitVector(sf::Vector2f distance);
 sf::Vector2f        unitVector(float x, float y);
 float               toRadian(float degree);
 float               toDegree(float rad);
-
+bool                isInRange(int low, int high, int number);
 
 #include "Utility.inl"
 

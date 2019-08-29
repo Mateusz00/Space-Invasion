@@ -51,7 +51,6 @@ class Spaceship : public Entity
         void            createExplosion() const;
         void            changeScore();
         void            increaseScoreRequest(int) const;
-        void            decreaseScoreRequest(int) const;
         virtual void    onRemoval() override;
         void            updateBoostFuel();
         void            sendExplosion(sf::Vector2f pos, float scale = 1, float delaySeconds = 0, float volumeMultiplier = 1) const;

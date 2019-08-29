@@ -266,3 +266,8 @@ sf::Keyboard::Key toKey(const std::string& keyString)
     else
         return sf::Keyboard::Unknown;
 }
+
+bool isInRange(int low, int high, int number)
+{
+    return (((number - high) * (number - low)) <= 0);
+}

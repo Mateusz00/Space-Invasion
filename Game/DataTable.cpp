@@ -47,6 +47,11 @@ std::vector<SpaceshipData> initializeSpaceshipData()
         spaceshipData.textureID      = mainNode.child("textureID").text().as_int(-1);
         spaceshipData.animationID    = mainNode.child("animationID").text().as_int(-1);
         spaceshipData.tagID          = static_cast<SpaceshipData::SpaceshipTag>(mainNode.attribute("tagID").as_int());
+        spaceshipData.score          = mainNode.child("score").text().as_int(100);
+        spaceshipData.pickupChance   = mainNode.child("pickupChance").text().as_int(25);
+
+        if(spaceshipData.pickupChance <= 0 && spaceshipData.pickupChance > 100)
+            throw std::runtime_error("XMLError: invalid spaceship pickupChance!(Allowed range is <1, 100>) " + path.second);
 
         if(spaceshipData.tagID < 0 || spaceshipData.tagID >= SpaceshipData::Count)
             throw std::runtime_error("XMLError: invalid spaceship tagID! " + path.second);

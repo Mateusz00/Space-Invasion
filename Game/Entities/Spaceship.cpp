@@ -299,7 +299,7 @@ void Spaceship::createPickup() const
     if(spaceshipInfo[mTypeID].tagID == SpaceshipData::Boss)
         return;
 
-    if(mIsEnemy && (randomInt(1, 4) == 2)) // 25% chance for spawning pickup for enemies
+    if(mIsEnemy && isInRange(1, spaceshipInfo[mTypeID].pickupChance, randomInt(1, 100)))
     {
         const TextureHolder& t = mTextures;
         Command createPickupCommand;
@@ -363,9 +363,7 @@ void Spaceship::createExplosion() const
 void Spaceship::changeScore()
 {
     if(mShowExplosion)
-        increaseScoreRequest(100);
-    else
-        decreaseScoreRequest(50);
+        increaseScoreRequest(spaceshipInfo[mTypeID].score);
 }
 
 void Spaceship::increaseScoreRequest(int value) const
@@ -379,18 +377,6 @@ void Spaceship::increaseScoreRequest(int value) const
     });
 
     getObjectContext().commandQueue->push(increaseScoreCommand);
-}
-
-void Spaceship::decreaseScoreRequest(int value) const
-{
-    Command decreaseScoreCommand;
-    decreaseScoreCommand.mCategories = Category::PlayerSpaceship;
-    decreaseScoreCommand.mAction = castFunctor<Spaceship>([this, value](Spaceship& spaceship, sf::Time dt)
-    {
-        spaceship.increaseScore(-value);
-    });
-
-    getObjectContext().commandQueue->push(decreaseScoreCommand);
 }
 
 void Spaceship::onRemoval()

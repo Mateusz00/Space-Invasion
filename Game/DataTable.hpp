@@ -40,6 +40,8 @@ struct SpaceshipData
     std::vector<Direction>          directions;
     std::unordered_map<int, int>    attacks; // attackID, probability
     std::vector<EventScheme>        eventSchemes;
+    int                             score;
+    int                             pickupChance;
 };
 
 struct SpaceshipTextureData
