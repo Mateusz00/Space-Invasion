@@ -438,3 +438,12 @@ std::vector<Projectile*> Attack::getProjectiles() const
 
     return projectiles;
 }
+
+void Attack::clearProjectiles(sf::FloatRect battlefieldBounds)
+{
+    auto iter = std::remove_if(mProjectiles.begin(), mProjectiles.end(), [&](std::unique_ptr<Projectile>& projectile)
+    {
+        return !(battlefieldBounds.intersects(projectile->getBoundingRect()));
+    });
+    mProjectiles.erase(iter, mProjectiles.end());
+}

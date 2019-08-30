@@ -361,6 +361,15 @@ void World::destroyEntitiesOutsideView()
             object.removeEntity();
     });
     mCommandQueue.push(command);
+
+    Command projectileRemover;
+    projectileRemover.mCategories = static_cast<Category::Type>(Category::Attack);
+    projectileRemover.mAction = castFunctor<Attack>([this](Attack& attack, sf::Time dt)
+    {
+        auto bounds = getBattlefieldBounds();
+        attack.clearProjectiles(sf::FloatRect(bounds.left - 150.f, bounds.top, bounds.width + 300.f, bounds.height + 150.f));
+    });
+    mCommandQueue.push(projectileRemover);
 }
 
 void World::updateSounds()

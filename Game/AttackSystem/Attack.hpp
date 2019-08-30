@@ -16,17 +16,18 @@ class World;
 class Attack : public Entity
 {
     public:
-                                Attack(int id, const TextureHolder&, sf::Vector2f pos, ObjectContext, int shooterID,
-                                        bool isAllied, const std::vector<Spaceship*>* targets, int phase = 0);
-        void                    updateCurrent(sf::Time, CommandQueue&);
-        bool                    isActive() const;
-        virtual sf::FloatRect   getBoundingRect() const override; // AttackManager checks if attack isn't visible and deletes it
-        virtual void            removeEntity() override;
-        virtual bool            isMarkedForRemoval() const override; // AttackManager checks it
-        void                    markForRemoval();
-        void                    updateBarrierPosition(sf::Vector2f displacement);
-        bool                    isAllied() const;
+                                    Attack(int id, const TextureHolder&, sf::Vector2f pos, ObjectContext, int shooterID,
+                                            bool isAllied, const std::vector<Spaceship*>* targets, int phase = 0);
+        void                        updateCurrent(sf::Time, CommandQueue&);
+        bool                        isActive() const;
+        virtual sf::FloatRect       getBoundingRect() const override; // AttackManager checks if attack isn't visible and deletes it
+        virtual void                removeEntity() override;
+        virtual bool                isMarkedForRemoval() const override; // AttackManager checks it
+        void                        markForRemoval();
+        void                        updateBarrierPosition(sf::Vector2f displacement);
+        bool                        isAllied() const;
         std::vector<Projectile*>    getProjectiles() const;
+        void                        clearProjectiles(sf::FloatRect battlefieldBounds);
 
     private:
         virtual void            drawCurrent(sf::RenderTarget&, sf::RenderStates) const override;
