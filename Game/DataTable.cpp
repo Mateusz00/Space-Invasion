@@ -525,10 +525,10 @@ std::unordered_map<int, LaserData> initializeLaserData()
     data[Projectiles::VioletLaser].textureRects[2] = sf::IntRect(176, 4, 8, 7);
     data[Projectiles::VioletLaser].maxLength = 200.f;
 
-    data[Projectiles::BigLaser].textureRects[0] = sf::IntRect(160, 40, 40, 40);
-    data[Projectiles::BigLaser].textureRects[1] = sf::IntRect(200, 40, 40, 40);
-    data[Projectiles::BigLaser].textureRects[2] = sf::IntRect(200, 0, 40, 40);
-    data[Projectiles::BigLaser].maxLength = 900.f;
+    data[Projectiles::BigLaser].textureRects[0] = sf::IntRect(164, 45, 33, 30);
+    data[Projectiles::BigLaser].textureRects[1] = sf::IntRect(204, 47, 33, 23);
+    data[Projectiles::BigLaser].textureRects[2] = sf::IntRect(204, 3, 33, 31);
+    data[Projectiles::BigLaser].maxLength = 800.f;
 
     return data;
 }

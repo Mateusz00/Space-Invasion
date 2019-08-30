@@ -22,5 +22,5 @@
 </leveldata>
 <events>
     <event id="0" x="10" y="10" scrollSpeed="0"/>
-    <event id="0" x="10" y="-55" scrollSpeed="-200"/>
+    <event id="0" x="10" y="-45" scrollSpeed="-200"/>
 </events>
