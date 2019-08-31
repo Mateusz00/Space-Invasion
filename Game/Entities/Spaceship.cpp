@@ -183,7 +183,7 @@ void Spaceship::launchMissile()
 {
     if(mMissileAmmo > 0)
     {
-        mAttackManager.forceAttack(0, *(getObjectContext().commandQueue), false);
+        mAttackManager.forceAttack(199, *(getObjectContext().commandQueue), false);
         --mMissileAmmo;
     }
 }
