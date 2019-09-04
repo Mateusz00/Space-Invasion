@@ -32,6 +32,16 @@ void Pickup::apply(Spaceship& player) const
     table[mType].action(player);
 }
 
+const sf::IntRect& Pickup::getTextureRect() const
+{
+    return mSprite.getTextureRect();
+}
+
+const sf::Texture* Pickup::getTexture() const
+{
+    return mSprite.getTexture();
+}
+
 void Pickup::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
     target.draw(mSprite, states);

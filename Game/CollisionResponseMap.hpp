@@ -14,6 +14,7 @@ class CollisionResponseMap
 
         static void    addResponse(Category::Type, Category::Type, Response);
         static void    useResponse(Entity*, Entity*);
+        static bool    checkForResponse(Category::Type, Category::Type);
 
     private:
         static std::unordered_map<Category::Type, ResponseMap, std::hash<int>> mCollisionResponsesMap;

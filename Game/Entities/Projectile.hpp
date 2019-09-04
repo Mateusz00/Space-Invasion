@@ -13,7 +13,7 @@ class Projectile : public Entity
                                                    ObjectContext, int shooterID, float speed, bool isEnemy);
         float                           getMaxSpeed() const;
         float                           getDamage() const;
-        virtual sf::FloatRect           getBoundingRect() const override;
+        sf::FloatRect                   getBoundingRect() const override;
         int                             getShootersID() const;
         void                            setPattern(AttackPattern::ID);
         void                            setPatternData(AttackPattern::PatternData);
@@ -25,6 +25,8 @@ class Projectile : public Entity
         sf::Vector2f                    getStartPos() const;
         float                           activeTime() const;
         void                            updateTime(sf::Time dt);
+        const sf::IntRect& 	            getTextureRect() const override;
+        const sf::Texture*              getTexture() const override;
 
     protected:
         Projectiles::ID getType() const;

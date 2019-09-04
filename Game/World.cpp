@@ -2,6 +2,7 @@
 #include "Attack.hpp"
 #include "Utility.hpp"
 #include "SpriteNode.hpp"
+#include "Collision.hpp"
 #include "Entities/AmmoNode.hpp"
 #include "Entities/ScoreNode.hpp"
 #include "Exceptions/XMLParseException.hpp"
@@ -337,7 +338,7 @@ void World::adaptPlayersPosition()
 
 void World::checkCollisions()
 {
-    // Collision detection
+    // Collision detection (broad phase), we use set to avoid doubles
     std::set<std::pair<int, int>> collisionPairs;
     for(const auto& collidablePair : mCollidables)
     {
@@ -346,9 +347,19 @@ void World::checkCollisions()
             collisionPairs.emplace(std::minmax(id, collidablePair.first));
     }
 
-    // Collision response
-    for(const auto& collisionPair : collisionPairs)
-        CollisionResponseMap::useResponse(mCollidables.at(collisionPair.first).collidable, mCollidables.at(collisionPair.second).collidable);
+    // Narrow phase and collision response
+    for(auto& collisionPair : collisionPairs)
+    {
+        auto collidable1 = mCollidables.at(collisionPair.first).collidable;
+        auto collidable2 = mCollidables.at(collisionPair.second).collidable;
+
+        // Filter out collisions that don't have any response registered
+        if(CollisionResponseMap::checkForResponse(collidable1->getCategories(), collidable2->getCategories()))
+        {
+            if(NarrowPhase::pixelPerfectTest(*collidable1, *collidable2, 10))
+                CollisionResponseMap::useResponse(collidable1, collidable2);
+        }
+    }
 }
 
 void World::destroyEntitiesOutsideView()

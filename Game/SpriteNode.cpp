@@ -26,7 +26,7 @@ sf::FloatRect SpriteNode::getBoundingRect() const
     return getWorldTransform().transformRect(mSprite.getGlobalBounds());
 }
 
-sf::IntRect SpriteNode::getTextureRect() const
+const sf::IntRect& SpriteNode::getTextureRect() const
 {
     return mSprite.getTextureRect();
 }
@@ -34,4 +34,9 @@ sf::IntRect SpriteNode::getTextureRect() const
 void SpriteNode::setTextureRect(const sf::IntRect& rect) const
 {
     mSprite.setTextureRect(rect);
+}
+
+const sf::Texture* SpriteNode::getTexture() const
+{
+    return mSprite.getTexture();
 }

@@ -1,6 +1,7 @@
 #include "Application.hpp"
 #include "States/StatesID.hpp"
 #include "Utility.hpp"
+#include "Collision.hpp"
 #include <SFML/System/Clock.hpp>
 #include <SFML/Window/Event.hpp>
 using namespace ApplicationData;
@@ -17,6 +18,7 @@ Application::Application()
     mFPSCounter.setCharacterSize(12u);
     mFPSCounter.setPosition(2.f, 2.f);
     mStateStack.pushState(States::MenuState);
+    NarrowPhase::alphaMaskManager.initializeMasks(mTextures);
 }
 
 void Application::run()

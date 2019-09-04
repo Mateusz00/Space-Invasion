@@ -17,6 +17,16 @@ void Entity::resetIDs()
     mNextFreeID = 0;
 }
 
+const sf::IntRect& Entity::getTextureRect() const
+{
+
+}
+
+const sf::Texture* Entity::getTexture() const
+{
+
+}
+
 float Entity::getHitpoints() const
 {
     return mHitpoints;

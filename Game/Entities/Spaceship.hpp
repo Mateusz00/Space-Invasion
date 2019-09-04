@@ -39,6 +39,8 @@ class Spaceship : public Entity
         void                    increaseScore(int);
         int                     getScore() const;
         void                    setAttackerID(int);
+        const sf::IntRect& 	    getTextureRect() const override;
+        const sf::Texture* 	    getTexture() const override;
 
     protected:
         virtual void            updateCurrent(sf::Time, CommandQueue&) override;

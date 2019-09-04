@@ -35,3 +35,23 @@ void CollisionResponseMap::useResponse(Entity* entity1, Entity* entity2)
     if(responsePos != foundPos->second.end())
         (responsePos->second)(*entity1, *entity2);
 }
+
+bool CollisionResponseMap::checkForResponse(Category::Type type1, Category::Type type2)
+{
+    auto foundPos = mCollisionResponsesMap.find(type1);
+    Category::Type searchType;
+
+    if(foundPos != mCollisionResponsesMap.end())
+        searchType = type2;
+    else if((foundPos = mCollisionResponsesMap.find(type2)) != mCollisionResponsesMap.end())
+        searchType = type1;
+    else
+        return false;
+
+    auto responsePos = foundPos->second.find(searchType);
+
+    if(responsePos != foundPos->second.end())
+        return true;
+    else
+        return false;
+}

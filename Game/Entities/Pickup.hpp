@@ -20,9 +20,11 @@ class Pickup : public Entity
             TypeCount
         };
 
-                                Pickup(Type, const TextureHolder&, ObjectContext);
-        virtual sf::FloatRect   getBoundingRect() const override;
-        void                    apply(Spaceship&) const;
+                            Pickup(Type, const TextureHolder&, ObjectContext);
+        sf::FloatRect       getBoundingRect() const override;
+        void                apply(Spaceship&) const;
+        const sf::IntRect& 	getTextureRect() const override;
+        const sf::Texture*  getTexture() const override;
 
     private:
         virtual void    drawCurrent(sf::RenderTarget&, sf::RenderStates) const override;

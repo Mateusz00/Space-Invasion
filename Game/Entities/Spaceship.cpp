@@ -294,6 +294,16 @@ void Spaceship::setAttackerID(int id)
     mAttackerID = id;
 }
 
+const sf::IntRect& Spaceship::getTextureRect() const
+{
+    return mSprite->getTextureRect();
+}
+
+const sf::Texture* Spaceship::getTexture() const
+{
+    return mSprite->getTexture();
+}
+
 void Spaceship::createPickup() const
 {
     if(spaceshipInfo[mTypeID].tagID == SpaceshipData::Boss)

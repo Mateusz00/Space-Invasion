@@ -23,6 +23,7 @@ class SceneNode : public sf::Drawable, public sf::Transformable
         virtual                 ~SceneNode() = default;
         sf::Vector2f            getWorldPosition() const;
         sf::Transform           getWorldTransform() const;
+        sf::Transform           getWorldInverseTransform() const;
         void                    attachChild(Ptr child);
         void                    eraseChild(Ptr child);
         void                    update(sf::Time, CommandQueue&);

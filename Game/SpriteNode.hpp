@@ -7,15 +7,16 @@
 class SpriteNode : public SceneNode
 {
     public:
-        explicit        SpriteNode(const sf::Texture& texture);
-                        SpriteNode(const sf::Texture& texture, const sf::IntRect& rect);
-        void            center();
-        sf::FloatRect   getBoundingRect() const override;
-        sf::IntRect     getTextureRect() const;
-        void            setTextureRect(const sf::IntRect&) const;
+        explicit            SpriteNode(const sf::Texture& texture);
+                            SpriteNode(const sf::Texture& texture, const sf::IntRect& rect);
+        void                center();
+        sf::FloatRect       getBoundingRect() const override;
+        const sf::IntRect&  getTextureRect() const;
+        void                setTextureRect(const sf::IntRect&) const;
+        const sf::Texture* 	getTexture() const;
 
     protected:
-        void            drawCurrent(sf::RenderTarget&, sf::RenderStates) const override;
+        void                drawCurrent(sf::RenderTarget&, sf::RenderStates) const override;
 
     private:
         mutable sf::Sprite  mSprite;

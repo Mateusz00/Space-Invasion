@@ -152,6 +152,16 @@ void Projectile::updateTime(sf::Time dt)
     mTimeActive += dt;
 }
 
+const sf::IntRect& Projectile::getTextureRect() const
+{
+    return mSprite.getTextureRect();
+}
+
+const sf::Texture* Projectile::getTexture() const
+{
+    return mSprite.getTexture();
+}
+
 Projectiles::ID Projectile::getType() const
 {
     return mType;

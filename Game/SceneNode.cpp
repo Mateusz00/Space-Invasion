@@ -40,6 +40,16 @@ sf::Transform SceneNode::getWorldTransform() const
     return currentTransform;
 }
 
+sf::Transform SceneNode::getWorldInverseTransform() const
+{
+    sf::Transform currentTransform;
+    for(const SceneNode* node = this; node != nullptr; node = node->mParent)
+    {
+        currentTransform = currentTransform * node->getInverseTransform(); // We want to apply parent's transform first
+    }
+    return currentTransform;
+}
+
 void SceneNode::attachChild(Ptr child)
 {
     child->mParent = this;

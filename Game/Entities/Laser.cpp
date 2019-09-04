@@ -23,8 +23,7 @@ Laser::Laser(Projectiles::ID type, const TextureHolder& textures, ObjectContext 
 
 sf::FloatRect Laser::getBoundingRect() const
 {
-    auto x = getWorldTransform().transformRect(mLaser.getBounds());
-    return x;
+    return getWorldTransform().transformRect(mLaser.getBounds());
 }
 
 void Laser::updateCurrent(sf::Time dt, CommandQueue& commandQueue)
