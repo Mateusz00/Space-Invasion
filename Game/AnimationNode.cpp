@@ -22,7 +22,7 @@ AnimationNode::AnimationNode(Animation::ID type, sf::Time interval, const Textur
       mIsRepeating(false),
       mNeedsUpdate(false)
 {
-    SpriteNode::center();
+    centerOrigin(*this);
 }
 
 void AnimationNode::setRepeating(bool flag)
