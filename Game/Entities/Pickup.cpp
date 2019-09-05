@@ -42,6 +42,11 @@ const sf::Texture* Pickup::getTexture() const
     return mSprite.getTexture();
 }
 
+sf::Transform Pickup::getSpriteInverseTransform() const
+{
+    return mSprite.getInverseTransform();
+}
+
 void Pickup::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
     target.draw(mSprite, states);

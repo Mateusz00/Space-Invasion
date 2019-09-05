@@ -64,7 +64,7 @@ Spaceship::Spaceship(int typeID, const TextureHolder& textures, sf::Vector2f pos
         mSprite = std::move(sprite);
     }
 
-    mSprite->center();
+    centerOrigin(*mSprite);
     if(mIsEnemy)
         mSprite->rotate(180.f);
 
@@ -201,6 +201,11 @@ sf::FloatRect Spaceship::getLocalBounds() const
 sf::FloatRect Spaceship::getBoundingRect() const
 {
     return getWorldTransform().transformRect(mSprite->getBoundingRect());
+}
+
+sf::Transform Spaceship::getSpriteInverseTransform() const
+{
+    return mSprite->getInverseTransform();
 }
 
 void Spaceship::updateRollAnimation(sf::Time dt)

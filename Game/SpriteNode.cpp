@@ -16,14 +16,14 @@ void SpriteNode::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) 
     target.draw(mSprite, states);
 }
 
-void SpriteNode::center()
-{
-    centerOrigin(mSprite);
-}
-
 sf::FloatRect SpriteNode::getBoundingRect() const
 {
     return getWorldTransform().transformRect(mSprite.getGlobalBounds());
+}
+
+sf::FloatRect SpriteNode::getLocalBounds() const
+{
+    return mSprite.getLocalBounds();
 }
 
 const sf::IntRect& SpriteNode::getTextureRect() const

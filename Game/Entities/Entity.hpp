@@ -31,6 +31,7 @@ class Entity : public SceneNode
         static void                 resetIDs();
         virtual const sf::IntRect& 	getTextureRect() const;
         virtual const sf::Texture* 	getTexture() const;
+        virtual sf::Transform       getSpriteInverseTransform() const;
 
     protected:
         virtual void                updateCurrent(sf::Time dt, CommandQueue&) override;

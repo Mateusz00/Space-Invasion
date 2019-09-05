@@ -19,12 +19,14 @@ void Entity::resetIDs()
 
 const sf::IntRect& Entity::getTextureRect() const
 {
-
 }
 
 const sf::Texture* Entity::getTexture() const
 {
+}
 
+sf::Transform Entity::getSpriteInverseTransform() const
+{
 }
 
 float Entity::getHitpoints() const

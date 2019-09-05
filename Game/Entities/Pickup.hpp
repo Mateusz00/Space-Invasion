@@ -25,6 +25,7 @@ class Pickup : public Entity
         void                apply(Spaceship&) const;
         const sf::IntRect& 	getTextureRect() const override;
         const sf::Texture*  getTexture() const override;
+        sf::Transform       getSpriteInverseTransform() const override;
 
     private:
         virtual void    drawCurrent(sf::RenderTarget&, sf::RenderStates) const override;

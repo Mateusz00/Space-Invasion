@@ -41,6 +41,7 @@ class Spaceship : public Entity
         void                    setAttackerID(int);
         const sf::IntRect& 	    getTextureRect() const override;
         const sf::Texture* 	    getTexture() const override;
+        sf::Transform           getSpriteInverseTransform() const override;
 
     protected:
         virtual void            updateCurrent(sf::Time, CommandQueue&) override;

@@ -60,21 +60,23 @@ namespace NarrowPhase
 				for(int j = intersection.left; j < intersection.left + intersection.width; ++j)
                 {
                     // Reverse position of pixels to match textures
-					sf::Vector2f o1v = entity1.getWorldInverseTransform().transformPoint(j, i);
-					sf::Vector2f o2v = entity2.getWorldInverseTransform().transformPoint(j, i);
+                    sf::Transform t1 = entity1.getSpriteInverseTransform() * entity1.getWorldInverseTransform();
+                    sf::Transform t2 = entity2.getSpriteInverseTransform() * entity2.getWorldInverseTransform();
+					sf::Vector2f tex1Point = t1.transformPoint(j, i);
+					sf::Vector2f tex2Point = t2.transformPoint(j, i);
 
 					// Match transformed pixels with texture's pixel positions
-                    o1v.x += texRect1.left;
-                    o1v.y += texRect1.top;
+                    tex1Point.x += texRect1.left;
+                    tex1Point.y += texRect1.top;
 
-                    o2v.x += texRect2.left;
-                    o2v.y += texRect2.top;
+                    tex2Point.x += texRect2.left;
+                    tex2Point.y += texRect2.top;
 
 					// Make sure pixels fall within the sprite's subrect
-					if(texRect1.contains(sf::Vector2i(o1v)) && texRect2.contains(sf::Vector2i(o2v)))
+					if(texRect1.contains(sf::Vector2i(tex1Point)) && texRect2.contains(sf::Vector2i(tex2Point)))
                     {
-                        sf::Uint8 pixel1 = alphaMaskManager.getPixel(mask1, entity1.getTexture(), o1v.x, o1v.y);
-                        sf::Uint8 pixel2 = alphaMaskManager.getPixel(mask2, entity2.getTexture(), o2v.x, o2v.y);
+                        sf::Uint8 pixel1 = alphaMaskManager.getPixel(mask1, entity1.getTexture(), tex1Point.x, tex1Point.y);
+                        sf::Uint8 pixel2 = alphaMaskManager.getPixel(mask2, entity2.getTexture(), tex2Point.x, tex2Point.y);
 
                         if(pixel1 > alphaThreshold && pixel2 > alphaThreshold)
                             return true;

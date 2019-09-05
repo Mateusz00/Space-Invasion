@@ -162,6 +162,11 @@ const sf::Texture* Projectile::getTexture() const
     return mSprite.getTexture();
 }
 
+sf::Transform Projectile::getSpriteInverseTransform() const
+{
+    return mSprite.getInverseTransform();
+}
+
 Projectiles::ID Projectile::getType() const
 {
     return mType;

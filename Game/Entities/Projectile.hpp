@@ -27,6 +27,7 @@ class Projectile : public Entity
         void                            updateTime(sf::Time dt);
         const sf::IntRect& 	            getTextureRect() const override;
         const sf::Texture*              getTexture() const override;
+        sf::Transform                   getSpriteInverseTransform() const override;
 
     protected:
         Projectiles::ID getType() const;
