@@ -54,29 +54,29 @@ namespace NarrowPhase
 			std::vector<sf::Uint8>& mask1 = alphaMaskManager.getMask(entity1.getTexture());
 			std::vector<sf::Uint8>& mask2 = alphaMaskManager.getMask(entity2.getTexture());
 
+			// Apply reversed transforms to intersection and add texture top-left corners to match
+			// texture rects that intersects with each other
+            sf::Transform t1 = entity1.getSpriteInverseTransform() * entity1.getWorldInverseTransform();
+            sf::Transform t2 = entity2.getSpriteInverseTransform() * entity2.getWorldInverseTransform();
+
+            sf::FloatRect intersection1 = t1.transformRect(intersection);
+            sf::FloatRect intersection2 = t2.transformRect(intersection);
+
+            intersection1.left += texRect1.left;
+            intersection2.left += texRect2.left;
+            intersection1.top += texRect1.top;
+            intersection2.top += texRect2.top;
+
 			// Loop through pixels of intersection
-			for(int i = intersection.top; i < intersection.top + intersection.height; ++i)
+			for(int y1 = intersection1.top, y2 = intersection2.top; y1 < intersection1.top + intersection1.height; ++y1, ++y2)
             {
-				for(int j = intersection.left; j < intersection.left + intersection.width; ++j)
+				for(int x1 = intersection1.left, x2 = intersection2.left; x1 < intersection1.left + intersection1.width; ++x1, ++x2)
                 {
-                    // Reverse position of pixels to match textures
-                    sf::Transform t1 = entity1.getSpriteInverseTransform() * entity1.getWorldInverseTransform();
-                    sf::Transform t2 = entity2.getSpriteInverseTransform() * entity2.getWorldInverseTransform();
-					sf::Vector2f tex1Point = t1.transformPoint(j, i);
-					sf::Vector2f tex2Point = t2.transformPoint(j, i);
-
-					// Match transformed pixels with texture's pixel positions
-                    tex1Point.x += texRect1.left;
-                    tex1Point.y += texRect1.top;
-
-                    tex2Point.x += texRect2.left;
-                    tex2Point.y += texRect2.top;
-
 					// Make sure pixels fall within the sprite's subrect
-					if(texRect1.contains(sf::Vector2i(tex1Point)) && texRect2.contains(sf::Vector2i(tex2Point)))
+					if(texRect1.contains(sf::Vector2i(x1, y1)) && texRect2.contains(sf::Vector2i(x2, y2)))
                     {
-                        sf::Uint8 pixel1 = alphaMaskManager.getPixel(mask1, entity1.getTexture(), tex1Point.x, tex1Point.y);
-                        sf::Uint8 pixel2 = alphaMaskManager.getPixel(mask2, entity2.getTexture(), tex2Point.x, tex2Point.y);
+                        sf::Uint8 pixel1 = alphaMaskManager.getPixel(mask1, entity1.getTexture(), x1, y1);
+                        sf::Uint8 pixel2 = alphaMaskManager.getPixel(mask2, entity2.getTexture(), x2, y2);
 
                         if(pixel1 > alphaThreshold && pixel2 > alphaThreshold)
                             return true;
