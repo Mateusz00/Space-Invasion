@@ -6,7 +6,8 @@ Entity::Entity(float hitpoints, bool isCollidable, ObjectContext context)
     : mHitpoints(hitpoints),
       mContext(context),
       mIsCollidable(isCollidable),
-      mID(mNextFreeID++)
+      mID(mNextFreeID++),
+      mPerfectCollisionFlag(true)
 {
     if(isCollidable)
         addCategories(Category::Collidable);
@@ -123,4 +124,14 @@ bool collision(const Entity& lhs, const Entity& rhs)
 int Entity::getEntityID() const
 {
     return mID;
+}
+
+void Entity::enablePerfectCollision(bool flag)
+{
+    mPerfectCollisionFlag = flag;
+}
+
+bool Entity::isPerfectCollisionEnabled() const
+{
+    return mPerfectCollisionFlag;
 }

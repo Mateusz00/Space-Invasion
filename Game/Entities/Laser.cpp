@@ -13,6 +13,7 @@ Laser::Laser(Projectiles::ID type, const TextureHolder& textures, ObjectContext 
       mNeedsVertexUpdate(true),
       mIsMaxLength(false)
 {
+    Entity::enablePerfectCollision(false);
     setOrigin(sf::Vector2f(data.at(type).textureRects[0].width * 0.5f, 0.f));
 
     // Prevents laser from being removed due to not having bounds

@@ -32,6 +32,8 @@ class Entity : public SceneNode
         virtual const sf::IntRect& 	getTextureRect() const;
         virtual const sf::Texture* 	getTexture() const;
         virtual sf::Transform       getSpriteInverseTransform() const;
+        void                        enablePerfectCollision(bool);
+        bool                        isPerfectCollisionEnabled() const;
 
     protected:
         virtual void                updateCurrent(sf::Time dt, CommandQueue&) override;
@@ -43,6 +45,7 @@ class Entity : public SceneNode
         bool                    mIsCollidable;
         int                     mID;
         static int              mNextFreeID;
+        bool                    mPerfectCollisionFlag;
 };
 
 bool collision(const Entity& lhs, const Entity& rhs);

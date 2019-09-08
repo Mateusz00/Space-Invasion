@@ -350,13 +350,18 @@ void World::checkCollisions()
     // Narrow phase and collision response
     for(auto& collisionPair : collisionPairs)
     {
-        auto collidable1 = mCollidables.at(collisionPair.first).collidable;
-        auto collidable2 = mCollidables.at(collisionPair.second).collidable;
+        Entity* collidable1 = mCollidables.at(collisionPair.first).collidable;
+        Entity* collidable2 = mCollidables.at(collisionPair.second).collidable;
 
         // Filter out collisions that don't have any response registered
         if(CollisionResponseMap::checkForResponse(collidable1->getCategories(), collidable2->getCategories()))
         {
-            if(NarrowPhase::pixelPerfectTest(*collidable1, *collidable2, 10))
+            if(collidable1->isPerfectCollisionEnabled() && collidable2->isPerfectCollisionEnabled())
+            {
+                if(NarrowPhase::pixelPerfectTest(*collidable1, *collidable2, 10))
+                    CollisionResponseMap::useResponse(collidable1, collidable2);
+            }
+            else
                 CollisionResponseMap::useResponse(collidable1, collidable2);
         }
     }
