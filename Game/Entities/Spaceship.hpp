@@ -56,7 +56,6 @@ class Spaceship : public Entity
         void            increaseScoreRequest(int) const;
         virtual void    onRemoval() override;
         void            updateBoostFuel();
-        void            sendExplosion(sf::Vector2f pos, float scale = 1, float delaySeconds = 0, float volumeMultiplier = 1) const;
         static void     initializeCollisionResponses();
         void            createBossHealthbar();
         void            hideScore();

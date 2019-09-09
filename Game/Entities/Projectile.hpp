@@ -28,6 +28,7 @@ class Projectile : public Entity
         const sf::IntRect& 	            getTextureRect() const override;
         const sf::Texture*              getTexture() const override;
         sf::Transform                   getSpriteInverseTransform() const override;
+        void                            onRemoval();
 
     protected:
         Projectiles::ID getType() const;
@@ -47,6 +48,7 @@ class Projectile : public Entity
         sf::Vector2f                    mStartPos;
         sf::Time                        mTimeActive;
         bool                            mIsEnemy;
+        const TextureHolder&            mTextures;
         static bool                     mHasInitializedResponses;
 };
 

@@ -3,6 +3,7 @@
 
 #include "../SceneNode.hpp"
 #include "../ObjectContext.hpp"
+#include "../ResourcesID.hpp"
 #include <SFML/System/Vector2.hpp>
 #include <SFML/System/Time.hpp>
 #include <list>
@@ -36,7 +37,9 @@ class Entity : public SceneNode
         bool                        isPerfectCollisionEnabled() const;
 
     protected:
-        virtual void                updateCurrent(sf::Time dt, CommandQueue&) override;
+        void    updateCurrent(sf::Time dt, CommandQueue&) override;
+        void    sendExplosion(sf::Vector2f pos, const TextureHolder&, float scale = 1, float delaySeconds = 0, float volumeMultiplier = 1) const;
+
 
     private:
         sf::Vector2f            mVelocity;

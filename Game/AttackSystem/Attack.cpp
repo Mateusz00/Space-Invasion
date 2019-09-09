@@ -34,7 +34,15 @@ Attack::Attack(int id, const TextureHolder& textures, sf::Vector2f pos, ObjectCo
 void Attack::updateCurrent(sf::Time dt, CommandQueue& commandQueue)
 {
     // Remove projectiles that are marked for removal
-    auto iter = std::remove_if(mProjectiles.begin(), mProjectiles.end(), std::mem_fn(&Projectile::isMarkedForRemoval));
+    auto iter = std::remove_if(mProjectiles.begin(), mProjectiles.end(), [](std::unique_ptr<Projectile>& projectile)
+    {
+        if(projectile->isMarkedForRemoval())
+        {
+            projectile->onRemoval();
+            return true;
+        }
+        return false;
+    });
     mProjectiles.erase(iter, mProjectiles.end());
 
     if(mProjectiles.empty())
@@ -403,11 +411,11 @@ sf::Vector2f Attack::getClosestTarget(const sf::Transformable* object) const
     {
         bool isTargetBehind;
         if(isAllied())
-            isTargetBehind = target->getWorldPosition().y < object->getPosition().y; // Avoids projectile/gravityCenter turning back
-        else
             isTargetBehind = target->getWorldPosition().y > object->getPosition().y; // Avoids projectile/gravityCenter turning back
+        else
+            isTargetBehind = target->getWorldPosition().y < object->getPosition().y; // Avoids projectile/gravityCenter turning back
 
-        if(isTargetBehind)
+        if(!isTargetBehind)
         {
             float targetDistance = vectorLength(object->getPosition() - target->getWorldPosition());
             if(targetDistance < smallestDistance)

@@ -1,5 +1,6 @@
 #include "Entity.hpp"
 #include "../World.hpp"
+#include "../AnimationNode.hpp"
 int Entity::mNextFreeID = 0;
 
 Entity::Entity(float hitpoints, bool isCollidable, ObjectContext context)
@@ -134,4 +135,22 @@ void Entity::enablePerfectCollision(bool flag)
 bool Entity::isPerfectCollisionEnabled() const
 {
     return mPerfectCollisionFlag;
+}
+
+void Entity::sendExplosion(sf::Vector2f pos, const TextureHolder& t, float scale, float delaySeconds, float volumeMultiplier) const
+{
+    auto soundPlayer = getObjectContext().soundPlayer;
+
+    Command explosionCommand;
+    explosionCommand.mCategories = Category::AirLayer;
+    explosionCommand.mAction = [pos, &t, scale, delaySeconds, soundPlayer, volumeMultiplier](SceneNode& layer, sf::Time)
+    {
+        std::unique_ptr<AnimationNode> node(new AnimationNode(Animation::Explosion, sf::seconds(0.06f), t, pos));
+        node->setScale(scale, scale);
+        node->setDelay(sf::seconds(delaySeconds));
+        layer.attachChild(std::move(node));
+        soundPlayer->play(Sound::Explosion, pos, volumeMultiplier);
+    };
+
+    getObjectContext().commandQueue->push(explosionCommand);
 }

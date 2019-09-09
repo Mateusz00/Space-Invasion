@@ -17,7 +17,8 @@ Projectile::Projectile(Projectiles::ID type, const TextureHolder& textures,
       mSprite(textures.get(table.at(type).texture), table.at(type).textureRect),
       mShooterID(shooterID),
       mSpeed(speed),
-      mIsEnemy(isEnemy)
+      mIsEnemy(isEnemy),
+      mTextures(textures)
 {
     if(isEnemy)
         addCategories(Category::EnemyProjectile);
@@ -170,4 +171,10 @@ sf::Transform Projectile::getSpriteInverseTransform() const
 Projectiles::ID Projectile::getType() const
 {
     return mType;
+}
+
+void Projectile::onRemoval()
+{
+    if(mType == Projectiles::Missile)
+        sendExplosion(getWorldPosition(), mTextures, 0.5f, 0.f, 0.6f);
 }
