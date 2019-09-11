@@ -371,7 +371,24 @@ void Spaceship::createExplosion() const
             sendExplosion(sf::Vector2f(pos.x, pos.y + 15.f),          mTextures, 2.f,  5.4f, 1.2f);
         }
         else
-            sendExplosion(getWorldPosition(), mTextures);
+        {
+            sf::FloatRect bounds = mSprite->getLocalBounds();
+            float area = bounds.width * bounds.height;
+            float scale = 1.f;
+            float volumeMultiplier = 1.f;
+
+            if(area > 10000.f)
+            {
+                scale = std::min(area / 10000.f, 2.f);
+            }
+            else if(area < 10000.f)
+            {
+                scale = 1 - ((1 - area / 10000.f) * 0.3f);
+                volumeMultiplier = scale;
+            }
+
+            sendExplosion(getWorldPosition(), mTextures, scale, 0.f, volumeMultiplier);
+        }
     }
 }
 

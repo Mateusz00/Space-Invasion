@@ -25,7 +25,7 @@ SoundPlayer::SoundPlayer()
 
 void SoundPlayer::play(Sound::ID id, float volumeMultiplier)
 {
-    play(id, sf::Vector2f(0.f, 0.f), volumeMultiplier);
+    play(id, sf::Vector2f(sf::Listener::getPosition().x, sf::Listener::getPosition().y), volumeMultiplier);
 }
 
 void SoundPlayer::play(Sound::ID id, sf::Vector2f position, float volumeMultiplier)

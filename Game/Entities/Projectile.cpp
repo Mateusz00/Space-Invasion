@@ -36,6 +36,8 @@ Projectile::Projectile(Projectiles::ID type, const TextureHolder& textures,
         std::unique_ptr<EmitterNode> propellant(new EmitterNode(Particle::Propellant, getObjectContext().particleNode, 30.f));
         propellant->setPosition(0.f, mSprite.getLocalBounds().height / 2.f);
         attachChild(std::move(propellant));
+
+        getObjectContext().soundPlayer->play(Sound::Missile, 0.75f);
     }
 
     if(!mHasInitializedResponses)
