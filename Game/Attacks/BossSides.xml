@@ -1,36 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <attack>
     <chargetime>0</chargetime>
-    <cooldown>3</cooldown>
+    <cooldown>1.8</cooldown>
 
-    <attackPhase phaseCooldown="1">
+    <attackPhase phaseCooldown="0.5">
         <projectiles>
-            <projectile id="25" speed="160" aimed="no" offsets="-20 50" patternID="0" direction="350"></projectile>
-            <projectile id="25" speed="160" aimed="no" offsets="-20 50" patternID="0" direction="335"></projectile>
-            <projectile id="25" speed="160" aimed="no" offsets="-20 50" patternID="0" direction="320"></projectile>
-            <projectile id="25" speed="160" aimed="no" offsets="-20 50" patternID="0" direction="305"></projectile>
-            <projectile id="25" speed="160" aimed="no" offsets="-20 50" patternID="0" direction="290"></projectile>
-            <projectile id="25" speed="160" aimed="no" offsets="-20 50" patternID="0" direction="270"></projectile>
+            <projectile id="25" speed="250" aimed="no" offsets="-20 50" patternID="0" direction="350"></projectile>
+            <projectile id="25" speed="250" aimed="no" offsets="-20 50" patternID="0" direction="330"></projectile>
+            <projectile id="25" speed="250" aimed="no" offsets="-20 50" patternID="0" direction="310"></projectile>
+            <projectile id="25" speed="250" aimed="no" offsets="-20 50" patternID="0" direction="290"></projectile>
+            <projectile id="25" speed="250" aimed="no" offsets="-20 50" patternID="0" direction="270"></projectile>
 
-            <projectile id="25" speed="160" aimed="no" offsets="20 50" patternID="0" direction="10"></projectile>
-            <projectile id="25" speed="160" aimed="no" offsets="20 50" patternID="0" direction="25"></projectile>
-            <projectile id="25" speed="160" aimed="no" offsets="20 50" patternID="0" direction="40"></projectile>
-            <projectile id="25" speed="160" aimed="no" offsets="20 50" patternID="0" direction="55"></projectile>
-            <projectile id="25" speed="160" aimed="no" offsets="20 50" patternID="0" direction="70"></projectile>
-            <projectile id="25" speed="160" aimed="no" offsets="20 50" patternID="0" direction="90"></projectile>
+            <projectile id="25" speed="250" aimed="no" offsets="20 50" patternID="0" direction="10"></projectile>
+            <projectile id="25" speed="250" aimed="no" offsets="20 50" patternID="0" direction="30"></projectile>
+            <projectile id="25" speed="250" aimed="no" offsets="20 50" patternID="0" direction="50"></projectile>
+            <projectile id="25" speed="250" aimed="no" offsets="20 50" patternID="0" direction="70"></projectile>
+            <projectile id="25" speed="250" aimed="no" offsets="20 50" patternID="0" direction="90"></projectile>
         </projectiles>
     </attackPhase>
     <attackPhase>
         <projectiles>
-            <projectile id="25" speed="150" aimed="no" offsets="-20 50" patternID="0" direction="340"></projectile>
-            <projectile id="25" speed="150" aimed="no" offsets="-20 50" patternID="0" direction="320"></projectile>
-            <projectile id="25" speed="150" aimed="no" offsets="-20 50" patternID="0" direction="300"></projectile>
-            <projectile id="25" speed="150" aimed="no" offsets="-20 50" patternID="0" direction="280"></projectile>
+            <projectile id="25" speed="260" aimed="no" offsets="-20 50" patternID="0" direction="340"></projectile>
+            <projectile id="25" speed="260" aimed="no" offsets="-20 50" patternID="0" direction="320"></projectile>
+            <projectile id="25" speed="260" aimed="no" offsets="-20 50" patternID="0" direction="300"></projectile>
+            <projectile id="25" speed="260" aimed="no" offsets="-20 50" patternID="0" direction="280"></projectile>
 
-            <projectile id="25" speed="150" aimed="no" offsets="20 50" patternID="0" direction="20"></projectile>
-            <projectile id="25" speed="150" aimed="no" offsets="20 50" patternID="0" direction="40"></projectile>
-            <projectile id="25" speed="150" aimed="no" offsets="20 50" patternID="0" direction="60"></projectile>
-            <projectile id="25" speed="150" aimed="no" offsets="20 50" patternID="0" direction="80"></projectile>
+            <projectile id="25" speed="260" aimed="no" offsets="20 50" patternID="0" direction="20"></projectile>
+            <projectile id="25" speed="260" aimed="no" offsets="20 50" patternID="0" direction="40"></projectile>
+            <projectile id="25" speed="260" aimed="no" offsets="20 50" patternID="0" direction="60"></projectile>
+            <projectile id="25" speed="260" aimed="no" offsets="20 50" patternID="0" direction="80"></projectile>
         </projectiles>
     </attackPhase>
 </attack>

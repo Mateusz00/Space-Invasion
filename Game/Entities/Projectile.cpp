@@ -37,7 +37,7 @@ Projectile::Projectile(Projectiles::ID type, const TextureHolder& textures,
         propellant->setPosition(0.f, mSprite.getLocalBounds().height / 2.f);
         attachChild(std::move(propellant));
 
-        getObjectContext().soundPlayer->play(Sound::Missile, 0.75f);
+        getObjectContext().soundPlayer->play(Sound::Missile, 0.6f);
     }
 
     if(!mHasInitializedResponses)
@@ -178,5 +178,5 @@ Projectiles::ID Projectile::getType() const
 void Projectile::onRemoval()
 {
     if(mType == Projectiles::Missile)
-        sendExplosion(getWorldPosition(), mTextures, 0.5f, 0.f, 0.6f);
+        sendExplosion(getWorldPosition(), mTextures, 0.5f, 0.f, 0.3f);
 }

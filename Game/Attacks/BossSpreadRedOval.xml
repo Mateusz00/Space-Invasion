@@ -4,36 +4,42 @@
     <cooldown>3</cooldown>
 
     <attackPhase phaseCooldown="0.05">
-        <projectiles><projectile id="23" speed="120" aimed="no" offsets="54 190" patternID="0" direction="1"></projectile></projectiles>
+        <projectiles><projectile id="23" speed="170" aimed="no" offsets="54 190" patternID="0" direction="1"></projectile></projectiles>
     </attackPhase>
     <attackPhase phaseCooldown="0.05">
-        <projectiles><projectile id="23" speed="120" aimed="no" offsets="54 190" patternID="0" direction="6"></projectile></projectiles>
+        <projectiles><projectile id="23" speed="170" aimed="no" offsets="54 190" patternID="0" direction="6"></projectile></projectiles>
     </attackPhase>
     <attackPhase phaseCooldown="0.05">
-        <projectiles><projectile id="23" speed="120" aimed="no" offsets="54 190" patternID="0" direction="22"></projectile></projectiles>
+        <projectiles><projectile id="23" speed="170" aimed="no" offsets="54 190" patternID="0" direction="-15"></projectile></projectiles>
     </attackPhase>
     <attackPhase phaseCooldown="0.05">
-        <projectiles><projectile id="23" speed="120" aimed="no" offsets="54 190" patternID="0" direction="-3"></projectile></projectiles>
+        <projectiles><projectile id="23" speed="170" aimed="no" offsets="54 190" patternID="0" direction="22"></projectile></projectiles>
     </attackPhase>
     <attackPhase phaseCooldown="0.05">
-        <projectiles><projectile id="23" speed="120" aimed="no" offsets="54 190" patternID="0" direction="-9"></projectile></projectiles>
+        <projectiles><projectile id="23" speed="170" aimed="no" offsets="54 190" patternID="0" direction="-3"></projectile></projectiles>
     </attackPhase>
     <attackPhase phaseCooldown="0.05">
-        <projectiles><projectile id="23" speed="120" aimed="no" offsets="54 190" patternID="0" direction="4"></projectile></projectiles>
+        <projectiles><projectile id="23" speed="170" aimed="no" offsets="54 190" patternID="0" direction="-9"></projectile></projectiles>
     </attackPhase>
     <attackPhase phaseCooldown="0.05">
-        <projectiles><projectile id="23" speed="120" aimed="no" offsets="54 190" patternID="0" direction="-17"></projectile></projectiles>
+        <projectiles><projectile id="23" speed="170" aimed="no" offsets="54 190" patternID="0" direction="4"></projectile></projectiles>
     </attackPhase>
     <attackPhase phaseCooldown="0.05">
-        <projectiles><projectile id="23" speed="120" aimed="no" offsets="54 190" patternID="0" direction="9"></projectile></projectiles>
+        <projectiles><projectile id="23" speed="170" aimed="no" offsets="54 190" patternID="0" direction="-17"></projectile></projectiles>
     </attackPhase>
     <attackPhase phaseCooldown="0.05">
-        <projectiles><projectile id="23" speed="120" aimed="no" offsets="54 190" patternID="0" direction="-29"></projectile></projectiles>
+        <projectiles><projectile id="23" speed="170" aimed="no" offsets="54 190" patternID="0" direction="9"></projectile></projectiles>
     </attackPhase>
     <attackPhase phaseCooldown="0.05">
-        <projectiles><projectile id="23" speed="120" aimed="no" offsets="54 190" patternID="0" direction="28"></projectile></projectiles>
+        <projectiles><projectile id="23" speed="170" aimed="no" offsets="54 190" patternID="0" direction="-29"></projectile></projectiles>
     </attackPhase>
     <attackPhase phaseCooldown="0.05">
-        <projectiles><projectile id="23" speed="120" aimed="no" offsets="54 190" patternID="0" direction="40"></projectile></projectiles>
+        <projectiles><projectile id="23" speed="170" aimed="no" offsets="54 190" patternID="0" direction="28"></projectile></projectiles>
+    </attackPhase>
+    <attackPhase phaseCooldown="0.05">
+        <projectiles><projectile id="23" speed="170" aimed="no" offsets="54 190" patternID="0" direction="40"></projectile></projectiles>
+    </attackPhase>
+    <attackPhase phaseCooldown="0.05">
+        <projectiles><projectile id="23" speed="170" aimed="no" offsets="54 190" patternID="0" direction="-38"></projectile></projectiles>
     </attackPhase>
 </attack>

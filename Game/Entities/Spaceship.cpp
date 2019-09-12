@@ -164,7 +164,10 @@ void Spaceship::setIdentifier(int id)
 void Spaceship::fire()
 {
     if(mAttackManager.tryAttack(mSpreadLevel+200, *(getObjectContext().commandQueue)))
+    {
         mAttackManager.forceCooldown(mAttackManager.getCooldown() / static_cast<float>(mFireRateLevel));
+        getObjectContext().soundPlayer->play(Sound::AllyGun, 0.7f);
+    }
 }
 
 void Spaceship::boostSpeed()
