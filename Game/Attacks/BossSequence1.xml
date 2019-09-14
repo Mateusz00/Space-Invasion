@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <attack>
     <chargetime>0</chargetime>
-    <cooldown>11.5</cooldown>
+    <cooldown>9.5</cooldown>
 
-    <attackPhase linkedAttackID="46" phaseCooldown="2"></attackPhase>
-    <attackPhase linkedAttackID="45" phaseCooldown="1"></attackPhase>
-    <attackPhase linkedAttackID="49" repeats="3" repeatCooldown="1"></attackPhase>
+    <attackPhase linkedAttackID="46" phaseCooldown="1.3"></attackPhase>
+    <attackPhase linkedAttackID="45" phaseCooldown="0.9"></attackPhase>
+    <attackPhase linkedAttackID="49" repeats="4" repeatCooldown="0.6" phaseCooldown="0.5"></attackPhase>
+    <attackPhase linkedAttackID="64"></attackPhase>
 </attack>

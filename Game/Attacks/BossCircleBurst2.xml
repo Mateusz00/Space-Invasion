@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<attack>
+    <chargetime>0</chargetime>
+    <cooldown>3</cooldown>
+
+    <attackPhase phaseCooldown="0.4">
+        <projectiles>
+            <projectile id="4" speed="220" aimed="no" offsets="0 0" patternID="0" direction="8"></projectile>
+            <projectile id="4" speed="220" aimed="no" offsets="0 0" patternID="0" direction="16"></projectile>
+            <projectile id="4" speed="220" aimed="no" offsets="0 0" patternID="0" direction="24"></projectile>
+            <projectile id="4" speed="220" aimed="no" offsets="0 0" patternID="0" direction="32"></projectile>
+            <projectile id="4" speed="220" aimed="no" offsets="0 0" patternID="0" direction="40"></projectile>
+            <projectile id="4" speed="220" aimed="no" offsets="0 0" patternID="0" direction="48"></projectile>
+            <projectile id="4" speed="220" aimed="no" offsets="0 0" patternID="0" direction="56"></projectile>
+            <projectile id="4" speed="220" aimed="no" offsets="0 0" patternID="0" direction="64"></projectile>
+            <projectile id="4" speed="220" aimed="no" offsets="0 0" patternID="0" direction="72"></projectile>
+            <projectile id="4" speed="220" aimed="no" offsets="0 0" patternID="0" direction="80"></projectile>
+            <projectile id="4" speed="220" aimed="no" offsets="0 0" patternID="0" direction="88"></projectile>
+            <projectile id="4" speed="220" aimed="no" offsets="0 0" patternID="0" direction="96"></projectile>
+            <projectile id="4" speed="220" aimed="no" offsets="0 0" patternID="0" direction="104"></projectile>
+            <projectile id="4" speed="220" aimed="no" offsets="0 0" patternID="0" direction="112"></projectile>
+            <projectile id="4" speed="220" aimed="no" offsets="0 0" patternID="0" direction="120"></projectile>
+
+            <projectile id="4" speed="220" aimed="no" offsets="0 0" patternID="0" direction="360"></projectile>
+            <projectile id="4" speed="220" aimed="no" offsets="0 0" patternID="0" direction="352"></projectile>
+            <projectile id="4" speed="220" aimed="no" offsets="0 0" patternID="0" direction="344"></projectile>
+            <projectile id="4" speed="220" aimed="no" offsets="0 0" patternID="0" direction="336"></projectile>
+            <projectile id="4" speed="220" aimed="no" offsets="0 0" patternID="0" direction="328"></projectile>
+            <projectile id="4" speed="220" aimed="no" offsets="0 0" patternID="0" direction="320"></projectile>
+            <projectile id="4" speed="220" aimed="no" offsets="0 0" patternID="0" direction="312"></projectile>
+            <projectile id="4" speed="220" aimed="no" offsets="0 0" patternID="0" direction="304"></projectile>
+            <projectile id="4" speed="220" aimed="no" offsets="0 0" patternID="0" direction="296"></projectile>
+            <projectile id="4" speed="220" aimed="no" offsets="0 0" patternID="0" direction="288"></projectile>
+            <projectile id="4" speed="220" aimed="no" offsets="0 0" patternID="0" direction="280"></projectile>
+            <projectile id="4" speed="220" aimed="no" offsets="0 0" patternID="0" direction="272"></projectile>
+            <projectile id="4" speed="220" aimed="no" offsets="0 0" patternID="0" direction="264"></projectile>
+            <projectile id="4" speed="220" aimed="no" offsets="0 0" patternID="0" direction="256"></projectile>
+            <projectile id="4" speed="220" aimed="no" offsets="0 0" patternID="0" direction="248"></projectile>
+            <projectile id="4" speed="220" aimed="no" offsets="0 0" patternID="0" direction="240"></projectile>
+        </projectiles>
+    </attackPhase>
+    <attackPhase>
+        <projectiles>
+            <projectile id="4" speed="310" aimed="no" offsets="0 0" patternID="0" direction="4"></projectile>
+            <projectile id="4" speed="310" aimed="no" offsets="0 0" patternID="0" direction="12"></projectile>
+            <projectile id="4" speed="310" aimed="no" offsets="0 0" patternID="0" direction="20"></projectile>
+            <projectile id="4" speed="310" aimed="no" offsets="0 0" patternID="0" direction="28"></projectile>
+            <projectile id="4" speed="310" aimed="no" offsets="0 0" patternID="0" direction="36"></projectile>
+            <projectile id="4" speed="310" aimed="no" offsets="0 0" patternID="0" direction="44"></projectile>
+            <projectile id="4" speed="310" aimed="no" offsets="0 0" patternID="0" direction="52"></projectile>
+            <projectile id="4" speed="310" aimed="no" offsets="0 0" patternID="0" direction="60"></projectile>
+            <projectile id="4" speed="310" aimed="no" offsets="0 0" patternID="0" direction="68"></projectile>
+            <projectile id="4" speed="310" aimed="no" offsets="0 0" patternID="0" direction="76"></projectile>
+            <projectile id="4" speed="310" aimed="no" offsets="0 0" patternID="0" direction="84"></projectile>
+            <projectile id="4" speed="310" aimed="no" offsets="0 0" patternID="0" direction="92"></projectile>
+            <projectile id="4" speed="310" aimed="no" offsets="0 0" patternID="0" direction="100"></projectile>
+            <projectile id="4" speed="310" aimed="no" offsets="0 0" patternID="0" direction="108"></projectile>
+            <projectile id="4" speed="310" aimed="no" offsets="0 0" patternID="0" direction="116"></projectile>
+            <projectile id="4" speed="310" aimed="no" offsets="0 0" patternID="0" direction="124"></projectile>
+
+            <projectile id="4" speed="310" aimed="no" offsets="0 0" patternID="0" direction="356"></projectile>
+            <projectile id="4" speed="310" aimed="no" offsets="0 0" patternID="0" direction="348"></projectile>
+            <projectile id="4" speed="310" aimed="no" offsets="0 0" patternID="0" direction="340"></projectile>
+            <projectile id="4" speed="310" aimed="no" offsets="0 0" patternID="0" direction="332"></projectile>
+            <projectile id="4" speed="310" aimed="no" offsets="0 0" patternID="0" direction="324"></projectile>
+            <projectile id="4" speed="310" aimed="no" offsets="0 0" patternID="0" direction="316"></projectile>
+            <projectile id="4" speed="310" aimed="no" offsets="0 0" patternID="0" direction="308"></projectile>
+            <projectile id="4" speed="310" aimed="no" offsets="0 0" patternID="0" direction="300"></projectile>
+            <projectile id="4" speed="310" aimed="no" offsets="0 0" patternID="0" direction="292"></projectile>
+            <projectile id="4" speed="310" aimed="no" offsets="0 0" patternID="0" direction="284"></projectile>
+            <projectile id="4" speed="310" aimed="no" offsets="0 0" patternID="0" direction="276"></projectile>
+            <projectile id="4" speed="310" aimed="no" offsets="0 0" patternID="0" direction="268"></projectile>
+            <projectile id="4" speed="310" aimed="no" offsets="0 0" patternID="0" direction="260"></projectile>
+            <projectile id="4" speed="310" aimed="no" offsets="0 0" patternID="0" direction="252"></projectile>
+            <projectile id="4" speed="310" aimed="no" offsets="0 0" patternID="0" direction="244"></projectile>
+        </projectiles>
+    </attackPhase>
+</attack>
