@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <attack>
     <chargetime>0</chargetime>
-    <cooldown>5</cooldown>
+    <cooldown>3</cooldown>
 
     <attackPhase phaseCooldown="0.1">
         <projectiles>
@@ -12,11 +12,11 @@
         </projectiles>
 
         <gravityCenters>
-            <center id="0" speed="100" aimed="no" offsets="-400 -100" patternID="2" direction="0" amplitude="12" waveLength="100"></center>
+            <center id="0" speed="100" aimed="no" offsets="-400 0" patternID="2" direction="0" amplitude="30" waveLength="100"></center>
         </gravityCenters>
     </attackPhase>
 
-    <attackPhase phaseCooldown="1">
+    <attackPhase phaseCooldown="0.4">
         <projectiles>
             <projectile id="4" speed="80" aimed="no" offsets="30 0" patternID="3" direction="0" gravityCenterID="0"></projectile>
             <projectile id="4" speed="80" aimed="no" offsets="-30 0" patternID="3" direction="0" gravityCenterID="0"></projectile>
@@ -25,7 +25,7 @@
         </projectiles>
 
         <gravityCenters>
-            <center id="0" speed="100" aimed="no" offsets="400 0" patternID="2" direction="0" amplitude="12" waveLength="100"></center>
+            <center id="0" speed="100" aimed="no" offsets="400 0" patternID="2" direction="0" amplitude="30" waveLength="100"></center>
         </gravityCenters>
     </attackPhase>
 
@@ -38,11 +38,11 @@
         </projectiles>
 
         <gravityCenters>
-            <center id="0" speed="100" aimed="no" offsets="260 0" patternID="2" direction="0" amplitude="12" waveLength="100"></center>
+            <center id="0" speed="120" aimed="no" offsets="230 0" patternID="2" direction="0" amplitude="55" waveLength="120"></center>
         </gravityCenters>
     </attackPhase>
 
-    <attackPhase phaseCooldown="1">
+    <attackPhase>
         <projectiles>
             <projectile id="4" speed="80" aimed="no" offsets="30 0" patternID="3" direction="0" gravityCenterID="0"></projectile>
             <projectile id="4" speed="80" aimed="no" offsets="-30 0" patternID="3" direction="0" gravityCenterID="0"></projectile>
@@ -51,7 +51,7 @@
         </projectiles>
 
         <gravityCenters>
-            <center id="0" speed="100" aimed="no" offsets="-260 -100" patternID="2" direction="0" amplitude="12" waveLength="100"></center>
+            <center id="0" speed="120" aimed="no" offsets="-230 0" patternID="2" direction="0" amplitude="55" waveLength="120"></center>
         </gravityCenters>
     </attackPhase>
 </attack>

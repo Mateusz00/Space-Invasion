@@ -3,7 +3,7 @@
     <chargetime>0</chargetime>
     <cooldown>3</cooldown>
 
-    <attackPhase phaseCooldown="0.3">
+    <attackPhase phaseCooldown="0.25">
         <projectiles>
             <projectile id="4" speed="250" aimed="no" offsets="0 0" patternID="0" direction="8"></projectile>
             <projectile id="4" speed="250" aimed="no" offsets="0 0" patternID="0" direction="16"></projectile>

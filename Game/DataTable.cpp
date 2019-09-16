@@ -247,7 +247,7 @@ std::unordered_map<int, ProjectileData> initializeProjectileData()
     data[Projectiles::VioletLaser].isLaser = true;
 
     data[Projectiles::BigLaser].hitpoints = 9999.f;
-    data[Projectiles::BigLaser].damage = 0.65f;
+    data[Projectiles::BigLaser].damage = 1.7f;
     data[Projectiles::BigLaser].isLaser = true;
 
     data[Projectiles::RedSpin].damage = 20.f;
