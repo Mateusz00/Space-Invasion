@@ -59,31 +59,32 @@ namespace NarrowPhase
             sf::Transform t1 = entity1.getSpriteInverseTransform() * entity1.getWorldInverseTransform();
             sf::Transform t2 = entity2.getSpriteInverseTransform() * entity2.getWorldInverseTransform();
 
-            sf::FloatRect intersection1 = t1.transformRect(intersection);
-            sf::FloatRect intersection2 = t2.transformRect(intersection);
-
-            intersection1.left += texRect1.left;
-            intersection2.left += texRect2.left;
-            intersection1.top += texRect1.top;
-            intersection2.top += texRect2.top;
-
-			// Loop through pixels of intersection
-			for(int y1 = intersection1.top, y2 = intersection2.top; y1 < intersection1.top + intersection1.height; ++y1, ++y2)
+		    // Loop through pixels of intersection
+            for(float y = intersection.top; y < intersection.top + intersection.height; ++y)
             {
-				for(int x1 = intersection1.left, x2 = intersection2.left; x1 < intersection1.left + intersection1.width; ++x1, ++x2)
+				for(float x = intersection.left; x < intersection.left + intersection.width; ++x)
                 {
+                    sf::Vector2f p1 = t1.transformPoint(x, y);
+                    sf::Vector2f p2 = t2.transformPoint(x, y);
+
+                    p1.x += texRect1.left;
+                    p2.x += texRect2.left;
+                    p1.y += texRect1.top;
+                    p2.y += texRect2.top;
+
 					// Make sure pixels fall within the sprite's subrect
-					if(texRect1.contains(sf::Vector2i(x1, y1)) && texRect2.contains(sf::Vector2i(x2, y2)))
+					if(texRect1.contains(sf::Vector2i(p1.x, p1.y)) && texRect2.contains(sf::Vector2i(p2.x, p2.y)))
                     {
-                        sf::Uint8 pixel1 = alphaMaskManager.getPixel(mask1, entity1.getTexture(), x1, y1);
-                        sf::Uint8 pixel2 = alphaMaskManager.getPixel(mask2, entity2.getTexture(), x2, y2);
+                        sf::Uint8 pixel1 = alphaMaskManager.getPixel(mask1, entity1.getTexture(), p1.x, p1.y);
+                        sf::Uint8 pixel2 = alphaMaskManager.getPixel(mask2, entity2.getTexture(), p2.x, p2.y);
 
                         if(pixel1 > alphaThreshold && pixel2 > alphaThreshold)
                             return true;
 					}
 				}
 			}
-		}
-		return false;
-	}
+
+		    return false;
+	    }
+    }
 }

@@ -283,7 +283,7 @@ std::unordered_map<int, ProjectileData> initializeProjectileData()
     data[Projectiles::BlueStarBig].textureRect = sf::IntRect(40, 40, 40, 40);
 
     data[Projectiles::EnergyBallSmall].hitpoints = 40.f;
-    data[Projectiles::EnergyBallSmall].damage = 0.8f;
+    data[Projectiles::EnergyBallSmall].damage = 1.1f;
     data[Projectiles::EnergyBallSmall].texture = Textures::Projectiles;
     data[Projectiles::EnergyBallSmall].textureRect = sf::IntRect(80, 40, 40, 40);
 
@@ -308,7 +308,7 @@ std::unordered_map<int, ProjectileData> initializeProjectileData()
     data[Projectiles::RedBullet].textureRect = sf::IntRect(29, 61, 8, 17);
 
     data[Projectiles::EneryBallBig].hitpoints = 9999.f;
-    data[Projectiles::EneryBallBig].damage = 0.42f;
+    data[Projectiles::EneryBallBig].damage = 0.8f;
     data[Projectiles::EneryBallBig].texture = Textures::Projectiles;
     data[Projectiles::EneryBallBig].textureRect = sf::IntRect(0, 80, 240, 220);
 
