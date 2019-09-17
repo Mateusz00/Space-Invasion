@@ -3,7 +3,8 @@
 
 LevelButton::LevelButton(State::Context context, ButtonID id, const std::string& text, int levelID, bool locked)
     : GUIButton(context, id, text, locked),
-      mTextures(context.textures)
+      mTextures(context.textures),
+      mCompleted(false)
 {
     mStateIcon.setPosition(sf::Vector2f(0.f, 0.f));
     setLocked(locked);
@@ -29,6 +30,7 @@ void LevelButton::setLocked(bool locked)
     {
         if(!mCompleted)
             mStateIcon.setTextureRect(sf::IntRect(0,0,0,0));
+
         changeAppearance(Normal);
     }
 }
