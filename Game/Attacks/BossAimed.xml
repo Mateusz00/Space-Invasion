@@ -5,22 +5,22 @@
 
     <attackPhase phaseCooldown="0.2">
         <projectiles>
-            <projectile id="4" speed="310" aimed="yes" offsets="54 20" patternID="0" direction="0"></projectile>
+            <projectile id="4" speed="380" aimed="yes" offsets="54 20" patternID="0" direction="0"></projectile>
         </projectiles>
     </attackPhase>
     <attackPhase phaseCooldown="0.3">
         <projectiles>
-            <projectile id="4" speed="310" aimed="yes" offsets="-54 20" patternID="0" direction="0"></projectile>
+            <projectile id="4" speed="380" aimed="yes" offsets="-54 20" patternID="0" direction="0"></projectile>
         </projectiles>
     </attackPhase>
     <attackPhase phaseCooldown="0.2">
         <projectiles>
-            <projectile id="4" speed="310" aimed="yes" offsets="54 20" patternID="0" direction="0"></projectile>
+            <projectile id="4" speed="380" aimed="yes" offsets="54 20" patternID="0" direction="0"></projectile>
         </projectiles>
     </attackPhase>
     <attackPhase>
         <projectiles>
-            <projectile id="4" speed="310" aimed="yes" offsets="-54 20" patternID="0" direction="0"></projectile>
+            <projectile id="4" speed="380" aimed="yes" offsets="-54 20" patternID="0" direction="0"></projectile>
         </projectiles>
     </attackPhase>
 </attack>

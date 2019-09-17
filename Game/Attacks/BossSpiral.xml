@@ -3,28 +3,28 @@
     <chargetime>4</chargetime>
     <cooldown>6</cooldown>
 
-    <attackPhase phaseCooldown="0.5">
+    <attackPhase phaseCooldown="0.45">
         <projectiles>
-            <projectile id="5" speed="200" aimed="no" offsets="54 190" patternID="2" direction="13" amplitude="-100" waveLength="150"></projectile>
-            <projectile id="5" speed="200" aimed="no" offsets="54 190" patternID="2" direction="13" amplitude="100" waveLength="150"></projectile>
-            <projectile id="5" speed="200" aimed="no" offsets="-51 190" patternID="2" direction="347" amplitude="-100" waveLength="150"></projectile>
-            <projectile id="5" speed="200" aimed="no" offsets="-51 190" patternID="2" direction="347" amplitude="100" waveLength="150"></projectile>
+            <projectile id="5" speed="200" aimed="no" offsets="54 190" patternID="2" direction="13" amplitude="-95" waveLength="150"></projectile>
+            <projectile id="5" speed="200" aimed="no" offsets="54 190" patternID="2" direction="13" amplitude="95" waveLength="150"></projectile>
+            <projectile id="5" speed="200" aimed="no" offsets="-51 190" patternID="2" direction="347" amplitude="-95" waveLength="150"></projectile>
+            <projectile id="5" speed="200" aimed="no" offsets="-51 190" patternID="2" direction="347" amplitude="95" waveLength="150"></projectile>
         </projectiles>
     </attackPhase>
-    <attackPhase phaseCooldown="0.3">
+    <attackPhase phaseCooldown="0.25">
         <projectiles>
-            <projectile id="5" speed="200" aimed="no" offsets="54 190" patternID="2" direction="13" amplitude="-100" waveLength="160"></projectile>
-            <projectile id="5" speed="200" aimed="no" offsets="54 190" patternID="2" direction="13" amplitude="100" waveLength="160"></projectile>
-            <projectile id="5" speed="200" aimed="no" offsets="-51 190" patternID="2" direction="347" amplitude="-100" waveLength="160"></projectile>
-            <projectile id="5" speed="200" aimed="no" offsets="-51 190" patternID="2" direction="347" amplitude="100" waveLength="160"></projectile>
+            <projectile id="5" speed="200" aimed="no" offsets="54 190" patternID="2" direction="13" amplitude="-95" waveLength="150"></projectile>
+            <projectile id="5" speed="200" aimed="no" offsets="54 190" patternID="2" direction="13" amplitude="95" waveLength="150"></projectile>
+            <projectile id="5" speed="200" aimed="no" offsets="-51 190" patternID="2" direction="347" amplitude="-95" waveLength="150"></projectile>
+            <projectile id="5" speed="200" aimed="no" offsets="-51 190" patternID="2" direction="347" amplitude="95" waveLength="150"></projectile>
         </projectiles>
     </attackPhase>
-    <attackPhase repeats="20" repeatCooldown="0.13">
+    <attackPhase repeats="32" repeatCooldown="0.08">
         <projectiles>
-            <projectile id="5" speed="200" aimed="no" offsets="54 190" patternID="2" direction="13" amplitude="-100" waveLength="160"></projectile>
-            <projectile id="5" speed="200" aimed="no" offsets="54 190" patternID="2" direction="13" amplitude="100" waveLength="160"></projectile>
-            <projectile id="5" speed="200" aimed="no" offsets="-51 190" patternID="2" direction="347" amplitude="-100" waveLength="160"></projectile>
-            <projectile id="5" speed="200" aimed="no" offsets="-51 190" patternID="2" direction="347" amplitude="100" waveLength="160"></projectile>
+            <projectile id="5" speed="200" aimed="no" offsets="54 190" patternID="2" direction="13" amplitude="-95" waveLength="150"></projectile>
+            <projectile id="5" speed="200" aimed="no" offsets="54 190" patternID="2" direction="13" amplitude="95" waveLength="150"></projectile>
+            <projectile id="5" speed="200" aimed="no" offsets="-51 190" patternID="2" direction="347" amplitude="-95" waveLength="150"></projectile>
+            <projectile id="5" speed="200" aimed="no" offsets="-51 190" patternID="2" direction="347" amplitude="95" waveLength="150"></projectile>
         </projectiles>
     </attackPhase>
 </attack>

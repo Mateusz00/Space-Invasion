@@ -12,8 +12,11 @@
     <attackPhase phaseCooldown="0.05">
         <projectiles><projectile id="23" speed="170" aimed="no" offsets="54 190" patternID="0" direction="-15"></projectile></projectiles>
     </attackPhase>
-    <attackPhase phaseCooldown="0.05">
+    <attackPhase phaseCooldown="0.04">
         <projectiles><projectile id="23" speed="170" aimed="no" offsets="54 190" patternID="0" direction="22"></projectile></projectiles>
+    </attackPhase>
+    <attackPhase phaseCooldown="0.05">
+        <projectiles><projectile id="21" speed="170" aimed="no" offsets="54 190" patternID="0" direction="12"></projectile></projectiles>
     </attackPhase>
     <attackPhase phaseCooldown="0.05">
         <projectiles><projectile id="23" speed="170" aimed="no" offsets="54 190" patternID="0" direction="-3"></projectile></projectiles>
@@ -28,6 +31,9 @@
         <projectiles><projectile id="23" speed="170" aimed="no" offsets="54 190" patternID="0" direction="-17"></projectile></projectiles>
     </attackPhase>
     <attackPhase phaseCooldown="0.05">
+        <projectiles><projectile id="23" speed="170" aimed="no" offsets="54 190" patternID="0" direction="25"></projectile></projectiles>
+    </attackPhase>
+    <attackPhase phaseCooldown="0.05">
         <projectiles><projectile id="23" speed="170" aimed="no" offsets="54 190" patternID="0" direction="9"></projectile></projectiles>
     </attackPhase>
     <attackPhase phaseCooldown="0.05">
@@ -35,6 +41,9 @@
     </attackPhase>
     <attackPhase phaseCooldown="0.05">
         <projectiles><projectile id="23" speed="170" aimed="no" offsets="54 190" patternID="0" direction="28"></projectile></projectiles>
+    </attackPhase>
+    <attackPhase phaseCooldown="0.05">
+        <projectiles><projectile id="23" speed="170" aimed="no" offsets="54 190" patternID="0" direction="18"></projectile></projectiles>
     </attackPhase>
     <attackPhase phaseCooldown="0.05">
         <projectiles><projectile id="23" speed="170" aimed="no" offsets="54 190" patternID="0" direction="40"></projectile></projectiles>
