@@ -3,13 +3,14 @@
     <hitpoints>42</hitpoints>
     <speed>100</speed>
     <animationID>6</animationID>
+    <score>120</score>
 
     <directions>
-        <direction angle="0" distance="160" speedPercentage="100"></direction>
+        <direction angle="0" distance="150" speedPercentage="100"></direction>
     </directions>
     <directions loop="13">
-        <direction angle="0" distance="15" speedPercentage="100"></direction>
-        <direction angle="180" distance="10" speedPercentage="4"></direction>
+        <direction angle="0" distance="10" speedPercentage="60"></direction>
+        <direction angle="180" distance="15" speedPercentage="6"></direction>
     </directions>
 
     <attacks>

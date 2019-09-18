@@ -66,7 +66,7 @@ class Spaceship : public Entity
         int                     mMissileAmmo;
         int                     mPlayerID;
         bool                    mIsEnemy;
-        bool                    mShowExplosion;
+        bool                    mWasKilled;
         float                   mTravelledDistance;
         int                     mDirectionIndex;
         sf::Time                mLastRoll;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <spaceship>
-    <hitpoints>50</hitpoints>
+    <hitpoints>42</hitpoints>
     <speed>110</speed>
     <animationID>2</animationID>
 

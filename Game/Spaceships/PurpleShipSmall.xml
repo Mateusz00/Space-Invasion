@@ -3,6 +3,8 @@
     <hitpoints>29</hitpoints>
     <speed>270</speed>
     <textureID>26</textureID>
+    <score>100</score>
+    <pickupChance>20</pickupChance>
 
     <directions>
         <direction angle="0" distance="160" speedPercentage="200"></direction>

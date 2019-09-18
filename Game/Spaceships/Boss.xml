@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <spaceship tagID="1">
-    <hitpoints>1800</hitpoints>
+    <hitpoints>2000</hitpoints>
     <speed>100</speed>
     <textureID>27</textureID>
 
@@ -10,13 +10,13 @@
     </directions>
 
     <attacks>
-        <attack attackID="56" probability="14"></attack>
-        <attack attackID="57" probability="8"></attack>
-        <attack attackID="58" probability="8"></attack>
+        <attack attackID="56" probability="21"></attack>
+        <attack attackID="57" probability="6"></attack>
         <attack attackID="59" probability="16"></attack>
-        <attack attackID="60" probability="17"></attack>
-        <attack attackID="61" probability="20"></attack>
-        <attack attackID="63" probability="17"></attack>
+        <attack attackID="60" probability="18"></attack>
+        <attack attackID="61" probability="18"></attack>
+        <attack attackID="58" probability="6"></attack>
+        <attack attackID="63" probability="15"></attack>
     </attacks>
 
     <onDeath>

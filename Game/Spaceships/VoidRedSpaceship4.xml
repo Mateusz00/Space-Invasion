@@ -3,6 +3,8 @@
     <hitpoints>75</hitpoints>
     <speed>82</speed>
     <animationID>7</animationID>
+    <score>200</score>
+    <pickupChance>32</pickupChance>
 
     <directions>
         <direction angle="0" distance="140" speedPercentage="100"></direction>
@@ -14,7 +16,7 @@
         <direction angle="90" distance="20" speedPercentage="40"></direction>
         <direction angle="-75" distance="40" speedPercentage="100"></direction>
         <direction angle="-75" distance="20" speedPercentage="40"></direction>
-        <direction angle="180" distance="27" speedPercentage="80"></direction>
+        <direction angle="180" distance="33" speedPercentage="80"></direction>
     </directions>
 
     <attacks>

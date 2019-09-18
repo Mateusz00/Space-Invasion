@@ -3,6 +3,8 @@
     <hitpoints>70</hitpoints>
     <speed>53</speed>
     <animationID>9</animationID>
+    <score>125</score>
+    <pickupChance>2</pickupChance>
 
     <directions>
         <direction angle="260" distance="126" speedPercentage="150"></direction>

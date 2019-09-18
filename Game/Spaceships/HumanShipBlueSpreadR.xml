@@ -5,9 +5,9 @@
     <textureID>6</textureID>
 
     <directions>
-        <direction angle="93" distance="300" speedPercentage="100"></direction>
-        <direction angle="-93" distance="600" speedPercentage="100"></direction>
-        <direction angle="93" distance="300" speedPercentage="100"></direction>
+        <direction angle="95" distance="300" speedPercentage="100"></direction>
+        <direction angle="-95" distance="600" speedPercentage="100"></direction>
+        <direction angle="95" distance="300" speedPercentage="100"></direction>
     </directions>
 
     <attacks>

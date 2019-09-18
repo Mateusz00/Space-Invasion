@@ -29,7 +29,7 @@ Spaceship::Spaceship(int typeID, const TextureHolder& textures, sf::Vector2f pos
       mMissileAmmo(2),
       mPlayerID(id),
       mIsEnemy(typeID != 0),
-      mShowExplosion(true),
+      mWasKilled(true),
       mTravelledDistance(0.f),
       mDirectionIndex(0),
       mTextures(textures),
@@ -99,6 +99,10 @@ Spaceship::Spaceship(int typeID, const TextureHolder& textures, sf::Vector2f pos
 
     if(!mHasInitializedResponses)
         initializeCollisionResponses();
+
+    // Delay first boss attack
+    if(spaceshipInfo[mTypeID].tagID == SpaceshipData::Boss)
+        mAttackManager.forceCooldown(sf::seconds(1.2f));
 }
 
 void Spaceship::updateCurrent(sf::Time dt, CommandQueue& commands)
@@ -284,7 +288,7 @@ void Spaceship::initializeCollisionResponses()
 void Spaceship::removeEntity()
 {
     Entity::removeEntity();
-    mShowExplosion = false;
+    mWasKilled = false;
 }
 
 void Spaceship::increaseScore(int value)
@@ -337,68 +341,64 @@ void Spaceship::createPickup() const
 
 void Spaceship::createExplosion() const
 {
-    if(mShowExplosion)
+    if(spaceshipInfo[mTypeID].tagID == SpaceshipData::Boss)
     {
-        if(spaceshipInfo[mTypeID].tagID == SpaceshipData::Boss)
+        sf::Vector2f pos = getWorldPosition();
+        const TextureHolder& textures = mTextures;
+
+        Command deathAnimation;
+        deathAnimation.mCategories = Category::AirLayer;
+        deathAnimation.mAction = [pos, &textures](SceneNode& layer, sf::Time)
         {
-            sf::Vector2f pos = getWorldPosition();
-            const TextureHolder& textures = mTextures;
+            std::unique_ptr<AnimationNode> node(new AnimationNode(Animation::BossDeathAnimation, sf::seconds(0.2f), textures, pos));
+            node->setAnimationType(AnimationNode::AnimationType::ForwardAndBackward);
+            node->setRepeating(true);
+            node->setLifespan(sf::seconds(5.5f));
+            layer.attachChild(std::move(node));
+        };
+        getObjectContext().commandQueue->push(deathAnimation);
 
-            Command deathAnimation;
-            deathAnimation.mCategories = Category::AirLayer;
-            deathAnimation.mAction = [pos, &textures](SceneNode& layer, sf::Time)
-            {
-                std::unique_ptr<AnimationNode> node(new AnimationNode(Animation::BossDeathAnimation, sf::seconds(0.2f), textures, pos));
-                node->setAnimationType(AnimationNode::AnimationType::ForwardAndBackward);
-                node->setRepeating(true);
-                node->setLifespan(sf::seconds(5.5f));
-                layer.attachChild(std::move(node));
-            };
-            getObjectContext().commandQueue->push(deathAnimation);
+        sendExplosion(sf::Vector2f(pos.x - 52.f, pos.y + 8.f),   mTextures);
+        sendExplosion(sf::Vector2f(pos.x + 55.f, pos.y + 8.f),   mTextures);
+        sendExplosion(sf::Vector2f(pos.x - 52.f, pos.y + 34.f),  mTextures, 0.45f, 0.45f, 0.9f);
+        sendExplosion(sf::Vector2f(pos.x + 55.f, pos.y + 34.f),  mTextures, 0.45f, 0.45f, 0.9f);
+        sendExplosion(sf::Vector2f(pos.x - 52.f, pos.y + 65.f),  mTextures, 0.45f, 0.6f,  0.9f);
+        sendExplosion(sf::Vector2f(pos.x + 55.f, pos.y + 65.f),  mTextures, 0.45f, 0.6f,  0.9f);
+        sendExplosion(sf::Vector2f(pos.x - 52.f, pos.y + 116.f), mTextures, 0.75f, 0.7f,  0.9f);
+        sendExplosion(sf::Vector2f(pos.x + 55.f, pos.y + 116.f), mTextures, 0.75f, 0.7f,  0.9f);
 
-            sendExplosion(sf::Vector2f(pos.x - 52.f, pos.y + 8.f),   mTextures);
-            sendExplosion(sf::Vector2f(pos.x + 55.f, pos.y + 8.f),   mTextures);
-            sendExplosion(sf::Vector2f(pos.x - 52.f, pos.y + 34.f),  mTextures, 0.45f, 0.45f, 0.9f);
-            sendExplosion(sf::Vector2f(pos.x + 55.f, pos.y + 34.f),  mTextures, 0.45f, 0.45f, 0.9f);
-            sendExplosion(sf::Vector2f(pos.x - 52.f, pos.y + 65.f),  mTextures, 0.45f, 0.6f,  0.9f);
-            sendExplosion(sf::Vector2f(pos.x + 55.f, pos.y + 65.f),  mTextures, 0.45f, 0.6f,  0.9f);
-            sendExplosion(sf::Vector2f(pos.x - 52.f, pos.y + 116.f), mTextures, 0.75f, 0.7f,  0.9f);
-            sendExplosion(sf::Vector2f(pos.x + 55.f, pos.y + 116.f), mTextures, 0.75f, 0.7f,  0.9f);
+        sendExplosion(sf::Vector2f(pos.x + 100.f,  pos.y - 30.f), mTextures, 1.1f, 0.6f);
+        sendExplosion(sf::Vector2f(pos.x - 90.f,  pos.y + 25.f),  mTextures, 1.1f, 1.3f);
+        sendExplosion(sf::Vector2f(pos.x,  pos.y + 90.f),         mTextures, 1.f,  2.f);
+        sendExplosion(sf::Vector2f(pos.x + 105.f, pos.y + 55.f),  mTextures, 1.f,  2.8f);
+        sendExplosion(sf::Vector2f(pos.x - 90.f,  pos.y + 45.f),  mTextures, 1.2f, 3.4f);
+        sendExplosion(sf::Vector2f(pos.x + 88.f,  pos.y + 17.f),  mTextures, 1.2f, 4.3f);
+        sendExplosion(sf::Vector2f(pos.x, pos.y + 15.f),          mTextures, 2.f,  5.4f, 1.2f);
+    }
+    else
+    {
+        sf::FloatRect bounds = mSprite->getLocalBounds();
+        float area = bounds.width * bounds.height;
+        float scale = 1.f;
+        float volumeMultiplier = 1.f;
 
-            sendExplosion(sf::Vector2f(pos.x + 100.f,  pos.y - 30.f), mTextures, 1.1f, 0.6f);
-            sendExplosion(sf::Vector2f(pos.x - 90.f,  pos.y + 25.f),  mTextures, 1.1f, 1.3f);
-            sendExplosion(sf::Vector2f(pos.x,  pos.y + 90.f),         mTextures, 1.f,  2.f);
-            sendExplosion(sf::Vector2f(pos.x + 105.f, pos.y + 55.f),  mTextures, 1.f,  2.8f);
-            sendExplosion(sf::Vector2f(pos.x - 90.f,  pos.y + 45.f),  mTextures, 1.2f, 3.4f);
-            sendExplosion(sf::Vector2f(pos.x + 88.f,  pos.y + 17.f),  mTextures, 1.2f, 4.3f);
-            sendExplosion(sf::Vector2f(pos.x, pos.y + 15.f),          mTextures, 2.f,  5.4f, 1.2f);
-        }
-        else
+        if(area > 10000.f)
         {
-            sf::FloatRect bounds = mSprite->getLocalBounds();
-            float area = bounds.width * bounds.height;
-            float scale = 1.f;
-            float volumeMultiplier = 1.f;
-
-            if(area > 10000.f)
-            {
-                scale = std::min(area / 10000.f, 2.f);
-            }
-            else if(area < 10000.f)
-            {
-                scale = 1 - ((1 - area / 10000.f) * 0.3f);
-                volumeMultiplier = scale;
-            }
-
-            sendExplosion(getWorldPosition(), mTextures, scale, 0.f, volumeMultiplier);
+            scale = std::min(area / 10000.f, 2.f);
         }
+        else if(area < 10000.f)
+        {
+            scale = 1 - ((1 - area / 10000.f) * 0.3f);
+            volumeMultiplier = scale;
+        }
+
+        sendExplosion(getWorldPosition(), mTextures, scale, 0.f, volumeMultiplier);
     }
 }
 
 void Spaceship::changeScore()
 {
-    if(mShowExplosion)
-        increaseScoreRequest(spaceshipInfo[mTypeID].score);
+    increaseScoreRequest(spaceshipInfo[mTypeID].score);
 }
 
 void Spaceship::increaseScoreRequest(int value) const
@@ -416,9 +416,13 @@ void Spaceship::increaseScoreRequest(int value) const
 
 void Spaceship::onRemoval()
 {
-    createPickup();
-    createExplosion();
-    changeScore();
+    if(mWasKilled)
+    {
+        createPickup();
+        createExplosion();
+        changeScore();
+    }
+
     mAttackManager.onRemoval();
 
     if(!spaceshipInfo[mTypeID].eventSchemes.empty())

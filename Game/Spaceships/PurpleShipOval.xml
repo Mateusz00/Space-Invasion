@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <spaceship>
-    <hitpoints>50</hitpoints>
+    <hitpoints>46</hitpoints>
     <speed>70</speed>
     <textureID>23</textureID>
+    <score>150</score>
+    <pickupChance>20</pickupChance>
 
     <directions>
         <direction angle="145" distance="18" speedPercentage="100"></direction>

@@ -3,6 +3,7 @@
     <hitpoints>50</hitpoints>
     <speed>70</speed>
     <textureID>5</textureID>
+    <score>150</score>
 
     <directions>
         <direction angle="90" distance="30" speedPercentage="100"></direction>
