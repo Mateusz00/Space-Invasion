@@ -5,53 +5,41 @@ std::unordered_map<Category::Type, CollisionResponseMap::ResponseMap, std::hash<
 
 void CollisionResponseMap::addResponse(Category::Type type1, Category::Type type2, Response response)
 {
-    (mCollisionResponsesMap[type1])[type2] = response;
+    auto typePair = std::minmax(type1, type2);
+    (mCollisionResponsesMap[typePair.first])[typePair.second] = response;
 }
 
 void CollisionResponseMap::useResponse(Entity* entity1, Entity* entity2)
 {
     Category::Type type1 = entity1->getCategories();
     Category::Type type2 = entity2->getCategories();
+    auto typePair = std::minmax(type1, type2);
+    auto foundPos = mCollisionResponsesMap.find(typePair.first);
 
-    auto foundPos = mCollisionResponsesMap.find(type1);
-    Category::Type searchType;
+    if(typePair.first == type2)
+        std::swap(entity1, entity2);
 
     if(foundPos != mCollisionResponsesMap.end())
     {
-        searchType = type2;
-    }
-    else if((foundPos = mCollisionResponsesMap.find(type2)) != mCollisionResponsesMap.end())
-    {
-        searchType = type1;
-        std::swap(entity1, entity2);
-    }
-    else
-    {
-        return;
-    }
+        auto responsePos = foundPos->second.find(typePair.second);
 
-    auto responsePos = foundPos->second.find(searchType);
-
-    if(responsePos != foundPos->second.end())
-        (responsePos->second)(*entity1, *entity2);
+        if(responsePos != foundPos->second.end())
+            (responsePos->second)(*entity1, *entity2);
+    }
 }
 
 bool CollisionResponseMap::checkForResponse(Category::Type type1, Category::Type type2)
 {
-    auto foundPos = mCollisionResponsesMap.find(type1);
-    Category::Type searchType;
+    auto typePair = std::minmax(type1, type2);
+    auto foundPos = mCollisionResponsesMap.find(typePair.first);
 
     if(foundPos != mCollisionResponsesMap.end())
-        searchType = type2;
-    else if((foundPos = mCollisionResponsesMap.find(type2)) != mCollisionResponsesMap.end())
-        searchType = type1;
-    else
-        return false;
+    {
+        auto responsePos = foundPos->second.find(typePair.second);
 
-    auto responsePos = foundPos->second.find(searchType);
+        if(responsePos != foundPos->second.end())
+            return true;
+    }
 
-    if(responsePos != foundPos->second.end())
-        return true;
-    else
-        return false;
+    return false;
 }
