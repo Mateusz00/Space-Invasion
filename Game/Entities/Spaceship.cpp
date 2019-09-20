@@ -358,22 +358,22 @@ void Spaceship::createExplosion() const
         };
         getObjectContext().commandQueue->push(deathAnimation);
 
-        sendExplosion(sf::Vector2f(pos.x - 52.f, pos.y + 8.f),   mTextures);
-        sendExplosion(sf::Vector2f(pos.x + 55.f, pos.y + 8.f),   mTextures);
-        sendExplosion(sf::Vector2f(pos.x - 52.f, pos.y + 34.f),  mTextures, 0.45f, 0.45f, 0.9f);
-        sendExplosion(sf::Vector2f(pos.x + 55.f, pos.y + 34.f),  mTextures, 0.45f, 0.45f, 0.9f);
-        sendExplosion(sf::Vector2f(pos.x - 52.f, pos.y + 65.f),  mTextures, 0.45f, 0.6f,  0.9f);
-        sendExplosion(sf::Vector2f(pos.x + 55.f, pos.y + 65.f),  mTextures, 0.45f, 0.6f,  0.9f);
-        sendExplosion(sf::Vector2f(pos.x - 52.f, pos.y + 116.f), mTextures, 0.75f, 0.7f,  0.9f);
-        sendExplosion(sf::Vector2f(pos.x + 55.f, pos.y + 116.f), mTextures, 0.75f, 0.7f,  0.9f);
+        sendExplosion(sf::Vector2f(pos.x - 52.f, pos.y + 8.f),   mTextures, 1.f,   0.f,   0.85f);
+        sendExplosion(sf::Vector2f(pos.x + 55.f, pos.y + 8.f),   mTextures, 1.f,   0.f,   0.85f);
+        sendExplosion(sf::Vector2f(pos.x - 52.f, pos.y + 34.f),  mTextures, 0.45f, 0.45f, 0.6f);
+        sendExplosion(sf::Vector2f(pos.x + 55.f, pos.y + 34.f),  mTextures, 0.45f, 0.45f, 0.6f);
+        sendExplosion(sf::Vector2f(pos.x - 52.f, pos.y + 65.f),  mTextures, 0.45f, 0.6f,  0.6f);
+        sendExplosion(sf::Vector2f(pos.x + 55.f, pos.y + 65.f),  mTextures, 0.45f, 0.6f,  0.6f);
+        sendExplosion(sf::Vector2f(pos.x - 52.f, pos.y + 116.f), mTextures, 0.75f, 0.7f,  0.7f);
+        sendExplosion(sf::Vector2f(pos.x + 55.f, pos.y + 116.f), mTextures, 0.75f, 0.7f,  0.7f);
 
-        sendExplosion(sf::Vector2f(pos.x + 100.f,  pos.y - 30.f), mTextures, 1.1f, 0.6f);
-        sendExplosion(sf::Vector2f(pos.x - 90.f,  pos.y + 25.f),  mTextures, 1.1f, 1.3f);
-        sendExplosion(sf::Vector2f(pos.x,  pos.y + 90.f),         mTextures, 1.f,  2.f);
-        sendExplosion(sf::Vector2f(pos.x + 105.f, pos.y + 55.f),  mTextures, 1.f,  2.8f);
-        sendExplosion(sf::Vector2f(pos.x - 90.f,  pos.y + 45.f),  mTextures, 1.2f, 3.4f);
-        sendExplosion(sf::Vector2f(pos.x + 88.f,  pos.y + 17.f),  mTextures, 1.2f, 4.3f);
-        sendExplosion(sf::Vector2f(pos.x, pos.y + 15.f),          mTextures, 2.f,  5.4f, 1.2f);
+        sendExplosion(sf::Vector2f(pos.x + 100.f,  pos.y - 30.f), mTextures, 1.1f, 0.6f, 0.85f);
+        sendExplosion(sf::Vector2f(pos.x - 90.f,  pos.y + 25.f),  mTextures, 1.1f, 1.3f, 0.85f);
+        sendExplosion(sf::Vector2f(pos.x,  pos.y + 90.f),         mTextures, 1.f,  2.f,  0.85f);
+        sendExplosion(sf::Vector2f(pos.x + 105.f, pos.y + 55.f),  mTextures, 1.f,  2.8f, 0.85f);
+        sendExplosion(sf::Vector2f(pos.x - 90.f,  pos.y + 45.f),  mTextures, 1.2f, 3.4f, 0.9f);
+        sendExplosion(sf::Vector2f(pos.x + 88.f,  pos.y + 17.f),  mTextures, 1.2f, 4.3f, 0.9f);
+        sendExplosion(sf::Vector2f(pos.x, pos.y + 15.f),          mTextures, 2.f,  5.4f, 1.f);
     }
     else
     {

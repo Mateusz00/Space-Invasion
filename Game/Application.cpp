@@ -58,6 +58,7 @@ void Application::update(sf::Time dt)
 {
     mStateStack.update(dt);
     mMusicPlayer.update();
+    mSounds.update(dt);
 }
 
 void Application::handleEvents()

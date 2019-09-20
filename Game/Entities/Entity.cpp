@@ -149,7 +149,7 @@ void Entity::sendExplosion(sf::Vector2f pos, const TextureHolder& t, float scale
         node->setScale(scale, scale);
         node->setDelay(sf::seconds(delaySeconds));
         layer.attachChild(std::move(node));
-        soundPlayer->play(Sound::Explosion, pos, volumeMultiplier);
+        soundPlayer->play(Sound::Explosion, pos, volumeMultiplier, delaySeconds);
     };
 
     getObjectContext().commandQueue->push(explosionCommand);

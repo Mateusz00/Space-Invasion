@@ -23,15 +23,14 @@ SoundPlayer::SoundPlayer()
     mSounds.loadFromFile(Sound::ButtonClick,    "Resources/ButtonClick.ogg");
 }
 
-void SoundPlayer::play(Sound::ID id, float volumeMultiplier)
+void SoundPlayer::play(Sound::ID id, float volumeMultiplier, float delay)
 {
-    play(id, sf::Vector2f(sf::Listener::getPosition().x, sf::Listener::getPosition().y), volumeMultiplier);
+    play(id, sf::Vector2f(sf::Listener::getPosition().x, sf::Listener::getPosition().y), volumeMultiplier, delay);
 }
 
-void SoundPlayer::play(Sound::ID id, sf::Vector2f position, float volumeMultiplier)
+void SoundPlayer::play(Sound::ID id, sf::Vector2f position, float volumeMultiplier, float delay)
 {
-    mActiveSounds.push_front(sf::Sound());
-    sf::Sound& sound = mActiveSounds.front();
+    sf::Sound sound;
 
     sound.setBuffer(mSounds.get(id));
     sound.setPosition(position.x, position.y, 0.f);
@@ -43,7 +42,19 @@ void SoundPlayer::play(Sound::ID id, sf::Vector2f position, float volumeMultipli
     else
         sound.setVolume(mVolume * volumeMultiplier);
 
-    sound.play();
+    if(delay == 0.f)
+    {
+        mActiveSounds.emplace_front(std::move(sound));
+        mActiveSounds.front().play();
+    }
+    else
+    {
+        mSoundsQueue.emplace_back(std::make_pair(std::move(sound), delay));
+        std::sort(mSoundsQueue.begin(), mSoundsQueue.end(), [](DelayedSound& lhs, DelayedSound& rhs)
+        {
+            return lhs.second > rhs.second;
+        });
+    }
 }
 
 void SoundPlayer::removeStoppedSounds()
@@ -82,4 +93,17 @@ void SoundPlayer::mute()
 void SoundPlayer::unmute()
 {
     mIsMuted = false;
+}
+
+void SoundPlayer::update(sf::Time dt)
+{
+    for(DelayedSound& delayedSound : mSoundsQueue)
+        delayedSound.second -= dt.asSeconds();
+
+    while(!mSoundsQueue.empty() && mSoundsQueue.back().second <= 0.f)
+    {
+        mActiveSounds.emplace_front(std::move(mSoundsQueue.back().first));
+        mActiveSounds.front().play();
+        mSoundsQueue.pop_back();
+    }
 }
