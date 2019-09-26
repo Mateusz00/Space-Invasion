@@ -7,7 +7,7 @@
 using namespace ApplicationData;
 
 Application::Application()
-    : mWindow(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "2D Fighter Jet Game", sf::Style::Close),
+    : mWindow(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Space Invasion", sf::Style::Close),
       mStateStack(State::Context(mWindow, mTextures, mFonts, mSounds, mMusicPlayer, mKeyBindings, mPlayers, mSettings, mProfile)),
       mProfile(mPlayers, mKeyBindings)
 {

@@ -10,9 +10,10 @@ ProfileState::ProfileState(Context context, StateStack& stateStack)
       mProfile(context.profile),
       mBackground(context.textures.get(Textures::TitleScreen))
 {
-    std::unique_ptr<GUIButton> newGame(new GUIButton(context, GUIButton::ControlsButton, "New Game"));
-    newGame->setPosition(0.f, -75.f);
-    newGame->centerButtonOrigin();
+    sf::Vector2f windowSize(static_cast<sf::Vector2f>(context.window.getSize()));
+
+    std::unique_ptr<GUIButton> newGame(new GUIButton(context, GUIButton::TextButton, "New Game"));
+    newGame->setPosition(0.f, windowSize.y * -0.06f);
     newGame->setCallback([this]()
     {
         mProfile.clearAllData();
@@ -20,9 +21,8 @@ ProfileState::ProfileState(Context context, StateStack& stateStack)
         requestStackPush(States::PlayerInfoState);
     });
 
-    std::unique_ptr<GUIButton> loadGame(new GUIButton(context, GUIButton::ControlsButton, "Load Game"));
-    loadGame->setPosition(0.f, 75.f);
-    loadGame->centerButtonOrigin();
+    std::unique_ptr<GUIButton> loadGame(new GUIButton(context, GUIButton::TextButton, "Load Game"));
+    loadGame->setPosition(0.f, windowSize.y * 0.06f);
     loadGame->setCallback([this]()
     {
         if(mProfile.loadProfile())
