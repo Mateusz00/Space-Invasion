@@ -13,7 +13,7 @@ class MusicPlayer
 {
     public:
                 MusicPlayer(float volume = 80.f);
-        void    playNow(Music::ID, bool); // Stops music and adds new to front of music playlist
+        void    playNow(Music::ID, bool loop, bool checkIfAlreadyPlaying = true); // Stops music and adds new to front of music playlist
         void    addToQueue(Music::ID, bool addToEnd = true);
         void    update(); // Changes stopped music for a new one from front of the playlist and makes it looped depending on the flag
         void    setVolume(float);
@@ -29,6 +29,7 @@ class MusicPlayer
         std::list<Music::ID>                mMusicPlaylist;
         float                               mVolume;
         sf::Music                           mCurrentMusic;
+        Music::ID                           mCurrentMusicID;
         bool                                mIsLooped; // Indicates if next music should be looped
         bool                                mIsMuted;
 };

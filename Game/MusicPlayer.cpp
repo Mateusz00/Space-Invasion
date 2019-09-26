@@ -4,17 +4,22 @@
 MusicPlayer::MusicPlayer(float volume)
     : mVolume(volume),
       mIsLooped(false),
-      mIsMuted(false)
+      mIsMuted(false),
+      mCurrentMusicID(Music::None)
 {
     mMusicToFilePath[Music::MenuTheme]   = std::string("Resources/MenuTheme.ogg");
     mMusicToFilePath[Music::BattleTheme] = std::string("Resources/BattleTheme.ogg");
 }
 
-void MusicPlayer::playNow(Music::ID id, bool isLooped)
+/// @param checkIfAlreadyPlaying - if set to true, prevents restarting if the requested music is already playing
+void MusicPlayer::playNow(Music::ID id, bool loop, bool checkIfAlreadyPlaying)
 {
+    if(checkIfAlreadyPlaying && mCurrentMusicID == id)
+        return;
+
     mCurrentMusic.stop();
     addToQueue(id, false); // Place it at the beginning of the queue
-    setLoop(isLooped);
+    setLoop(loop);
 }
 
 void MusicPlayer::addToQueue(Music::ID id, bool addToEnd)
@@ -45,6 +50,7 @@ void MusicPlayer::update()
         setVolume(mVolume);
         mCurrentMusic.setLoop(mIsLooped);
         mCurrentMusic.play();
+        mCurrentMusicID = id;
         mIsLooped = false; // Loop only one sound
         mMusicPlaylist.pop_front(); // Delete from queue as it's already playing
     }
