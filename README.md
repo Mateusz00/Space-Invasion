@@ -1,5 +1,5 @@
 # About
-Space Invasion is a vertically scrolling shoot 'em up, written in C++ without using any game engine. This was my first bigger project and it's main goal was to make me more experienced in OOP, which isn't possible with smaller applications. This also was main reason why I chose to avoid using ready-made solutions such as game engine, GUI library. Game can be downloaded <a href="https://github.com/Mateusz00/2D-Fighter-Jet-Game/releases/tag/v1.0">here</a>
+Space Invasion is a vertically scrolling shoot 'em up, written in C++ without using any existing game engine. This was my first bigger project and my main goal was to gain experience in OOP, which isn't possible with smaller applications. This also was main reason why I chose to avoid using ready-made solutions such as game engine, GUI library. Game can be downloaded <a href="https://github.com/Mateusz00/2D-Fighter-Jet-Game/releases/tag/v1.0">here</a>
 
 # Credits 
 * Pickups, level background, buttons were done by myself so feel free to use them however you want
